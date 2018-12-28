@@ -1,0 +1,39 @@
+command:
+
+  set:
+    not_enough_args:
+    - "&4Wrong amount of arguments!"
+    - "&cuse &f/&9orecontrol set &f<&9ore&f> <&9type&f> <&9world&f> <&9amount&f(&9%&f)>"
+    world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
+    no_number: "&f'&9%value%&f' &4is not a valid number!"
+    type_not_found: "&4The type &f'&9%type%&f' &4does not exist!"
+    ore_not_found:
+    - "&4The ore &f'&9%ore%&f' &4does not exist!, "
+    - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"
+    - "&f'&9redstone&f'"
+    success: "&aThe value has been updated successfully!"
+
+  reload:
+    begin: "&aBegin with the reload!"
+    end: "&aReload finish!"
+
+  help:
+    header: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    footer: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    separator: "  "
+    set:
+      command: "&f/&9orecontrol set &f<&9ore&f> <&9type&f> <&9world&f> <&9amount&f(&9%&f)>"
+      description:
+      - "   -> &9permission&f: ore.control.set"
+      - "   -> &9description&f: Set a specific value to an ore type and world"
+    reload:
+      command: "&f/&9orecontrol reload"
+      description:
+      - "   -> &9permission&f: ore.control.reload"
+      - "   -> &9description&f: Reload the '&9messages.yml&f'"
+    help:
+      command: "&f/&9orecontrol help &f(<&9subcommand&f>)"
+      description:
+      - "   -> &9permission&f: any command permission"
+      - "   -> &9description&f: Displays all commands and if a subcommand "
+      - "                       is specified, more details are displayed"

@@ -1,0 +1,9 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+author: ${project.authors}
+main: de.derfrzocker.ore.control.OreControl
+api: 1.13
+load: STARTUP
+commands:
+  orecontrol:
