@@ -60,12 +60,12 @@ public class OreControl extends JavaPlugin {
 
         NMSReplacer overrider = null;
 
-        if(version.equalsIgnoreCase("v1_13_R1"))
+        if (version.equalsIgnoreCase("v1_13_R1"))
             overrider = new NMSReplacer_v1_13_R1();
-        else if(version.equalsIgnoreCase("v1_13_R2"))
+        else if (version.equalsIgnoreCase("v1_13_R2"))
             overrider = new NMSReplacer_v1_13_R2();
 
-        if(overrider == null)
+        if (overrider == null)
             throw new IllegalStateException("no matching server version found", new NullPointerException("overrider can't be null"));
 
         Bukkit.getServicesManager().register(OreControlService.class,

@@ -19,6 +19,10 @@ public class ConfigValues implements YamlReloadAble {
         reload(file);
     }
 
+    public boolean isSaveMode() {
+        return yaml.getBoolean("save_mode", true);
+    }
+
     @Override
     public void reload(File file) {
         this.file = file;

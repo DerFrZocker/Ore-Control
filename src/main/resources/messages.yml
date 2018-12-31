@@ -7,6 +7,11 @@ command:
     world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
     no_number: "&f'&9%value%&f' &4is not a valid number!"
     type_not_found: "&4The type &f'&9%type%&f' &4does not exist!"
+    not_save:
+      - "The number %value% is not save!"
+      - "If you want to set it anyway, set 'save_mode' in the config to 'false'"
+      - "And execute the '/orecontrol reload' command"
+      warning: "Warn: The number %value% is not save!"
     ore_not_found:
     - "&4The ore &f'&9%ore%&f' &4does not exist!, "
     - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"

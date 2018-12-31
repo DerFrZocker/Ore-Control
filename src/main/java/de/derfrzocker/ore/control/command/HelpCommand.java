@@ -14,21 +14,21 @@ public class HelpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(!Permissions.hasAnyCommandPermission(sender))
+        if (!Permissions.hasAnyCommandPermission(sender))
             return false;
 
-        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () ->{
+        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
 
-            if(args.length == 1){
-                if("set".equalsIgnoreCase(args[0])) {
+            if (args.length == 1) {
+                if ("set".equalsIgnoreCase(args[0])) {
                     sendSetHelp(sender);
                     return;
                 }
-                if("reload".equalsIgnoreCase(args[0])) {
+                if ("reload".equalsIgnoreCase(args[0])) {
                     sendReloadHelp(sender);
                     return;
                 }
-                if("help".equalsIgnoreCase(args[0])) {
+                if ("help".equalsIgnoreCase(args[0])) {
                     sendHelp(sender);
                     return;
                 }
@@ -38,19 +38,19 @@ public class HelpCommand implements CommandExecutor {
 
             boolean b = false;
 
-            if(Permissions.SET_PERMISSION.hasPermission(sender)){
+            if (Permissions.SET_PERMISSION.hasPermission(sender)) {
                 HELP_SET_COMMAND.sendMessage(sender);
                 b = true;
             }
 
-            if(Permissions.RELOAD_PERMISSION.hasPermission(sender)) {
+            if (Permissions.RELOAD_PERMISSION.hasPermission(sender)) {
                 if (b)
                     HELP_SEPARATOR.sendMessage(sender);
                 HELP_RELOAD_COMMAND.sendMessage(sender);
                 b = true;
             }
 
-            if(b)
+            if (b)
                 HELP_SEPARATOR.sendMessage(sender);
             HELP_COMMAND.sendMessage(sender);
 
@@ -60,21 +60,21 @@ public class HelpCommand implements CommandExecutor {
         return true;
     }
 
-    private void sendSetHelp(CommandSender sender){
+    private void sendSetHelp(CommandSender sender) {
         HELP_HEADER.sendMessage(sender);
         HELP_SET_COMMAND.sendMessage(sender);
         HELP_SET_DESCRIPTION.sendMessage(sender);
         HELP_FOOTER.sendMessage(sender);
     }
 
-    private void sendReloadHelp(CommandSender sender){
+    private void sendReloadHelp(CommandSender sender) {
         HELP_HEADER.sendMessage(sender);
         HELP_RELOAD_COMMAND.sendMessage(sender);
         HELP_RELOAD_DESCRIPTION.sendMessage(sender);
         HELP_FOOTER.sendMessage(sender);
     }
 
-    private void sendHelp(CommandSender sender){
+    private void sendHelp(CommandSender sender) {
         HELP_HEADER.sendMessage(sender);
         HELP_COMMAND.sendMessage(sender);
         HELP_DESCRIPTION.sendMessage(sender);

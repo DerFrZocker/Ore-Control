@@ -17,6 +17,8 @@ public class OreControlMessages extends Messages {
     public final static MessageKey SET_ORE_NOT_FOUND = new MessageKey(getInstance(), "command.set.ore_not_found");
     public final static MessageKey SET_SUCCESS = new MessageKey(getInstance(), "command.set.success");
     public final static MessageKey SET_TYPE_NOT_FOUND = new MessageKey(getInstance(), "command.set.type_not_found");
+    public final static MessageKey SET_NOT_SAVE = new MessageKey(getInstance(), "command.set.not_save");
+    public final static MessageKey SET_NOT_SAVE_WARNING = new MessageKey(getInstance(), "command.set.not_save.warning");
     public final static MessageKey HELP_HEADER = new MessageKey(getInstance(), "command.help.header");
     public final static MessageKey HELP_FOOTER = new MessageKey(getInstance(), "command.help.footer");
     public final static MessageKey HELP_SEPARATOR = new MessageKey(getInstance(), "command.help.separator");

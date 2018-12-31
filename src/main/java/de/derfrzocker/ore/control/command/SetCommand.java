@@ -56,26 +56,30 @@ public class SetCommand implements CommandExecutor {
             double value;
             boolean percents = false;
 
-            if (!amount.endsWith("%")) {
-                try {
-                    value = Integer.valueOf(amount);
-                } catch (NumberFormatException e) {
-                    SET_NO_NUMBER.sendMessage(sender, new MessageValue("value", amount));
-                    return;
-                }
-            } else {
+            if (amount.endsWith("%")) {
                 amount = amount.replace("%", "");
                 percents = true;
-                try {
-                    value = Integer.valueOf(amount);
-                } catch (NumberFormatException e) {
-                    SET_NO_NUMBER.sendMessage(sender, new MessageValue("value", amount));
-                    return;
-                }
             }
 
             try {
-                OreControlUtil.setAmount(ore, type, worldOreConfig, percents ? (int) (OreControlUtil.getDefault(ore, type) * (value / 100)) : (int) value);
+                value = Double.valueOf(amount);
+            } catch (NumberFormatException e) {
+                SET_NO_NUMBER.sendMessage(sender, new MessageValue("value", amount));
+                return;
+            }
+
+            int value2 = percents ? (int) (OreControlUtil.getDefault(ore, type) * (value / 100)) : (int) value;
+
+            if (!OreControlUtil.isSave(ore, type, value2)) {
+                if (OreControl.getInstance().getConfigValues().isSaveMode()) {
+                    SET_NOT_SAVE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                    return;
+                }
+                SET_NOT_SAVE_WARNING.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+            }
+
+            try {
+                OreControlUtil.setAmount(ore, type, worldOreConfig, value2);
             } catch (IllegalArgumentException e) {
                 SET_TYPE_NOT_FOUND.sendMessage(sender, new MessageValue("type", type));
                 return;

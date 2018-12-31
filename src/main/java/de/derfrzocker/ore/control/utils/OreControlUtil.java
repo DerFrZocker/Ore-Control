@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.utils;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.Settings;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
@@ -199,6 +200,75 @@ public class OreControlUtil {
                 return settings.getHeightSubtractValue();
             default:
                 throw new IllegalArgumentException(method + " is not a valid method");
+        }
+    }
+
+    public static boolean isSave(@NonNull Ore ore, @NonNull String method, int amount) {
+
+        Settings minSettings = OreControl.getInstance().getSettings();
+
+        if (ore == Ore.LAPIS)
+            switch (method.toLowerCase()) {
+                case "vein_size":
+                    return minSettings.getMinLapisSettings().getVeinSize() <= amount;
+                case "veins_per_chunk":
+                    return minSettings.getMinLapisSettings().getVeinsPerChunk() <= amount;
+                case "height_range":
+                    return minSettings.getMinLapisSettings().getHeightRange() <= amount;
+                case "height_center":
+                    return minSettings.getMinLapisSettings().getHeightCenter() <= amount;
+                default:
+                    throw new IllegalArgumentException(method + " is not a valid method");
+            }
+
+        if (ore == Ore.EMERALD)
+            switch (method.toLowerCase()) {
+                case "minimum_ores_per_chunk":
+                    return minSettings.getMinEmeraldSettings().getMinimumOresPerChunk() <= amount;
+                case "ores_per_chunk_range":
+                    return minSettings.getMinEmeraldSettings().getOresPerChunkRange() <= amount;
+                case "height_range":
+                    return minSettings.getMinEmeraldSettings().getHeightRange() <= amount;
+                case "minimum_height":
+                    return minSettings.getMinEmeraldSettings().getMinimumHeight() <= amount;
+                default:
+                    throw new IllegalArgumentException(method + " is not a valid method");
+            }
+
+        OreSettings minOreSettings = getMinSettings(ore);
+
+        switch (method.toLowerCase()) {
+            case "vein_size":
+                return minOreSettings.getVeinSize() <= amount;
+            case "veins_per_chunk":
+                return minOreSettings.getVeinsPerChunk() <= amount;
+            case "minimum_height":
+                return minOreSettings.getMinimumHeight() <= amount;
+            case "height_range":
+                return minOreSettings.getHeightRange() <= amount;
+            case "height_subtract_value":
+                return minOreSettings.getHeightSubtractValue() < amount;
+            default:
+                throw new IllegalArgumentException(method + " is not a valid method");
+        }
+    }
+
+    public static OreSettings getMinSettings(@NonNull Ore ore) {
+        switch (ore) {
+            case DIAMOND:
+                return OreControl.getInstance().getSettings().getMinDiamondSettings();
+            case COAL:
+                return OreControl.getInstance().getSettings().getMinCoalSettings();
+            case GOLD:
+                return OreControl.getInstance().getSettings().getMinGoldSettings();
+            case IRON:
+                return OreControl.getInstance().getSettings().getMinIronSettings();
+            case REDSTONE:
+                return OreControl.getInstance().getSettings().getMinRedstoneSettings();
+            case GOLD_BADLANDS:
+                return OreControl.getInstance().getSettings().getMinBadlandsGoldSettings();
+            default:
+                throw new IllegalArgumentException(ore + " is not a valid ore");
         }
     }
 

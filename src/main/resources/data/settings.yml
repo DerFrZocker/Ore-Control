@@ -60,3 +60,67 @@ defaults:
     veins_per_chunk: 1
     height_range: 16
     height_center: 16
+
+save_values:
+  min:
+    diamond:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: DIAMOND
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 0
+      height_subtract_value: 0
+    redstone:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: REDSTONE
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 0
+      height_subtract_value: 0
+    coal:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: COAL
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 0
+      height_subtract_value: 0
+    iron:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: IRON
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 0
+      height_subtract_value: 0
+    gold:
+      normal:
+        ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+        ore: GOLD
+        vein_size: 0
+        veins_per_chunk: 0
+        minimum_height: 0
+        height_range: 0
+        height_subtract_value: 0
+      badlands:
+        ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+        ore: GOLD_BADLANDS
+        vein_size: 0
+        veins_per_chunk: 0
+        minimum_height: 0
+        height_range: 0
+        height_subtract_value: 0
+    emerald:
+      ==: de.derfrzocker.ore.control.impl.EmeraldSettingsYamlImpl
+      ores_per_chunk_range: 0
+      minimum_ores_per_chunk: 0
+      minimum_height: 0
+      height_range: 0
+    lapis:
+      ==: de.derfrzocker.ore.control.impl.LapisSettingsYamlImpl
+      vein_size: 0
+      veins_per_chunk: 0
+      height_range: 0
+      height_center: 0

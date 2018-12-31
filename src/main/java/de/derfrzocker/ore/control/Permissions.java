@@ -1,10 +1,11 @@
 package de.derfrzocker.ore.control;
 
-import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.permissions.Permissible;
+
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Getter
@@ -31,7 +32,7 @@ public enum Permissions {
     }
 
     public static boolean hasAnyCommandPermission(@NonNull Permissible permissible) {
-        return Sets.newHashSet(values()).stream().filter(Permissions::isCommandPermission).anyMatch(value -> permissible.hasPermission(value.getPermission()));
+        return Stream.of(values()).filter(Permissions::isCommandPermission).anyMatch(value -> permissible.hasPermission(value.getPermission()));
     }
 
 }

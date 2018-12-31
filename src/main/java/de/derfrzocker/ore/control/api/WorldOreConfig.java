@@ -1,6 +1,6 @@
 package de.derfrzocker.ore.control.api;
 
-public interface WorldOreConfig{
+public interface WorldOreConfig {
 
     String getWorld();
 

@@ -3,7 +3,8 @@ version: ${project.version}
 description: ${project.description}
 author: ${project.authors}
 main: de.derfrzocker.ore.control.OreControl
-api: 1.13
+api-version: 1.13
 load: STARTUP
 commands:
   orecontrol:
+    permission: "ore.control"

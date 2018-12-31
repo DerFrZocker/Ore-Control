@@ -51,4 +51,38 @@ public class Settings {
         return yaml.getSerializable("defaults.emerald", EmeraldSettingsYamlImpl.class).clone();
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    public OreSettings getMinDiamondSettings() {
+        return yaml.getSerializable("save_values.min.diamond", OreSettingsYamlImpl.class).clone();
+    }
+
+    public OreSettings getMinRedstoneSettings() {
+        return yaml.getSerializable("save_values.min.redstone", OreSettingsYamlImpl.class).clone();
+    }
+
+    public OreSettings getMinCoalSettings() {
+        return yaml.getSerializable("save_values.min.coal", OreSettingsYamlImpl.class).clone();
+    }
+
+    public OreSettings getMinGoldSettings() {
+        return yaml.getSerializable("save_values.min.gold.normal", OreSettingsYamlImpl.class).clone();
+    }
+
+    public OreSettings getMinIronSettings() {
+        return yaml.getSerializable("save_values.min.iron", OreSettingsYamlImpl.class).clone();
+    }
+
+    public OreSettings getMinBadlandsGoldSettings() {
+        return yaml.getSerializable("save_values.min.gold.badlands", OreSettingsYamlImpl.class).clone();
+    }
+
+    public LapisSettings getMinLapisSettings() {
+        return yaml.getSerializable("save_values.min.lapis", LapisSettingsYamlImpl.class).clone();
+    }
+
+    public EmeraldSettings getMinEmeraldSettings() {
+        return yaml.getSerializable("save_values.min.emerald", EmeraldSettingsYamlImpl.class).clone();
+    }
+
 }

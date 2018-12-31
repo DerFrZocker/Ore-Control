@@ -17,7 +17,7 @@ public class EmeraldSettingsImpl implements EmeraldSettings {
     private int minimumHeight = 0;
 
     @Override
-    public EmeraldSettingsImpl clone(){
+    public EmeraldSettingsImpl clone() {
         return new EmeraldSettingsImpl(minimumOresPerChunk, oresPerChunkRange, heightRange, minimumHeight);
     }
 
