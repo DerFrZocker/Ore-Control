@@ -81,14 +81,12 @@ public class Config extends YamlConfiguration {
 
         // load the config file
         this.load(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
-
     }
 
     public void load(@NonNull InputStream input) throws IOException, InvalidConfigurationException {
 
         // load the config file
         this.load(new InputStreamReader(input));
-
     }
 
     public static Config getConfig(@NonNull JavaPlugin plugin, @NonNull String name) {
@@ -97,10 +95,26 @@ public class Config extends YamlConfiguration {
 
         File file = new File(plugin.getDataFolder().getPath(), name);
 
-        if (!file.exists())
+        Config defaults = null;
+
+        if (file.exists())
+            defaults = new Config(plugin.getResource(name));
+        else
             plugin.saveResource(name, true);
 
-        return new Config(file);
+        Config config = new Config(file);
+
+        if (defaults != null) {
+            config.setDefaults(defaults);
+            config.options().copyDefaults(true);
+            try {
+                config.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return config;
     }
 
 }
