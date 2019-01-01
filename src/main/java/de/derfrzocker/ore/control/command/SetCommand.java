@@ -4,6 +4,7 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
+import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.MessageValue;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
@@ -12,6 +13,8 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.util.stream.Stream;
 
 import static de.derfrzocker.ore.control.OreControlMessages.*;
 
@@ -29,7 +32,7 @@ public class SetCommand implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
             String ore_name = args[0];
-            String type = args[1];
+            String setting_name = args[1];
             String world_name = args[2];
             String amount = args[3];
 
@@ -46,6 +49,20 @@ public class SetCommand implements CommandExecutor {
                 ore = Ore.valueOf(ore_name.toUpperCase());
             } catch (IllegalArgumentException e) {
                 SET_ORE_NOT_FOUND.sendMessage(sender, new MessageValue("ore", ore_name));
+                return;
+            }
+
+            Setting setting;
+
+            try {
+                setting = Setting.valueOf(setting_name.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                SET_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", setting_name));
+                return;
+            }
+
+            if (Stream.of(ore.getSettings()).noneMatch(value -> value == setting)) {
+                SET_SETTING_NOT_VALID.sendMessage(sender, new MessageValue("setting", setting_name), new MessageValue("ore", ore_name));
                 return;
             }
 
@@ -68,9 +85,9 @@ public class SetCommand implements CommandExecutor {
                 return;
             }
 
-            int value2 = percents ? (int) (OreControlUtil.getDefault(ore, type) * (value / 100)) : (int) value;
+            int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
 
-            if (!OreControlUtil.isSave(ore, type, value2)) {
+            if (!OreControlUtil.isSave(ore, setting, value2)) {
                 if (OreControl.getInstance().getConfigValues().isSaveMode()) {
                     SET_NOT_SAVE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
                     return;
@@ -78,12 +95,7 @@ public class SetCommand implements CommandExecutor {
                 SET_NOT_SAVE_WARNING.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
             }
 
-            try {
-                OreControlUtil.setAmount(ore, type, worldOreConfig, value2);
-            } catch (IllegalArgumentException e) {
-                SET_TYPE_NOT_FOUND.sendMessage(sender, new MessageValue("type", type));
-                return;
-            }
+            OreControlUtil.setAmount(ore, setting, worldOreConfig, value2);
 
             service.saveWorldOreConfig(worldOreConfig);
             SET_SUCCESS.sendMessage(sender);

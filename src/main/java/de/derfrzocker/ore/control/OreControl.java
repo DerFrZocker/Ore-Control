@@ -13,7 +13,10 @@ import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
 import de.derfrzocker.ore.control.utils.Config;
 import de.derfrzocker.ore.control.utils.ReloadAble;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +28,8 @@ import java.util.List;
 public class OreControl extends JavaPlugin {
 
     @Getter
+    @Setter
+    @NonNull
     private static OreControl instance;
 
     @Getter
@@ -50,7 +55,16 @@ public class OreControl extends JavaPlugin {
         ConfigurationSerialization.registerClass(EmeraldSettingsYamlImpl.class);
         ConfigurationSerialization.registerClass(OreSettingsYamlImpl.class);
 
-        //  configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
+        configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
+        reloadAbles.add(configValues);
+
+        {//  TODO remove in higher version
+            File file = new File(getDataFolder(), "data/settings.yml");
+            YamlConfiguration yaml = new Config(file);
+            if (yaml.contains("defaults.gold.normal") || yaml.contains("defaults.gold.badlands"))
+                file.delete();
+        }
+
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
         OreControlMessages.getInstance().setFile(Config.getConfig(this, "messages"));
 

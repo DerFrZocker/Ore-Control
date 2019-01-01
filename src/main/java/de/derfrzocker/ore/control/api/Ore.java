@@ -12,14 +12,14 @@ public enum Ore {
 
     private final Material material;
 
-    public String[] getSettings() {
+    public Setting[] getSettings() {
         if (this == LAPIS)
-            return new String[]{"vein_size", "veins_per_chunk", "height_range", "height_center"};
+            return new Setting[]{Setting.VEIN_SIZE, Setting.VEINS_PER_CHUNK, Setting.HEIGHT_RANGE, Setting.HEIGHT_CENTER};
 
         if (this == EMERALD)
-            return new String[]{"minimum_ores_per_chunk", "ores_per_chunk_range", "height_range", "minimum_height"};
+            return new Setting[]{Setting.MINIMUM_ORES_PER_CHUNK, Setting.ORES_PER_CHUNK_RANGE, Setting.HEIGHT_RANGE, Setting.MINIMUM_HEIGHT};
 
-        return new String[]{"vein_size", "veins_per_chunk", "minimum_height", "height_range", "height_subtract_value"};
+        return new Setting[]{Setting.VEIN_SIZE, Setting.VEINS_PER_CHUNK, Setting.MINIMUM_HEIGHT, Setting.HEIGHT_RANGE, Setting.HEIGHT_SUBTRACT_VALUE};
     }
 
 }

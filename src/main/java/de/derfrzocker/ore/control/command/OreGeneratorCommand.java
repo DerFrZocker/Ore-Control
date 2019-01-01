@@ -3,6 +3,7 @@ package de.derfrzocker.ore.control.command;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.CommandSeparator;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
@@ -59,7 +60,7 @@ public class OreGeneratorCommand extends CommandSeparator {
 
                 final String arg = args[2].toLowerCase();
 
-                Stream.of(ore.get().getSettings()).filter(value -> value.startsWith(arg)).forEach(list::add);
+                Stream.of(ore.get().getSettings()).map(value -> value.toString().toLowerCase()).filter(value -> value.startsWith(arg)).forEach(list::add);
 
                 return list;
             }
@@ -75,7 +76,7 @@ public class OreGeneratorCommand extends CommandSeparator {
                 {
                     final String arg = args[2].toLowerCase();
 
-                    Optional<String> setting = Stream.of(ore.get().getSettings()).filter(value -> value.equalsIgnoreCase(arg)).findAny();
+                    Optional<String> setting = Stream.of(ore.get().getSettings()).map(Enum::toString).filter(value -> value.equalsIgnoreCase(arg)).findAny();
 
                     if (!setting.isPresent())
                         return list;
@@ -96,10 +97,12 @@ public class OreGeneratorCommand extends CommandSeparator {
                 if (!ore.isPresent())
                     return list;
 
+                Optional<Setting> setting;
+
                 {
                     final String arg = args[2].toLowerCase();
 
-                    Optional<String> setting = Stream.of(ore.get().getSettings()).filter(value -> value.equalsIgnoreCase(arg)).findAny();
+                    setting = Stream.of(ore.get().getSettings()).filter(value -> value.toString().equalsIgnoreCase(arg)).findAny();
 
                     if (!setting.isPresent())
                         return list;
@@ -117,7 +120,7 @@ public class OreGeneratorCommand extends CommandSeparator {
                 if (!worldOreConfig.isPresent())
                     return list;
 
-                list.add("current: " + OreControlUtil.getAmount(ore.get(), args[2], worldOreConfig.get()));
+                list.add("current: " + OreControlUtil.getAmount(ore.get(), setting.get(), worldOreConfig.get()));
 
                 return list;
             }

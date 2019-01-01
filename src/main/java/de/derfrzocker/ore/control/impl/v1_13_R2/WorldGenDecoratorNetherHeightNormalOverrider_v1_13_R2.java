@@ -1,7 +1,9 @@
 package de.derfrzocker.ore.control.impl.v1_13_R2;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
+import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import net.minecraft.server.v1_13_R2.*;
 
@@ -24,20 +26,20 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R2 extends World
         if (settings == null)
             return countConfiguration;
 
-        return new WorldGenFeatureChanceDecoratorCountConfiguration(settings.getVeinsPerChunk(), settings.getMinimumHeight(), settings.getHeightSubtractValue(), settings.getHeightRange());
+        return new WorldGenFeatureChanceDecoratorCountConfiguration(settings.getValue(Setting.VEINS_PER_CHUNK).orElse(0), settings.getValue(Setting.MINIMUM_HEIGHT).orElse(0), settings.getValue(Setting.HEIGHT_SUBTRACT_VALUE).orElse(0), settings.getValue(Setting.HEIGHT_RANGE).orElse(0));
     }
 
     private OreSettings getSettings(Block block, WorldOreConfig config) {
         if (block == Blocks.DIAMOND_ORE)
-            return config.getDiamondSettings();
+            return config.getOreSettings(Ore.DIAMOND);
         if (block == Blocks.COAL_ORE)
-            return config.getCoalSettings();
+            return config.getOreSettings(Ore.COAL);
         if (block == Blocks.IRON_ORE)
-            return config.getIronSettings();
+            return config.getOreSettings(Ore.IRON);
         if (block == Blocks.REDSTONE_ORE)
-            return config.getRedstoneSettings();
+            return config.getOreSettings(Ore.REDSTONE);
         if (block == Blocks.GOLD_ORE)
-            return config.getGoldSettings();
+            return config.getOreSettings(Ore.GOLD);
 
         return null;
     }

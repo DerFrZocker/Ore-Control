@@ -1,27 +1,16 @@
 package de.derfrzocker.ore.control.api;
 
+import java.util.Map;
+import java.util.Optional;
+
 public interface OreSettings extends Cloneable {
 
     Ore getOre();
 
-    int getVeinSize();
+    Optional<Integer> getValue(Setting setting);
 
-    int getVeinsPerChunk();
+    void setValue(Setting setting, int value);
 
-    int getMinimumHeight();
-
-    int getHeightRange();
-
-    int getHeightSubtractValue();
-
-    void setVeinSize(int amount);
-
-    void setVeinsPerChunk(int amount);
-
-    void setMinimumHeight(int amount);
-
-    void setHeightRange(int amount);
-
-    void setHeightSubtractValue(int amount);
+    Map<Setting, Integer> getSettings();
 
 }

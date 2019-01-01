@@ -3,15 +3,17 @@ command:
   set:
     not_enough_args:
     - "&4Wrong amount of arguments!"
-    - "&cuse &f/&9orecontrol set &f<&9ore&f> <&9type&f> <&9world&f> <&9amount&f(&9%&f)>"
+    - "&cuse &f/&9orecontrol set &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
     world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
     no_number: "&f'&9%value%&f' &4is not a valid number!"
-    type_not_found: "&4The type &f'&9%type%&f' &4does not exist!"
+    setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
+    setting_not_valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
     not_save:
-      - "The number %value% is not save!"
-      - "If you want to set it anyway, set 'save_mode' in the config to 'false'"
-      - "And execute the '/orecontrol reload' command"
-      warning: "Warn: The number %value% is not save!"
+    - "&4The number &f'&9%value%&f' &4is not save!"
+    - "&4If you want to use it anyway,"
+    - "set &f'&9save_mode&f' &4in the config to &f'&9false&f'"
+    - "&4And execute the &f'&9/orecontrol reload&f' &4command"
+    not_save_warning: "&eWarn: The number &f'&9%value%&f' &eis not save!"
     ore_not_found:
     - "&4The ore &f'&9%ore%&f' &4does not exist!, "
     - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"
@@ -27,7 +29,7 @@ command:
     footer: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
     separator: "  "
     set:
-      command: "&f/&9orecontrol set &f<&9ore&f> <&9type&f> <&9world&f> <&9amount&f(&9%&f)>"
+      command: "&f/&9orecontrol set &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
       description:
       - "   -> &9permission&f: ore.control.set"
       - "   -> &9description&f: Set a specific value to an ore type and world"

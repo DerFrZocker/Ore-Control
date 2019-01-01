@@ -2,30 +2,43 @@ package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
-import lombok.Builder;
-import lombok.Data;
+import de.derfrzocker.ore.control.api.Setting;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@Builder
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@RequiredArgsConstructor
+@Getter
 public class OreSettingsImpl implements OreSettings {
+
+    private final Map<Setting, Integer> settings = new HashMap<>();
 
     @NonNull
     private final Ore ore;
 
-    private int veinSize = 0;
 
-    private int veinsPerChunk = 0;
+    public OreSettingsImpl(Ore ore, Map<Setting, Integer> map) {
+        this.ore = ore;
+        this.settings.putAll(map);
+    }
 
-    private int minimumHeight = 0;
+    @Override
+    public Optional<Integer> getValue(@NonNull Setting setting) {
+        return Optional.ofNullable(settings.get(setting));
+    }
 
-    private int heightRange = 0;
-
-    private int heightSubtractValue = 0;
+    @Override
+    public void setValue(@NonNull Setting setting, int value) {
+        settings.put(setting, value);
+    }
 
     @Override
     public OreSettingsImpl clone() {
-        return new OreSettingsImpl(ore, veinSize, veinsPerChunk, minimumHeight, heightRange, heightSubtractValue);
+        return new OreSettingsImpl(getOre(), getSettings());
     }
 
 }

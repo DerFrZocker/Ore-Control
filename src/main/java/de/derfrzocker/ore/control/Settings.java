@@ -1,15 +1,15 @@
 package de.derfrzocker.ore.control;
 
-import de.derfrzocker.ore.control.api.EmeraldSettings;
-import de.derfrzocker.ore.control.api.LapisSettings;
+import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
-import de.derfrzocker.ore.control.impl.EmeraldSettingsYamlImpl;
-import de.derfrzocker.ore.control.impl.LapisSettingsYamlImpl;
 import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
 import lombok.NonNull;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Settings {
+
+    private final String DEFAULT_FORMAT = "defaults.%s";
+    private final String MIN_FORMAT = "save_values.min.%s";
 
     @NonNull
     private final YamlConfiguration yaml;
@@ -18,71 +18,21 @@ public class Settings {
         this.yaml = yaml;
     }
 
-
-    public OreSettings getDefaultDiamondSettings() {
-        return yaml.getSerializable("defaults.diamond", OreSettingsYamlImpl.class).clone();
+    public OreSettings getDefaultSettings(@NonNull Ore ore) {
+        return get(String.format(DEFAULT_FORMAT, ore.toString().toLowerCase()));
     }
 
-    public OreSettings getDefaultRedstoneSettings() {
-        return yaml.getSerializable("defaults.redstone", OreSettingsYamlImpl.class).clone();
+    public OreSettings getMinSettings(@NonNull Ore ore) {
+        return get(String.format(MIN_FORMAT, ore.toString().toLowerCase()));
     }
 
-    public OreSettings getDefaultCoalSettings() {
-        return yaml.getSerializable("defaults.coal", OreSettingsYamlImpl.class).clone();
-    }
+    private OreSettings get(String key) {
+        OreSettingsYamlImpl settings = yaml.getSerializable(key, OreSettingsYamlImpl.class);
 
-    public OreSettings getDefaultGoldSettings() {
-        return yaml.getSerializable("defaults.gold.normal", OreSettingsYamlImpl.class).clone();
-    }
+        if (settings == null)
+            throw new NullPointerException("settings: " + key + " can't be null!");
 
-    public OreSettings getDefaultIronSettings() {
-        return yaml.getSerializable("defaults.iron", OreSettingsYamlImpl.class).clone();
-    }
-
-    public OreSettings getDefaultBadlandsGoldSettings() {
-        return yaml.getSerializable("defaults.gold.badlands", OreSettingsYamlImpl.class).clone();
-    }
-
-    public LapisSettings getDefaultLapisSettings() {
-        return yaml.getSerializable("defaults.lapis", LapisSettingsYamlImpl.class).clone();
-    }
-
-    public EmeraldSettings getDefaultEmeraldSettings() {
-        return yaml.getSerializable("defaults.emerald", EmeraldSettingsYamlImpl.class).clone();
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////
-
-    public OreSettings getMinDiamondSettings() {
-        return yaml.getSerializable("save_values.min.diamond", OreSettingsYamlImpl.class).clone();
-    }
-
-    public OreSettings getMinRedstoneSettings() {
-        return yaml.getSerializable("save_values.min.redstone", OreSettingsYamlImpl.class).clone();
-    }
-
-    public OreSettings getMinCoalSettings() {
-        return yaml.getSerializable("save_values.min.coal", OreSettingsYamlImpl.class).clone();
-    }
-
-    public OreSettings getMinGoldSettings() {
-        return yaml.getSerializable("save_values.min.gold.normal", OreSettingsYamlImpl.class).clone();
-    }
-
-    public OreSettings getMinIronSettings() {
-        return yaml.getSerializable("save_values.min.iron", OreSettingsYamlImpl.class).clone();
-    }
-
-    public OreSettings getMinBadlandsGoldSettings() {
-        return yaml.getSerializable("save_values.min.gold.badlands", OreSettingsYamlImpl.class).clone();
-    }
-
-    public LapisSettings getMinLapisSettings() {
-        return yaml.getSerializable("save_values.min.lapis", LapisSettingsYamlImpl.class).clone();
-    }
-
-    public EmeraldSettings getMinEmeraldSettings() {
-        return yaml.getSerializable("save_values.min.emerald", EmeraldSettingsYamlImpl.class).clone();
+        return settings.clone();
     }
 
 }

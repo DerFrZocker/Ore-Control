@@ -49,7 +49,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, YamlReloadAble 
     @Override
     public void save(@NonNull WorldOreConfig config) {
         if (!(config instanceof ConfigurationSerializable))
-            config = new WorldOreConfigYamlImpl(config);
+            config = new WorldOreConfigYamlImpl(config.getWorld(), config.getOreSettings());
 
         yaml.set(config.getWorld(), config);
 
