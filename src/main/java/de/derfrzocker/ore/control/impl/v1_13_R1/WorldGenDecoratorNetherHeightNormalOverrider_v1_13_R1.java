@@ -40,6 +40,16 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1 extends World
             return config.getOreSettings(Ore.REDSTONE);
         if (block == Blocks.GOLD_ORE)
             return config.getOreSettings(Ore.GOLD);
+        if (block == Blocks.DIRT)
+            return config.getOreSettings(Ore.DIRT);
+        if (block == Blocks.GRAVEL)
+            return config.getOreSettings(Ore.GRAVEL);
+        if (block == Blocks.GRANITE)
+            return config.getOreSettings(Ore.GRANITE);
+        if (block == Blocks.DIORITE)
+            return config.getOreSettings(Ore.DIORITE);
+        if (block == Blocks.ANDESITE)
+            return config.getOreSettings(Ore.ANDESITE);
 
         return null;
     }

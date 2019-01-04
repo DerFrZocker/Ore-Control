@@ -32,6 +32,16 @@ public class WorldGenMinableNormalOverrider_v1_13_R1 extends WorldGenMinable {
             return config.getOreSettings(Ore.GOLD).getValue(Setting.VEIN_SIZE).orElse(0);
         if (block == Blocks.LAPIS_ORE)
             return config.getOreSettings(Ore.LAPIS).getValue(Setting.VEIN_SIZE).orElse(0);
+        if (block == Blocks.DIRT)
+            return config.getOreSettings(Ore.DIRT).getValue(Setting.VEIN_SIZE).orElse(0);
+        if (block == Blocks.GRAVEL)
+            return config.getOreSettings(Ore.GRAVEL).getValue(Setting.VEIN_SIZE).orElse(0);
+        if (block == Blocks.GRANITE)
+            return config.getOreSettings(Ore.GRANITE).getValue(Setting.VEIN_SIZE).orElse(0);
+        if (block == Blocks.DIORITE)
+            return config.getOreSettings(Ore.DIORITE).getValue(Setting.VEIN_SIZE).orElse(0);
+        if (block == Blocks.ANDESITE)
+            return config.getOreSettings(Ore.ANDESITE).getValue(Setting.VEIN_SIZE).orElse(0);
 
         return worldGen.c;
     }

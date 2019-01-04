@@ -8,7 +8,19 @@ import org.bukkit.Material;
 @Getter
 public enum Ore {
 
-    DIAMOND(Material.DIAMOND_ORE), COAL(Material.COAL_ORE), GOLD(Material.GOLD_ORE), GOLD_BADLANDS(Material.GOLD_ORE), LAPIS(Material.LAPIS_ORE), IRON(Material.IRON_ORE), REDSTONE(Material.REDSTONE_ORE), EMERALD(Material.EMERALD_ORE);
+    DIAMOND(Material.DIAMOND_ORE),
+    COAL(Material.COAL_ORE),
+    GOLD(Material.GOLD_ORE),
+    GOLD_BADLANDS(Material.GOLD_ORE),
+    LAPIS(Material.LAPIS_ORE),
+    IRON(Material.IRON_ORE),
+    REDSTONE(Material.REDSTONE_ORE),
+    EMERALD(Material.EMERALD_ORE),
+    DIRT(Material.DIRT),
+    GRAVEL(Material.GRAVEL),
+    GRANITE(Material.GRANITE),
+    DIORITE(Material.DIORITE),
+    ANDESITE(Material.ANDESITE);
 
     private final Material material;
 

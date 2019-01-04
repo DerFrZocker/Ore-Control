@@ -62,6 +62,46 @@ defaults:
     veins_per_chunk: 1
     height_range: 16
     height_center: 16
+  dirt:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: DIRT
+    vein_size: 33
+    veins_per_chunk: 10
+    minimum_height: 0
+    height_range: 256
+    height_subtract_value: 0
+  gravel:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: GRAVEL
+    vein_size: 33
+    veins_per_chunk: 8
+    minimum_height: 0
+    height_range: 256
+    height_subtract_value: 0
+  granite:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: GRANITE
+    vein_size: 33
+    veins_per_chunk: 10
+    minimum_height: 0
+    height_range: 80
+    height_subtract_value: 0
+  diorite:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: DIORITE
+    vein_size: 33
+    veins_per_chunk: 10
+    minimum_height: 0
+    height_range: 80
+    height_subtract_value: 0
+  andesite:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: ANDESITE
+    vein_size: 33
+    veins_per_chunk: 10
+    minimum_height: 0
+    height_range: 80
+    height_subtract_value: 0
 
 save_values:
   min:
@@ -127,4 +167,44 @@ save_values:
       veins_per_chunk: 0
       height_range: 1
       height_center: 0
+    dirt:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: DIRT
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 1
+      height_subtract_value: 0
+    gravel:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: GRAVEL
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 1
+      height_subtract_value: 0
+    granite:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: GRANITE
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 1
+      height_subtract_value: 0
+    diorite:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: DIORITE
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 1
+      height_subtract_value: 0
+    andesite:
+      ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+      ore: ANDESITE
+      vein_size: 0
+      veins_per_chunk: 0
+      minimum_height: 0
+      height_range: 1
+      height_subtract_value: 0
 version: 2

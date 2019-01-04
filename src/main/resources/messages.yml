@@ -11,7 +11,7 @@ command:
     not_save:
     - "&4The number &f'&9%value%&f' &4is not save!"
     - "&4If you want to use it anyway,"
-    - "set &f'&9save_mode&f' &4in the config to &f'&9false&f'"
+    - "&4set &f'&9save_mode&f' &4in the config to &f'&9false&f'"
     - "&4And execute the &f'&9/orecontrol reload&f' &4command"
     not_save_warning: "&eWarn: The number &f'&9%value%&f' &eis not save!"
     ore_not_found:
