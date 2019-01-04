@@ -28,6 +28,11 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, YamlReloadAble 
     public WorldOreConfigYamlDao(File file) {
         this.file = file;
         yaml = new Config(file);
+        try {
+            yaml.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
