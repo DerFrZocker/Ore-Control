@@ -3,6 +3,7 @@ package de.derfrzocker.ore.control.impl;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class OreSettingsImpl implements OreSettings {
 
     private final Map<Setting, Integer> settings = new HashMap<>();

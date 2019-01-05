@@ -1,9 +1,12 @@
 package de.derfrzocker.ore.control.impl.v1_13_R2;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.impl.v1_13_R1.WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1;
+import lombok.NonNull;
 import net.minecraft.server.v1_13_R2.*;
 
 import java.util.Optional;
@@ -11,6 +14,13 @@ import java.util.Random;
 
 @SuppressWarnings("Duplicates")
 public class WorldGenDecoratorEmeraldOverrider_v1_13_R2 extends WorldGenDecoratorEmerald {
+
+    private final Biome biome;
+
+    public WorldGenDecoratorEmeraldOverrider_v1_13_R2(@NonNull Biome biome){
+        super();
+        this.biome = biome;
+    }
 
     @Override
     public <C extends WorldGenFeatureConfiguration> boolean a(GeneratorAccess generatorAccess, ChunkGenerator<? extends GeneratorSettings> chunkGenerator, Random random, BlockPosition blockPosition, WorldGenFeatureDecoratorEmptyConfiguration worldGenFeatureDecoratorEmptyConfiguration, WorldGenerator<C> worldGenerator, C c) {
