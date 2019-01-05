@@ -19,6 +19,12 @@ command:
     - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"
     - "&f'&9redstone&f'"
     success: "&aThe value has been updated successfully!"
+    biome:
+      not_enough_args:
+      - "&4Wrong amount of arguments!"
+      - "&cuse &f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
+      - "                                 <&9world&f> <&9amount&f(&9%&f)>"
+      biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
 
   reload:
     begin: "&aBegin with the reload!"
@@ -33,11 +39,19 @@ command:
       description:
       - "   -> &9permission&f: ore.control.set"
       - "   -> &9description&f: Set a specific value to an ore type and world"
+      biome:
+        command:
+        - "&f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
+        - "                            <&9world&f> <&9amount&f(&9%&f)>"
+        description:
+        - "   -> &9permission&f: ore.control.set.biome"
+        - "   -> &9description&f: Set a specific value for an ore setting, "
+        - "                      for a specific biome in a specific world"
     reload:
       command: "&f/&9orecontrol reload"
       description:
       - "   -> &9permission&f: ore.control.reload"
-      - "   -> &9description&f: Reload the '&9messages.yml&f'"
+      - "   -> &9description&f: Reload the '&9messages.yml&f' and '&9config.yml&f'"
     help:
       command: "&f/&9orecontrol help &f(<&9subcommand&f>)"
       description:

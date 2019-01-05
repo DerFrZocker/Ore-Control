@@ -24,7 +24,7 @@ public class BiomeOreSettingsImpl implements BiomeOreSettings {
     @Getter
     private final Biome biome;
 
-    public BiomeOreSettingsImpl(Biome biome, Map<Ore, OreSettings> map){
+    public BiomeOreSettingsImpl(Biome biome, Map<Ore, OreSettings> map) {
         this.biome = biome;
         this.oreSettings.putAll(map);
     }

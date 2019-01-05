@@ -24,6 +24,10 @@ public class HelpCommand implements CommandExecutor {
                     sendSetHelp(sender);
                     return;
                 }
+                if ("setbiome".equalsIgnoreCase(args[0])) {
+                    sendSetBiomeHelp(sender);
+                    return;
+                }
                 if ("reload".equalsIgnoreCase(args[0])) {
                     sendReloadHelp(sender);
                     return;
@@ -43,6 +47,13 @@ public class HelpCommand implements CommandExecutor {
                 b = true;
             }
 
+            if (Permissions.SET_BIOME_PERMISSION.hasPermission(sender)) {
+                if (b)
+                    HELP_SEPARATOR.sendMessage(sender);
+                HELP_SET_BIOME_COMMAND.sendMessage(sender);
+                b = true;
+            }
+
             if (Permissions.RELOAD_PERMISSION.hasPermission(sender)) {
                 if (b)
                     HELP_SEPARATOR.sendMessage(sender);
@@ -58,6 +69,13 @@ public class HelpCommand implements CommandExecutor {
         });
 
         return true;
+    }
+
+    private void sendSetBiomeHelp(CommandSender sender) {
+        HELP_HEADER.sendMessage(sender);
+        HELP_SET_BIOME_COMMAND.sendMessage(sender);
+        HELP_SET_BIOME_DESCRIPTION.sendMessage(sender);
+        HELP_FOOTER.sendMessage(sender);
     }
 
     private void sendSetHelp(CommandSender sender) {

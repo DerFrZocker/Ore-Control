@@ -1,16 +1,20 @@
 package de.derfrzocker.ore.control.impl.v1_13_R2;
 
 import de.derfrzocker.ore.control.OreControl;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.OreSettings;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R2.*;
 
 import java.util.Random;
 
 @SuppressWarnings("Duplicates")
+@RequiredArgsConstructor
 public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R2 extends WorldGenDecoratorNetherHeight {
+
+    @NonNull
+    private final Biome biome;
 
     @Override
     public <C extends WorldGenFeatureConfiguration> boolean a(GeneratorAccess generatorAccess, ChunkGenerator<? extends GeneratorSettings> chunkGenerator, Random random, BlockPosition blockPosition, WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, WorldGenerator<C> worldGenerator, C c) {
@@ -31,25 +35,25 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R2 extends World
 
     private OreSettings getSettings(Block block, WorldOreConfig config) {
         if (block == Blocks.DIAMOND_ORE)
-            return config.getOreSettings(Ore.DIAMOND);
+            return OreControlUtil.getOreSettings(Ore.DIAMOND, config, biome);
         if (block == Blocks.COAL_ORE)
-            return config.getOreSettings(Ore.COAL);
+            return OreControlUtil.getOreSettings(Ore.COAL, config, biome);
         if (block == Blocks.IRON_ORE)
-            return config.getOreSettings(Ore.IRON);
+            return OreControlUtil.getOreSettings(Ore.IRON, config, biome);
         if (block == Blocks.REDSTONE_ORE)
-            return config.getOreSettings(Ore.REDSTONE);
+            return OreControlUtil.getOreSettings(Ore.REDSTONE, config, biome);
         if (block == Blocks.GOLD_ORE)
-            return config.getOreSettings(Ore.GOLD);
+            return OreControlUtil.getOreSettings(Ore.GOLD, config, biome);
         if (block == Blocks.DIRT)
-            return config.getOreSettings(Ore.DIRT);
+            return OreControlUtil.getOreSettings(Ore.DIRT, config, biome);
         if (block == Blocks.GRAVEL)
-            return config.getOreSettings(Ore.GRAVEL);
+            return OreControlUtil.getOreSettings(Ore.GRAVEL, config, biome);
         if (block == Blocks.GRANITE)
-            return config.getOreSettings(Ore.GRANITE);
+            return OreControlUtil.getOreSettings(Ore.GRANITE, config, biome);
         if (block == Blocks.DIORITE)
-            return config.getOreSettings(Ore.DIORITE);
+            return OreControlUtil.getOreSettings(Ore.DIORITE, config, biome);
         if (block == Blocks.ANDESITE)
-            return config.getOreSettings(Ore.ANDESITE);
+            return OreControlUtil.getOreSettings(Ore.ANDESITE, config, biome);
 
         return null;
     }

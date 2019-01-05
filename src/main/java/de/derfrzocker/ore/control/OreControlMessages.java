@@ -20,11 +20,15 @@ public class OreControlMessages extends Messages {
     public final static MessageKey SET_SETTING_NOT_VALID = new MessageKey(getInstance(), "command.set.setting_not_valid");
     public final static MessageKey SET_NOT_SAVE = new MessageKey(getInstance(), "command.set.not_save");
     public final static MessageKey SET_NOT_SAVE_WARNING = new MessageKey(getInstance(), "command.set.not_save_warning");
+    public final static MessageKey SET_BIOME_NOT_ENOUGH_ARGS = new MessageKey(getInstance(), "command.set.biome.not_enough_args");
+    public final static MessageKey SET_BIOME_NOT_FOUND = new MessageKey(getInstance(), "command.set.biome.biome_not_found");
     public final static MessageKey HELP_HEADER = new MessageKey(getInstance(), "command.help.header");
     public final static MessageKey HELP_FOOTER = new MessageKey(getInstance(), "command.help.footer");
     public final static MessageKey HELP_SEPARATOR = new MessageKey(getInstance(), "command.help.separator");
     public final static MessageKey HELP_SET_COMMAND = new MessageKey(getInstance(), "command.help.set.command");
     public final static MessageKey HELP_SET_DESCRIPTION = new MessageKey(getInstance(), "command.help.set.description");
+    public final static MessageKey HELP_SET_BIOME_COMMAND = new MessageKey(getInstance(), "command.help.set.biome.command");
+    public final static MessageKey HELP_SET_BIOME_DESCRIPTION = new MessageKey(getInstance(), "command.help.set.biome.description");
     public final static MessageKey HELP_RELOAD_COMMAND = new MessageKey(getInstance(), "command.help.reload.command");
     public final static MessageKey HELP_RELOAD_DESCRIPTION = new MessageKey(getInstance(), "command.help.reload.description");
     public final static MessageKey HELP_COMMAND = new MessageKey(getInstance(), "command.help.help.command");

@@ -20,13 +20,14 @@ public class WorldOreConfigYamlImpl extends WorldOreConfigImpl implements Config
     public WorldOreConfigYamlImpl(String world, Map<Ore, OreSettings> map) {
         super(world);
         map.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings())).forEach(this::setOreSettings);
+        map.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setOreSettings);
     }
 
     public WorldOreConfigYamlImpl(String world, Map<Ore, OreSettings> map, Map<Biome, BiomeOreSettings> biomeOreSettings) {
         this(world, map);
 
-        biomeOreSettings.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings())).forEach(this::setOreSettings);
-
+        biomeOreSettings.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings())).forEach(this::setBiomeOreSettings);
+        biomeOreSettings.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setBiomeOreSettings);
     }
 
     @Override
@@ -35,8 +36,18 @@ public class WorldOreConfigYamlImpl extends WorldOreConfigImpl implements Config
 
         map.put(WORLD_KEY, getWorld());
 
-        getOreSettings().forEach((key, value) -> map.put(key.toString(), value));
-        getBiomeOreSettings().forEach((key, value) -> map.put(key.toString(), value));
+        getOreSettings().entrySet().stream().
+                map(entry -> {
+                    if (entry.getValue() instanceof ConfigurationSerializable)
+                        return entry.getValue();
+                    return new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings());
+                }).forEach(value -> map.put(value.getOre().toString(), value));
+
+        getBiomeOreSettings().entrySet().stream().map(entry -> {
+            if (entry.getValue() instanceof ConfigurationSerializable)
+                return entry.getValue();
+            return new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings());
+        }).forEach(value -> map.put(value.getBiome().toString(), value));
 
         return map;
     }
@@ -58,14 +69,14 @@ public class WorldOreConfigYamlImpl extends WorldOreConfigImpl implements Config
                 forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
 
         map.entrySet().stream().
-                filter(entry ->{
+                filter(entry -> {
                     try {
                         Biome.valueOf(entry.getKey().toUpperCase());
                         return true;
                     } catch (IllegalArgumentException e) {
                         return false;
                     }
-                } ).
+                }).
                 forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
 
         // TODO remove in higher version

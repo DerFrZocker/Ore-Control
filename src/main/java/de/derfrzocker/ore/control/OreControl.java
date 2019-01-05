@@ -2,10 +2,7 @@ package de.derfrzocker.ore.control;
 
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlService;
-import de.derfrzocker.ore.control.command.HelpCommand;
-import de.derfrzocker.ore.control.command.OreGeneratorCommand;
-import de.derfrzocker.ore.control.command.ReloadCommand;
-import de.derfrzocker.ore.control.command.SetCommand;
+import de.derfrzocker.ore.control.command.*;
 import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
@@ -16,7 +13,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.ServicePriority;
@@ -55,6 +51,7 @@ public class OreControl extends JavaPlugin {
         ConfigurationSerialization.registerClass(LapisSettingsYamlImpl.class);
         ConfigurationSerialization.registerClass(EmeraldSettingsYamlImpl.class);
         ConfigurationSerialization.registerClass(OreSettingsYamlImpl.class);
+        ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
 
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
         reloadAbles.add(configValues);
@@ -96,6 +93,7 @@ public class OreControl extends JavaPlugin {
         getCommand("orecontrol").setExecutor(oreGeneratorCommand);
         oreGeneratorCommand.registerExecuter(new SetCommand(), "set");
         oreGeneratorCommand.registerExecuter(new ReloadCommand(), "reload");
+        oreGeneratorCommand.registerExecuter(new SetBiomeCommand(), "setbiome");
         HelpCommand helpCommand = new HelpCommand();
         oreGeneratorCommand.registerExecuter(helpCommand, null);
         oreGeneratorCommand.registerExecuter(helpCommand, "help");

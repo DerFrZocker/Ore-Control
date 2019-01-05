@@ -1,8 +1,6 @@
 package de.derfrzocker.ore.control.impl;
 
-import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.api.NMSReplacer;
-import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.World;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class OreControlServiceImpl implements OreControlService {
@@ -32,8 +29,6 @@ public class OreControlServiceImpl implements OreControlService {
     @Override
     public WorldOreConfig createWorldOreConfig(@NonNull World world) {
         WorldOreConfig worldOreConfig = new WorldOreConfigImpl(world.getName());
-
-        Stream.of(Ore.values()).forEach(value -> worldOreConfig.setOreSettings(OreControl.getInstance().getSettings().getDefaultSettings(value)));
 
         saveWorldOreConfig(worldOreConfig);
 

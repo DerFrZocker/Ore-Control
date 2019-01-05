@@ -19,6 +19,7 @@ public class BiomeOreSettingsYamlImpl extends BiomeOreSettingsImpl implements Co
     public BiomeOreSettingsYamlImpl(Biome biome, Map<Ore, OreSettings> map) {
         super(biome);
         map.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings())).forEach(this::setOreSettings);
+        map.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setOreSettings);
     }
 
     @Override
@@ -27,7 +28,12 @@ public class BiomeOreSettingsYamlImpl extends BiomeOreSettingsImpl implements Co
 
         map.put(BIOME_KEY, getBiome().toString());
 
-        getOreSettings().forEach((key, value) -> map.put(key.toString(), value));
+        getOreSettings().entrySet().stream().
+                map(entry -> {
+                    if (entry.getValue() instanceof ConfigurationSerializable)
+                        return entry.getValue();
+                    return new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings());
+                }).forEach(value -> map.put(value.getOre().toString(), value));
 
         return map;
     }

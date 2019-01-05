@@ -13,7 +13,8 @@ public enum Permissions {
 
     BASE_PERMISSION("ore.control", false),
     RELOAD_PERMISSION("reload", true),
-    SET_PERMISSION("set", true);
+    SET_PERMISSION("set", true),
+    SET_BIOME_PERMISSION("set.biome", true);
 
     @NonNull
     private final String permission;
