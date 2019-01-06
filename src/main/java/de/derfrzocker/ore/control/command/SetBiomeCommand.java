@@ -19,7 +19,7 @@ public class SetBiomeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.SET_PERMISSION.hasPermission(sender))
+        if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
             return false;
 
         if (args.length != 5) {
