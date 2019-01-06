@@ -38,7 +38,7 @@ public class OreControl extends JavaPlugin {
     @Getter
     private Settings settings;
 
-    private OreGeneratorCommand oreGeneratorCommand = new OreGeneratorCommand();
+    private OreControlCommand oreControlCommand = new OreControlCommand();
 
     @Override
     public void onLoad() {
@@ -90,13 +90,13 @@ public class OreControl extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("orecontrol").setExecutor(oreGeneratorCommand);
-        oreGeneratorCommand.registerExecuter(new SetCommand(), "set");
-        oreGeneratorCommand.registerExecuter(new ReloadCommand(), "reload");
-        oreGeneratorCommand.registerExecuter(new SetBiomeCommand(), "setbiome");
+        getCommand("orecontrol").setExecutor(oreControlCommand);
+        oreControlCommand.registerExecuter(new SetCommand(), "set");
+        oreControlCommand.registerExecuter(new ReloadCommand(), "reload");
+        oreControlCommand.registerExecuter(new SetBiomeCommand(), "setbiome");
         HelpCommand helpCommand = new HelpCommand();
-        oreGeneratorCommand.registerExecuter(helpCommand, null);
-        oreGeneratorCommand.registerExecuter(helpCommand, "help");
+        oreControlCommand.registerExecuter(helpCommand, null);
+        oreControlCommand.registerExecuter(helpCommand, "help");
     }
 
     public static OreControlService getService() {

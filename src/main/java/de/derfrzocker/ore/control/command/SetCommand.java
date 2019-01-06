@@ -11,14 +11,17 @@ import de.derfrzocker.ore.control.utils.OreControlUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static de.derfrzocker.ore.control.OreControlMessages.*;
 
-public class SetCommand implements CommandExecutor {
+public class SetCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -104,4 +107,77 @@ public class SetCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        final List<String> list = new ArrayList<>();
+
+        if (!Permissions.SET_PERMISSION.hasPermission(sender))
+            return list;
+
+        if (args.length == 2) {
+            final String ore_name = args[1].toUpperCase();
+            Stream.of(Ore.values()).map(Enum::toString).filter(value -> value.startsWith(ore_name)).map(String::toLowerCase).forEach(list::add);
+            return list;
+        }
+
+        if (args.length == 3) {
+            Optional<Ore> ore = Stream.of(Ore.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
+
+            if (!ore.isPresent())
+                return list;
+
+            final String setting_name = args[2].toUpperCase();
+
+            Stream.of(ore.get().getSettings()).map(Enum::toString).filter(value -> value.startsWith(setting_name)).map(String::toLowerCase).forEach(list::add);
+
+            return list;
+        }
+
+        if (args.length == 4) {
+            Optional<Ore> ore = Stream.of(Ore.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
+
+            if (!ore.isPresent())
+                return list;
+
+            if (Stream.of(ore.get().getSettings()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[2])))
+                return list;
+
+            final String world_name = args[3].toLowerCase();
+
+            Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(world_name)).forEach(list::add);
+
+            return list;
+        }
+
+        if (args.length == 5) {
+
+            Optional<Ore> ore = Stream.of(Ore.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
+
+            if (!ore.isPresent())
+                return list;
+
+            Optional<Setting> setting = Stream.of(ore.get().getSettings()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
+
+            if (!setting.isPresent())
+                return list;
+
+            Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[3])).findAny();
+
+            if (!world.isPresent())
+                return list;
+
+            Optional<WorldOreConfig> worldOreConfig = OreControl.getService().getWorldOreConfig(world.get());
+
+            if (!worldOreConfig.isPresent()) {
+                list.add("current: " + OreControlUtil.getDefault(ore.get(), setting.get()));
+                return list;
+            }
+
+            list.add("current: " + OreControlUtil.getAmount(ore.get(), setting.get(), worldOreConfig.get()));
+
+            return list;
+        }
+
+        return list;
+    }
 }

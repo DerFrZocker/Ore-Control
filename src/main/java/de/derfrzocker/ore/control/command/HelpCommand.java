@@ -4,12 +4,15 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static de.derfrzocker.ore.control.OreControlMessages.*;
 
-public class HelpCommand implements CommandExecutor {
+public class HelpCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -99,4 +102,25 @@ public class HelpCommand implements CommandExecutor {
         HELP_FOOTER.sendMessage(sender);
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        final List<String> list = new ArrayList<>();
+
+        if (args.length == 2 && Permissions.hasAnyCommandPermission(sender)) {
+            final String subcommand = args[1].toLowerCase();
+
+            if ("set".startsWith(subcommand) && Permissions.SET_PERMISSION.hasPermission(sender))
+                list.add("set");
+            if ("setbiome".startsWith(subcommand) && Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
+                list.add("setbiome");
+            if ("reload".startsWith(subcommand) && Permissions.RELOAD_PERMISSION.hasPermission(sender))
+                list.add("reload");
+            if ("help".startsWith(subcommand))
+                list.add("help");
+
+            return list;
+        }
+
+        return list;
+    }
 }

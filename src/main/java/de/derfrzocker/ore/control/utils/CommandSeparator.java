@@ -1,7 +1,7 @@
 package de.derfrzocker.ore.control.utils;
 
+import lombok.Getter;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
@@ -10,9 +10,10 @@ import java.util.Map;
 
 public abstract class CommandSeparator implements TabExecutor {
 
-    private CommandExecutor fallBack;
+    private TabExecutor fallBack;
 
-    private Map<String, CommandExecutor> map = new HashMap<>();
+    @Getter
+    private final Map<String, TabExecutor> map = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -36,7 +37,7 @@ public abstract class CommandSeparator implements TabExecutor {
         return fallBack.onCommand(sender, command, label, args);
     }
 
-    public void registerExecuter(CommandExecutor executer, String key) {
+    public void registerExecuter(TabExecutor executer, String key) {
         if (executer == null)
             return;
 
