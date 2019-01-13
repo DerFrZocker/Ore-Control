@@ -25,6 +25,7 @@ command:
       - "&cuse &f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
       - "                                 <&9world&f> <&9amount&f(&9%&f)>"
       biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
+      ore_not_valid: "&4The Ore &f'&9%ore%&f' &4is not valid for the biome &f'&9%biome%&f'&4!"
 
   reload:
     begin: "&aBegin with the reload!"

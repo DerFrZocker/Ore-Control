@@ -62,6 +62,11 @@ public class SetBiomeCommand implements TabExecutor {
                 return;
             }
 
+            if(Stream.of(biome.getOres()).noneMatch(value -> value == ore)){
+                SET_BIOME_ORE_NOT_VALID.sendMessage(sender, new MessageValue("ore", ore_name), new MessageValue("biome", biome_name));
+                return;
+            }
+
             Setting setting;
 
             try {
@@ -128,19 +133,23 @@ public class SetBiomeCommand implements TabExecutor {
         }
 
         if (args.length == 3) {
-            if (Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
+            Optional<Biome> biome = Stream.of(Biome.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
+
+            if (!biome.isPresent())
                 return list;
 
             final String ore_name = args[2].toUpperCase();
-            Stream.of(Ore.values()).map(Enum::toString).filter(value -> value.startsWith(ore_name)).map(String::toLowerCase).forEach(list::add);
+            Stream.of(biome.get().getOres()).map(Enum::toString).filter(value -> value.startsWith(ore_name)).map(String::toLowerCase).forEach(list::add);
             return list;
         }
 
         if (args.length == 4) {
-            if (Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
+            Optional<Biome> biome = Stream.of(Biome.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
+
+            if (!biome.isPresent())
                 return list;
 
-            Optional<Ore> ore = Stream.of(Ore.values()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
+            Optional<Ore> ore = Stream.of(biome.get().getOres()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
 
             if (!ore.isPresent())
                 return list;
@@ -153,10 +162,12 @@ public class SetBiomeCommand implements TabExecutor {
         }
 
         if (args.length == 5) {
-            if (Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
+            Optional<Biome> biome = Stream.of(Biome.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
+
+            if (!biome.isPresent())
                 return list;
 
-            Optional<Ore> ore = Stream.of(Ore.values()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
+            Optional<Ore> ore = Stream.of(biome.get().getOres()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
 
             if (!ore.isPresent())
                 return list;
@@ -177,7 +188,7 @@ public class SetBiomeCommand implements TabExecutor {
             if (!biome.isPresent())
                 return list;
 
-            Optional<Ore> ore = Stream.of(Ore.values()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
+            Optional<Ore> ore = Stream.of(biome.get().getOres()).filter(value -> value.toString().equalsIgnoreCase(args[2])).findAny();
 
             if (!ore.isPresent())
                 return list;

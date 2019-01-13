@@ -22,6 +22,7 @@ public class OreControlMessages extends Messages {
     public final static MessageKey SET_NOT_SAVE_WARNING = new MessageKey(getInstance(), "command.set.not_save_warning");
     public final static MessageKey SET_BIOME_NOT_ENOUGH_ARGS = new MessageKey(getInstance(), "command.set.biome.not_enough_args");
     public final static MessageKey SET_BIOME_NOT_FOUND = new MessageKey(getInstance(), "command.set.biome.biome_not_found");
+    public final static MessageKey SET_BIOME_ORE_NOT_VALID = new MessageKey(getInstance(), "command.set.biome.ore_not_valid");
     public final static MessageKey HELP_HEADER = new MessageKey(getInstance(), "command.help.header");
     public final static MessageKey HELP_FOOTER = new MessageKey(getInstance(), "command.help.footer");
     public final static MessageKey HELP_SEPARATOR = new MessageKey(getInstance(), "command.help.separator");

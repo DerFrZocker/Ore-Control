@@ -1,11 +1,19 @@
 package de.derfrzocker.ore.control.api;
 
+import com.google.common.collect.Sets;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import java.util.Set;
+
+@NoArgsConstructor
+@AllArgsConstructor
 public enum Biome {
 
     OCEAN,
     PLAINS,
     DESERT,
-    MOUNTAINS,
+    MOUNTAINS(Ore.EMERALD),
     FOREST,
     TAIGA,
     SWAMP,
@@ -20,7 +28,7 @@ public enum Biome {
     DESERT_HILLS,
     WOODED_HILLS,
     TAIGA_HILLS,
-    MOUNTAIN_EDGE,
+    MOUNTAIN_EDGE(Ore.EMERALD),
     JUNGLE,
     JUNGLE_HILLS,
     JUNGLE_EDGE,
@@ -34,12 +42,12 @@ public enum Biome {
     SNOWY_TAIGA_HILLS,
     GIANT_TREE_TAIGA,
     GIANT_TREE_TAIGA_HILLS,
-    WOODED_MOUNTAINS,
+    WOODED_MOUNTAINS(Ore.EMERALD),
     SAVANNA,
     SAVANNA_PLATEAU,
-    BADLANDS,
-    WOODED_BADLANDS_PLATEAU,
-    BADLANDS_PLATEAU,
+    BADLANDS(Ore.GOLD_BADLANDS),
+    WOODED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
+    BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
     WARM_OCEAN,
     LUKEWARM_OCEAN,
     COLD_OCEAN,
@@ -49,7 +57,7 @@ public enum Biome {
     DEEP_FROZEN_OCEAN,
     SUNFLOWER_PLAINS,
     DESERT_LAKES,
-    GRAVELLY_MOUNTAINS,
+    GRAVELLY_MOUNTAINS(Ore.EMERALD),
     FLOWER_FOREST,
     TAIGA_MOUNTAINS,
     SWAMP_HILLS,
@@ -62,11 +70,27 @@ public enum Biome {
     SNOWY_TAIGA_MOUNTAINS,
     GIANT_SPRUCE_TAIGA,
     GIANT_SPRUCE_TAIGA_HILLS,
-    MODIFIED_GRAVELLY_MOUNTAINS,
+    MODIFIED_GRAVELLY_MOUNTAINS(Ore.EMERALD),
     SHATTERED_SAVANNA,
     SHATTERED_SAVANNA_PLATEAU,
-    ERODED_BADLANDS,
-    MODIFIED_WOODED_BADLANDS_PLATEAU,
-    MODIFIED_BADLANDS_PLATEAU
+    ERODED_BADLANDS(Ore.GOLD_BADLANDS),
+    MODIFIED_WOODED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
+    MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS);
+
+    private Ore ore = null;
+
+    public Ore[] getOres(){
+        Set<Ore> ores = Sets.newHashSet(Ore.values());
+
+        if(ore == null) {
+            ores.remove(Ore.GOLD_BADLANDS);
+            ores.remove(Ore.EMERALD);
+           return ores.toArray(new Ore[0]);
+        }
+
+        ores.remove(ore == Ore.GOLD_BADLANDS ? Ore.GOLD_BADLANDS : Ore.EMERALD);
+
+        return ores.toArray(new Ore[0]);
+    }
 
 }
