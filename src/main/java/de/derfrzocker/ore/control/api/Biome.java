@@ -79,13 +79,13 @@ public enum Biome {
 
     private Ore ore = null;
 
-    public Ore[] getOres(){
+    public Ore[] getOres() {
         Set<Ore> ores = Sets.newHashSet(Ore.values());
 
-        if(ore == null) {
+        if (ore == null) {
             ores.remove(Ore.GOLD_BADLANDS);
             ores.remove(Ore.EMERALD);
-           return ores.toArray(new Ore[0]);
+            return ores.toArray(new Ore[0]);
         }
 
         ores.remove(ore == Ore.GOLD_BADLANDS ? Ore.GOLD_BADLANDS : Ore.EMERALD);

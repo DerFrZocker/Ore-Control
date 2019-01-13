@@ -6,7 +6,6 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
@@ -20,7 +19,6 @@ public class BiomeOreSettingsImpl implements BiomeOreSettings {
     @Getter
     private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
-    @NonNull
     @Getter
     private final Biome biome;
 

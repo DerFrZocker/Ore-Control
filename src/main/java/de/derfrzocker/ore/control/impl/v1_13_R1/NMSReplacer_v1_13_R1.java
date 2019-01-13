@@ -30,7 +30,12 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
 
         List<WorldGenFeatureComposite<?, ?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
 
-        Biome biome = Biome.valueOf(BiomeBase.REGISTRY_ID.b(base).getKey().toUpperCase());
+        Biome biome;
+        try {
+            biome = Biome.valueOf(BiomeBase.REGISTRY_ID.b(base).getKey().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return;
+        }
 
         list.forEach(value -> {
             try {
