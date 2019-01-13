@@ -123,7 +123,7 @@ public class SetBiomeCommand implements TabExecutor {
 
         if (args.length == 2) {
             final String biome_name = args[1].toUpperCase();
-            Stream.of(Biome.values()).map(Enum::toString).filter(value -> value.startsWith(biome_name)).map(String::toLowerCase).forEach(list::add);
+            Stream.of(Biome.values()).map(Enum::toString).filter(value -> value.contains(biome_name)).map(String::toLowerCase).forEach(list::add);
             return list;
         }
 
