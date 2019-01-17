@@ -62,7 +62,7 @@ public class SetBiomeCommand implements TabExecutor {
                 return;
             }
 
-            if(Stream.of(biome.getOres()).noneMatch(value -> value == ore)){
+            if (Stream.of(biome.getOres()).noneMatch(value -> value == ore)) {
                 SET_BIOME_ORE_NOT_VALID.sendMessage(sender, new MessageValue("ore", ore_name), new MessageValue("biome", biome_name));
                 return;
             }

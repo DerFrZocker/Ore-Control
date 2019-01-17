@@ -54,7 +54,14 @@ public class BiomeOreSettingsYamlImpl extends BiomeOreSettingsImpl implements Co
                 }).
                 forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
 
-        return new BiomeOreSettingsYamlImpl(Biome.valueOf(((String) map.get(BIOME_KEY)).toUpperCase()), oreSettings);
+        //TODO remove in higher versions
+        Biome biome = null;
+        try {
+            biome = Biome.valueOf(((String) map.get(BIOME_KEY)).toUpperCase());
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        return new BiomeOreSettingsYamlImpl(biome, oreSettings);
     }
 
 }
