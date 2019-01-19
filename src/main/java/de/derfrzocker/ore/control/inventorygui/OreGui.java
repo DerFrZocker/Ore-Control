@@ -3,9 +3,12 @@ package de.derfrzocker.ore.control.inventorygui;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.utils.*;
+import de.derfrzocker.ore.control.inventorygui.utils.InventoryUtil;
+import de.derfrzocker.ore.control.utils.Config;
+import de.derfrzocker.ore.control.utils.MessageUtil;
+import de.derfrzocker.ore.control.utils.MessageValue;
+import de.derfrzocker.ore.control.utils.ReloadAble;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
@@ -18,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OreSettingsGui implements InventoryGui {
+public class OreGui implements InventoryGui {
 
     @Getter
     @NonNull
@@ -27,33 +30,29 @@ public class OreSettingsGui implements InventoryGui {
     @NonNull
     private final World world;
 
-    @NonNull
-    private final Ore ore;
-
-    private final Map<Integer, Setting> values = new HashMap<>();
+    private final Map<Integer, Ore> values = new HashMap<>();
 
     private final Biome biome;
 
     private final int backSlot;
 
-    public OreSettingsGui(WorldOreConfig config, Ore ore, Biome biome) {
-        this.ore = ore;
+    public OreGui(WorldOreConfig config, Biome biome) {
         this.world = Bukkit.getWorld(config.getWorld());
         this.biome = biome;
         this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(),
                 new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
-                new MessageValue("ore", ore.toString().toLowerCase())));
+                new MessageValue("biome", biome == null ? "" : biome.name().toLowerCase())));
 
         this.backSlot = Settings.getInstance().getBackSlot();
 
         inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
 
-        Setting[] settings = ore.getSettings();
+        Ore[] ores = biome == null ? Ore.values() : biome.getOres();
 
-        for (int i = 0; i < settings.length; i++) {
-            inventory.setItem(i + Settings.getInstance().getSettingStartSlot(), getSettingItemStack(config, settings[i]));
-            values.put(i + Settings.getInstance().getSettingStartSlot(), settings[i]);
+        for (int i = 0; i < ores.length; i++) {
+            int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getOreGap());
+            inventory.setItem(slot, getOreItemStack(config, ores[i]));
+            values.put(slot, ores[i]);
         }
     }
 
@@ -62,16 +61,16 @@ public class OreSettingsGui implements InventoryGui {
         WorldOreConfig config = OreControl.getService().getWorldOreConfig(world).get();
 
         if (event.getRawSlot() == backSlot) {
-            openSync(event.getWhoClicked(), new OreGui(config, biome).getInventory());
+            openSync(event.getWhoClicked(), biome == null ? new WorldConfigGui(config, event.getWhoClicked()).getInventory() : new BiomeGui(config).getInventory());
             return;
         }
 
         if (!values.containsKey(event.getRawSlot()))
             return;
 
-        Setting setting = values.get(event.getRawSlot());
+        Ore ore = values.get(event.getRawSlot());
 
-        openSync(event.getWhoClicked(), new SettingsGui(config, ore, setting, biome).getInventory());
+        openSync(event.getWhoClicked(), new OreSettingsGui(config, ore, biome).getInventory());
     }
 
     @Override
@@ -79,20 +78,19 @@ public class OreSettingsGui implements InventoryGui {
         return this.inventory.equals(inventory);
     }
 
-    private ItemStack getSettingItemStack(WorldOreConfig config, Setting setting) {
-        ItemStack itemStack = Settings.getInstance().getSettingsItemStack(setting);
+    private ItemStack getOreItemStack(WorldOreConfig config, Ore ore) {
+        ItemStack itemStack = Settings.getInstance().getDefaultOreItemStack();
 
-        if (biome == null)
-            itemStack = MessageUtil.replaceItemStack(itemStack, new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, config))));
-        else
-            itemStack = MessageUtil.replaceItemStack(itemStack, new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, config, biome))));
+        itemStack.setType(ore.getMaterial());
+
+        itemStack = MessageUtil.replaceItemStack(itemStack, new MessageValue("ore", ore.toString().toLowerCase()));
 
         return itemStack;
     }
 
     private static final class Settings implements ReloadAble {
 
-        private final static String file = "data/ore_settings_gui.yml";
+        private final static String file = "data/ore_gui.yml";
 
         private YamlConfiguration yaml;
 
@@ -119,15 +117,15 @@ public class OreSettingsGui implements InventoryGui {
         }
 
         private int getSlots() {
-            return yaml.getInt("inventory.rows", 1) * 9;
+            return yaml.getInt("inventory.rows") * 9;
         }
 
-        private int getSettingStartSlot() {
-            return yaml.getInt("inventory.setting_start_slot", 1);
+        private int getOreGap() {
+            return yaml.getInt("inventory.ore_gap");
         }
 
-        private ItemStack getSettingsItemStack(Setting setting) {
-            return yaml.getItemStack("settings_item_stack." + setting.toString()).clone();
+        private ItemStack getDefaultOreItemStack() {
+            return yaml.getItemStack("default_ore_item_stack").clone();
         }
 
         private ItemStack getBackItemStack() {
@@ -135,7 +133,7 @@ public class OreSettingsGui implements InventoryGui {
         }
 
         private int getBackSlot() {
-            return yaml.getInt("back.slot", 0);
+            return yaml.getInt("back.slot");
         }
 
         @Override

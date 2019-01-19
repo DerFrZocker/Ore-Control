@@ -7,6 +7,7 @@ import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
+import de.derfrzocker.ore.control.inventorygui.InventoryClickListener;
 import de.derfrzocker.ore.control.utils.Config;
 import de.derfrzocker.ore.control.utils.ReloadAble;
 import lombok.Getter;
@@ -87,6 +88,8 @@ public class OreControl extends JavaPlugin {
                 this, ServicePriority.Normal);
 
         overrider.replaceNMS();
+
+        Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
     }
 
     private void registerCommands() {
@@ -97,6 +100,7 @@ public class OreControl extends JavaPlugin {
         HelpCommand helpCommand = new HelpCommand();
         oreControlCommand.registerExecuter(helpCommand, null);
         oreControlCommand.registerExecuter(helpCommand, "help");
+        oreControlCommand.registerExecuter(new GuiCommand(), "");
     }
 
     public static OreControlService getService() {
