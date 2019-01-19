@@ -88,7 +88,7 @@ public enum Biome {
             return ores.toArray(new Ore[0]);
         }
 
-        ores.remove(ore == Ore.GOLD_BADLANDS ? Ore.GOLD_BADLANDS : Ore.EMERALD);
+        ores.remove(ore == Ore.GOLD_BADLANDS ? Ore.EMERALD : Ore.GOLD_BADLANDS);
 
         return ores.toArray(new Ore[0]);
     }
