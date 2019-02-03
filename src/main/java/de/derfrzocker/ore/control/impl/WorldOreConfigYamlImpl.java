@@ -64,10 +64,6 @@ public class WorldOreConfigYamlImpl extends WorldOreConfigImpl implements Config
         map.entrySet().stream().filter(entry -> OreControlUtil.isBiome(entry.getKey())).
                 forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
 
-        // TODO remove in higher version
-        if (map.containsKey("gold_normal"))
-            oreSettings.put(Ore.GOLD, (OreSettings) map.get("gold_normal"));
-
         return new WorldOreConfigYamlImpl((String) map.get(WORLD_KEY), oreSettings, biomeOreSettings);
     }
 

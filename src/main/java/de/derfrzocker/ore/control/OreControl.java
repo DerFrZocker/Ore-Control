@@ -27,8 +27,6 @@ public class OreControl extends JavaPlugin {
 
     static {
         ConfigurationSerialization.registerClass(WorldOreConfigYamlImpl.class);
-        ConfigurationSerialization.registerClass(LapisSettingsYamlImpl.class);
-        ConfigurationSerialization.registerClass(EmeraldSettingsYamlImpl.class);
         ConfigurationSerialization.registerClass(OreSettingsYamlImpl.class);
         ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
     }
@@ -68,13 +66,6 @@ public class OreControl extends JavaPlugin {
         OreControlMessages.getInstance().setFile(Config.getConfig(this, "messages"));
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
         reloadAbles.add(configValues);
-
-        {//  TODO remove in higher version
-            File file = new File(getDataFolder(), "data/settings.yml");
-            YamlConfiguration yaml = new Config(file);
-            if (yaml.contains("defaults.gold.normal") || yaml.contains("defaults.gold.badlands"))
-                file.delete();
-        }
 
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
 
