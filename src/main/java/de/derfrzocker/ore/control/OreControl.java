@@ -25,6 +25,14 @@ import java.util.List;
 
 public class OreControl extends JavaPlugin {
 
+    static {
+        ConfigurationSerialization.registerClass(WorldOreConfigYamlImpl.class);
+        ConfigurationSerialization.registerClass(LapisSettingsYamlImpl.class);
+        ConfigurationSerialization.registerClass(EmeraldSettingsYamlImpl.class);
+        ConfigurationSerialization.registerClass(OreSettingsYamlImpl.class);
+        ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
+    }
+
     @Getter
     @Setter
     @NonNull
@@ -48,11 +56,6 @@ public class OreControl extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        ConfigurationSerialization.registerClass(WorldOreConfigYamlImpl.class);
-        ConfigurationSerialization.registerClass(LapisSettingsYamlImpl.class);
-        ConfigurationSerialization.registerClass(EmeraldSettingsYamlImpl.class);
-        ConfigurationSerialization.registerClass(OreSettingsYamlImpl.class);
-        ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
 
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
         reloadAbles.add(configValues);
