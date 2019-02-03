@@ -37,8 +37,8 @@ public class OreControlUtil {
         return OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).orElseThrow(() -> new IllegalArgumentException("The ore '" + ore.toString() + "' don't have the setting '" + setting + "'!"));
     }
 
-    public static boolean isSave(@NonNull Ore ore, @NonNull Setting setting, int amount) {
-        return OreControl.getInstance().getSettings().getMinSettings(ore).getValue(setting).orElseThrow(() -> new IllegalArgumentException("The ore '" + ore.toString() + "' don't have the setting '" + setting + "'!")) <= amount;
+    public static boolean isSave(@NonNull Setting setting, int amount) {
+        return setting.getMinimumValue() <= amount;
     }
 
     public static OreSettings getOreSettings(@NonNull Ore ore, @NonNull WorldOreConfig config, @NonNull Biome biome) {

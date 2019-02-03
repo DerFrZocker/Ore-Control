@@ -47,16 +47,25 @@ public class OreControl extends JavaPlugin {
     @Getter
     private Settings settings;
 
+    private NMSReplacer nmsReplacer;
+
     private OreControlCommand oreControlCommand = new OreControlCommand();
 
     @Override
     public void onLoad() {
-        instance = this;
-    }
+        checkFile("data/settings.yml");
 
-    @Override
-    public void onEnable() {
+        String version = getVersion();
 
+        if (version.equalsIgnoreCase("v1_13_R1"))
+            nmsReplacer = new NMSReplacer_v1_13_R1();
+        else if (version.equalsIgnoreCase("v1_13_R2"))
+            nmsReplacer = new NMSReplacer_v1_13_R2();
+
+        if (nmsReplacer == null)
+            throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
+
+        OreControlMessages.getInstance().setFile(Config.getConfig(this, "messages"));
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
         reloadAbles.add(configValues);
 
@@ -68,31 +77,23 @@ public class OreControl extends JavaPlugin {
         }
 
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
-        OreControlMessages.getInstance().setFile(Config.getConfig(this, "messages"));
 
-        registerCommands();
+        instance = this;
+    }
 
-        String version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf('.') + 1);
-
-        NMSReplacer overrider = null;
-
-        if (version.equalsIgnoreCase("v1_13_R1"))
-            overrider = new NMSReplacer_v1_13_R1();
-        else if (version.equalsIgnoreCase("v1_13_R2"))
-            overrider = new NMSReplacer_v1_13_R2();
-
-        if (overrider == null)
-            throw new IllegalStateException("no matching server version found", new NullPointerException("overrider can't be null"));
-
+    @Override
+    public void onEnable() {
         Bukkit.getServicesManager().register(OreControlService.class,
                 new OreControlServiceImpl(
-                        overrider,
+                        nmsReplacer,
                         new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"))),
                 this, ServicePriority.Normal);
 
-        overrider.replaceNMS();
+        registerCommands();
 
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
+
+        nmsReplacer.replaceNMS();
     }
 
     private void registerCommands() {
@@ -100,10 +101,35 @@ public class OreControl extends JavaPlugin {
         oreControlCommand.registerExecuter(new SetCommand(), "set");
         oreControlCommand.registerExecuter(new ReloadCommand(), "reload");
         oreControlCommand.registerExecuter(new SetBiomeCommand(), "setbiome");
+        oreControlCommand.registerExecuter(new GuiCommand(), "");
+
         HelpCommand helpCommand = new HelpCommand();
         oreControlCommand.registerExecuter(helpCommand, null);
         oreControlCommand.registerExecuter(helpCommand, "help");
-        oreControlCommand.registerExecuter(new GuiCommand(), "");
+    }
+
+    private void checkFile(String name) {
+        File file = new File(getDataFolder(), name);
+
+        YamlConfiguration configuration = new Config(new File(getDataFolder(), name));
+
+        YamlConfiguration configuration2 = new Config(getResource(name));
+
+        if (configuration.getInt("version") == configuration2.getInt("version"))
+            return;
+
+        getLogger().warning("File " + name + " has an outdated / new version, replacing it!");
+
+        if (!file.delete())
+            throw new RuntimeException("can't delete file " + name + " stop plugin start!");
+
+        saveResource(name, true);
+    }
+
+    private String getVersion() {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     public static OreControlService getService() {

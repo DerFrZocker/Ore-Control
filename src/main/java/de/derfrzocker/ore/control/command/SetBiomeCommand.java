@@ -102,7 +102,7 @@ public class SetBiomeCommand implements TabExecutor {
 
             int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
 
-            if (!OreControlUtil.isSave(ore, setting, value2)) {
+            if (!OreControlUtil.isSave(setting, value2)) {
                 if (OreControl.getInstance().getConfigValues().isSaveMode()) {
                     SET_NOT_SAVE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
                     return;
