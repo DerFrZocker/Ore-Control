@@ -48,7 +48,7 @@ public class SettingsGui implements InventoryGui {
 
     private final int backSlot;
 
-    public SettingsGui(WorldOreConfig config, Ore ore, Setting setting, Biome biome) {
+    SettingsGui(WorldOreConfig config, Ore ore, Setting setting, Biome biome) {
         this.ore = ore;
         this.setting = setting;
         this.world = Bukkit.getWorld(config.getWorld());
@@ -90,7 +90,7 @@ public class SettingsGui implements InventoryGui {
 
         int newValue = current + value;
 
-        if (!OreControlUtil.isSave(setting, newValue)) {
+        if (OreControlUtil.isUnSave(setting, newValue)) {
             if (OreControl.getInstance().getConfigValues().isSaveMode()) {
                 SET_NOT_SAVE.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
                 return;

@@ -29,7 +29,7 @@ public class WorldConfigGui implements InventoryGui {
 
     private final World world;
 
-    public WorldConfigGui(WorldOreConfig config, Permissible permissible) {
+    WorldConfigGui(WorldOreConfig config, Permissible permissible) {
         this.world = Bukkit.getWorld(config.getWorld());
         this.backSlot = Settings.getInstance().getBackSlot();
 
@@ -64,10 +64,9 @@ public class WorldConfigGui implements InventoryGui {
             return;
         }
 
-        if (event.getRawSlot() == biome) {
+        if (event.getRawSlot() == biome)
             openSync(event.getWhoClicked(), new BiomeGui(config).getInventory());
-            return;
-        }
+
     }
 
     @Override

@@ -25,21 +25,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("ConstantConditions")
 @RunWith(PowerMockRunner.class)
 public class OreControlUtilTest {
 
     private static Settings settings;
 
-    private static OreControl oreControl;
-
     @BeforeClass
     public static void setUp() throws IOException {
 
-        oreControl = mock(OreControl.class);
+        OreControl oreControl = mock(OreControl.class);
 
         OreControl.setInstance(oreControl);
 
         URL url = OreControl.getInstance().getClass().getClassLoader().getResource("data/settings.yml");
+
+        if (url == null)
+            throw new NullPointerException();
 
         URLConnection connection = url.openConnection();
         connection.setUseCaches(false);

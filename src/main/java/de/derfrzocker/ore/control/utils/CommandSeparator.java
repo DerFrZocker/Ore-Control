@@ -37,16 +37,16 @@ public abstract class CommandSeparator implements TabExecutor {
         return fallBack.onCommand(sender, command, label, args);
     }
 
-    public void registerExecuter(TabExecutor executer, String key) {
-        if (executer == null)
+    public void registerExecutor(TabExecutor executor, String key) {
+        if (executor == null)
             return;
 
         if (key == null) {
-            fallBack = executer;
+            fallBack = executor;
             return;
         }
 
-        map.put(key.toLowerCase(), executer);
+        map.put(key.toLowerCase(), executor);
     }
 
     private String[] buildStrings(String[] args) {

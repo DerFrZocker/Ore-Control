@@ -22,11 +22,6 @@ public class BiomeOreSettingsImpl implements BiomeOreSettings {
     @Getter
     private final Biome biome;
 
-    public BiomeOreSettingsImpl(Biome biome, Map<Ore, OreSettings> map) {
-        this.biome = biome;
-        this.oreSettings.putAll(map);
-    }
-
     @Override
     public Optional<OreSettings> getOreSettings(Ore ore) {
         return Optional.ofNullable(oreSettings.get(ore));

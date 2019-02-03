@@ -3,7 +3,10 @@ package de.derfrzocker.ore.control;
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.command.*;
-import de.derfrzocker.ore.control.impl.*;
+import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
+import de.derfrzocker.ore.control.impl.OreControlServiceImpl;
+import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
+import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
@@ -47,7 +50,7 @@ public class OreControl extends JavaPlugin {
 
     private NMSReplacer nmsReplacer;
 
-    private OreControlCommand oreControlCommand = new OreControlCommand();
+    private final OreControlCommand oreControlCommand = new OreControlCommand();
 
     @Override
     public void onLoad() {
@@ -89,14 +92,14 @@ public class OreControl extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("orecontrol").setExecutor(oreControlCommand);
-        oreControlCommand.registerExecuter(new SetCommand(), "set");
-        oreControlCommand.registerExecuter(new ReloadCommand(), "reload");
-        oreControlCommand.registerExecuter(new SetBiomeCommand(), "setbiome");
-        oreControlCommand.registerExecuter(new GuiCommand(), "");
+        oreControlCommand.registerExecutor(new SetCommand(), "set");
+        oreControlCommand.registerExecutor(new ReloadCommand(), "reload");
+        oreControlCommand.registerExecutor(new SetBiomeCommand(), "setbiome");
+        oreControlCommand.registerExecutor(new GuiCommand(), "");
 
         HelpCommand helpCommand = new HelpCommand();
-        oreControlCommand.registerExecuter(helpCommand, null);
-        oreControlCommand.registerExecuter(helpCommand, "help");
+        oreControlCommand.registerExecutor(helpCommand, null);
+        oreControlCommand.registerExecutor(helpCommand, "help");
     }
 
     private void checkFile(String name) {

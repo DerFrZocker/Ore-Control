@@ -23,6 +23,7 @@ import static java.lang.String.format;
  */
 public class Config extends YamlConfiguration {
 
+    @SuppressWarnings({"UnstableApiUsage", "ResultOfMethodCallIgnored"})
     public Config(@NonNull File file) {
 
         if (!file.exists()) {
@@ -62,6 +63,7 @@ public class Config extends YamlConfiguration {
         }
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void save(@NonNull File file) throws IOException {
 
@@ -83,6 +85,7 @@ public class Config extends YamlConfiguration {
         this.load(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void load(@NonNull InputStream input) throws IOException, InvalidConfigurationException {
 
         // load the config file

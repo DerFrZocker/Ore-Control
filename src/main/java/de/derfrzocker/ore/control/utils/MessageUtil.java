@@ -20,6 +20,7 @@ public class MessageUtil {
         return string;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static List<String> replaceList(@NonNull List<String> strings, @NonNull MessageValue... messageValues) {
         List<String> list = new LinkedList<>();
 
@@ -39,6 +40,7 @@ public class MessageUtil {
         return itemStack;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static ItemMeta replaceItemMeta(@NonNull ItemMeta meta, @NonNull MessageValue... messageValues) {
         meta = meta.clone();
 

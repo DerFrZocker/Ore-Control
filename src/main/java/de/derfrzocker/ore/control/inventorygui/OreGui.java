@@ -36,7 +36,7 @@ public class OreGui implements InventoryGui {
 
     private final int backSlot;
 
-    public OreGui(WorldOreConfig config, Biome biome) {
+    OreGui(WorldOreConfig config, Biome biome) {
         this.world = Bukkit.getWorld(config.getWorld());
         this.biome = biome;
         this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(),

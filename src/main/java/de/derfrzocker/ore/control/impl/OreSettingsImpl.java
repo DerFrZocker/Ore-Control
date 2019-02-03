@@ -23,7 +23,7 @@ public class OreSettingsImpl implements OreSettings {
     private final Ore ore;
 
 
-    public OreSettingsImpl(Ore ore, Map<Setting, Integer> map) {
+    OreSettingsImpl(Ore ore, Map<Setting, Integer> map) {
         this.ore = ore;
         this.settings.putAll(map);
     }
@@ -40,7 +40,11 @@ public class OreSettingsImpl implements OreSettings {
 
     @Override
     public OreSettingsImpl clone() {
-        return new OreSettingsImpl(getOre(), getSettings());
+        try {
+            return (OreSettingsImpl) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new OreSettingsImpl(getOre(), getSettings());
+        }
     }
 
 }

@@ -8,8 +8,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Settings {
 
-    private final String DEFAULT_FORMAT = "defaults.%s";
-
     @NonNull
     private final YamlConfiguration yaml;
 
@@ -18,7 +16,7 @@ public class Settings {
     }
 
     public OreSettings getDefaultSettings(@NonNull Ore ore) {
-        return get(String.format(DEFAULT_FORMAT, ore.toString().toLowerCase()));
+        return get(String.format("defaults.%s", ore.toString().toLowerCase()));
     }
 
     private OreSettings get(String key) {

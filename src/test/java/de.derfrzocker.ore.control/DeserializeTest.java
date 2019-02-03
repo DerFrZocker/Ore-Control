@@ -14,6 +14,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+@SuppressWarnings("ConstantConditions")
 @RunWith(PowerMockRunner.class)
 public class DeserializeTest {
 

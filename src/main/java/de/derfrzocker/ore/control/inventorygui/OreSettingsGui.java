@@ -36,7 +36,7 @@ public class OreSettingsGui implements InventoryGui {
 
     private final int backSlot;
 
-    public OreSettingsGui(WorldOreConfig config, Ore ore, Biome biome) {
+    OreSettingsGui(WorldOreConfig config, Ore ore, Biome biome) {
         this.ore = ore;
         this.world = Bukkit.getWorld(config.getWorld());
         this.biome = biome;

@@ -25,17 +25,6 @@ public class WorldOreConfigImpl implements WorldOreConfig {
     @NonNull
     private final String world;
 
-    public WorldOreConfigImpl(String world, Map<Ore, OreSettings> map) {
-        this.world = world;
-        this.oreSettings.putAll(map);
-    }
-
-    public WorldOreConfigImpl(String world, Map<Ore, OreSettings> map, Map<Biome, BiomeOreSettings> biomeOreSettings) {
-        this.world = world;
-        this.oreSettings.putAll(map);
-        this.biomeOreSettings.putAll(biomeOreSettings);
-    }
-
     @Override
     public Optional<OreSettings> getOreSettings(@NonNull Ore ore) {
         return Optional.ofNullable(oreSettings.get(ore));

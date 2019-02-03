@@ -36,7 +36,7 @@ public class BiomeGui implements InventoryGui {
 
     private final int previousPage;
 
-    public BiomeGui(WorldOreConfig config) {
+    BiomeGui(WorldOreConfig config) {
         this.world = Bukkit.getWorld(config.getWorld());
         this.backSlot = Settings.getInstance().getBackSlot();
         this.nextPage = Settings.getInstance().getNextPageSlot();
@@ -150,7 +150,7 @@ public class BiomeGui implements InventoryGui {
         @Getter
         private final Inventory inventory;
 
-        private int page;
+        private final int page;
 
         private final Map<Integer, Biome> values = new HashMap<>();
 

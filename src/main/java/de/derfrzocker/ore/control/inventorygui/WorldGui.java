@@ -132,7 +132,7 @@ public class WorldGui implements InventoryGui {
         @Getter
         private final Inventory inventory;
 
-        private int page;
+        private final int page;
 
         private final Map<Integer, String> values = new HashMap<>();
 

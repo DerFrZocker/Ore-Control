@@ -9,7 +9,7 @@ import org.bukkit.inventory.InventoryHolder;
 
 import java.util.concurrent.ExecutionException;
 
-public interface InventoryGui extends InventoryHolder {
+interface InventoryGui extends InventoryHolder {
 
     void onInventoryClick(InventoryClickEvent event);
 
