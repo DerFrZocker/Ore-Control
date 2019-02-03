@@ -50,4 +50,31 @@ public class OreControlUtil {
                         orElseGet(() -> OreControl.getInstance().getSettings().getDefaultSettings(ore)));
     }
 
+    public static boolean isOre(String string) {
+        try {
+            Ore.valueOf(string.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public static boolean isBiome(String string) {
+        try {
+            Biome.valueOf(string.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public static boolean isSetting(String string) {
+        try {
+            Setting.valueOf(string.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
 }

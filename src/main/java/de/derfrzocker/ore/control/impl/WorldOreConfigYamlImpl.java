@@ -4,6 +4,7 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.BiomeOreSettings;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
@@ -57,26 +58,10 @@ public class WorldOreConfigYamlImpl extends WorldOreConfigImpl implements Config
 
         Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
 
-        map.entrySet().stream().
-                filter(entry -> {
-                    try {
-                        Ore.valueOf(entry.getKey().toUpperCase());
-                        return true;
-                    } catch (IllegalArgumentException e) {
-                        return false;
-                    }
-                }).
+        map.entrySet().stream().filter(entry -> OreControlUtil.isOre(entry.getKey())).
                 forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
 
-        map.entrySet().stream().
-                filter(entry -> {
-                    try {
-                        Biome.valueOf(entry.getKey().toUpperCase());
-                        return true;
-                    } catch (IllegalArgumentException e) {
-                        return false;
-                    }
-                }).
+        map.entrySet().stream().filter(entry -> OreControlUtil.isBiome(entry.getKey())).
                 forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
 
         // TODO remove in higher version
