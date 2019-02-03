@@ -1,23 +1,45 @@
 package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-public class OreSettingsYamlImpl extends OreSettingsImpl implements ConfigurationSerializable {
+@RequiredArgsConstructor
+@EqualsAndHashCode
+public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettings {
 
     private static final String ORE_KEY = "ore";
 
-    public OreSettingsYamlImpl(Ore ore) {
-        super(ore);
-    }
+    @Getter
+    private final Map<Setting, Integer> settings = new HashMap<>();
+
+    @NonNull
+    @Getter
+    private final Ore ore;
 
     public OreSettingsYamlImpl(Ore ore, Map<Setting, Integer> map) {
-        super(ore, map);
+        this.ore = ore;
+        this.settings.putAll(map);
+    }
+
+    @Override
+    public Optional<Integer> getValue(@NonNull Setting setting) {
+        return Optional.ofNullable(settings.get(setting));
+    }
+
+    @Override
+    public void setValue(@NonNull Setting setting, int value) {
+        settings.put(setting, value);
     }
 
     @Override

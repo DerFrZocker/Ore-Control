@@ -1,34 +1,64 @@
 package de.derfrzocker.ore.control.impl;
 
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.BiomeOreSettings;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.OreSettings;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-public class WorldOreConfigYamlImpl extends WorldOreConfigImpl implements ConfigurationSerializable {
+@RequiredArgsConstructor
+@EqualsAndHashCode
+public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldOreConfig {
 
     private static final String WORLD_KEY = "world";
 
-    public WorldOreConfigYamlImpl(String world) {
-        super(world);
-    }
+    @Getter
+    private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
-    public WorldOreConfigYamlImpl(String world, Map<Ore, OreSettings> map) {
-        super(world);
+    @Getter
+    private final Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
+
+    @Getter
+    @NonNull
+    private final String world;
+
+    public WorldOreConfigYamlImpl(@NonNull String world, Map<Ore, OreSettings> map) {
+        this.world = world;
         map.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings())).forEach(this::setOreSettings);
         map.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setOreSettings);
     }
 
-    public WorldOreConfigYamlImpl(String world, Map<Ore, OreSettings> map, Map<Biome, BiomeOreSettings> biomeOreSettings) {
+    public WorldOreConfigYamlImpl(@NonNull String world, Map<Ore, OreSettings> map, Map<Biome, BiomeOreSettings> biomeOreSettings) {
         this(world, map);
 
         biomeOreSettings.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings())).forEach(this::setBiomeOreSettings);
         biomeOreSettings.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setBiomeOreSettings);
+    }
+
+    @Override
+    public Optional<OreSettings> getOreSettings(@NonNull Ore ore) {
+        return Optional.ofNullable(oreSettings.get(ore));
+    }
+
+    @Override
+    public void setOreSettings(OreSettings oreSettings) {
+        this.oreSettings.put(oreSettings.getOre(), oreSettings);
+    }
+
+    @Override
+    public Optional<BiomeOreSettings> getBiomeOreSettings(@NonNull Biome biome) {
+        return Optional.ofNullable(this.biomeOreSettings.get(biome));
+    }
+
+    @Override
+    public void setBiomeOreSettings(BiomeOreSettings biomeOreSettings) {
+        this.biomeOreSettings.put(biomeOreSettings.getBiome(), biomeOreSettings);
     }
 
     @Override

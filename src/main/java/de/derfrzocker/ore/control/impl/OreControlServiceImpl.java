@@ -28,7 +28,7 @@ public class OreControlServiceImpl implements OreControlService {
 
     @Override
     public WorldOreConfig createWorldOreConfig(@NonNull World world) {
-        WorldOreConfig worldOreConfig = new WorldOreConfigImpl(world.getName());
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(world.getName());
 
         saveWorldOreConfig(worldOreConfig);
 

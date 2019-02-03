@@ -2,7 +2,7 @@ package de.derfrzocker.ore.control.utils;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.api.*;
-import de.derfrzocker.ore.control.impl.BiomeOreSettingsImpl;
+import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
 import lombok.NonNull;
 
 @SuppressWarnings("Duplicates")
@@ -21,7 +21,7 @@ public class OreControlUtil {
 
     public static void setAmount(@NonNull Ore ore, @NonNull Setting setting, @NonNull WorldOreConfig config, int amount, @NonNull Biome biome) {
         config.getBiomeOreSettings(biome).orElseGet(() -> {
-            config.setBiomeOreSettings(new BiomeOreSettingsImpl(biome));
+            config.setBiomeOreSettings(new BiomeOreSettingsYamlImpl(biome));
             return config.getBiomeOreSettings(biome).orElseThrow(IllegalStateException::new);
         }).getOreSettings(ore).orElseGet(() -> {
             config.getBiomeOreSettings(biome).get().setOreSettings(OreControl.getInstance().getSettings().getDefaultSettings(ore));
