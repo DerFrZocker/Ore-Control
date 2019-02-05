@@ -13,4 +13,8 @@ public interface OreSettings extends Cloneable {
 
     Map<Setting, Integer> getSettings();
 
+    boolean isActivated();
+
+    void setActivated(boolean status);
+
 }

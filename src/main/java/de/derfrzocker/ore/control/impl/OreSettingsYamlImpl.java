@@ -4,10 +4,7 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
@@ -20,12 +17,18 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
 
     private static final String ORE_KEY = "ore";
 
+    private static final String STATUS_KEY = "status";
+
     @Getter
     private final Map<Setting, Integer> settings = new HashMap<>();
 
     @NonNull
     @Getter
     private final Ore ore;
+
+    @Getter
+    @Setter
+    private boolean activated = true;
 
     public OreSettingsYamlImpl(Ore ore, Map<Setting, Integer> map) {
         this.ore = ore;
@@ -64,7 +67,12 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
         map.entrySet().stream().filter(entry -> OreControlUtil.isSetting(entry.getKey())).
                 forEach(entry -> settings.put(Setting.valueOf(entry.getKey().toUpperCase()), (Integer) entry.getValue()));
 
-        return new OreSettingsYamlImpl(Ore.valueOf(((String) map.get(ORE_KEY)).toUpperCase()), settings);
+        OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(Ore.valueOf(((String) map.get(ORE_KEY)).toUpperCase()), settings);
+
+        if (map.containsKey(STATUS_KEY))
+            oreSettingsYaml.setActivated((Boolean) map.get(STATUS_KEY));
+
+        return oreSettingsYaml;
     }
 
 }

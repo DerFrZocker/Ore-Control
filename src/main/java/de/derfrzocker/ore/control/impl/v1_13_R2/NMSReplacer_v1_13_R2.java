@@ -108,12 +108,6 @@ public class NMSReplacer_v1_13_R2 implements NMSReplacer {
             return false;
 
         {
-            Field field = getField(composite.getClass(), "a");
-            field.setAccessible(true);
-            field.set(composite, new WorldGenMinableBadlandsGoldOverrider_v1_13_R2(biome));
-        }
-
-        {
             Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_13_R2(biome));
@@ -156,12 +150,6 @@ public class NMSReplacer_v1_13_R2 implements NMSReplacer {
             return false;
 
         {
-            Field field = getField(composite.getClass(), "a");
-            field.setAccessible(true);
-            field.set(composite, new WorldGenMinableNormalOverrider_v1_13_R2(biome));
-        }
-
-        {
             Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorHeightAverageOverrider_v1_13_R2(biome));
@@ -176,12 +164,6 @@ public class NMSReplacer_v1_13_R2 implements NMSReplacer {
             field.setAccessible(true);
             if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
                 return;
-        }
-
-        {
-            Field field = getField(composite.getClass(), "a");
-            field.setAccessible(true);
-            field.set(composite, new WorldGenMinableNormalOverrider_v1_13_R2(biome));
         }
 
         {

@@ -54,6 +54,8 @@ public class OreControl extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        instance = this;
+
         checkFile("data/settings.yml");
 
         String version = getVersion();
@@ -71,8 +73,6 @@ public class OreControl extends JavaPlugin {
         reloadAbles.add(configValues);
 
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
-
-        instance = this;
     }
 
     @Override

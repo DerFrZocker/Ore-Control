@@ -14,18 +14,23 @@ public class OreControlUtil {
 
     public static void setAmount(@NonNull Ore ore, @NonNull Setting setting, @NonNull WorldOreConfig config, int amount) {
         config.getOreSettings(ore).orElseGet(() -> {
-            config.setOreSettings(OreControl.getInstance().getSettings().getDefaultSettings(ore));
-            return config.getOreSettings(ore).orElseThrow(IllegalStateException::new);
+            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            config.setOreSettings(oreSettings);
+            return oreSettings;
         }).setValue(setting, amount);
     }
 
     public static void setAmount(@NonNull Ore ore, @NonNull Setting setting, @NonNull WorldOreConfig config, int amount, @NonNull Biome biome) {
-        config.getBiomeOreSettings(biome).orElseGet(() -> {
-            config.setBiomeOreSettings(new BiomeOreSettingsYamlImpl(biome));
-            return config.getBiomeOreSettings(biome).orElseThrow(IllegalStateException::new);
-        }).getOreSettings(ore).orElseGet(() -> {
-            config.getBiomeOreSettings(biome).get().setOreSettings(OreControl.getInstance().getSettings().getDefaultSettings(ore));
-            return config.getBiomeOreSettings(biome).get().getOreSettings(ore).orElseThrow(IllegalStateException::new);
+        BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
+            BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            config.setBiomeOreSettings(biomeOreSettings);
+            return biomeOreSettings;
+        });
+
+        biomeSettings.getOreSettings(ore).orElseGet(() -> {
+            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            biomeSettings.setOreSettings(oreSettings);
+            return oreSettings;
         }).setValue(setting, amount);
     }
 
@@ -41,7 +46,7 @@ public class OreControlUtil {
         return setting.getMinimumValue() > amount;
     }
 
-    public static OreSettings getOreSettings(@NonNull Ore ore, @NonNull WorldOreConfig config, @NonNull Biome biome) {
+    public static OreSettings getOreSettings(Ore ore, WorldOreConfig config, Biome biome) { //TODO find better name
         return config.getBiomeOreSettings(biome).
                 map(value -> value.getOreSettings(ore).
                         orElseGet(() -> config.getOreSettings(ore).
@@ -75,6 +80,36 @@ public class OreControlUtil {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public static boolean isActivated(@NonNull Ore ore, @NonNull WorldOreConfig config) {
+        return config.getOreSettings(ore).map(OreSettings::isActivated).orElse(true);
+    }
+
+    public static boolean isActivated(@NonNull Ore ore, @NonNull WorldOreConfig config, @NonNull Biome biome) {
+        return getOreSettings(ore, config, biome).isActivated();
+    }
+
+    public static void setActivated(@NonNull Ore ore, @NonNull WorldOreConfig config, boolean status) {
+        config.getOreSettings(ore).orElseGet(() -> {
+            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            config.setOreSettings(oreSettings);
+            return oreSettings;
+        }).setActivated(status);
+    }
+
+    public static void setActivated(@NonNull Ore ore, @NonNull WorldOreConfig config, boolean status, @NonNull Biome biome) {
+        BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
+            BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            config.setBiomeOreSettings(biomeOreSettings);
+            return biomeOreSettings;
+        });
+
+        biomeSettings.getOreSettings(ore).orElseGet(() -> {
+            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            biomeSettings.setOreSettings(oreSettings);
+            return oreSettings;
+        }).setActivated(status);
     }
 
 }

@@ -27,6 +27,8 @@ public class WorldGenDecoratorEmeraldOverrider_v1_13_R1 extends WorldGenDecorato
         int var1 = 3, var2 = 6, var3 = 28, var4 = 4;
 
         if (config.isPresent()) {
+            if (!OreControlUtil.isActivated(Ore.EMERALD, config.get(), biome))
+                return true;
             try {
                 var1 = OreControlUtil.getAmount(Ore.EMERALD, Setting.MINIMUM_ORES_PER_CHUNK, config.get(), biome);
                 var2 = OreControlUtil.getAmount(Ore.EMERALD, Setting.ORES_PER_CHUNK_RANGE, config.get(), biome);

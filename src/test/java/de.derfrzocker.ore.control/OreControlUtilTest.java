@@ -1,9 +1,6 @@
 package de.derfrzocker.ore.control;
 
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
 import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
 import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
@@ -234,6 +231,108 @@ public class OreControlUtilTest {
 
         assertFalse(OreControlUtil.isSetting("random_string"));
         assertFalse(OreControlUtil.isSetting("another_random_string"));
+    }
+
+    @Test
+    public void testIsActivated() {
+
+        //NullPointers
+        assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(null, mock(WorldOreConfig.class)));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, null));
+
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+
+        assertTrue(OreControlUtil.isActivated(Ore.GOLD_BADLANDS, worldOreConfig));
+
+        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
+
+        worldOreConfig.setOreSettings(oreSettings);
+
+        assertTrue(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig));
+
+        oreSettings.setActivated(false);
+
+        assertFalse(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig));
+    }
+
+    @Test
+    public void testIsBiomeActivated() {
+
+        //NullPointers
+        assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(null, mock(WorldOreConfig.class), Biome.BADLANDS));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, null, Biome.BADLANDS));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, mock(WorldOreConfig.class), null));
+
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+
+        assertTrue(OreControlUtil.isActivated(Ore.GOLD_BADLANDS, worldOreConfig, Biome.BADLANDS));
+
+        BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(Biome.BADLANDS);
+
+        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
+
+        biomeOreSettings.setOreSettings(oreSettings);
+        worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+
+        assertTrue(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig, Biome.BADLANDS));
+
+        oreSettings.setActivated(false);
+
+        assertFalse(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig, Biome.BADLANDS));
+    }
+
+    @Test
+    public void testSetActivated() {
+
+        //NullPointers
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), false));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, false));
+
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+
+        OreControlUtil.setActivated(Ore.GOLD_BADLANDS, worldOreConfig, false);
+
+        assertTrue(worldOreConfig.getOreSettings(Ore.GOLD_BADLANDS).isPresent());
+        assertFalse(worldOreConfig.getOreSettings(Ore.GOLD_BADLANDS).get().isActivated());
+
+        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
+
+        worldOreConfig.setOreSettings(oreSettings);
+
+        assertTrue(oreSettings.isActivated());
+
+        OreControlUtil.setActivated(Ore.GOLD, worldOreConfig, false);
+
+        assertFalse(oreSettings.isActivated());
+    }
+
+    @Test
+    public void testSetBiomeActivated() {
+        //NullPointers
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), false, Biome.BADLANDS));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, false, Biome.BADLANDS));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, mock(WorldOreConfig.class), false, null));
+
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+
+        OreControlUtil.setActivated(Ore.GOLD_BADLANDS, worldOreConfig, false, Biome.BADLANDS);
+
+        assertTrue(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).isPresent());
+        assertTrue(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get().getOreSettings(Ore.GOLD_BADLANDS).isPresent());
+        assertFalse(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get().getOreSettings(Ore.GOLD_BADLANDS).get().isActivated());
+
+        BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(Biome.BADLANDS);
+
+        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
+
+        biomeOreSettings.setOreSettings(oreSettings);
+        worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+
+        assertTrue(oreSettings.isActivated());
+
+        OreControlUtil.setActivated(Ore.GOLD, worldOreConfig, false, Biome.BADLANDS);
+
+        assertFalse(oreSettings.isActivated());
     }
 
 }
