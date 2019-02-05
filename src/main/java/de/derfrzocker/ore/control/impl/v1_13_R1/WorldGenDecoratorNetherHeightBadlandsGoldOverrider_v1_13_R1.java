@@ -24,7 +24,7 @@ public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_13_R1 extends
     public <C extends WorldGenFeatureConfiguration> boolean a(GeneratorAccess generatorAccess, ChunkGenerator<? extends GeneratorSettings> chunkGenerator, Random random, BlockPosition blockPosition, WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, WorldGenerator<C> worldGenerator, C c) {
         Optional<WorldOreConfig> oreConfig = OreControl.getService().getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
 
-        if (oreConfig.isPresent() && !OreControlUtil.isActivated(Ore.LAPIS, oreConfig.get(), biome))
+        if (oreConfig.isPresent() && !OreControlUtil.isActivated(Ore.GOLD_BADLANDS, oreConfig.get(), biome))
             return true;
 
         return oreConfig.
@@ -34,7 +34,7 @@ public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_13_R1 extends
                                 oreSettings.getValue(Setting.MINIMUM_HEIGHT).orElse(Setting.MINIMUM_HEIGHT.getMinimumValue()),
                                 oreSettings.getValue(Setting.HEIGHT_SUBTRACT_VALUE).orElse(Setting.HEIGHT_SUBTRACT_VALUE.getMinimumValue()),
                                 oreSettings.getValue(Setting.HEIGHT_RANGE).orElse(Setting.HEIGHT_RANGE.getMinimumValue())), worldGenerator,
-                        (C) new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.a, ((WorldGenFeatureOreConfiguration) c).d, oreSettings.getValue(Setting.VEIN_SIZE).orElse(Setting.VEIN_SIZE.getMinimumValue())))).
+                        NMSUtil_v1_13_R1.getFeatureConfiguration(oreConfig.get(), Ore.GOLD_BADLANDS, c, biome))).
                 orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenFeatureChanceDecoratorCountConfiguration, worldGenerator, c));
     }
 

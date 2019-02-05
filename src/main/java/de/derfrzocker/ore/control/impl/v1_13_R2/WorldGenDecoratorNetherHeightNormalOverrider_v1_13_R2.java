@@ -25,7 +25,7 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R2 extends World
 
         Ore ore = NMSUtil_v1_13_R2.getOre(((WorldGenFeatureOreConfiguration) c).d.getBlock());
 
-        if (ore != null && oreConfig.isPresent() && !OreControlUtil.isActivated(Ore.LAPIS, oreConfig.get(), biome))
+        if (ore != null && oreConfig.isPresent() && !OreControlUtil.isActivated(ore, oreConfig.get(), biome))
             return true;
 
         return oreConfig.

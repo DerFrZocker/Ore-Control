@@ -89,7 +89,7 @@ public class Config extends YamlConfiguration {
     public void load(@NonNull InputStream input) throws IOException, InvalidConfigurationException {
 
         // load the config file
-        this.load(new InputStreamReader(input));
+        this.load(new InputStreamReader(input, Charsets.UTF_8));
     }
 
     public static Config getConfig(@NonNull JavaPlugin plugin, @NonNull String name) {
