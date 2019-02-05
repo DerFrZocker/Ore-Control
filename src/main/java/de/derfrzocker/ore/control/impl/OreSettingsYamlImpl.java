@@ -50,6 +50,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
         Map<String, Object> map = new HashMap<>();
 
         map.put(ORE_KEY, getOre().toString());
+        map.put(STATUS_KEY, activated);
 
         getSettings().forEach((key, value) -> map.put(key.toString(), value));
 

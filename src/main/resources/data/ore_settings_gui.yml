@@ -4,6 +4,24 @@ inventory:
   rows: 1
   setting_start_slot: 2
   biome_name: Choose a Setting!
+status:
+  slot: 8
+  activate:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: GREEN_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§aActivate the Ore Generation!"
+  deactivate:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: RED_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "§cDeactivate the Ore Generation!"
 back:
   slot: 0
   item_stack:

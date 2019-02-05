@@ -36,6 +36,10 @@ public class OreSettingsGui implements InventoryGui {
 
     private final int backSlot;
 
+    private final int statusSlot;
+
+    private boolean activated;
+
     OreSettingsGui(WorldOreConfig config, Ore ore, Biome biome) {
         this.ore = ore;
         this.world = Bukkit.getWorld(config.getWorld());
@@ -46,7 +50,11 @@ public class OreSettingsGui implements InventoryGui {
                 new MessageValue("ore", ore.toString().toLowerCase())));
 
         this.backSlot = Settings.getInstance().getBackSlot();
+        this.statusSlot = Settings.getInstance().getStatusSlot();
 
+        activated = biome == null ? OreControlUtil.isActivated(ore, config) : OreControlUtil.isActivated(ore, config, biome);
+
+        inventory.setItem(statusSlot, activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack());
         inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
 
         Setting[] settings = ore.getSettings();
@@ -63,6 +71,20 @@ public class OreSettingsGui implements InventoryGui {
 
         if (event.getRawSlot() == backSlot) {
             openSync(event.getWhoClicked(), new OreGui(config, biome).getInventory());
+            return;
+        }
+
+        if (event.getRawSlot() == statusSlot) {
+            activated = !activated;
+
+            if (biome == null)
+                OreControlUtil.setActivated(ore, config, activated);
+            else
+                OreControlUtil.setActivated(ore, config, activated, biome);
+
+            inventory.setItem(statusSlot, activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack());
+
+            OreControl.getService().saveWorldOreConfig(config);
             return;
         }
 
@@ -136,6 +158,18 @@ public class OreSettingsGui implements InventoryGui {
 
         private int getBackSlot() {
             return yaml.getInt("back.slot", 0);
+        }
+
+        private int getStatusSlot() {
+            return yaml.getInt("status.slot", 8);
+        }
+
+        private ItemStack getActivateItemStack() {
+            return yaml.getItemStack("status.activate").clone();
+        }
+
+        private ItemStack getDeactivateItemStack() {
+            return yaml.getItemStack("status.deactivate").clone();
         }
 
         @Override
