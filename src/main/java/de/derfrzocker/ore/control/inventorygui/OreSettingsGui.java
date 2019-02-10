@@ -44,10 +44,7 @@ public class OreSettingsGui implements InventoryGui {
         this.ore = ore;
         this.world = Bukkit.getWorld(config.getWorld());
         this.biome = biome;
-        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(),
-                new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
-                new MessageValue("ore", ore.toString().toLowerCase())));
+        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
 
         this.backSlot = Settings.getInstance().getBackSlot();
         this.statusSlot = Settings.getInstance().getStatusSlot();
@@ -56,6 +53,7 @@ public class OreSettingsGui implements InventoryGui {
 
         inventory.setItem(statusSlot, activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack());
         inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         Setting[] settings = ore.getSettings();
 
@@ -112,6 +110,12 @@ public class OreSettingsGui implements InventoryGui {
         return itemStack;
     }
 
+    private MessageValue[] getMessagesValues() {
+        return new MessageValue[]{new MessageValue("world", world.getName()),
+                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
+                new MessageValue("ore", ore.toString().toLowerCase())};
+    }
+
     private static final class Settings implements ReloadAble {
 
         private final static String file = "data/ore_settings_gui.yml";
@@ -150,6 +154,18 @@ public class OreSettingsGui implements InventoryGui {
 
         private ItemStack getSettingsItemStack(Setting setting) {
             return yaml.getItemStack("settings_item_stack." + setting.toString()).clone();
+        }
+
+        private ItemStack getInfoItemStack() {
+            return yaml.getItemStack("info.item_stack").clone();
+        }
+
+        private ItemStack getInfoBiomeItemStack() {
+            return yaml.getItemStack("info.biome_item_stack").clone();
+        }
+
+        private int getInfoSlot() {
+            return yaml.getInt("info.slot");
         }
 
         private ItemStack getBackItemStack() {

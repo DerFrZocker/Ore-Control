@@ -78,6 +78,10 @@ public class BiomeGui implements InventoryGui {
         return guis.get(0).getInventory();
     }
 
+    private MessageValue[] getMessagesValues() {
+        return new MessageValue[]{new MessageValue("world", world.getName())};
+    }
+
     private static final class Settings implements ReloadAble {
 
         private final static String file = "data/biome_gui.yml";
@@ -114,6 +118,14 @@ public class BiomeGui implements InventoryGui {
             return yaml.getItemStack("biomes." + biome.toString()).clone();
         }
 
+        private ItemStack getInfoItemStack() {
+            return yaml.getItemStack("info.item_stack").clone();
+        }
+
+        private int getInfoSlot() {
+            return yaml.getInt("info.slot");
+        }
+
         private ItemStack getBackItemStack() {
             return yaml.getItemStack("back.item_stack").clone();
         }
@@ -137,7 +149,6 @@ public class BiomeGui implements InventoryGui {
         private ItemStack getPreviousPageItemStack() {
             return yaml.getItemStack("previous_page.item_stack").clone();
         }
-
 
         @Override
         public void reload() {
@@ -163,6 +174,8 @@ public class BiomeGui implements InventoryGui {
                             new MessageValue("world", world.getName())));
 
             inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+            inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
+
             if (page + 1 != pages)
                 inventory.setItem(nextPage, Settings.getInstance().getNextPageItemStack());
 

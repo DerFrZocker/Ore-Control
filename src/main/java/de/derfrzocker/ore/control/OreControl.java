@@ -57,6 +57,11 @@ public class OreControl extends JavaPlugin {
         instance = this;
 
         checkFile("data/settings.yml");
+        checkFile("data/biome_gui.yml");
+        checkFile("data/ore_settings_gui.yml");
+        checkFile("data/settings_gui.yml");
+        checkFile("data/world_config_gui.yml");
+        checkFile("data/world_gui.yml");
 
         String version = getVersion();
 

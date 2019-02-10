@@ -53,14 +53,12 @@ public class SettingsGui implements InventoryGui {
         this.setting = setting;
         this.world = Bukkit.getWorld(config.getWorld());
         this.biome = biome;
-        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(),
-                new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
-                new MessageValue("ore", ore.toString().toLowerCase()),
-                new MessageValue("setting", setting.toString().toLowerCase())));
+        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
         this.backSlot = Settings.getInstance().getBackSlot();
 
         inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+
+        inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         Settings.getInstance().getItemStackValues().forEach(value -> {
             inventory.setItem(value.getSlot(), MessageUtil.replaceItemStack(value.getItemStack()));
@@ -113,6 +111,13 @@ public class SettingsGui implements InventoryGui {
         itemStack.setType(ore.getMaterial());
         itemStack = MessageUtil.replaceItemStack(itemStack, biome == null ? getMessageValues(config) : getBiomeMessageValues(config));
         inventory.setItem(oreSlot, itemStack);
+    }
+
+    private MessageValue[] getMessagesValues() {
+        return new MessageValue[]{new MessageValue("world", world.getName()),
+                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
+                new MessageValue("ore", ore.toString().toLowerCase()),
+                new MessageValue("setting", setting.toString().toLowerCase())};
     }
 
     private MessageValue[] getMessageValues(WorldOreConfig config) {
@@ -181,6 +186,18 @@ public class SettingsGui implements InventoryGui {
 
         private int getOreSlot() {
             return yaml.getInt("inventory.ore.slot");
+        }
+
+        private ItemStack getInfoItemStack() {
+            return yaml.getItemStack("info.item_stack").clone();
+        }
+
+        private ItemStack getInfoBiomeItemStack() {
+            return yaml.getItemStack("info.biome_item_stack").clone();
+        }
+
+        private int getInfoSlot() {
+            return yaml.getInt("info.slot");
         }
 
         private Set<ItemStackValues> getItemStackValues() {

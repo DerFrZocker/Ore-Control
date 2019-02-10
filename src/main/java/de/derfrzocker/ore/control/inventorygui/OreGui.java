@@ -39,13 +39,12 @@ public class OreGui implements InventoryGui {
     OreGui(WorldOreConfig config, Biome biome) {
         this.world = Bukkit.getWorld(config.getWorld());
         this.biome = biome;
-        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(),
-                new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.name().toLowerCase())));
+        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
 
         this.backSlot = Settings.getInstance().getBackSlot();
 
         inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         Ore[] ores = biome == null ? Ore.values() : biome.getOres();
 
@@ -76,6 +75,11 @@ public class OreGui implements InventoryGui {
     @Override
     public boolean contains(Inventory inventory) {
         return this.inventory.equals(inventory);
+    }
+
+    private MessageValue[] getMessagesValues() {
+        return new MessageValue[]{new MessageValue("world", world.getName()),
+                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase())};
     }
 
     private ItemStack getOreItemStack(WorldOreConfig config, Ore ore) {
@@ -122,6 +126,18 @@ public class OreGui implements InventoryGui {
 
         private int getOreGap() {
             return yaml.getInt("inventory.ore_gap");
+        }
+
+        private ItemStack getInfoItemStack() {
+            return yaml.getItemStack("info.item_stack").clone();
+        }
+
+        private ItemStack getInfoBiomeItemStack() {
+            return yaml.getItemStack("info.biome_item_stack").clone();
+        }
+
+        private int getInfoSlot() {
+            return yaml.getInt("info.slot");
         }
 
         private ItemStack getDefaultOreItemStack() {

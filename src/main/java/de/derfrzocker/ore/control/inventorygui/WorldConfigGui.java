@@ -48,6 +48,7 @@ public class WorldConfigGui implements InventoryGui {
             biome = -245;
 
         inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
     @Override
@@ -66,12 +67,15 @@ public class WorldConfigGui implements InventoryGui {
 
         if (event.getRawSlot() == biome)
             openSync(event.getWhoClicked(), new BiomeGui(config).getInventory());
-
     }
 
     @Override
     public boolean contains(Inventory inventory) {
         return this.inventory.equals(inventory);
+    }
+
+    private MessageValue[] getMessagesValues() {
+        return new MessageValue[]{new MessageValue("world", world.getName())};
     }
 
     private static final class Settings implements ReloadAble {
@@ -120,6 +124,14 @@ public class WorldConfigGui implements InventoryGui {
 
         private ItemStack getBackItemStack() {
             return yaml.getItemStack("back.item_stack").clone();
+        }
+
+        private ItemStack getInfoItemStack() {
+            return yaml.getItemStack("info.item_stack").clone();
+        }
+
+        private int getInfoSlot() {
+            return yaml.getInt("info.slot");
         }
 
         private int getBackSlot() {
