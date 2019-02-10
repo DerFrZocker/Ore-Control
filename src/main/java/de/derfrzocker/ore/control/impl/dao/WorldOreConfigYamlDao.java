@@ -5,7 +5,6 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.utils.Config;
-import de.derfrzocker.ore.control.utils.YamlReloadAble;
 import lombok.NonNull;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,13 +16,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-public class WorldOreConfigYamlDao implements WorldOreConfigDao, YamlReloadAble {
+public class WorldOreConfigYamlDao implements WorldOreConfigDao {
 
     @NonNull
-    private File file;
+    private final File file;
 
     @NonNull
-    private YamlConfiguration yaml; //TODO Check Thread safety
+    private final YamlConfiguration yaml; //TODO Check Thread safety
 
     public WorldOreConfigYamlDao(File file) {
         this.file = file;
@@ -70,14 +69,4 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, YamlReloadAble 
         return Sets.newHashSet(yaml.getKeys(false).stream().map(yaml::get).filter(Objects::nonNull).filter(value -> value instanceof WorldOreConfig).map(value -> (WorldOreConfig) value).toArray(WorldOreConfig[]::new));
     }
 
-    @Override
-    public void reload(File file) {
-        this.file = file;
-        reload();
-    }
-
-    @Override
-    public void reload() {
-        yaml = new Config(file);
-    }
 }

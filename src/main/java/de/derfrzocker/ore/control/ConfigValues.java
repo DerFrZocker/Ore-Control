@@ -1,13 +1,14 @@
 package de.derfrzocker.ore.control;
 
 import de.derfrzocker.ore.control.utils.Config;
-import de.derfrzocker.ore.control.utils.YamlReloadAble;
+import de.derfrzocker.ore.control.utils.Language;
+import de.derfrzocker.ore.control.utils.ReloadAble;
 import lombok.NonNull;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public class ConfigValues implements YamlReloadAble {
+public class ConfigValues implements ReloadAble {
 
     @NonNull
     private File file;
@@ -16,17 +17,16 @@ public class ConfigValues implements YamlReloadAble {
     private volatile YamlConfiguration yaml;
 
     public ConfigValues(File file) {
-        reload(file);
+        this.file = file;
+        reload();
     }
 
     public boolean isSaveMode() {
         return yaml.getBoolean("save_mode", true);
     }
 
-    @Override
-    public void reload(File file) {
-        this.file = file;
-        reload();
+    public Language getLanguage() {
+        return Language.getLanguage(yaml.getString("language"));
     }
 
     @Override

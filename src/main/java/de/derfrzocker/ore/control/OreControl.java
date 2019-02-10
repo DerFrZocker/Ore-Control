@@ -23,8 +23,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OreControl extends JavaPlugin {
 
@@ -38,9 +36,6 @@ public class OreControl extends JavaPlugin {
     @Setter
     @NonNull
     private static OreControl instance;
-
-    @Getter
-    private List<ReloadAble> reloadAbles = new ArrayList<>();
 
     @Getter
     private ConfigValues configValues;
@@ -73,9 +68,8 @@ public class OreControl extends JavaPlugin {
         if (nmsReplacer == null)
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
 
-        OreControlMessages.getInstance().setFile(Config.getConfig(this, "messages"));
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
-        reloadAbles.add(configValues);
+        ReloadAble.RELOAD_ABLES.add(configValues);
 
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
     }

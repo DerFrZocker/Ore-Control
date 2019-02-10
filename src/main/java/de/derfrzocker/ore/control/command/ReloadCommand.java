@@ -3,7 +3,6 @@ package de.derfrzocker.ore.control.command;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
-import de.derfrzocker.ore.control.utils.Config;
 import de.derfrzocker.ore.control.utils.ReloadAble;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,8 +22,7 @@ public class ReloadCommand implements TabExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
             OreControlMessages.RELOAD_BEGIN.sendMessage(sender);
 
-            OreControlMessages.getInstance().setFile(Config.getConfig(OreControl.getInstance(), "messages"));
-            OreControl.getInstance().getReloadAbles().forEach(ReloadAble::reload);
+            ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);
 
             OreControlMessages.RELOAD_END.sendMessage(sender);
         });

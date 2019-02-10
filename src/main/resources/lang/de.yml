@@ -1,0 +1,63 @@
+command:
+
+  player_only_command: "Dieser Befehl ist nur für Spieler!"
+
+  set:
+    not_enough_args:
+      - "&4Falsche Anzahl an Argumenten!"
+      - "&cbenutze &f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f> <&9Anzahl&f(&9%&f)>"
+    world_not_found: "&4Die Welt &f'&9%world_name%&f'&4 existiert nicht!"
+    no_number: "&f'&9%value%&f' &4ist keine Zahl!"
+    setting_not_found: "&4Die Einstellung &f'&9%setting%&f' &4existiert nicht!"
+    setting_not_valid: "&4Die Einstellung &f'&9%setting%&f' &4ist nicht für das Erz &f'&9%ore%&f'&4 bestimmt!"
+    not_save:
+      - "&4Die Nummer &f'&9%value%&f' &4ist nicht sicher!"
+      - "&4Wenn du sie trozdem setzen möchtes,"
+      - "&4setze in der config den Wert &f'&9save_mode&f' &4auf &f'&9false&f'"
+      - "&4Und führe den Befehl &f'&9/orecontrol reload&f' &4aus"
+    not_save_warning: "&eWarn: Die Nummer &f'&9%value%&f' &eist nicht sicher!"
+    ore_not_found:
+      - "&4Das Erz &f'&9%ore%&f' &4existiert nicht!, "
+      - "&cbenutze &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &coder"
+      - "&f'&9redstone&f'"
+    success: "&aDer Wert wurde erfolgreich gesetzt!"
+    biome:
+      not_enough_args:
+        - "&4Falsche Anzahl an Argumenten!"
+        - "&cbenutze &f/&9orecontrol setbiome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f>"
+        - "                                 <&9Welt&f> <&9Anzahl&f(&9%&f)>"
+      biome_not_found: "&4Das Biome &f'&9%biome%&f' &4existiert nicht!"
+      ore_not_valid: "&4Das Erz &f'&9%ore%&f' &4kann nicht in das Biome &f'&9%biome%&f'&4 gesetzt werden!"
+
+  reload:
+    begin: "&aBeginne mit dem Reloaden!"
+    end: "&aReloaden Fertig!"
+
+  help:
+    header: "~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~"
+    footer: "~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~"
+    separator: "  "
+    set:
+      command: "&f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f> <&9Anzahl&f(&9%&f)>"
+      description:
+        - "   -> &9permission&f: ore.control.set"
+        - "   -> &9description&f: Set a specific value to an ore type and world"
+      biome:
+        command:
+          - "&f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
+          - "                            <&9world&f> <&9amount&f(&9%&f)>"
+        description:
+          - "   -> &9permission&f: ore.control.set.biome"
+          - "   -> &9description&f: Set a specific value for an ore setting, "
+          - "                      for a specific biome in a specific world"
+    reload:
+      command: "&f/&9orecontrol reload"
+      description:
+        - "   -> &9permission&f: ore.control.reload"
+        - "   -> &9description&f: Reload the '&9messages.yml&f' and '&9config.yml&f'"
+    help:
+      command: "&f/&9orecontrol help &f(<&9subcommand&f>)"
+      description:
+        - "   -> &9permission&f: any command permission"
+        - "   -> &9description&f: Displays all commands and if a subcommand "
+        - "                       is specified, more details are displayed"

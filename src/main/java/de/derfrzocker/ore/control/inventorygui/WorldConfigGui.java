@@ -95,7 +95,7 @@ public class WorldConfigGui implements InventoryGui {
 
         private Settings() {
             yaml = Config.getConfig(OreControl.getInstance(), file);
-            OreControl.getInstance().getReloadAbles().add(this);
+            RELOAD_ABLES.add(this);
         }
 
         private String getInventoryName() {

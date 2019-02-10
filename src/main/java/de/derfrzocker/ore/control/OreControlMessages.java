@@ -36,4 +36,7 @@ public class OreControlMessages extends Messages {
     public final static MessageKey HELP_DESCRIPTION = new MessageKey(getInstance(), "command.help.help.description");
     public final static MessageKey PLAYER_ONLY_COMMAND = new MessageKey(getInstance(), "command.player_only_command");
 
+    public OreControlMessages() {
+        super(OreControl.getInstance(), () -> OreControl.getInstance().getConfigValues().getLanguage());
+    }
 }
