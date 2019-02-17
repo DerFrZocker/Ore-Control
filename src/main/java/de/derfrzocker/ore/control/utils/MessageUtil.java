@@ -7,10 +7,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MessageUtil {
 
     public static String replacePlaceHolder(@NonNull String string, @NonNull MessageValue... messageValues) {
+
+        string = replaceTranslation(string, messageValues);
 
         string = ChatColor.translateAlternateColorCodes('&', string);
 
@@ -51,6 +55,32 @@ public class MessageUtil {
             meta.setLore(replaceList(meta.getLore(), messageValues));
 
         return meta;
+    }
+
+    // %%translation:[example.string]%
+    public static String replaceTranslation(@NonNull String string, @NonNull MessageValue... messageValues) {
+        if (Messages.getInstance() == null)
+            return string;
+
+        if (!string.contains("%%translation:["))
+            return string;
+
+        Pattern pattern = Pattern.compile("%%translation:(.*?)]%");
+        Matcher matcher = pattern.matcher(string);
+
+        StringBuilder stringBuilder = new StringBuilder(string);
+
+        while (matcher.find()) {
+            String key = stringBuilder.substring(matcher.start() + 15, matcher.end() - 2);
+
+            key = replacePlaceHolder(key, messageValues);
+
+            stringBuilder.replace(matcher.start(), matcher.end(), new MessageKey(Messages.getInstance(), key).getMessage());
+
+            matcher = pattern.matcher(stringBuilder.toString());
+        }
+
+        return stringBuilder.toString();
     }
 
 

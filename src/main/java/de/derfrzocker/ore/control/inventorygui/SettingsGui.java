@@ -56,7 +56,7 @@ public class SettingsGui implements InventoryGui {
         this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
         this.backSlot = Settings.getInstance().getBackSlot();
 
-        inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
 
         inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
@@ -115,9 +115,9 @@ public class SettingsGui implements InventoryGui {
 
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
-                new MessageValue("ore", ore.toString().toLowerCase()),
-                new MessageValue("setting", setting.toString().toLowerCase())};
+                new MessageValue("biome", biome == null ? "" : biome.toString()),
+                new MessageValue("ore", ore.toString()),
+                new MessageValue("setting", setting.toString())};
     }
 
     private MessageValue[] getMessageValues(WorldOreConfig config) {
@@ -131,7 +131,7 @@ public class SettingsGui implements InventoryGui {
     private MessageValue[] getBiomeMessageValues(WorldOreConfig config) {
         Set<MessageValue> messageValues = getStandardMessageValue(config);
 
-        messageValues.add(new MessageValue("biome", biome.toString().toLowerCase()));
+        messageValues.add(new MessageValue("biome", biome.toString()));
         messageValues.add(new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, config, biome))));
 
         return messageValues.toArray(new MessageValue[0]);
@@ -140,8 +140,8 @@ public class SettingsGui implements InventoryGui {
     private Set<MessageValue> getStandardMessageValue(WorldOreConfig config) {
         Set<MessageValue> set = new HashSet<>();
 
-        set.add(new MessageValue("ore", ore.toString().toLowerCase()));
-        set.add(new MessageValue("setting", setting.toString().toLowerCase()));
+        set.add(new MessageValue("ore", ore.toString()));
+        set.add(new MessageValue("setting", setting.toString()));
         set.add(new MessageValue("world", config.getWorld()));
 
         return set;

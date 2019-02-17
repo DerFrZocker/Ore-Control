@@ -138,16 +138,17 @@ public class WorldGui implements InventoryGui {
 
         private SubWorldGui(String[] worlds, int page) {
             this.page = page;
+
+            MessageValue[] messageValues = new MessageValue[]{new MessageValue("page", String.valueOf(page)), new MessageValue("pages", String.valueOf(pages))};
+
             this.inventory = Bukkit.createInventory(this, Settings.getInstance().getRows() * 9,
-                    MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(),
-                            new MessageValue("page", String.valueOf(page)),
-                            new MessageValue("pages", String.valueOf(pages))));
+                    MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), messageValues));
 
             if (page + 1 != pages)
-                inventory.setItem(nextPage, Settings.getInstance().getNextPageItemStack());
+                inventory.setItem(nextPage, MessageUtil.replaceItemStack(Settings.getInstance().getNextPageItemStack(), messageValues));
 
             if (page != 0)
-                inventory.setItem(previousPage, Settings.getInstance().getPreviousPageItemStack());
+                inventory.setItem(previousPage, MessageUtil.replaceItemStack(Settings.getInstance().getPreviousPageItemStack(), messageValues));
 
             for (int i = 0; i < worlds.length; i++) {
                 int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getWorldGap());

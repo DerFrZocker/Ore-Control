@@ -43,7 +43,7 @@ public class OreGui implements InventoryGui {
 
         this.backSlot = Settings.getInstance().getBackSlot();
 
-        inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
         inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         Ore[] ores = biome == null ? Ore.values() : biome.getOres();
@@ -79,7 +79,7 @@ public class OreGui implements InventoryGui {
 
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase())};
+                new MessageValue("biome", biome == null ? "" : biome.toString())};
     }
 
     private ItemStack getOreItemStack(WorldOreConfig config, Ore ore) {
@@ -87,7 +87,7 @@ public class OreGui implements InventoryGui {
 
         itemStack.setType(ore.getMaterial());
 
-        itemStack = MessageUtil.replaceItemStack(itemStack, new MessageValue("ore", ore.toString().toLowerCase()));
+        itemStack = MessageUtil.replaceItemStack(itemStack, new MessageValue("ore", ore.toString()));
 
         return itemStack;
     }

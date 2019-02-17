@@ -1,63 +1,191 @@
 command:
 
-  player_only_command: "Dieser Befehl ist nur für Spieler!"
-
+  player_only_command: Dieser Befehl ist nur für Spieler!
   set:
     not_enough_args:
-      - "&4Falsche Anzahl an Argumenten!"
-      - "&cbenutze &f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f> <&9Anzahl&f(&9%&f)>"
-    world_not_found: "&4Die Welt &f'&9%world_name%&f'&4 existiert nicht!"
-    no_number: "&f'&9%value%&f' &4ist keine Zahl!"
-    setting_not_found: "&4Die Einstellung &f'&9%setting%&f' &4existiert nicht!"
-    setting_not_valid: "&4Die Einstellung &f'&9%setting%&f' &4ist nicht für das Erz &f'&9%ore%&f'&4 bestimmt!"
+      - '&4Falsche Anzahl an Argumenten!'
+      - '&cbenutze &f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f>'
+      - '                                <&9Anzahl&f(&9%&f)>'
+    world_not_found: '&4Die Welt &f''&9%world_name%&f''&4 existiert nicht!'
+    no_number: '&f''&9%value%&f'' &4ist keine Zahl!'
+    setting_not_found: '&4Die Einstellung &f''&9%setting%&f'' &4existiert nicht!'
+    setting_not_valid:
+      - '&4Die Einstellung &f''&9%setting%&f'' &4ist nicht für das'
+      - '&4Erz &f''&9%ore%&f''&4 bestimmt!'
     not_save:
-      - "&4Die Nummer &f'&9%value%&f' &4ist nicht sicher!"
-      - "&4Wenn du sie trozdem setzen möchtes,"
-      - "&4setze in der config den Wert &f'&9save_mode&f' &4auf &f'&9false&f'"
-      - "&4Und führe den Befehl &f'&9/orecontrol reload&f' &4aus"
-    not_save_warning: "&eWarn: Die Nummer &f'&9%value%&f' &eist nicht sicher!"
+      - '&4Die Nummer &f''&9%value%&f'' &4ist nicht sicher!'
+      - '&4Wenn du sie trozdem setzen möchtes,'
+      - '&4setze in der config den Wert &f''&9save_mode&f'' &4auf &f''&9false&f'''
+      - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
+    not_save_warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
     ore_not_found:
-      - "&4Das Erz &f'&9%ore%&f' &4existiert nicht!, "
-      - "&cbenutze &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &coder"
-      - "&f'&9redstone&f'"
-    success: "&aDer Wert wurde erfolgreich gesetzt!"
+      - '&4Das Erz &f''&9%ore%&f'' &4existiert nicht!, '
+      - '&cbenutze &f''&9diamond&f'', ''&9coal&f'', ''&9lapis&f'', ''&9iron&f'', ''&9gold&f'',
+      ''&9gold_badlands&f'''
+      - '&coder &f''&9redstone&f'''
+    success: '&aDer Wert wurde erfolgreich gesetzt!'
     biome:
       not_enough_args:
-        - "&4Falsche Anzahl an Argumenten!"
-        - "&cbenutze &f/&9orecontrol setbiome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f>"
-        - "                                 <&9Welt&f> <&9Anzahl&f(&9%&f)>"
-      biome_not_found: "&4Das Biome &f'&9%biome%&f' &4existiert nicht!"
-      ore_not_valid: "&4Das Erz &f'&9%ore%&f' &4kann nicht in das Biome &f'&9%biome%&f'&4 gesetzt werden!"
-
+        - '&4Falsche Anzahl an Argumenten!'
+        - '&cbenutze &f/&9orecontrol setbiome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f>'
+        - '                                       <&9Welt&f> <&9Anzahl&f(&9%&f)>'
+      biome_not_found: '&4Das Biome &f''&9%biome%&f'' &4existiert nicht!'
+      ore_not_valid:
+        - '&4Das Erz &f''&9%ore%&f'' &4kann nicht in das'
+        - '&4Biom &f''&9%biome%&f''&4gesetzt werden!'
   reload:
-    begin: "&aBeginne mit dem Reloaden!"
-    end: "&aReloaden Fertig!"
+    begin: '&aBeginne mit dem Reloaden!'
+    end: '&aReloaden Fertig!'
 
   help:
-    header: "~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~"
-    footer: "~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~"
-    separator: "  "
+    header: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
+    footer: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
+    separator: '  '
     set:
-      command: "&f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f> <&9Anzahl&f(&9%&f)>"
+      command: '&f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Welt&f> <&9Anzahl&f(&9%&f)>'
       description:
-        - "   -> &9permission&f: ore.control.set"
-        - "   -> &9description&f: Set a specific value to an ore type and world"
+        - '   -> &9Berechtigung&f: ore.control.set'
+        - '   -> &9Beschreibung&f: Setze einen Wert, für ein Welt'
       biome:
         command:
-          - "&f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
-          - "                            <&9world&f> <&9amount&f(&9%&f)>"
+          - '&f/&9orecontrol setbiome &f<&9Biome&f> <&9Erz&f> <&9Einstellung&f>'
+          - '                            <&9Welt&f> <&9Anzahl&f(&9%&f)>'
         description:
-          - "   -> &9permission&f: ore.control.set.biome"
-          - "   -> &9description&f: Set a specific value for an ore setting, "
-          - "                      for a specific biome in a specific world"
+          - '   -> &9Berechtigung&f: ore.control.set.biome'
+          - '   -> &9Beschreibung&f: Setze einen Wert, für ein bestimmtes Biome'
     reload:
-      command: "&f/&9orecontrol reload"
+      command: '&f/&9orecontrol reload'
       description:
-        - "   -> &9permission&f: ore.control.reload"
-        - "   -> &9description&f: Reload the '&9messages.yml&f' and '&9config.yml&f'"
+        - '   -> &9Berechtigung&f: ore.control.reload'
+        - '   -> &9Beschreibung&f: Reloaded die Nachrichten, Config'
+        - '                         und Gui Einstellungen'
     help:
-      command: "&f/&9orecontrol help &f(<&9subcommand&f>)"
+      command: '&f/&9orecontrol help &f(<&9subbefehl&f>)'
       description:
-        - "   -> &9permission&f: any command permission"
-        - "   -> &9description&f: Displays all commands and if a subcommand "
-        - "                       is specified, more details are displayed"
+        - '   -> &9Berechtigung&f: Irgend eine Befehl Berechtigung'
+        - '   -> &9Beschreibung&f: Zeigt dir alle Befehle an und wenn ein '
+        - '                         SubBefehl angegeben ist, werden genauere'
+        - '                         Details zu diesem Befehl angezeigt'
+
+biome:
+  OCEAN: "Meer"
+  PLAINS: "Flachland"
+  DESERT: "Wüste"
+  MOUNTAINS: "Berge"
+  FOREST: "Wald"
+  TAIGA: "Taiga"
+  SWAMP: "Sumpf"
+  River: "Fluss"
+  FROZEN_OCEAN: "Gefrorenes Meer"
+  FROZEN_RIVER: "Gefrorener Fluss"
+  SNOWY_TUNDRA: "Verschneite Tundra"
+  SNOWY_MOUNTAINS: "Verschneite Berge"
+  MUSHROOM_FIELDS: "Pilzfelder"
+  BEACH: "Strand"
+  DESERT_HILLS: "Wüstenhügel"
+  WOODED_HILLS: "Bewaldete Hügel"
+  TAIGA_HILLS: "Taiga Hügel"
+  MOUNTAIN_EDGE: "Gebirgsrand"
+  JUNGLE: "Dschungel"
+  JUNGLE_HILLS: "Dschungelhügel"
+  JUNGLE_EDGE: "Dschungelrand"
+  DEEP_OCEAN: "Tiefes Meer"
+  STONE_SHORE: "Steinufer"
+  SNOWY_BEACH: "Verschneiter Strand"
+  BIRCH_FOREST: "Birkenwald"
+  BIRCH_FOREST_HILLS: "Birkenwald Hügel"
+  DARK_FOREST: "Dunkler Wald"
+  SNOWY_TAIGA: "Verschneite Taiga"
+  SNOWY_TAIGA_HILLS: "Verschneite Taiga Hügel"
+  GIANT_TREE_TAIGA: "Riesenbaum Taiga"
+  GIANT_TREE_TAIGA_HILLS: "Riesenbaum Taiga Hügel"
+  WOODED_MOUNTAINS: "Bewaldete Berge"
+  SAVANNA: "Savanne"
+  SAVANNA_PLATEAU: "Savanne Plateau"
+  BADLANDS: "Ödland"
+  WOODED_BADLANDS_PLATEAU: "Bewaldete Ödland Plateau"
+  BADLANDS_PLATEAU: "Ödland Plateau"
+  WARM_OCEAN: "Warmes Meer"
+  LUKEWARM_OCEAN: "Lauwarmes Meer"
+  COLD_OCEAN: "Kaltes Meer"
+  DEEP_WARM_OCEAN: "Tiefes warmes Meer"
+  DEEP_LUKEWARM_OCEAN: "Tiefes Lauwarmes Meer"
+  DEEP_COLD_OCEAN: "Tiefes Kaltes Meer"
+  DEEP_FROZEN_OCEAN: "Tiefes Gefrorenes Meer"
+  SUNFLOWER_PLAINS: "Sonnenblumenebenen"
+  DESERT_LAKES: "Wüstenseen"
+  GRAVELLY_MOUNTAINS: "Kiesige Berge"
+  FLOWER_FOREST: "Blumenwald"
+  TAIGA_MOUNTAINS: "Taiga Berge"
+  SWAMP_HILLS: "Sumpfhügel"
+  ICE_SPIKES: "Eisspitzen"
+  MODIFIED_JUNGLE: "Modifizierter Dschungel"
+  MODIFIED_JUNGLE_EDGE: "Modifizierter Dschungelrand"
+  TALL_BIRCH_FOREST: "Hoher Birkenwald"
+  TALL_BIRCH_HILLS: "Hohe Birkenhügel"
+  DARK_FOREST_HILLS: "Dunkle Waldhügel"
+  SNOWY_TAIGA_MOUNTAINS: "Verschneite Taiga Berge"
+  GIANT_SPRUCE_TAIGA: "Riesige Fichten Taiga"
+  GIANT_SPRUCE_TAIGA_HILLS: "Riesige Fichten Taiga Hügel"
+  MODIFIED_GRAVELLY_MOUNTAINS: "Modifizierte Kiesige Berge"
+  SHATTERED_SAVANNA: "Zerschlagene Savanne"
+  SHATTERED_SAVANNA_PLATEAU: "Zerschlagenes Savannen Plateau"
+  ERODED_BADLANDS: "Ausgehöhltes Ödland"
+  MODIFIED_WOODED_BADLANDS_PLATEAU: "Modifiziertes Bewaldetes Ödland Plateau"
+  MODIFIED_BADLANDS_PLATEAU: "Modified Ödland Plateau"
+
+ore:
+  DIAMOND: "Diamant"
+  COAL: "Kohle"
+  GOLD: "Gold"
+  GOLD_BADLANDS: "Ödland Gold"
+  LAPIS: "Lapis"
+  IRON: "Eisen"
+  REDSTONE: "Redstone"
+  EMERALD: "Smaragd"
+  DIRT: "Erde"
+  GRAVEL: "Kies"
+  GRANITE: "Granit"
+  DIORITE: "Diorit"
+  ANDESITE: "Andesit"
+
+setting:
+  VEIN_SIZE: "Adergröße"
+  VEINS_PER_CHUNK: "Adern pro Chunk"
+  HEIGHT_RANGE: "Höhenbereich"
+  HEIGHT_CENTER: "Höhe Mitte"
+  MINIMUM_ORES_PER_CHUNK: "Minimale Erze pro Chunk"
+  ORES_PER_CHUNK_RANGE: "Erze pro Chunk Bereich"
+  MINIMUM_HEIGHT: "Mindesthöhe"
+  HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
+
+gui:
+  previous_page: "&rVorherige Seite"
+  next_page: "&rNächste Seite"
+  back: "&rGehe einen Schritt zurück"
+  info:
+    name: "Info"
+    lore_world: "Welt: %world%"
+    lore_biome: "Biome: %%translation:[biome.%biome%]%"
+    lore_ore: "Erz: %%translation:[ore.%ore%]%"
+    lore_setting: "Einstellung: %%translation:[setting.%setting%]%"
+    lore_current: "Aktuell: %amount%"
+  world:
+    name: "Wähle eine Welt!"
+  world_config:
+    name: "Wähle einen Typ!"
+    biome: "§bLege eine Wert für ein bestimmtes §dBiom§b fest!"
+    ore: "§bLege einen Wert für die ganze §dWelt§b fest!"
+  biome:
+    name: "Wähle ein Biom!"
+  ore:
+    name: "Wähle ein Erz!"
+    biome_name: "Wähle ein Erz!"
+  ore_settings:
+    name: "Wähle eine Einstellung!"
+    biome_name: "Wähle eine Einstellung!"
+    activate: "§aAktiviere die Erzgenerierung!"
+    deactivate: "§cDeaktiviere die Erzgeneration!"
+  settings:
+    name: "Einen Wert einstellen!"
+    biome_name: "Einen Wert einstellen!"

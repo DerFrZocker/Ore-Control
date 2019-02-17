@@ -28,4 +28,8 @@ public class MessageKey {
         messages.broadcastMessage(this, permission, messageValues);
     }
 
+    public String getMessage() {
+        return messages.getMessages(this);
+    }
+
 }

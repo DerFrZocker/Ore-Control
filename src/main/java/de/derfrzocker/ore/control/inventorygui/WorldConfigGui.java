@@ -37,17 +37,17 @@ public class WorldConfigGui implements InventoryGui {
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
             ores = Settings.getInstance().getOreItemStackSlot();
-            inventory.setItem(ores, Settings.getInstance().getOreItemStack());
+            inventory.setItem(ores, MessageUtil.replaceItemStack(Settings.getInstance().getOreItemStack()));
         } else
             ores = -245;
 
         if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible)) {
             biome = Settings.getInstance().getBiomeItemStackSlot();
-            inventory.setItem(biome, Settings.getInstance().getBiomeItemStack());
+            inventory.setItem(biome, MessageUtil.replaceItemStack(Settings.getInstance().getBiomeItemStack()));
         } else
             biome = -245;
 
-        inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
         inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 

@@ -173,18 +173,18 @@ public class BiomeGui implements InventoryGui {
                             new MessageValue("pages", String.valueOf(pages)),
                             new MessageValue("world", world.getName())));
 
-            inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+            inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
             inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
 
             if (page + 1 != pages)
-                inventory.setItem(nextPage, Settings.getInstance().getNextPageItemStack());
+                inventory.setItem(nextPage, MessageUtil.replaceItemStack(Settings.getInstance().getNextPageItemStack()));
 
             if (page != 0)
-                inventory.setItem(previousPage, Settings.getInstance().getPreviousPageItemStack());
+                inventory.setItem(previousPage, MessageUtil.replaceItemStack(Settings.getInstance().getPreviousPageItemStack()));
 
             for (int i = 0; i < biomes.length; i++) {
                 int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getBiomeGap());
-                inventory.setItem(slot, Settings.getInstance().getBiomeItemStack(biomes[i]));
+                inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getBiomeItemStack(biomes[i])));
                 values.put(slot, biomes[i]);
             }
         }

@@ -72,6 +72,9 @@ public class OreControl extends JavaPlugin {
         ReloadAble.RELOAD_ABLES.add(configValues);
 
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
+
+        //noinspection ResultOfMethodCallIgnored
+        OreControlMessages.getInstance();
     }
 
     @Override

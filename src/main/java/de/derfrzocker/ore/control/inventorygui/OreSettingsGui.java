@@ -51,8 +51,8 @@ public class OreSettingsGui implements InventoryGui {
 
         activated = biome == null ? OreControlUtil.isActivated(ore, config) : OreControlUtil.isActivated(ore, config, biome);
 
-        inventory.setItem(statusSlot, activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack());
-        inventory.setItem(backSlot, Settings.getInstance().getBackItemStack());
+        inventory.setItem(statusSlot, MessageUtil.replaceItemStack(activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack()));
+        inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
         inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         Setting[] settings = ore.getSettings();
@@ -80,7 +80,7 @@ public class OreSettingsGui implements InventoryGui {
             else
                 OreControlUtil.setActivated(ore, config, activated, biome);
 
-            inventory.setItem(statusSlot, activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack());
+            inventory.setItem(statusSlot, MessageUtil.replaceItemStack(activated ? Settings.getInstance().getDeactivateItemStack() : Settings.getInstance().getActivateItemStack()));
 
             OreControl.getService().saveWorldOreConfig(config);
             return;
@@ -112,8 +112,8 @@ public class OreSettingsGui implements InventoryGui {
 
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", world.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString().toLowerCase()),
-                new MessageValue("ore", ore.toString().toLowerCase())};
+                new MessageValue("biome", biome == null ? "" : biome.toString()),
+                new MessageValue("ore", ore.toString())};
     }
 
     private static final class Settings implements ReloadAble {
