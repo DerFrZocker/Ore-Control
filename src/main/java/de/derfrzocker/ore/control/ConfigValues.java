@@ -19,6 +19,7 @@ public class ConfigValues implements ReloadAble {
     public ConfigValues(File file) {
         this.file = file;
         reload();
+        RELOAD_ABLES.add(this);
     }
 
     public boolean isSaveMode() {
