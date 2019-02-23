@@ -69,7 +69,6 @@ public class OreControl extends JavaPlugin {
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
 
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
-        ReloadAble.RELOAD_ABLES.add(configValues);
 
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
 
