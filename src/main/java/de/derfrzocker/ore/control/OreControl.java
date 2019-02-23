@@ -43,7 +43,7 @@ public class OreControl extends JavaPlugin {
     @Getter
     private Settings settings;
 
-    private NMSReplacer nmsReplacer;
+    private NMSReplacer nmsReplacer = null;
 
     private final OreControlCommand oreControlCommand = new OreControlCommand();
 
@@ -78,6 +78,9 @@ public class OreControl extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if(nmsReplacer == null)
+            return;
+
         Bukkit.getServicesManager().register(OreControlService.class,
                 new OreControlServiceImpl(
                         nmsReplacer,
