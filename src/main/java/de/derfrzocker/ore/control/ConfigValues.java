@@ -34,4 +34,5 @@ public class ConfigValues implements ReloadAble {
     public void reload() {
         yaml = Config.getConfig(OreControl.getInstance(), file.getName());
     }
+
 }
