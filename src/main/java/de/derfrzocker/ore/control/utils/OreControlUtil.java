@@ -1,9 +1,15 @@
 package de.derfrzocker.ore.control.utils;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
 import lombok.NonNull;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @SuppressWarnings("Duplicates")
 public class OreControlUtil {
@@ -110,6 +116,114 @@ public class OreControlUtil {
             biomeSettings.setOreSettings(oreSettings);
             return oreSettings;
         }).setActivated(status);
+    }
+
+    public static HashMap<Ore, String> getTranslatedOres() {
+        return getTranslatedOres(Ore.values());
+    }
+
+    public static HashMap<Ore, String> getTranslatedOres(final @NonNull Ore... ores) {
+        HashMap<Ore, String> map = new HashMap<>();
+
+        Stream.of(ores).forEach(value -> map.put(value, new MessageKey(OreControlMessages.getInstance(), "ore." + value.toString()).getMessage().replace(" ", "_")));
+
+        return map;
+    }
+
+
+    public static HashMap<Biome, String> getTranslatedBiomes() {
+        HashMap<Biome, String> map = new HashMap<>();
+
+        Stream.of(Biome.values()).forEach(value -> map.put(value, new MessageKey(OreControlMessages.getInstance(), "biome." + value.toString()).getMessage().replace(" ", "_")));
+
+        return map;
+    }
+
+    public static HashMap<Setting, String> getTranslatedSettings() {
+        return getTranslatedSettings(Setting.values());
+    }
+
+    public static HashMap<Setting, String> getTranslatedSettings(final @NonNull Setting... settings) {
+        HashMap<Setting, String> map = new HashMap<>();
+
+        Stream.of(settings).forEach(value -> map.put(value, new MessageKey(OreControlMessages.getInstance(), "setting." + value.toString()).getMessage().replace(" ", "_")));
+
+        return map;
+    }
+
+    public static Optional<Ore> getOre(final @NonNull String oreName, final boolean translated) {
+        Optional<Ore> optional;
+
+        if (translated)
+            optional = getTranslatedOres().entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(oreName)).findAny().map(Map.Entry::getKey);
+        else
+            try {
+                optional = Optional.of(Ore.valueOf(oreName.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                optional = Optional.empty();
+            }
+
+        return optional;
+    }
+
+    public static Optional<Ore> getOre(final @NonNull String oreName, final boolean translated, final @NonNull Ore... ores) {
+        Optional<Ore> optional;
+
+        if (translated)
+            optional = getTranslatedOres(ores).entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(oreName)).findAny().map(Map.Entry::getKey);
+        else
+            try {
+                optional = Optional.of(Ore.valueOf(oreName.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                optional = Optional.empty();
+            }
+
+        return optional;
+    }
+
+    public static Optional<Biome> getBiome(final @NonNull String biomeName, final boolean translated) {
+        Optional<Biome> optional;
+
+        if (translated)
+            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
+        else
+            try {
+                optional = Optional.of(Biome.valueOf(biomeName.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                optional = Optional.empty();
+            }
+
+        return optional;
+    }
+
+    public static Optional<Setting> getSetting(final @NonNull String settingName, final boolean translated) {
+        Optional<Setting> optional;
+
+        if (translated)
+            optional = getTranslatedSettings().entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(settingName)).findAny().map(Map.Entry::getKey);
+        else
+            try {
+                optional = Optional.of(Setting.valueOf(settingName.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                optional = Optional.empty();
+            }
+
+        return optional;
+    }
+
+    public static Optional<Setting> getSetting(final @NonNull String settingName, final boolean translated, final @NonNull Setting... settings) {
+        Optional<Setting> optional;
+
+        if (translated)
+            optional = getTranslatedSettings(settings).entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(settingName)).findAny().map(Map.Entry::getKey);
+        else
+            try {
+                optional = Stream.of(settings).filter(value -> value.toString().equalsIgnoreCase(settingName.toUpperCase())).findAny();
+            } catch (IllegalArgumentException e) {
+                optional = Optional.empty();
+            }
+
+        return optional;
     }
 
 }

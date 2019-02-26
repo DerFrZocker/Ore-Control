@@ -30,6 +30,10 @@ public class ConfigValues implements ReloadAble {
         return Language.getLanguage(yaml.getString("language"));
     }
 
+    public boolean isTranslateTabCompilation() {
+        return yaml.getBoolean("translate_tab_compilation", true);
+    }
+
     @Override
     public void reload() {
         yaml = Config.getConfig(OreControl.getInstance(), file.getName());
