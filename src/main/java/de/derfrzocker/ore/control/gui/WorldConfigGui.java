@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.inventorygui;
+package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;

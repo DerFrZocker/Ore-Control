@@ -10,7 +10,7 @@ import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
-import de.derfrzocker.ore.control.inventorygui.InventoryClickListener;
+import de.derfrzocker.ore.control.gui.InventoryClickListener;
 import de.derfrzocker.ore.control.utils.Config;
 import lombok.Getter;
 import lombok.NonNull;

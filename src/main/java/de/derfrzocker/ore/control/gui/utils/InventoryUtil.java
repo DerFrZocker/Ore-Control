@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.inventorygui.utils;
+package de.derfrzocker.ore.control.gui.utils;
 
 public class InventoryUtil {
 

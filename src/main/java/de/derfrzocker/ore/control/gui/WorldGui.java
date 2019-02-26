@@ -1,7 +1,7 @@
-package de.derfrzocker.ore.control.inventorygui;
+package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
-import de.derfrzocker.ore.control.inventorygui.utils.InventoryUtil;
+import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
 import de.derfrzocker.ore.control.utils.Config;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;

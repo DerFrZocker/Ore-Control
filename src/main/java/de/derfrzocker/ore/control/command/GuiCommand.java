@@ -2,7 +2,7 @@ package de.derfrzocker.ore.control.command;
 
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
-import de.derfrzocker.ore.control.inventorygui.WorldGui;
+import de.derfrzocker.ore.control.gui.WorldGui;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
