@@ -23,8 +23,7 @@ import java.util.Map;
 
 public class BiomeGui implements InventoryGui {
 
-    @NonNull
-    private final World world;
+    private final WorldOreConfig config;
 
     private final Map<Integer, SubBiomeGui> guis = new HashMap<>();
 
@@ -37,7 +36,7 @@ public class BiomeGui implements InventoryGui {
     private final int previousPage;
 
     BiomeGui(WorldOreConfig config) {
-        this.world = Bukkit.getWorld(config.getWorld());
+        this.config = config;
         this.backSlot = Settings.getInstance().getBackSlot();
         this.nextPage = Settings.getInstance().getNextPageSlot();
         this.previousPage = Settings.getInstance().getPreviousPageSlot();
@@ -79,7 +78,7 @@ public class BiomeGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", world.getName())};
+        return new MessageValue[]{new MessageValue("world", config.getWorld())};
     }
 
     private static final class Settings implements ReloadAble {
@@ -171,7 +170,7 @@ public class BiomeGui implements InventoryGui {
                     MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(),
                             new MessageValue("page", String.valueOf(page)),
                             new MessageValue("pages", String.valueOf(pages)),
-                            new MessageValue("world", world.getName())));
+                            new MessageValue("world", config.getWorld())));
 
             inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
             inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
@@ -193,7 +192,7 @@ public class BiomeGui implements InventoryGui {
         @Override
         public void onInventoryClick(InventoryClickEvent event) {
             if (event.getRawSlot() == backSlot) {
-                openSync(event.getWhoClicked(), new WorldConfigGui(OreControl.getService().getWorldOreConfig(world).get(), event.getWhoClicked()).getInventory());
+                openSync(event.getWhoClicked(), new WorldConfigGui(config, event.getWhoClicked()).getInventory());
                 return;
             }
 
@@ -214,7 +213,7 @@ public class BiomeGui implements InventoryGui {
 
             Preconditions.checkNotNull(biome);
 
-            openSync(event.getWhoClicked(), new OreGui(OreControl.getService().getWorldOreConfig(world).get(), biome).getInventory());
+            openSync(event.getWhoClicked(), new OreGui(config, biome).getInventory());
         }
 
         @Override

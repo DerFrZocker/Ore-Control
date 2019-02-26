@@ -27,13 +27,13 @@ public class WorldConfigGui implements InventoryGui {
 
     private final int backSlot;
 
-    private final World world;
+    private final WorldOreConfig config;
 
     WorldConfigGui(WorldOreConfig config, Permissible permissible) {
-        this.world = Bukkit.getWorld(config.getWorld());
+        this.config = config;
         this.backSlot = Settings.getInstance().getBackSlot();
 
-        inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), new MessageValue("world", this.world.getName())));
+        inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), new MessageValue("world", config.getWorld())));
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
             ores = Settings.getInstance().getOreItemStackSlot();
@@ -58,8 +58,6 @@ public class WorldConfigGui implements InventoryGui {
             return;
         }
 
-        WorldOreConfig config = OreControl.getService().getWorldOreConfig(world).get();
-
         if (event.getRawSlot() == ores) {
             openSync(event.getWhoClicked(), new OreGui(config, null).getInventory());
             return;
@@ -75,7 +73,7 @@ public class WorldConfigGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", world.getName())};
+        return new MessageValue[]{new MessageValue("world", config.getWorld())};
     }
 
     private static final class Settings implements ReloadAble {

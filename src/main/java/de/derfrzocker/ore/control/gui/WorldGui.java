@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
 import de.derfrzocker.ore.control.utils.Config;
 import de.derfrzocker.ore.control.utils.MessageUtil;
@@ -14,8 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class WorldGui implements InventoryGui {
 
@@ -28,29 +28,41 @@ public class WorldGui implements InventoryGui {
 
     private final int previousPage;
 
+    private Map<String, WorldOreConfig> worldOreConfigs = new HashMap<>();
+
     public WorldGui() {
         this.nextPage = Settings.getInstance().getNextPageSlot();
         this.previousPage = Settings.getInstance().getPreviousPageSlot();
 
-        String[] world = Bukkit.getWorlds().stream().map(World::getName).toArray(String[]::new);
+        final Set<String> configsSet = new LinkedHashSet<>();
 
-        int slots = InventoryUtil.calculateSlots(Settings.getInstance().getRows(), Settings.getInstance().getWorldGap());
+        Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
+        OreControl.getService().getAllWorldOreConfigs().forEach(value -> worldOreConfigs.put(value.getWorld(), value));
 
-        pages = InventoryUtil.calculatePages(slots, world.length);
+        worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getWorld).forEach(configsSet::add);
+        configsSet.addAll(worldOreConfigs.keySet());
+
+        final String[] configs = configsSet.toArray(new String[0]);
+
+        int slots = InventoryUtil.calculateSlots(Settings.getInstance().getRows(), Settings.getInstance().getConfigGap());
+
+        pages = InventoryUtil.calculatePages(slots, configs.length);
 
         for (int i = 0; i < pages; i++) {
             String[] worlds;
 
             if (i == pages - 1) {
-                int rest = world.length - i * slots;
+                int rest = configs.length - i * slots;
                 worlds = new String[rest];
             } else
                 worlds = new String[slots];
 
-            System.arraycopy(world, i * slots, worlds, 0, worlds.length);
+            System.arraycopy(configs, i * slots, worlds, 0, worlds.length);
 
             guis.put(i, new SubWorldGui(worlds, i));
         }
+
+        worldOreConfigs = null;
     }
 
     @Override
@@ -96,12 +108,16 @@ public class WorldGui implements InventoryGui {
             return yaml.getInt("inventory.rows");
         }
 
-        private int getWorldGap() {
-            return yaml.getInt("inventory.world_gap");
+        private int getConfigGap() {
+            return yaml.getInt("inventory.config_gap");
         }
 
         private ItemStack getWorldItemStack() {
             return yaml.getItemStack("world_item_stack").clone();
+        }
+
+        private ItemStack getTemplateItemStack() {
+            return yaml.getItemStack("template_item_stack").clone();
         }
 
         private int getNextPageSlot() {
@@ -136,7 +152,7 @@ public class WorldGui implements InventoryGui {
 
         private final Map<Integer, String> values = new HashMap<>();
 
-        private SubWorldGui(String[] worlds, int page) {
+        private SubWorldGui(String[] configs, int page) {
             this.page = page;
 
             MessageValue[] messageValues = new MessageValue[]{new MessageValue("page", String.valueOf(page)), new MessageValue("pages", String.valueOf(pages))};
@@ -150,10 +166,16 @@ public class WorldGui implements InventoryGui {
             if (page != 0)
                 inventory.setItem(previousPage, MessageUtil.replaceItemStack(Settings.getInstance().getPreviousPageItemStack(), messageValues));
 
-            for (int i = 0; i < worlds.length; i++) {
-                int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getWorldGap());
-                inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getWorldItemStack(), new MessageValue("world", worlds[i])));
-                values.put(slot, worlds[i]);
+            for (int i = 0; i < configs.length; i++) {
+                final String configName = configs[i];
+                int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getConfigGap());
+
+                if (worldOreConfigs.containsKey(configName) && worldOreConfigs.get(configName).isTemplate())
+                    inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getTemplateItemStack(), new MessageValue("template", configName)));
+                else
+                    inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getWorldItemStack(), new MessageValue("world", configName)));
+
+                values.put(slot, configName);
             }
         }
 
@@ -175,10 +197,12 @@ public class WorldGui implements InventoryGui {
 
             World world = Bukkit.getWorld(values.get(event.getRawSlot()));
 
+            // TODO
+
             if (world == null)
                 throw new IllegalStateException("The world: " + values.get(event.getRawSlot()) + " cant't be null!");
 
-            openSync(event.getWhoClicked(), new WorldConfigGui(OreControl.getService().getWorldOreConfig(world).orElseGet(() -> OreControl.getService().createWorldOreConfig(world)), event.getWhoClicked()).getInventory());
+            openSync(event.getWhoClicked(), new WorldConfigGui(OreControl.getService().getWorldOreConfig(values.get(event.getRawSlot())).orElseGet(() -> OreControl.getService().createWorldOreConfig(values.get(event.getRawSlot()))), event.getWhoClicked()).getInventory());
         }
 
         @Override

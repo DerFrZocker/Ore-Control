@@ -28,16 +28,12 @@ import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAVE_WARNING
 public class SettingsGui implements InventoryGui {
 
     @Getter
-    @NonNull
     private final Inventory inventory;
 
-    @NonNull
-    private final World world;
+    private final WorldOreConfig config;
 
-    @NonNull
     private final Setting setting;
 
-    @NonNull
     private final Ore ore;
 
     private final Map<Integer, Integer> values = new HashMap<>();
@@ -51,7 +47,7 @@ public class SettingsGui implements InventoryGui {
     SettingsGui(WorldOreConfig config, Ore ore, Setting setting, Biome biome) {
         this.ore = ore;
         this.setting = setting;
-        this.world = Bukkit.getWorld(config.getWorld());
+        this.config = config;
         this.biome = biome;
         this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
         this.backSlot = Settings.getInstance().getBackSlot();
@@ -72,8 +68,6 @@ public class SettingsGui implements InventoryGui {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        WorldOreConfig config = OreControl.getService().getWorldOreConfig(world).get();
-
         if (event.getRawSlot() == backSlot) {
             openSync(event.getWhoClicked(), new OreSettingsGui(config, ore, biome).getInventory());
             return;
@@ -114,7 +108,7 @@ public class SettingsGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", world.getName()),
+        return new MessageValue[]{new MessageValue("world", config.getWorld()),
                 new MessageValue("biome", biome == null ? "" : biome.toString()),
                 new MessageValue("ore", ore.toString()),
                 new MessageValue("setting", setting.toString())};

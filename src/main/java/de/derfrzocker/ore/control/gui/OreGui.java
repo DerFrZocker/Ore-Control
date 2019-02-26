@@ -24,11 +24,9 @@ import java.util.Map;
 public class OreGui implements InventoryGui {
 
     @Getter
-    @NonNull
     private final Inventory inventory;
 
-    @NonNull
-    private final World world;
+    private final WorldOreConfig config;
 
     private final Map<Integer, Ore> values = new HashMap<>();
 
@@ -37,7 +35,7 @@ public class OreGui implements InventoryGui {
     private final int backSlot;
 
     OreGui(WorldOreConfig config, Biome biome) {
-        this.world = Bukkit.getWorld(config.getWorld());
+        this.config = config;
         this.biome = biome;
         this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
 
@@ -57,8 +55,6 @@ public class OreGui implements InventoryGui {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        WorldOreConfig config = OreControl.getService().getWorldOreConfig(world).get();
-
         if (event.getRawSlot() == backSlot) {
             openSync(event.getWhoClicked(), biome == null ? new WorldConfigGui(config, event.getWhoClicked()).getInventory() : new BiomeGui(config).getInventory());
             return;
@@ -78,7 +74,7 @@ public class OreGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", world.getName()),
+        return new MessageValue[]{new MessageValue("world", config.getWorld()),
                 new MessageValue("biome", biome == null ? "" : biome.toString())};
     }
 

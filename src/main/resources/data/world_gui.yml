@@ -3,7 +3,7 @@ version: 2
 inventory:
   name: "%%translation:[gui.world.name]%"
   rows: 1
-  world_gap: 2
+  config_gap: 2
 next_page:
   slot: 8
   item_stack:
@@ -36,3 +36,12 @@ world_item_stack:
     display-name: §r%world%
     internal: H4sIAAAAAAAAAEWRya6jVhRFqVIivXpK/iIz9ESP8SAD2/SGS2NzaZQJYGzfS2MaA4ZvykfGVZOMztHZe0l763wSxCfxx6kcq8rtH1dUFR/Ed+NC/JUL9FbMaemLz9nNF79h8q9UYsWvIud5MeNZjt1mn8TnG2qL/omK4Qfx8Sxez7Evhk+CIL59ED9O6NakPy/f/x2m6DkKojdFlGhxok/6Ih+ZLS4syaZfwbSdTwALs2MWu21Jm9wNQLmD814fvVsWSkmAs9kcGrW6LLQZdG5KHihRb8YmaeWq8gKjNkPLl6FMGq46bQetE46h7VQkCzIVzmW1UIHF0IvVcXGkv5Rr2bvudXpcl52xrzeIlISTFB+V1mLW+yO4XATuNuFZ1N/RDgu0TV7SVsGB1OYMxq69RgkZl9XThUdr33OL8RQltKWOVFcOUdfbLlQauqesw22jXo/X9amt6j6v6a2R2CdE42R4qNtL2dw33WMLKHHy8VqEq43vT1mOYkqPNNhQqmE/tOCi+r0O3dlytCF4hJUDnrmNSkVqXwcRurGLheyskAIMw3vPndUXhI/UOThp+opNXJ/d10PXl8PGahkOqHsm1DQ/pebsZNlmA6VAq7NT2WH/GDfSTDZsopo5H4eV2BxY3TkaZQrzmM6dLPbC6WgPkrPtOedElUMp1LVrnhRlPland49aT3BYKDmIioPrezFG+mCfUTtF4yA2pAKPF3gvXYaTfE+yo3rQ0VVC5NAVYzrAlZ+zeJWtHtHnGXQMlbl7SRj2Kxu7o64dGTrX+wbKccpnpHp3cZbfOkM/DnuR1g3PnMlzE4+SlVLckLPXUthJ7jW0zruD4BovJG9TwSz2nXkIW8Eji6Cc2pDFI/AGB5MLkBac3IECpb8/iN9hWo3Ft3+KxaTTkKlyzr9n0Q45WGGAnPPO2abBehPAqgxGs18yNmkzDZrJwRCN2mZsuWTjdccDzV7A6nF2CO6ObLBJ+ObkBAHZeP+6QgaaUa6bU1JXQxII9ywMkINMJY32bcyZQqapzzQUql8+tmqyWqUvkVkFNXxdwmpJQg85jb9cwuCdw68K3WfyGq4GbjdGBaxTwL/1Ab2ZwcAPlOo+ncuPyeL+91o102Y1xHmt1peDMCaRN100yF90uCQniX53YAD2BIB3HFj9EmjKe8I6XkFth+8dl2xyzukE33Ecxq/4bMxA82jnDEubTZAdqijGOzqpFcEOvSWuY3SNmC1BfBC/gbQuiD9l1KK8X6q0Rk1BEP8B6FWwXpQEAAA=
     skull-owner: Dipicrylamine
+
+template_item_stack:
+  ==: org.bukkit.inventory.ItemStack
+  v: 1631
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: §r%template%
