@@ -6,7 +6,7 @@ command:
       - '&4Falsche Anzahl an Argumenten!'
       - '&cbenutze &f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f>'
       - '                                <&9Anzahl&f(&9%&f)>'
-    world_not_found: '&4Die Welt &f''&9%world_name%&f''&4 existiert nicht!'
+    config_not_found: '&4Die Config &f''&9%config_name%&f''&4 existiert nicht!'
     no_number: '&f''&9%value%&f'' &4ist keine Zahl!'
     setting_not_found: '&4Die Einstellung &f''&9%setting%&f'' &4existiert nicht!'
     setting_not_valid:
@@ -33,6 +33,12 @@ command:
       ore_not_valid:
         - '&4Das Erz &f''&9%ore%&f'' &4kann nicht in das'
         - '&4Biom &f''&9%biome%&f''&4gesetzt werden!'
+  create:
+    not_enough_args:
+      - "&4Falsche Anzahl an Argumenten!"
+      - "&cbenutze &f/&9orecontrol create &f<&9name&f>"
+    name_already_exist: "&4Cie Config &f'&9%config_name%&f' &4existiert bereits!"
+    success: "&aDie Vorlage &f'&9%config_name%&f' &awurde erfolgreich erstellt!"
   reload:
     begin: '&aBeginne mit dem Reloaden!'
     end: '&aReloaden Fertig!'
@@ -53,6 +59,11 @@ command:
         description:
           - '   -> &9Berechtigung&f: ore.control.set.biome'
           - '   -> &9Beschreibung&f: Setze einen Wert, für ein bestimmtes Biome'
+    create:
+      command: "&f/&9orecontrol create &f<&9name&f>"
+      description:
+        - "   -> &9Berechtigung&f: ore.control.template.create"
+        - "   -> &9Beschreibung&f: Erstelle eine Vorlage, in der du Werte setzen kannst bevor du eine Welt erstellst"
     reload:
       command: '&f/&9orecontrol reload'
       description:

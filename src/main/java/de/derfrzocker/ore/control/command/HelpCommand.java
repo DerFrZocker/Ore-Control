@@ -23,15 +23,19 @@ public class HelpCommand implements TabExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
 
             if (args.length == 1) {
-                if ("set".equalsIgnoreCase(args[0])) {
+                if ("set".equalsIgnoreCase(args[0]) && Permissions.SET_PERMISSION.hasPermission(sender)) {
                     sendSetHelp(sender);
                     return;
                 }
-                if ("setbiome".equalsIgnoreCase(args[0])) {
+                if ("setbiome".equalsIgnoreCase(args[0]) && Permissions.SET_BIOME_PERMISSION.hasPermission(sender)) {
                     sendSetBiomeHelp(sender);
                     return;
                 }
-                if ("reload".equalsIgnoreCase(args[0])) {
+                if ("create".equalsIgnoreCase(args[0]) && Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(sender)) {
+                    sendCreateHelp(sender);
+                    return;
+                }
+                if ("reload".equalsIgnoreCase(args[0]) && Permissions.RELOAD_PERMISSION.hasPermission(sender)) {
                     sendReloadHelp(sender);
                     return;
                 }
@@ -43,28 +47,35 @@ public class HelpCommand implements TabExecutor {
 
             HELP_HEADER.sendMessage(sender);
 
-            boolean b = false;
+            boolean seperator = false;
 
             if (Permissions.SET_PERMISSION.hasPermission(sender)) {
                 HELP_SET_COMMAND.sendMessage(sender);
-                b = true;
+                seperator = true;
             }
 
             if (Permissions.SET_BIOME_PERMISSION.hasPermission(sender)) {
-                if (b)
+                if (seperator)
                     HELP_SEPARATOR.sendMessage(sender);
                 HELP_SET_BIOME_COMMAND.sendMessage(sender);
-                b = true;
+                seperator = true;
+            }
+
+            if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(sender)) {
+                if (seperator)
+                    HELP_SEPARATOR.sendMessage(sender);
+                HELP_CREATE_COMMAND.sendMessage(sender);
+                seperator = true;
             }
 
             if (Permissions.RELOAD_PERMISSION.hasPermission(sender)) {
-                if (b)
+                if (seperator)
                     HELP_SEPARATOR.sendMessage(sender);
                 HELP_RELOAD_COMMAND.sendMessage(sender);
-                b = true;
+                seperator = true;
             }
 
-            if (b)
+            if (seperator)
                 HELP_SEPARATOR.sendMessage(sender);
             HELP_COMMAND.sendMessage(sender);
 
@@ -85,6 +96,13 @@ public class HelpCommand implements TabExecutor {
         HELP_HEADER.sendMessage(sender);
         HELP_SET_COMMAND.sendMessage(sender);
         HELP_SET_DESCRIPTION.sendMessage(sender);
+        HELP_FOOTER.sendMessage(sender);
+    }
+
+    private void sendCreateHelp(CommandSender sender) {
+        HELP_HEADER.sendMessage(sender);
+        HELP_CREATE_COMMAND.sendMessage(sender);
+        HELP_CREATE_DESCRIPTION.sendMessage(sender);
         HELP_FOOTER.sendMessage(sender);
     }
 
@@ -113,6 +131,8 @@ public class HelpCommand implements TabExecutor {
                 list.add("set");
             if ("setbiome".startsWith(subcommand) && Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
                 list.add("setbiome");
+            if ("create".startsWith(subcommand) && Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(sender))
+                list.add("create");
             if ("reload".startsWith(subcommand) && Permissions.RELOAD_PERMISSION.hasPermission(sender))
                 list.add("reload");
             if ("help".startsWith(subcommand))

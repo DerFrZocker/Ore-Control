@@ -98,6 +98,7 @@ public class OreControl extends JavaPlugin {
         oreControlCommand.registerExecutor(new SetCommand(), "set");
         oreControlCommand.registerExecutor(new ReloadCommand(), "reload");
         oreControlCommand.registerExecutor(new SetBiomeCommand(), "setbiome");
+        oreControlCommand.registerExecutor(new CreateCommand(), "create");
         oreControlCommand.registerExecutor(new GuiCommand(), "");
 
         HelpCommand helpCommand = new HelpCommand();

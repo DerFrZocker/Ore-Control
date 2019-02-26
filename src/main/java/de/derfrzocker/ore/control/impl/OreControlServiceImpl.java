@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.World;
 
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class OreControlServiceImpl implements OreControlService {
@@ -57,5 +58,10 @@ public class OreControlServiceImpl implements OreControlService {
     @Override
     public void removeWorldOreConfig(final @NonNull WorldOreConfig config) {
         dao.remove(config);
+    }
+
+    @Override
+    public Set<WorldOreConfig> getAllWorldOreConfigs() {
+        return dao.getAll();
     }
 }

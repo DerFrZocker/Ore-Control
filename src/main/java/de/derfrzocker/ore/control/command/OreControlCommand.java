@@ -20,6 +20,8 @@ public class OreControlCommand extends CommandSeparator {
                 list.add("set");
             if ("setbiome".startsWith(args[0].toLowerCase()) && Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
                 list.add("setbiome");
+            if ("create".startsWith(args[0].toLowerCase()) && Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(sender))
+                list.add("create");
             if ("reload".startsWith(args[0].toLowerCase()) && Permissions.RELOAD_PERMISSION.hasPermission(sender))
                 list.add("reload");
             if ("help".startsWith(args[0].toLowerCase()) && Permissions.hasAnyCommandPermission(sender))

@@ -6,7 +6,7 @@ command:
     not_enough_args:
       - "&4Wrong amount of arguments!"
       - "&cuse &f/&9orecontrol set &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
-    world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
+    config_not_found: "&4The config &f'&9%config_name%&f'&4 does not exist!"
     no_number: "&f'&9%value%&f' &4is not a valid number!"
     setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
     setting_not_valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
@@ -29,6 +29,13 @@ command:
       biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
       ore_not_valid: "&4The Ore &f'&9%ore%&f' &4is not valid for the biome &f'&9%biome%&f'&4!"
 
+  create:
+    not_enough_args:
+      - "&4Wrong amount of arguments!"
+      - "&cuse &f/&9orecontrol create &f<&9name&f>"
+    name_already_exist: "&4The Config &f'&9%config_name%&f' &4already exist!"
+    success: "&aThe template &f'&9%config_name%&f' &awas created successfully!"
+
   reload:
     begin: "&aBegin with the reload!"
     end: "&aReload finish!"
@@ -50,6 +57,11 @@ command:
           - "   -> &9permission&f: ore.control.set.biome"
           - "   -> &9description&f: Set a specific value for an ore setting, "
           - "                      for a specific biome in a specific world"
+    create:
+      command: "&f/&9orecontrol create &f<&9name&f>"
+      description:
+        - "   -> &9permission&f: ore.control.template.create"
+        - "   -> &9description&f: Create a template file, in there you can set values before create a new world"
     reload:
       command: "&f/&9orecontrol reload"
       description:

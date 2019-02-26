@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SuppressWarnings("ConstantConditions")
-@RunWith(PowerMockRunner.class)
+@RunWith(PowerMockRunner.class) //TODO rework the test cases, add assertNotSame to test cases
 public class DeserializeTest {
 
     @Test

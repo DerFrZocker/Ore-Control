@@ -3,6 +3,7 @@ package de.derfrzocker.ore.control.api;
 import org.bukkit.World;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface OreControlService {
 
@@ -19,5 +20,7 @@ public interface OreControlService {
     void saveWorldOreConfig(WorldOreConfig config);
 
     void removeWorldOreConfig(WorldOreConfig config);
+
+    Set<WorldOreConfig> getAllWorldOreConfigs();
 
 }

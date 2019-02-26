@@ -36,16 +36,9 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
         Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
             final String oreName = args[0];
             final String settingName = args[1];
-            final String worldName = args[2];
+            final String configName = args[2];
             String amount = args[3];
             final boolean translated = OreControl.getInstance().getConfigValues().isTranslateTabCompilation();
-
-            final World world = Bukkit.getWorld(worldName);
-
-            if (world == null) {
-                SET_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world_name", worldName));
-                return;
-            }
 
             final Optional<Ore> optionalOre = OreControlUtil.getOre(oreName, translated);
 
@@ -72,7 +65,16 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
 
             final OreControlService service = OreControl.getService();
 
-            final WorldOreConfig worldOreConfig = service.getWorldOreConfig(world).orElseGet(() -> service.createWorldOreConfig(world));
+            final World world = Bukkit.getWorld(configName);
+
+            final Optional<WorldOreConfig> optionalWorldOreConfig = service.getWorldOreConfig(configName);
+
+            if (!optionalWorldOreConfig.isPresent() && world == null) {
+                SET_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("config_name", configName));
+                return;
+            }
+
+            final WorldOreConfig worldOreConfig = optionalWorldOreConfig.orElseGet(() -> service.createWorldOreConfig(world));
 
             double value;
             boolean percents = false;
@@ -155,9 +157,10 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
             if (!OreControlUtil.getSetting(args[2], translated, ore.get().getSettings()).isPresent())
                 return list;
 
-            final String world_name = args[3].toLowerCase();
+            final String configName = args[3].toLowerCase();
 
-            Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(world_name)).forEach(list::add);
+            Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(configName)).forEach(list::add);
+            OreControl.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getWorld())).map(WorldOreConfig::getWorld).forEach(list::add);
 
             return list;
         }
@@ -173,12 +176,12 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
             if (!setting.isPresent())
                 return list;
 
-            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[3])).findAny();
+            final World world = Bukkit.getWorld(args[3]);
 
-            if (!world.isPresent())
+            final Optional<WorldOreConfig> worldOreConfig = OreControl.getService().getWorldOreConfig(args[3]);
+
+            if (!worldOreConfig.isPresent() && world == null)
                 return list;
-
-            final Optional<WorldOreConfig> worldOreConfig = OreControl.getService().getWorldOreConfig(world.get());
 
             if (!worldOreConfig.isPresent()) {
                 list.add("current: " + OreControlUtil.getDefault(ore.get(), setting.get()));
