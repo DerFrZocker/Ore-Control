@@ -58,7 +58,7 @@ public class OreControlUtilTest {
 
         final int amount = 10;
 
-        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         OreSettingsYamlImpl oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
         oreSettings.setValue(Setting.VEIN_SIZE, amount);
@@ -84,7 +84,7 @@ public class OreControlUtilTest {
 
         final int amount = 10;
 
-        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         assertFalse(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
 
@@ -143,7 +143,7 @@ public class OreControlUtilTest {
 
         final int amount = 10;
 
-        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         BiomeOreSettingsYamlImpl biomeOreSettings = new BiomeOreSettingsYamlImpl(Biome.BADLANDS);
 
@@ -172,7 +172,7 @@ public class OreControlUtilTest {
 
         final int amount = 10;
 
-        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfigYamlImpl worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         assertFalse(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).isPresent());
 
@@ -240,7 +240,7 @@ public class OreControlUtilTest {
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(null, mock(WorldOreConfig.class)));
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, null));
 
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         assertTrue(OreControlUtil.isActivated(Ore.GOLD_BADLANDS, worldOreConfig));
 
@@ -263,7 +263,7 @@ public class OreControlUtilTest {
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, null, Biome.BADLANDS));
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, mock(WorldOreConfig.class), null));
 
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         assertTrue(OreControlUtil.isActivated(Ore.GOLD_BADLANDS, worldOreConfig, Biome.BADLANDS));
 
@@ -288,7 +288,7 @@ public class OreControlUtilTest {
         assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), false));
         assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, false));
 
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         OreControlUtil.setActivated(Ore.GOLD_BADLANDS, worldOreConfig, false);
 
@@ -313,7 +313,7 @@ public class OreControlUtilTest {
         assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, false, Biome.BADLANDS));
         assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, mock(WorldOreConfig.class), false, null));
 
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world");
+        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
 
         OreControlUtil.setActivated(Ore.GOLD_BADLANDS, worldOreConfig, false, Biome.BADLANDS);
 

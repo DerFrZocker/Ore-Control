@@ -31,14 +31,14 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     @Setter
     private boolean template;
 
-    public WorldOreConfigYamlImpl(final String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings) {
+    public WorldOreConfigYamlImpl(final @NonNull String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings) {
         this.world = world;
         this.template = template;
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
-    public WorldOreConfigYamlImpl(final String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings, final @NonNull Map<Biome, BiomeOreSettings> biomeOreSettings) {
+    public WorldOreConfigYamlImpl(final @NonNull String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings, final @NonNull Map<Biome, BiomeOreSettings> biomeOreSettings) {
         this(world, template, oreSettings);
 
         biomeOreSettings.forEach((key, value) -> this.biomeOreSettings.put(key, value.clone()));

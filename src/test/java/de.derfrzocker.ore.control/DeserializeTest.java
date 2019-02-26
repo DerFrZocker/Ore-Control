@@ -116,7 +116,7 @@ public class DeserializeTest {
         assertEquals(biomeOreSettings.getBiome(), Biome.BADLANDS);
         assertEquals(biomeOreSettings.getOreSettings().size(), 1);
         assertTrue(biomeOreSettings.getOreSettings(Ore.GOLD).isPresent());
-        assertSame(biomeOreSettings.getOreSettings(Ore.GOLD).get(), oreSettings);
+        assertEquals(biomeOreSettings.getOreSettings(Ore.GOLD).get(), oreSettings);
 
         ///////////////////////////////////////////////////
 
@@ -131,11 +131,11 @@ public class DeserializeTest {
         assertEquals(biomeOreSettings.getBiome(), Biome.BADLANDS);
         assertEquals(biomeOreSettings.getOreSettings().size(), 3);
         assertTrue(biomeOreSettings.getOreSettings(Ore.GOLD).isPresent());
-        assertSame(biomeOreSettings.getOreSettings(Ore.GOLD).get(), oreSettings);
+        assertEquals(biomeOreSettings.getOreSettings(Ore.GOLD).get(), oreSettings);
         assertTrue(biomeOreSettings.getOreSettings(Ore.DIAMOND).isPresent());
-        assertSame(biomeOreSettings.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
+        assertEquals(biomeOreSettings.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
         assertTrue(biomeOreSettings.getOreSettings(Ore.EMERALD).isPresent());
-        assertSame(biomeOreSettings.getOreSettings(Ore.EMERALD).get(), oreSettings3);
+        assertEquals(biomeOreSettings.getOreSettings(Ore.EMERALD).get(), oreSettings3);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class DeserializeTest {
         assertEquals(worldOreConfig.getOreSettings().size(), 1);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 0);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
+        assertEquals(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
 
         ///////////////////////////////////////////////////
 
@@ -195,11 +195,11 @@ public class DeserializeTest {
         assertEquals(worldOreConfig.getOreSettings().size(), 3);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 0);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
+        assertEquals(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
         assertTrue(worldOreConfig.getOreSettings(Ore.DIAMOND).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
+        assertEquals(worldOreConfig.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
         assertTrue(worldOreConfig.getOreSettings(Ore.EMERALD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.EMERALD).get(), oreSettings3);
+        assertEquals(worldOreConfig.getOreSettings(Ore.EMERALD).get(), oreSettings3);
 
         ///////////////////////////////////////////////////
 
@@ -213,13 +213,13 @@ public class DeserializeTest {
         assertEquals(worldOreConfig.getOreSettings().size(), 3);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 1);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
+        assertEquals(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
         assertTrue(worldOreConfig.getOreSettings(Ore.DIAMOND).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
+        assertEquals(worldOreConfig.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
         assertTrue(worldOreConfig.getOreSettings(Ore.EMERALD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.EMERALD).get(), oreSettings3);
+        assertEquals(worldOreConfig.getOreSettings(Ore.EMERALD).get(), oreSettings3);
         assertTrue(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).isPresent());
-        assertSame(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get(), biomeOreSettings);
+        assertEquals(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get(), biomeOreSettings);
 
         ///////////////////////////////////////////////////
 
@@ -235,17 +235,17 @@ public class DeserializeTest {
         assertEquals(worldOreConfig.getOreSettings().size(), 3);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 3);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
+        assertEquals(worldOreConfig.getOreSettings(Ore.GOLD).get(), oreSettings);
         assertTrue(worldOreConfig.getOreSettings(Ore.DIAMOND).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
+        assertEquals(worldOreConfig.getOreSettings(Ore.DIAMOND).get(), oreSettings2);
         assertTrue(worldOreConfig.getOreSettings(Ore.EMERALD).isPresent());
-        assertSame(worldOreConfig.getOreSettings(Ore.EMERALD).get(), oreSettings3);
+        assertEquals(worldOreConfig.getOreSettings(Ore.EMERALD).get(), oreSettings3);
         assertTrue(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).isPresent());
-        assertSame(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get(), biomeOreSettings);
+        assertEquals(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get(), biomeOreSettings);
         assertTrue(worldOreConfig.getBiomeOreSettings(Biome.RIVER).isPresent());
-        assertSame(worldOreConfig.getBiomeOreSettings(Biome.RIVER).get(), biomeOreSettings2);
+        assertEquals(worldOreConfig.getBiomeOreSettings(Biome.RIVER).get(), biomeOreSettings2);
         assertTrue(worldOreConfig.getBiomeOreSettings(Biome.PLAINS).isPresent());
-        assertSame(worldOreConfig.getBiomeOreSettings(Biome.PLAINS).get(), biomeOreSettings3);
+        assertEquals(worldOreConfig.getBiomeOreSettings(Biome.PLAINS).get(), biomeOreSettings3);
 
 
     }
