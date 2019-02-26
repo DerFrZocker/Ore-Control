@@ -22,13 +22,18 @@ public class OreControlServiceImpl implements OreControlService {
     private final WorldOreConfigDao dao;
 
     @Override
-    public Optional<WorldOreConfig> getWorldOreConfig(World world) {
-        return dao.get(world);
+    public Optional<WorldOreConfig> getWorldOreConfig(final @NonNull World world) {
+        return dao.get(world.getName());
     }
 
     @Override
-    public WorldOreConfig createWorldOreConfig(@NonNull World world) {
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(world.getName());
+    public Optional<WorldOreConfig> getWorldOreConfig(final @NonNull String name) {
+        return dao.get(name);
+    }
+
+    @Override
+    public WorldOreConfig createWorldOreConfig(final @NonNull World world) {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(world.getName(), false);
 
         saveWorldOreConfig(worldOreConfig);
 
@@ -36,7 +41,21 @@ public class OreControlServiceImpl implements OreControlService {
     }
 
     @Override
-    public void saveWorldOreConfig(WorldOreConfig config) {
+    public WorldOreConfig createWorldOreConfigTemplate(final @NonNull String name) {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(name, true);
+
+        saveWorldOreConfig(worldOreConfig);
+
+        return worldOreConfig;
+    }
+
+    @Override
+    public void saveWorldOreConfig(final @NonNull WorldOreConfig config) {
         dao.save(config);
+    }
+
+    @Override
+    public void removeWorldOreConfig(final @NonNull WorldOreConfig config) {
+        dao.remove(config);
     }
 }

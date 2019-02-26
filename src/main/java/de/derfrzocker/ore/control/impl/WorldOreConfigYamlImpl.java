@@ -2,21 +2,20 @@ package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldOreConfig {
 
     private static final String WORLD_KEY = "world";
+    private static final String TEMPLATE_KEY = "template";
 
     @Getter
     private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
@@ -28,44 +27,56 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     @NonNull
     private final String world;
 
-    public WorldOreConfigYamlImpl(@NonNull String world, Map<Ore, OreSettings> map) {
+    @Getter
+    @Setter
+    private boolean template;
+
+    public WorldOreConfigYamlImpl(final String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings) {
         this.world = world;
-        map.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings())).forEach(this::setOreSettings);
-        map.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setOreSettings);
+        this.template = template;
+
+        oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
-    public WorldOreConfigYamlImpl(@NonNull String world, Map<Ore, OreSettings> map, Map<Biome, BiomeOreSettings> biomeOreSettings) {
-        this(world, map);
+    public WorldOreConfigYamlImpl(final String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings, final @NonNull Map<Biome, BiomeOreSettings> biomeOreSettings) {
+        this(world, template, oreSettings);
 
-        biomeOreSettings.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings())).forEach(this::setBiomeOreSettings);
-        biomeOreSettings.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setBiomeOreSettings);
+        biomeOreSettings.forEach((key, value) -> this.biomeOreSettings.put(key, value.clone()));
     }
 
     @Override
-    public Optional<OreSettings> getOreSettings(@NonNull Ore ore) {
+    public Optional<OreSettings> getOreSettings(final @NonNull Ore ore) {
         return Optional.ofNullable(oreSettings.get(ore));
     }
 
     @Override
-    public void setOreSettings(OreSettings oreSettings) {
+    public void setOreSettings(final OreSettings oreSettings) {
         this.oreSettings.put(oreSettings.getOre(), oreSettings);
     }
 
     @Override
-    public Optional<BiomeOreSettings> getBiomeOreSettings(@NonNull Biome biome) {
+    public Optional<BiomeOreSettings> getBiomeOreSettings(final @NonNull Biome biome) {
         return Optional.ofNullable(this.biomeOreSettings.get(biome));
     }
 
     @Override
-    public void setBiomeOreSettings(BiomeOreSettings biomeOreSettings) {
+    public void setBiomeOreSettings(final BiomeOreSettings biomeOreSettings) {
         this.biomeOreSettings.put(biomeOreSettings.getBiome(), biomeOreSettings);
     }
 
     @Override
+    public WorldOreConfig clone() {
+        return new WorldOreConfigYamlImpl(world, template, oreSettings, biomeOreSettings);
+    }
+
+    @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new LinkedHashMap<>();
 
         map.put(WORLD_KEY, getWorld());
+
+        if (template)
+            map.put(TEMPLATE_KEY, true);
 
         getOreSettings().entrySet().stream().
                 map(entry -> {
@@ -83,10 +94,10 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
         return map;
     }
 
-    public static WorldOreConfigYamlImpl deserialize(Map<String, Object> map) {
-        Map<Ore, OreSettings> oreSettings = new HashMap<>();
+    public static WorldOreConfigYamlImpl deserialize(final Map<String, Object> map) {
+        final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
-        Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
+        final Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
 
         map.entrySet().stream().filter(entry -> OreControlUtil.isOre(entry.getKey())).
                 forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
@@ -94,7 +105,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
         map.entrySet().stream().filter(entry -> OreControlUtil.isBiome(entry.getKey())).
                 forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
 
-        return new WorldOreConfigYamlImpl((String) map.get(WORLD_KEY), oreSettings, biomeOreSettings);
+        return new WorldOreConfigYamlImpl((String) map.get(WORLD_KEY), (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
     }
 
 }

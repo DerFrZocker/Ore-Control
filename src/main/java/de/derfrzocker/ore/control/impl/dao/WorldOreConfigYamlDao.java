@@ -6,7 +6,6 @@ import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.utils.Config;
 import lombok.NonNull;
-import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -24,7 +23,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     @NonNull
     private final YamlConfiguration yaml; //TODO Check Thread safety
 
-    public WorldOreConfigYamlDao(File file) {
+    public WorldOreConfigYamlDao(final File file) {
         this.file = file;
         yaml = new Config(file);
         try {
@@ -35,12 +34,12 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     }
 
     @Override
-    public Optional<WorldOreConfig> get(@NonNull World world) {
-        return Optional.ofNullable(yaml.getSerializable(world.getName(), WorldOreConfigYamlImpl.class, null));
+    public Optional<WorldOreConfig> get(final @NonNull String name) {
+        return Optional.ofNullable(yaml.getSerializable(name, WorldOreConfigYamlImpl.class, null));
     }
 
     @Override
-    public void remove(@NonNull WorldOreConfig config) {
+    public void remove(final @NonNull WorldOreConfig config) {
         yaml.set(config.getWorld(), null);
 
         try {
@@ -53,7 +52,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     @Override
     public void save(@NonNull WorldOreConfig config) {
         if (!(config instanceof ConfigurationSerializable))
-            config = new WorldOreConfigYamlImpl(config.getWorld(), config.getOreSettings());
+            config = new WorldOreConfigYamlImpl(config.getWorld(), config.isTemplate(), config.getOreSettings());
 
         yaml.set(config.getWorld(), config);
 

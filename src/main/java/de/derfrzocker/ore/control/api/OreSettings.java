@@ -17,4 +17,6 @@ public interface OreSettings extends Cloneable {
 
     void setActivated(boolean status);
 
+    OreSettings clone();
+
 }

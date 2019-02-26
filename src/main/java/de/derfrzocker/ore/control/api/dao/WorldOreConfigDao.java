@@ -1,14 +1,13 @@
 package de.derfrzocker.ore.control.api.dao;
 
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import org.bukkit.World;
 
 import java.util.Optional;
 import java.util.Set;
 
 public interface WorldOreConfigDao {
 
-    Optional<WorldOreConfig> get(World world);
+    Optional<WorldOreConfig> get(String name);
 
     void remove(WorldOreConfig config);
 

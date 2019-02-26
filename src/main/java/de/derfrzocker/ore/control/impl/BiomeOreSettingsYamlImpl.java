@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,25 +29,30 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
     @Getter
     private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
-    public BiomeOreSettingsYamlImpl(Biome biome, Map<Ore, OreSettings> map) {
+    public BiomeOreSettingsYamlImpl(final Biome biome, final Map<Ore, OreSettings> oreSettings) {
         this.biome = biome;
-        map.entrySet().stream().filter(entry -> !(entry.getValue() instanceof ConfigurationSerializable)).map(entry -> new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings())).forEach(this::setOreSettings);
-        map.entrySet().stream().filter(entry -> entry.getValue() instanceof ConfigurationSerializable).map(Map.Entry::getValue).forEach(this::setOreSettings);
+
+        oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
     @Override
-    public Optional<OreSettings> getOreSettings(Ore ore) {
+    public Optional<OreSettings> getOreSettings(final @NonNull Ore ore) {
         return Optional.ofNullable(oreSettings.get(ore));
     }
 
     @Override
-    public void setOreSettings(OreSettings oreSettings) {
+    public void setOreSettings(final @NonNull OreSettings oreSettings) {
         this.oreSettings.put(oreSettings.getOre(), oreSettings);
     }
 
     @Override
+    public BiomeOreSettings clone() {
+        return new BiomeOreSettingsYamlImpl(biome, oreSettings);
+    }
+
+    @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new LinkedHashMap<>();
 
         map.put(BIOME_KEY, getBiome().toString());
 
@@ -62,20 +68,13 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
 
 
     @SuppressWarnings("Duplicates")
-    public static BiomeOreSettingsYamlImpl deserialize(Map<String, Object> map) {
-        Map<Ore, OreSettings> oreSettings = new HashMap<>();
+    public static BiomeOreSettingsYamlImpl deserialize(final Map<String, Object> map) {
+        final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
         map.entrySet().stream().filter(entry -> OreControlUtil.isOre(entry.getKey())).
                 forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
 
-        //TODO remove in higher versions
-        Biome biome = null;
-        try {
-            biome = Biome.valueOf(((String) map.get(BIOME_KEY)).toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        return new BiomeOreSettingsYamlImpl(biome, oreSettings);
+        return new BiomeOreSettingsYamlImpl(Biome.valueOf(((String) map.get(BIOME_KEY)).toUpperCase()), oreSettings);
     }
 
 }

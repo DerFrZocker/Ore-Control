@@ -8,6 +8,7 @@ import lombok.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,18 +31,18 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     @Setter
     private boolean activated = true;
 
-    public OreSettingsYamlImpl(Ore ore, Map<Setting, Integer> map) {
+    public OreSettingsYamlImpl(final Ore ore, final @NonNull Map<Setting, Integer> settings) {
         this.ore = ore;
-        this.settings.putAll(map);
+        this.settings.putAll(settings);
     }
 
     @Override
-    public Optional<Integer> getValue(@NonNull Setting setting) {
+    public Optional<Integer> getValue(final @NonNull Setting setting) {
         return Optional.ofNullable(settings.get(setting));
     }
 
     @Override
-    public void setValue(@NonNull Setting setting, int value) {
+    public void setValue(final @NonNull Setting setting, final int value) {
         settings.put(setting, value);
     }
 
@@ -50,7 +51,9 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
         Map<String, Object> map = new HashMap<>();
 
         map.put(ORE_KEY, getOre().toString());
-        map.put(STATUS_KEY, activated);
+
+        if (!activated)
+            map.put(STATUS_KEY, false);
 
         getSettings().forEach((key, value) -> map.put(key.toString(), value));
 
@@ -62,16 +65,16 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
         return new OreSettingsYamlImpl(getOre(), getSettings());
     }
 
-    public static OreSettingsYamlImpl deserialize(Map<String, Object> map) {
-        Map<Setting, Integer> settings = new HashMap<>();
+    public static OreSettingsYamlImpl deserialize(final Map<String, Object> map) {
+        final Map<Setting, Integer> settings = new LinkedHashMap<>();
 
         map.entrySet().stream().filter(entry -> OreControlUtil.isSetting(entry.getKey())).
                 forEach(entry -> settings.put(Setting.valueOf(entry.getKey().toUpperCase()), (Integer) entry.getValue()));
 
-        OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(Ore.valueOf(((String) map.get(ORE_KEY)).toUpperCase()), settings);
+        final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(Ore.valueOf(((String) map.get(ORE_KEY)).toUpperCase()), settings);
 
         if (map.containsKey(STATUS_KEY))
-            oreSettingsYaml.setActivated((Boolean) map.get(STATUS_KEY));
+            oreSettingsYaml.setActivated((boolean) map.get(STATUS_KEY));
 
         return oreSettingsYaml;
     }

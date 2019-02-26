@@ -3,7 +3,7 @@ package de.derfrzocker.ore.control.api;
 import java.util.Map;
 import java.util.Optional;
 
-public interface BiomeOreSettings {
+public interface BiomeOreSettings extends Cloneable {
 
     Biome getBiome();
 
@@ -12,5 +12,7 @@ public interface BiomeOreSettings {
     void setOreSettings(OreSettings oreSettings);
 
     Map<Ore, OreSettings> getOreSettings();
+
+    BiomeOreSettings clone();
 
 }
