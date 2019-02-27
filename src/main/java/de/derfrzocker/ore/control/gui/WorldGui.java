@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
 import de.derfrzocker.ore.control.utils.Config;
@@ -195,14 +196,24 @@ public class WorldGui implements InventoryGui {
             if (!values.containsKey(event.getRawSlot()))
                 return;
 
-            World world = Bukkit.getWorld(values.get(event.getRawSlot()));
+            final OreControlService service = OreControl.getService();
 
-            // TODO
+            final String configName = values.get(event.getRawSlot());
 
-            if (world == null)
-                throw new IllegalStateException("The world: " + values.get(event.getRawSlot()) + " cant't be null!");
+            final World world = Bukkit.getWorld(configName);
 
-            openSync(event.getWhoClicked(), new WorldConfigGui(OreControl.getService().getWorldOreConfig(values.get(event.getRawSlot())).orElseGet(() -> OreControl.getService().createWorldOreConfig(values.get(event.getRawSlot()))), event.getWhoClicked()).getInventory());
+            final Optional<WorldOreConfig> optionalWorldOreConfig = service.getWorldOreConfig(configName);
+
+            final WorldOreConfig worldOreConfig;
+
+            if (!optionalWorldOreConfig.isPresent())
+                if (world != null)
+                    worldOreConfig = service.createWorldOreConfig(world);
+                else
+                    worldOreConfig = service.createWorldOreConfigTemplate(configName);
+            else worldOreConfig = optionalWorldOreConfig.get();
+
+            openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory());
         }
 
         @Override

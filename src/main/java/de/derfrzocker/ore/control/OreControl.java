@@ -18,12 +18,15 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-public class OreControl extends JavaPlugin {
+public class OreControl extends JavaPlugin implements Listener {
 
     static {
         ConfigurationSerialization.registerClass(WorldOreConfigYamlImpl.class);
@@ -91,6 +94,8 @@ public class OreControl extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
 
         nmsReplacer.replaceNMS();
+
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     private void registerCommands() {
@@ -122,6 +127,18 @@ public class OreControl extends JavaPlugin {
             throw new RuntimeException("can't delete file " + name + " stop plugin start!");
 
         saveResource(name, true);
+    }
+
+    @EventHandler //TODO maybe extra class
+    public void onWorldLoad(WorldLoadEvent event) {
+        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () ->
+                getService().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
+                    if (value.isTemplate()) {
+                        value.setTemplate(false);
+                        getService().saveWorldOreConfig(value);
+                    }
+                })
+        );
     }
 
     private String getVersion() {

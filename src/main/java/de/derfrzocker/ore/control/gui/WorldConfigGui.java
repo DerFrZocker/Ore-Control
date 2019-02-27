@@ -9,7 +9,6 @@ import de.derfrzocker.ore.control.utils.MessageValue;
 import de.derfrzocker.ore.control.utils.ReloadAble;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;

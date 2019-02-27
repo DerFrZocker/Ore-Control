@@ -40,8 +40,8 @@ world_item_stack:
 template_item_stack:
   ==: org.bukkit.inventory.ItemStack
   v: 1631
-  type: PLAYER_HEAD
+  type: PAPER
   meta:
     ==: ItemMeta
-    meta-type: SKULL
+    meta-type: UNSPECIFIC
     display-name: §r%template%
