@@ -220,9 +220,9 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             if (!setting.isPresent())
                 return list;
 
-            final World world = Bukkit.getWorld(args[3]);
+            final World world = Bukkit.getWorld(args[4]);
 
-            final Optional<WorldOreConfig> worldOreConfig = OreControl.getService().getWorldOreConfig(args[3]);
+            final Optional<WorldOreConfig> worldOreConfig = OreControl.getService().getWorldOreConfig(args[4]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;
