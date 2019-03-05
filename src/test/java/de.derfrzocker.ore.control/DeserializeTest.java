@@ -153,7 +153,7 @@ public class DeserializeTest {
 
         worldOreConfig = WorldOreConfigYamlImpl.deserialize(map);
 
-        assertEquals(worldOreConfig.getWorld(), "dummy_world");
+        assertEquals(worldOreConfig.getName(), "dummy_world");
         assertEquals(worldOreConfig.getOreSettings().size(), 0);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 0);
 
@@ -163,7 +163,7 @@ public class DeserializeTest {
 
         worldOreConfig = WorldOreConfigYamlImpl.deserialize(map);
 
-        assertEquals(worldOreConfig.getWorld(), "dummy_world");
+        assertEquals(worldOreConfig.getName(), "dummy_world");
         assertEquals(worldOreConfig.getOreSettings().size(), 0);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 0);
 
@@ -175,7 +175,7 @@ public class DeserializeTest {
 
         worldOreConfig = WorldOreConfigYamlImpl.deserialize(map);
 
-        assertEquals(worldOreConfig.getWorld(), "dummy_world");
+        assertEquals(worldOreConfig.getName(), "dummy_world");
         assertEquals(worldOreConfig.getOreSettings().size(), 1);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 0);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
@@ -191,7 +191,7 @@ public class DeserializeTest {
 
         worldOreConfig = WorldOreConfigYamlImpl.deserialize(map);
 
-        assertEquals(worldOreConfig.getWorld(), "dummy_world");
+        assertEquals(worldOreConfig.getName(), "dummy_world");
         assertEquals(worldOreConfig.getOreSettings().size(), 3);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 0);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
@@ -209,7 +209,7 @@ public class DeserializeTest {
 
         worldOreConfig = WorldOreConfigYamlImpl.deserialize(map);
 
-        assertEquals(worldOreConfig.getWorld(), "dummy_world");
+        assertEquals(worldOreConfig.getName(), "dummy_world");
         assertEquals(worldOreConfig.getOreSettings().size(), 3);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 1);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());
@@ -231,7 +231,7 @@ public class DeserializeTest {
 
         worldOreConfig = WorldOreConfigYamlImpl.deserialize(map);
 
-        assertEquals(worldOreConfig.getWorld(), "dummy_world");
+        assertEquals(worldOreConfig.getName(), "dummy_world");
         assertEquals(worldOreConfig.getOreSettings().size(), 3);
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), 3);
         assertTrue(worldOreConfig.getOreSettings(Ore.GOLD).isPresent());

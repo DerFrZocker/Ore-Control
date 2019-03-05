@@ -160,7 +160,7 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
             final String configName = args[3].toLowerCase();
 
             Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(configName)).forEach(list::add);
-            OreControl.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getWorld())).map(WorldOreConfig::getWorld).forEach(list::add);
+            OreControl.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
 
             return list;
         }

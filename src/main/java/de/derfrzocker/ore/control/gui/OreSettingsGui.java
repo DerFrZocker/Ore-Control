@@ -104,7 +104,7 @@ public class OreSettingsGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getWorld()),
+        return new MessageValue[]{new MessageValue("world", config.getName()),
                 new MessageValue("biome", biome == null ? "" : biome.toString()),
                 new MessageValue("ore", ore.toString())};
     }

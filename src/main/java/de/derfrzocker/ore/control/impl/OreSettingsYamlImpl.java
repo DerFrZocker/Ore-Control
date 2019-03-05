@@ -17,7 +17,6 @@ import java.util.Optional;
 public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettings {
 
     private static final String ORE_KEY = "ore";
-
     private static final String STATUS_KEY = "status";
 
     @Getter

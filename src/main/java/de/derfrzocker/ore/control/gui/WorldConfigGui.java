@@ -32,7 +32,7 @@ public class WorldConfigGui implements InventoryGui {
         this.config = config;
         this.backSlot = Settings.getInstance().getBackSlot();
 
-        inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), new MessageValue("world", config.getWorld())));
+        inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), new MessageValue("world", config.getName())));
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
             ores = Settings.getInstance().getOreItemStackSlot();
@@ -72,7 +72,7 @@ public class WorldConfigGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getWorld())};
+        return new MessageValue[]{new MessageValue("world", config.getName())};
     }
 
     private static final class Settings implements ReloadAble {

@@ -106,7 +106,7 @@ public class SettingsGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getWorld()),
+        return new MessageValue[]{new MessageValue("world", config.getName()),
                 new MessageValue("biome", biome == null ? "" : biome.toString()),
                 new MessageValue("ore", ore.toString()),
                 new MessageValue("setting", setting.toString())};
@@ -134,7 +134,7 @@ public class SettingsGui implements InventoryGui {
 
         set.add(new MessageValue("ore", ore.toString()));
         set.add(new MessageValue("setting", setting.toString()));
-        set.add(new MessageValue("world", config.getWorld()));
+        set.add(new MessageValue("world", config.getName()));
 
         return set;
     }

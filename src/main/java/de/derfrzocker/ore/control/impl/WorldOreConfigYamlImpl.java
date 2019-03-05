@@ -14,7 +14,9 @@ import java.util.Optional;
 @EqualsAndHashCode
 public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldOreConfig {
 
+    @Deprecated
     private static final String WORLD_KEY = "world";
+    private static final String NAME_KEY = "name";
     private static final String TEMPLATE_KEY = "template";
 
     @Getter
@@ -25,21 +27,21 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
     @Getter
     @NonNull
-    private final String world;
+    private final String name;
 
     @Getter
     @Setter
     private boolean template;
 
-    public WorldOreConfigYamlImpl(final @NonNull String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings) {
-        this.world = world;
+    public WorldOreConfigYamlImpl(final @NonNull String name, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings) {
+        this.name = name;
         this.template = template;
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
-    public WorldOreConfigYamlImpl(final @NonNull String world, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings, final @NonNull Map<Biome, BiomeOreSettings> biomeOreSettings) {
-        this(world, template, oreSettings);
+    public WorldOreConfigYamlImpl(final @NonNull String name, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings, final @NonNull Map<Biome, BiomeOreSettings> biomeOreSettings) {
+        this(name, template, oreSettings);
 
         biomeOreSettings.forEach((key, value) -> this.biomeOreSettings.put(key, value.clone()));
     }
@@ -65,15 +67,15 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     }
 
     @Override
-    public WorldOreConfig clone() {
-        return new WorldOreConfigYamlImpl(world, template, oreSettings, biomeOreSettings);
+    public WorldOreConfig clone(String name) {
+        return new WorldOreConfigYamlImpl(name, template, oreSettings, biomeOreSettings);
     }
 
     @Override
     public Map<String, Object> serialize() {
         final Map<String, Object> map = new LinkedHashMap<>();
 
-        map.put(WORLD_KEY, getWorld());
+        map.put(NAME_KEY, getName());
 
         if (template)
             map.put(TEMPLATE_KEY, true);
@@ -105,7 +107,14 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
         map.entrySet().stream().filter(entry -> OreControlUtil.isBiome(entry.getKey())).
                 forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
 
-        return new WorldOreConfigYamlImpl((String) map.get(WORLD_KEY), (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
+        final String name;
+
+        if (map.containsKey(WORLD_KEY))
+            name = (String) map.get(WORLD_KEY);
+        else
+            name = (String) map.get(NAME_KEY);
+
+        return new WorldOreConfigYamlImpl(name, (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
     }
 
 }

@@ -40,7 +40,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
 
     @Override
     public void remove(final @NonNull WorldOreConfig config) {
-        yaml.set(config.getWorld(), null);
+        yaml.set(config.getName(), null);
 
         try {
             yaml.save(file);
@@ -52,9 +52,9 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     @Override
     public void save(@NonNull WorldOreConfig config) {
         if (!(config instanceof ConfigurationSerializable))
-            config = new WorldOreConfigYamlImpl(config.getWorld(), config.isTemplate(), config.getOreSettings());
+            config = new WorldOreConfigYamlImpl(config.getName(), config.isTemplate(), config.getOreSettings());
 
-        yaml.set(config.getWorld(), config);
+        yaml.set(config.getName(), config);
 
         try {
             yaml.save(file);

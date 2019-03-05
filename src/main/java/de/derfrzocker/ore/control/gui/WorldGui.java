@@ -38,9 +38,9 @@ public class WorldGui implements InventoryGui {
         final Set<String> configsSet = new LinkedHashSet<>();
 
         Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
-        OreControl.getService().getAllWorldOreConfigs().forEach(value -> worldOreConfigs.put(value.getWorld(), value));
+        OreControl.getService().getAllWorldOreConfigs().forEach(value -> worldOreConfigs.put(value.getName(), value));
 
-        worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getWorld).forEach(configsSet::add);
+        worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
         configsSet.addAll(worldOreConfigs.keySet());
 
         final String[] configs = configsSet.toArray(new String[0]);

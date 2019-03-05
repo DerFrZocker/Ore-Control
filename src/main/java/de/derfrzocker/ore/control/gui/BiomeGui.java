@@ -76,7 +76,7 @@ public class BiomeGui implements InventoryGui {
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getWorld())};
+        return new MessageValue[]{new MessageValue("world", config.getName())};
     }
 
     private static final class Settings implements ReloadAble {
@@ -168,7 +168,7 @@ public class BiomeGui implements InventoryGui {
                     MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(),
                             new MessageValue("page", String.valueOf(page)),
                             new MessageValue("pages", String.valueOf(pages)),
-                            new MessageValue("world", config.getWorld())));
+                            new MessageValue("world", config.getName())));
 
             inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
             inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
