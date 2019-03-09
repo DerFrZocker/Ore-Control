@@ -80,7 +80,7 @@ public class SettingsGui implements InventoryGui {
 
         int newValue = current + value;
 
-        if (OreControlUtil.isUnSave(setting, newValue)) {
+        if (OreControlUtil.isUnSafe(setting, newValue)) {
             if (OreControl.getInstance().getConfigValues().isSaveMode()) {
                 SET_NOT_SAVE.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
                 return;

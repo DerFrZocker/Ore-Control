@@ -105,7 +105,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
 
             int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
 
-            if (OreControlUtil.isUnSave(setting, value2)) {
+            if (OreControlUtil.isUnSafe(setting, value2)) {
                 if (OreControl.getInstance().getConfigValues().isSaveMode()) {
                     SET_NOT_SAVE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
                     return;
