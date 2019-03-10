@@ -136,7 +136,7 @@ public class OreControlUtil {
      * @param value   that get checked
      * @return true for unsafe false for safe
      */
-    public static boolean isUnSafe(@NonNull Setting setting, int value) {
+    public static boolean isUnSafe(final @NonNull Setting setting, final int value) {
         return setting.getMinimumValue() > value;
     }
 
