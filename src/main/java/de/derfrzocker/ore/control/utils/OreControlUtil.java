@@ -155,32 +155,6 @@ public class OreControlUtil {
     }
 
     /**
-     * Returns the OreSettings from the BiomeOreSettings, if the BiomeOreSettings dont exists or the BiomeOreSettings dont
-     * have the OreSettings. It returns the normal OreSettings. If the WorldOreConfig also dont have the OreSettings, it return
-     * the default one.
-     * <p>
-     * To see which Biome have which Ore see: {@link Biome#getOres()}
-     * For the default Ore Settings see: {@link #getDefault(Ore, Setting)}
-     *
-     * @param ore    which must be non-null
-     * @param config which must be non-null
-     * @param biome  which must be non-null
-     * @return an OreSettings
-     * @throws NullPointerException     if Ore, Biome or WorldOreConfig is null
-     * @throws IllegalArgumentException if the Biome dont have the given Ore
-     */
-    public static OreSettings getOreSettings(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final @NonNull Biome biome) { //TODO find better name
-        valid(biome, ore);
-
-        return config.getBiomeOreSettings(biome).
-                map(value -> value.getOreSettings(ore).
-                        orElseGet(() -> config.getOreSettings(ore).
-                                orElseGet(() -> OreControl.getInstance().getSettings().getDefaultSettings(ore)))).
-                orElseGet(() -> config.getOreSettings(ore).
-                        orElseGet(() -> OreControl.getInstance().getSettings().getDefaultSettings(ore)));
-    }
-
-    /**
      * Return true if the given String is the name of a Ore or not.
      * The String can be lower, upper or mixed case.
      *
@@ -258,7 +232,12 @@ public class OreControlUtil {
     public static boolean isActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final @NonNull Biome biome) {
         valid(biome, ore);
 
-        return getOreSettings(ore, config, biome).isActivated();
+        return config.getBiomeOreSettings(biome).
+                map(value -> value.getOreSettings(ore).
+                        orElseGet(() -> config.getOreSettings(ore).
+                                orElseGet(() -> OreControl.getInstance().getSettings().getDefaultSettings(ore)))).
+                orElseGet(() -> config.getOreSettings(ore).
+                        orElseGet(() -> OreControl.getInstance().getSettings().getDefaultSettings(ore))).isActivated();
     }
 
     /**
