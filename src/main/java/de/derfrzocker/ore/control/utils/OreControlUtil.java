@@ -5,15 +5,20 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
+import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
 import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @SuppressWarnings("Duplicates")
 public class OreControlUtil {
+
+    private final static Function<Ore, OreSettings> ORE_SETTINGS_FUNCTION = OreSettingsYamlImpl::new;
+    private final static Function<Biome, BiomeOreSettings> BIOME_ORE_SETTINGS_FUNCTION = BiomeOreSettingsYamlImpl::new;
 
     /**
      * Returns the value for the given Setting from the given WorldOreConfig and Ore.
@@ -87,7 +92,7 @@ public class OreControlUtil {
         valid(ore, setting);
 
         config.getOreSettings(ore).orElseGet(() -> {
-            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            final OreSettings oreSettings = ORE_SETTINGS_FUNCTION.apply(ore);
             config.setOreSettings(oreSettings);
             return oreSettings;
         }).setValue(setting, value);
@@ -115,13 +120,13 @@ public class OreControlUtil {
         valid(biome, ore);
 
         BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
-            BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            final BiomeOreSettings biomeOreSettings = BIOME_ORE_SETTINGS_FUNCTION.apply(biome);
             config.setBiomeOreSettings(biomeOreSettings);
             return biomeOreSettings;
         });
 
         biomeSettings.getOreSettings(ore).orElseGet(() -> {
-            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            final OreSettings oreSettings = ORE_SETTINGS_FUNCTION.apply(ore);
             biomeSettings.setOreSettings(oreSettings);
             return oreSettings;
         }).setValue(setting, value);
@@ -251,7 +256,7 @@ public class OreControlUtil {
      */
     public static void setActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final boolean status) {
         config.getOreSettings(ore).orElseGet(() -> {
-            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            final OreSettings oreSettings = ORE_SETTINGS_FUNCTION.apply(ore);
             config.setOreSettings(oreSettings);
             return oreSettings;
         }).setActivated(status);
@@ -271,14 +276,14 @@ public class OreControlUtil {
     public static void setActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final boolean status, final @NonNull Biome biome) {
         valid(biome, ore);
 
-        BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
-            BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+        final BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
+            final BiomeOreSettings biomeOreSettings = BIOME_ORE_SETTINGS_FUNCTION.apply(biome);
             config.setBiomeOreSettings(biomeOreSettings);
             return biomeOreSettings;
         });
 
         biomeSettings.getOreSettings(ore).orElseGet(() -> {
-            OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
+            final OreSettings oreSettings = ORE_SETTINGS_FUNCTION.apply(ore);
             biomeSettings.setOreSettings(oreSettings);
             return oreSettings;
         }).setActivated(status);
