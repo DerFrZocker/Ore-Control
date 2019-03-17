@@ -66,11 +66,6 @@ public class OreGui implements InventoryGui {
         openSync(event.getWhoClicked(), new OreSettingsGui(config, ore, biome).getInventory());
     }
 
-    @Override
-    public boolean contains(Inventory inventory) {
-        return this.inventory.equals(inventory);
-    }
-
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", config.getName()),
                 new MessageValue("biome", biome == null ? "" : biome.toString())};

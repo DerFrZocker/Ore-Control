@@ -20,7 +20,6 @@ import java.util.*;
 
 public class WorldGui implements InventoryGui {
 
-
     private final Map<Integer, SubWorldGui> guis = new HashMap<>();
 
     private final int pages;
@@ -69,11 +68,6 @@ public class WorldGui implements InventoryGui {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean contains(Inventory inventory) {
-        return this.guis.values().stream().anyMatch(value -> value.contains(inventory));
     }
 
     @Override
@@ -180,7 +174,6 @@ public class WorldGui implements InventoryGui {
             }
         }
 
-
         @Override
         public void onInventoryClick(InventoryClickEvent event) {
             if (event.getRawSlot() == previousPage && page != 0) {
@@ -214,11 +207,6 @@ public class WorldGui implements InventoryGui {
             else worldOreConfig = optionalWorldOreConfig.get();
 
             openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory());
-        }
-
-        @Override
-        public boolean contains(Inventory inventory) {
-            return this.inventory.equals(inventory);
         }
 
     }

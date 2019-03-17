@@ -13,8 +13,6 @@ interface InventoryGui extends InventoryHolder {
 
     void onInventoryClick(InventoryClickEvent event);
 
-    boolean contains(Inventory inventory);
-
     default void openSync(HumanEntity entity, Inventory inventory) {
         try {
             Bukkit.getScheduler().callSyncMethod(OreControl.getInstance(), () -> entity.openInventory(inventory)).get();

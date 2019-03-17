@@ -87,11 +87,6 @@ public class OreSettingsGui implements InventoryGui {
         openSync(event.getWhoClicked(), new SettingsGui(config, ore, setting, biome).getInventory());
     }
 
-    @Override
-    public boolean contains(Inventory inventory) {
-        return this.inventory.equals(inventory);
-    }
-
     private ItemStack getSettingItemStack(WorldOreConfig config, Setting setting) {
         ItemStack itemStack = Settings.getInstance().getSettingsItemStack(setting);
 

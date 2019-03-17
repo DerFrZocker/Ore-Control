@@ -66,11 +66,6 @@ public class BiomeGui implements InventoryGui {
     }
 
     @Override
-    public boolean contains(Inventory inventory) {
-        return this.guis.values().stream().anyMatch(value -> value.contains(inventory));
-    }
-
-    @Override
     public Inventory getInventory() {
         return guis.get(0).getInventory();
     }
@@ -212,11 +207,6 @@ public class BiomeGui implements InventoryGui {
             Preconditions.checkNotNull(biome);
 
             openSync(event.getWhoClicked(), new OreGui(config, biome).getInventory());
-        }
-
-        @Override
-        public boolean contains(Inventory inventory) {
-            return this.inventory.equals(inventory);
         }
 
     }

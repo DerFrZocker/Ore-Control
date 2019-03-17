@@ -139,11 +139,6 @@ public class SettingsGui implements InventoryGui {
         return set;
     }
 
-    @Override
-    public boolean contains(Inventory inventory) {
-        return this.inventory.equals(inventory);
-    }
-
     private static final class Settings implements ReloadAble {
 
         private final static String file = "data/settings_gui.yml";

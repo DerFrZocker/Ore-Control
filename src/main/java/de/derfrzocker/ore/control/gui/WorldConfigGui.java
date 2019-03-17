@@ -66,11 +66,6 @@ public class WorldConfigGui implements InventoryGui {
             openSync(event.getWhoClicked(), new BiomeGui(config).getInventory());
     }
 
-    @Override
-    public boolean contains(Inventory inventory) {
-        return this.inventory.equals(inventory);
-    }
-
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", config.getName())};
     }
