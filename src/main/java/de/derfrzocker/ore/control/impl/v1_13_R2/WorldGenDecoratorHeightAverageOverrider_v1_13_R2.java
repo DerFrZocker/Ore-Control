@@ -20,18 +20,18 @@ public class WorldGenDecoratorHeightAverageOverrider_v1_13_R2 extends WorldGenDe
     private final Biome biome;
 
     @Override
-    public <C extends WorldGenFeatureConfiguration> boolean a(GeneratorAccess generatorAccess, ChunkGenerator<? extends GeneratorSettings> chunkGenerator, Random random, BlockPosition blockPosition, WorldGenDecoratorHeightAverageConfiguration worldGenDecoratorHeightAverageConfiguration, WorldGenerator<C> worldGenerator, C c) {
-        Optional<WorldOreConfig> oreConfig = OreControl.getService().getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
+    public <C extends WorldGenFeatureConfiguration> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettings> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenDecoratorHeightAverageConfiguration worldGenDecoratorHeightAverageConfiguration, final WorldGenerator<C> worldGenerator, final C c) {
+        final Optional<WorldOreConfig> oreConfig = OreControl.getService().getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
 
         if (oreConfig.isPresent() && !OreControlUtil.isActivated(Ore.LAPIS, oreConfig.get(), biome))
             return true;
 
         return oreConfig.
-                map(value -> OreControlUtil.getOreSettings(Ore.LAPIS, value, biome)).
-                map(oreSettings -> super.a(generatorAccess, chunkGenerator, random, blockPosition, new WorldGenDecoratorHeightAverageConfiguration(
-                        oreSettings.getValue(Setting.VEINS_PER_CHUNK).orElse(Setting.VEINS_PER_CHUNK.getMinimumValue()),
-                        oreSettings.getValue(Setting.HEIGHT_CENTER).orElse(Setting.HEIGHT_RANGE.getMinimumValue()),
-                        oreSettings.getValue(Setting.HEIGHT_RANGE).orElse(Setting.HEIGHT_RANGE.getMinimumValue())), worldGenerator, NMSUtil_v1_13_R2.getFeatureConfiguration(oreConfig.get(), Ore.LAPIS, c, biome))).
+                map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition, new WorldGenDecoratorHeightAverageConfiguration(
+                                OreControlUtil.getAmount(Ore.LAPIS, Setting.VEINS_PER_CHUNK, worldOreConfig, biome),
+                                OreControlUtil.getAmount(Ore.LAPIS, Setting.HEIGHT_CENTER, worldOreConfig, biome),
+                                OreControlUtil.getAmount(Ore.LAPIS, Setting.HEIGHT_RANGE, worldOreConfig, biome)),
+                        worldGenerator, NMSUtil_v1_13_R2.getFeatureConfiguration(oreConfig.get(), Ore.LAPIS, c, biome))).
                 orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenDecoratorHeightAverageConfiguration, worldGenerator, c));
     }
 }

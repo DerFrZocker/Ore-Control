@@ -20,10 +20,10 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1 extends World
     private final Biome biome;
 
     @Override
-    public <C extends WorldGenFeatureConfiguration> boolean a(GeneratorAccess generatorAccess, ChunkGenerator<? extends GeneratorSettings> chunkGenerator, Random random, BlockPosition blockPosition, WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, WorldGenerator<C> worldGenerator, C c) {
-        Optional<WorldOreConfig> oreConfig = OreControl.getService().getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
+    public <C extends WorldGenFeatureConfiguration> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettings> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, final WorldGenerator<C> worldGenerator, C c) {
+        final Optional<WorldOreConfig> oreConfig = OreControl.getService().getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
 
-        Ore ore = NMSUtil_v1_13_R1.getOre(((WorldGenFeatureOreConfiguration) c).d.getBlock());
+        final Ore ore = NMSUtil_v1_13_R1.getOre(((WorldGenFeatureOreConfiguration) c).d.getBlock());
 
         if (ore != null && oreConfig.isPresent() && !OreControlUtil.isActivated(ore, oreConfig.get(), biome))
             return true;

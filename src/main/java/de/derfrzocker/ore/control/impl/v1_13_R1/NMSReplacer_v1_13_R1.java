@@ -12,67 +12,49 @@ import java.util.Map;
 public class NMSReplacer_v1_13_R1 implements NMSReplacer {
 
     @Override
-    public boolean replaceNMS() {
+    public void replaceNMS() {
         for (Field field : Biomes.class.getFields()) {
             try {
                 replaceBase((BiomeBase) field.get(null));
             } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+                throw new RuntimeException("Unexpected error while hook in NMS for Biome field: " + field.getName(), e);
             }
         }
-
-        return true;
     }
 
-    private void replaceBase(BiomeBase base) throws Exception {
-        Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> map = get(base);
+    private void replaceBase(final BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
+        final Biome biome;
 
-        List<WorldGenFeatureComposite<?, ?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
-
-        Biome biome;
         try {
             biome = Biome.valueOf(BiomeBase.REGISTRY_ID.b(base).getKey().toUpperCase());
         } catch (IllegalArgumentException e) {
             return;
         }
 
-        list.forEach(value -> {
-            try {
+        final Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> map = get(base);
 
-                if (replaceBadlandsGold(value, biome))
-                    return;
+        final List<WorldGenFeatureComposite<?, ?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
 
-                if (replaceEmerald(value, biome))
-                    return;
-
-                if (replaceLapis(value, biome))
-                    return;
-
-                replaceNormal(value, biome);
-            } catch (NoSuchFieldException | IllegalAccessException e1) {
-                e1.printStackTrace();
-            }
-        });
+        for (WorldGenFeatureComposite<?, ?> composite : list)
+            replace(composite, biome);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> get(BiomeBase base)
+    private Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> get(final BiomeBase base)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassCastException {
 
-        Field field = getField(base.getClass(), "aX");
-
+        final Field field = getField(base.getClass(), "aX");
         field.setAccessible(true);
 
         return (Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>>) field.get(base);
     }
 
     @SuppressWarnings("rawtypes")
-    private Field getField(Class clazz, String fieldName) throws NoSuchFieldException {
+    private Field getField(final Class clazz, final String fieldName) throws NoSuchFieldException {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            Class superClass = clazz.getSuperclass();
+            final Class superClass = clazz.getSuperclass();
             if (superClass == null) {
                 throw e;
             } else {
@@ -81,11 +63,24 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
         }
     }
 
-    private boolean replaceBadlandsGold(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        Object object;
+    private void replace(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (replaceBadlandsGold(composite, biome))
+            return;
+
+        if (replaceEmerald(composite, biome))
+            return;
+
+        if (replaceLapis(composite, biome))
+            return;
+
+        replaceNormal(composite, biome);
+    }
+
+    private boolean replaceBadlandsGold(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        final Object object;
 
         {
-            Field field = getField(composite.getClass(), "d");
+            final Field field = getField(composite.getClass(), "d");
             field.setAccessible(true);
             object = field.get(composite);
         }
@@ -93,7 +88,7 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
         if (!(object instanceof WorldGenFeatureChanceDecoratorCountConfiguration))
             return false;
 
-        WorldGenFeatureChanceDecoratorCountConfiguration configuration = (WorldGenFeatureChanceDecoratorCountConfiguration) object;
+        final WorldGenFeatureChanceDecoratorCountConfiguration configuration = (WorldGenFeatureChanceDecoratorCountConfiguration) object;
 
         if (configuration.a != 20)
             return false;
@@ -108,7 +103,7 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
             return false;
 
         {
-            Field field = getField(composite.getClass(), "c");
+            final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_13_R1(biome));
         }
@@ -116,11 +111,11 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
         return true;
     }
 
-    private boolean replaceEmerald(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        Object object;
+    private boolean replaceEmerald(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        final Object object;
 
         {
-            Field field = getField(composite.getClass(), "d");
+            final Field field = getField(composite.getClass(), "d");
             field.setAccessible(true);
             object = field.get(composite);
         }
@@ -129,7 +124,7 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
             return false;
 
         {
-            Field field = getField(composite.getClass(), "c");
+            final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorEmeraldOverrider_v1_13_R1(biome));
         }
@@ -137,11 +132,11 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
         return true;
     }
 
-    private boolean replaceLapis(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        Object object;
+    private boolean replaceLapis(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        final Object object;
 
         {
-            Field field = getField(composite.getClass(), "d");
+            final Field field = getField(composite.getClass(), "d");
             field.setAccessible(true);
             object = field.get(composite);
         }
@@ -150,7 +145,7 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
             return false;
 
         {
-            Field field = getField(composite.getClass(), "c");
+            final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorHeightAverageOverrider_v1_13_R1(biome));
         }
@@ -158,16 +153,16 @@ public class NMSReplacer_v1_13_R1 implements NMSReplacer {
         return true;
     }
 
-    private void replaceNormal(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceNormal(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
         {
-            Field field = getField(composite.getClass(), "b");
+            final Field field = getField(composite.getClass(), "b");
             field.setAccessible(true);
             if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
                 return;
         }
 
         {
-            Field field = getField(composite.getClass(), "c");
+            final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1(biome));
         }
