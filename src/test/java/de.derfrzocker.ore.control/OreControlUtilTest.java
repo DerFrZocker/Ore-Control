@@ -779,7 +779,7 @@ public class OreControlUtilTest {
 
     //Test OreControlUtil#isUnSafe(Setting, int) end
 
-    //Test OreControlUtil#getOreSettings(Ore, WorldOreConfig, Biome)) begin
+    //Test OreControlUtil#getOreSettings(Ore, WorldOreConfig, Biome) begin
 
     @Test
     public void GetOreSettings_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
@@ -873,9 +873,9 @@ public class OreControlUtilTest {
         }
     }
 
-    //Test OreControlUtil#getOreSettings(Ore, WorldOreConfig, Biome)) end
+    //Test OreControlUtil#getOreSettings(Ore, WorldOreConfig, Biome) end
 
-    //Test OreControlUtil#isOre(String)) begin
+    //Test OreControlUtil#isOre(String) begin
 
     @Test
     public void IsOre_When_StringIsNull_Expect_ThrowNullPointerException() {
@@ -906,9 +906,9 @@ public class OreControlUtilTest {
             assertFalse(OreControlUtil.isOre(TestUtil.generateRandomString(i)));
     }
 
-    //Test OreControlUtil#isOre(String)) end
+    //Test OreControlUtil#isOre(String) end
 
-    //Test OreControlUtil#isBiome(String)) begin
+    //Test OreControlUtil#isBiome(String) begin
 
     @Test
     public void IsBiome_When_StringIsNull_Expect_ThrowNullPointerException() {
@@ -939,9 +939,9 @@ public class OreControlUtilTest {
             assertFalse(OreControlUtil.isBiome(TestUtil.generateRandomString(i)));
     }
 
-    //Test OreControlUtil#isBiome(String)) end
+    //Test OreControlUtil#isBiome(String) end
 
-    //Test OreControlUtil#isSetting(String)) begin
+    //Test OreControlUtil#isSetting(String) begin
 
     @Test
     public void IsSetting_When_StringIsNull_Expect_ThrowNullPointerException() {
@@ -972,108 +972,502 @@ public class OreControlUtilTest {
             assertFalse(OreControlUtil.isSetting(TestUtil.generateRandomString(i)));
     }
 
-    //Test OreControlUtil#isSetting(String)) end
+    //Test OreControlUtil#isSetting(String) end
+
+    //Test OreControlUtil#isActivated(Ore, WorldOreConfig) begin
 
     @Test
-    public void testIsActivated() {
-
-        //NullPointers
+    public void IsActivated_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(null, mock(WorldOreConfig.class)));
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, null));
-
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
-
-        assertTrue(OreControlUtil.isActivated(Ore.GOLD_BADLANDS, worldOreConfig));
-
-        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
-
-        worldOreConfig.setOreSettings(oreSettings);
-
-        assertTrue(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig));
-
-        oreSettings.setActivated(false);
-
-        assertFalse(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig));
     }
 
     @Test
-    public void testIsBiomeActivated() {
+    public void IsActivated_When_WorldOreConfigDontHaveOreSetting_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
 
-        //NullPointers
+        for (Ore ore : Ore.values())
+            assertTrue(OreControlUtil.isActivated(ore, worldOreConfig));
+    }
+
+    @Test
+    public void IsActivated_When_WorldOreConfigHaveOreSettingAndActivatedIsTrueInOreSettings_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(true);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Ore ore : Ore.values())
+            assertTrue(OreControlUtil.isActivated(ore, worldOreConfig));
+    }
+
+    @Test
+    public void IsActivated_When_WorldOreConfigHaveOreSettingAndActivatedIsFalseInOreSettings_Expect_ReturnFalse() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(false);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Ore ore : Ore.values())
+            assertFalse(OreControlUtil.isActivated(ore, worldOreConfig));
+    }
+
+    @Test
+    public void IsActivated_When_WorldOreConfigHaveOreSettingAndActivatedIsMixedInOreSettings_Expect_ReturnTheRightBoolean() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        boolean status = true;
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(status);
+            booleanList.add(status);
+            status = !status;
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+        status = true;
+
+        for (Ore ore : Ore.values()) {
+            assertEquals(OreControlUtil.isActivated(ore, worldOreConfig), booleanIterator.next());
+            assertEquals(OreControlUtil.isActivated(ore, worldOreConfig), status);
+            status = !status;
+        }
+    }
+
+    //Test OreControlUtil#isActivated(Ore, WorldOreConfig) end
+
+    //Test OreControlUtil#isActivated(Ore, WorldOreConfig, Biome) begin
+
+    @Test
+    public void IsBiomeActivated_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(null, mock(WorldOreConfig.class), Biome.BADLANDS));
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, null, Biome.BADLANDS));
         assertThrows(NullPointerException.class, () -> OreControlUtil.isActivated(Ore.GOLD, mock(WorldOreConfig.class), null));
-
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
-
-        assertTrue(OreControlUtil.isActivated(Ore.GOLD_BADLANDS, worldOreConfig, Biome.BADLANDS));
-
-        BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(Biome.BADLANDS);
-
-        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
-
-        biomeOreSettings.setOreSettings(oreSettings);
-        worldOreConfig.setBiomeOreSettings(biomeOreSettings);
-
-        assertTrue(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig, Biome.BADLANDS));
-
-        oreSettings.setActivated(false);
-
-        assertFalse(OreControlUtil.isActivated(Ore.GOLD, worldOreConfig, Biome.BADLANDS));
     }
 
     @Test
-    public void testSetActivated() {
+    public void IsBiomeActivated_When_WorldOreConfigDontHaveBiomeOreSettingsOrNormalOreSettings_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
 
-        //NullPointers
-        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), false));
-        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, false));
-
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
-
-        OreControlUtil.setActivated(Ore.GOLD_BADLANDS, worldOreConfig, false);
-
-        assertTrue(worldOreConfig.getOreSettings(Ore.GOLD_BADLANDS).isPresent());
-        assertFalse(worldOreConfig.getOreSettings(Ore.GOLD_BADLANDS).get().isActivated());
-
-        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
-
-        worldOreConfig.setOreSettings(oreSettings);
-
-        assertTrue(oreSettings.isActivated());
-
-        OreControlUtil.setActivated(Ore.GOLD, worldOreConfig, false);
-
-        assertFalse(oreSettings.isActivated());
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertTrue(OreControlUtil.isActivated(ore, worldOreConfig, biome));
     }
 
     @Test
-    public void testSetBiomeActivated() {
-        //NullPointers
-        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), false, Biome.BADLANDS));
-        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, false, Biome.BADLANDS));
-        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, mock(WorldOreConfig.class), false, null));
+    public void IsBiomeActivated_When_BiomeOreSettingsExistsButNoOreSettings_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
 
-        WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy_world", false);
+        for (Biome biome : Biome.values())
+            worldOreConfig.setBiomeOreSettings(new BiomeOreSettingsYamlImpl(biome));
 
-        OreControlUtil.setActivated(Ore.GOLD_BADLANDS, worldOreConfig, false, Biome.BADLANDS);
-
-        assertTrue(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).isPresent());
-        assertTrue(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get().getOreSettings(Ore.GOLD_BADLANDS).isPresent());
-        assertFalse(worldOreConfig.getBiomeOreSettings(Biome.BADLANDS).get().getOreSettings(Ore.GOLD_BADLANDS).get().isActivated());
-
-        BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(Biome.BADLANDS);
-
-        OreSettings oreSettings = new OreSettingsYamlImpl(Ore.GOLD);
-
-        biomeOreSettings.setOreSettings(oreSettings);
-        worldOreConfig.setBiomeOreSettings(biomeOreSettings);
-
-        assertTrue(oreSettings.isActivated());
-
-        OreControlUtil.setActivated(Ore.GOLD, worldOreConfig, false, Biome.BADLANDS);
-
-        assertFalse(oreSettings.isActivated());
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertTrue(OreControlUtil.isActivated(ore, worldOreConfig, biome));
     }
+
+    @Test
+    public void IsBiomeActivated_When_BiomeOreSettingsAndOreSettingsExistsAndIsActivated_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+            for (Ore ore : biome.getOres()) {
+                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+                oreSettings.setActivated(true);
+                biomeOreSettings.setOreSettings(oreSettings);
+            }
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertTrue(OreControlUtil.isActivated(ore, worldOreConfig, biome));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_BiomeOreSettingsAndOreSettingsExistsAndIsNotActivated_Expect_ReturnFalse() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+            for (Ore ore : biome.getOres()) {
+                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+                oreSettings.setActivated(false);
+                biomeOreSettings.setOreSettings(oreSettings);
+            }
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertFalse(OreControlUtil.isActivated(ore, worldOreConfig, biome));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_BiomeOreSettingsAndOreSettingsExistsAndIsMixedActivated_Expect_ReturnTheRightBoolean() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        boolean status = true;
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+            for (Ore ore : biome.getOres()) {
+                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+                oreSettings.setActivated(status);
+                booleanList.add(status);
+                status = !status;
+                biomeOreSettings.setOreSettings(oreSettings);
+            }
+        }
+
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+        status = true;
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                assertEquals(OreControlUtil.isActivated(ore, worldOreConfig, biome), booleanIterator.next());
+                assertEquals(OreControlUtil.isActivated(ore, worldOreConfig, biome), status);
+                status = !status;
+            }
+
+    }
+
+    @Test
+    public void IsBiomeActivated_When_OnlyNormalOreSettingsExistsAndIsActivated_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(true);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertTrue(OreControlUtil.isActivated(ore, worldOreConfig, biome));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_OnlyNormalOreSettingsExistsAndIsNotActivated_Expect_ReturnFalse() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(false);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertFalse(OreControlUtil.isActivated(ore, worldOreConfig, biome));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_OnlyNormalOreSettingsExistsAndIsMixedActivated_Expect_ReturnTheRightValue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final Map<Ore, Boolean> booleanMap = new HashMap<>();
+        boolean status = true;
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(status);
+            booleanMap.put(ore, status);
+            status = !status;
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertEquals(OreControlUtil.isActivated(ore, worldOreConfig, biome), booleanMap.get(ore));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_OnlyBiomeOreSettingsAndNormalOreSettingsExistsAndIsActivated_Expect_ReturnTrue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Biome biome : Biome.values())
+            worldOreConfig.setBiomeOreSettings(new BiomeOreSettingsYamlImpl(biome));
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(true);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertTrue(OreControlUtil.isActivated(ore, worldOreConfig, biome));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_OnlyBiomeOreSettingsAndNormalOreSettingsExistsAndIsNotActivated_Expect_ReturnFalse() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Biome biome : Biome.values())
+            worldOreConfig.setBiomeOreSettings(new BiomeOreSettingsYamlImpl(biome));
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(false);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertFalse(OreControlUtil.isActivated(ore, worldOreConfig, biome));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_OnlyBiomeOreSettingsAndNormalOreSettingsExistsAndIsMixedActivated_Expect_ReturnTheRightValue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final Map<Ore, Boolean> booleanMap = new HashMap<>();
+        boolean status = true;
+
+        for (Biome biome : Biome.values())
+            worldOreConfig.setBiomeOreSettings(new BiomeOreSettingsYamlImpl(biome));
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(status);
+            booleanMap.put(ore, status);
+            status = !status;
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres())
+                assertEquals(OreControlUtil.isActivated(ore, worldOreConfig, biome), booleanMap.get(ore));
+    }
+
+    @Test
+    public void IsBiomeActivated_When_BiomeDontHaveTheOre_Expect_ThrowIllegalArgumentException() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Biome biome : Biome.values()) {
+            final Set<Ore> ores = Sets.newHashSet(Ore.values());
+
+            ores.removeAll(Sets.newHashSet(biome.getOres()));
+
+            for (Ore ore : ores)
+                assertThrows(IllegalArgumentException.class, () -> OreControlUtil.isActivated(ore, worldOreConfig, biome));
+        }
+    }
+
+    //Test OreControlUtil#isActivated(Ore, WorldOreConfig, Biome) end
+
+    //Test OreControlUtil#setActivated(Ore, WorldOreConfig, boolean) begin
+
+    @Test
+    public void SetActivated_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), true));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, true));
+    }
+
+    @Test
+    public void SetActivated_When_OreSettingDontExists_Expect_CreateNewOneAndSetValue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        boolean status = true;
+
+        for (Ore ore : Ore.values()) {
+            OreControlUtil.setActivated(ore, worldOreConfig, status);
+            booleanList.add(status);
+            status = !status;
+        }
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+
+        for (Ore ore : Ore.values()) {
+            final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
+            assertTrue(oreSettings.isPresent());
+
+            assertEquals(oreSettings.get().isActivated(), booleanIterator.next());
+        }
+    }
+
+    @Test
+    public void SetActivated_When_OreSettingExists_Expect_OverrideExistingValue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        final List<OreSettings> oreSettingsList = new LinkedList<>();
+        boolean status = true;
+
+        for (Ore ore : Ore.values()) {
+            final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings.setActivated(status);
+            status = !status;
+            oreSettingsList.add(oreSettings);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        status = false;
+
+        for (Ore ore : Ore.values()) {
+            OreControlUtil.setActivated(ore, worldOreConfig, status);
+            booleanList.add(status);
+            status = !status;
+        }
+
+        final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+
+        for (Ore ore : Ore.values()) {
+            final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
+            assertTrue(oreSettings.isPresent());
+
+            assertSame(oreSettings.get(), oreSettingsIterator.next());
+
+            assertEquals(oreSettings.get().isActivated(), booleanIterator.next());
+        }
+    }
+
+    //Test OreControlUtil#setActivated(Ore, WorldOreConfig, boolean) end
+
+    //Test OreControlUtil#setActivated(Ore, WorldOreConfig, boolean, Biome) begin
+
+    @Test
+    public void SetBiomeActivated_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(null, mock(WorldOreConfig.class), true, Biome.BADLANDS));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, null, true, Biome.BADLANDS));
+        assertThrows(NullPointerException.class, () -> OreControlUtil.setActivated(Ore.GOLD, mock(WorldOreConfig.class), true, null));
+    }
+
+    @Test
+    public void SetBiomeActivated_When_BiomeOreSettingDontExists_Expect_CreateNewOneAndSetValue() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        boolean status = true;
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                OreControlUtil.setActivated(ore, worldOreConfig, status, biome);
+                booleanList.add(status);
+                status = !status;
+            }
+
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+                assertTrue(biomeOreSettings.isPresent());
+
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+                assertTrue(oreSettings.isPresent());
+
+                assertEquals(oreSettings.get().isActivated(), booleanIterator.next());
+            }
+    }
+
+    @Test
+    public void SetBiomeActivated_When_OnlyBiomeOreSettingExists_Expect_CreateNewOreSettingsInSameBiomeOreSettings() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
+        boolean status = true;
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            biomeOreSettingsList.add(biomeOreSettings);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+        }
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                OreControlUtil.setActivated(ore, worldOreConfig, status, biome);
+                booleanList.add(status);
+                status = !status;
+            }
+
+        final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+
+        for (Biome biome : Biome.values()) {
+            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+            assertTrue(biomeOreSettings.isPresent());
+            assertSame(biomeOreSettings.get(), biomeOreSettingsIterator.next());
+
+            for (Ore ore : biome.getOres()) {
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+                assertTrue(oreSettings.isPresent());
+
+                assertEquals(oreSettings.get().isActivated(), booleanIterator.next());
+            }
+        }
+    }
+
+    @Test
+    public void SetBiomeActivated_When_BiomeAndOreSettingsExists_Expect_OverrideCurrentStatusInSameObject() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Boolean> booleanList = new LinkedList<>();
+        final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
+        final List<OreSettings> oreSettingsList = new LinkedList<>();
+        boolean status = true;
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            biomeOreSettingsList.add(biomeOreSettings);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+            for (Ore ore : biome.getOres()) {
+                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+                oreSettings.setActivated(status);
+                status = !status;
+                oreSettingsList.add(oreSettings);
+                biomeOreSettings.setOreSettings(oreSettings);
+            }
+        }
+
+        status = false;
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                OreControlUtil.setActivated(ore, worldOreConfig, status, biome);
+                booleanList.add(status);
+                status = !status;
+            }
+
+        final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
+        final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
+        final Iterator<Boolean> booleanIterator = booleanList.iterator();
+
+        for (Biome biome : Biome.values()) {
+            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+            assertTrue(biomeOreSettings.isPresent());
+            assertSame(biomeOreSettings.get(), biomeOreSettingsIterator.next());
+
+            for (Ore ore : biome.getOres()) {
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+                assertTrue(oreSettings.isPresent());
+                assertSame(oreSettings.get(), oreSettingsIterator.next());
+
+                assertEquals(oreSettings.get().isActivated(), booleanIterator.next());
+            }
+        }
+    }
+
+    @Test
+    public void SetBiomeActivated_When_BiomeDontHaveTheOre_Expect_ThrowIllegalArgumentException() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+
+        for (Biome biome : Biome.values()) {
+            final Set<Ore> ores = Sets.newHashSet(Ore.values());
+
+            ores.removeAll(Sets.newHashSet(biome.getOres()));
+
+            for (Ore ore : ores)
+                assertThrows(IllegalArgumentException.class, () -> OreControlUtil.setActivated(ore, worldOreConfig, true, biome));
+        }
+    }
+
+    //Test OreControlUtil#setActivated(Ore, WorldOreConfig, boolean, Biome) end
 
 }

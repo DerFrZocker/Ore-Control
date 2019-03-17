@@ -253,6 +253,7 @@ public class OreControlUtil {
      * @param ore    which must be non-null
      * @param config which must be non-null
      * @param status true for activated false for not activated
+     * @throws NullPointerException if Ore or WorldOreConfig is null
      */
     public static void setActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final boolean status) {
         config.getOreSettings(ore).orElseGet(() -> {
@@ -270,6 +271,7 @@ public class OreControlUtil {
      * @param config which must be non-null
      * @param status true for activated false for not activated
      * @param biome  which must be non-null
+     * @throws NullPointerException     if Ore,Biome or WorldOreConfig is null
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      */
     public static void setActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final boolean status, final @NonNull Biome biome) {
