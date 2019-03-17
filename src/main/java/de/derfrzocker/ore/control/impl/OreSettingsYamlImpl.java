@@ -31,7 +31,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     @Setter
     private boolean activated = true;
 
-    public OreSettingsYamlImpl(final Ore ore, final @NonNull Map<Setting, Integer> settings) {
+    public OreSettingsYamlImpl(final @NonNull Ore ore, final @NonNull Map<Setting, Integer> settings) {
         this.ore = ore;
         this.settings.putAll(settings);
     }

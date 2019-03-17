@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("ConstantConditions")
-@RunWith(PowerMockRunner.class) //TODO rework the test cases
+@RunWith(PowerMockRunner.class)
 public class OreControlUtilTest {
 
     private static Settings settings;
