@@ -251,7 +251,7 @@ public class OreControlUtilTest {
 
         for (Ore ore : Biome.PLAINS.getOres())
             for (Setting setting : ore.getSettings())
-                assertSame(OreControlUtil.getAmount(ore, setting, worldOreConfig, Biome.PLAINS), iterator.next());
+                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, Biome.PLAINS), (int) iterator.next());
 
     }
 
@@ -265,7 +265,7 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertSame(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
 
     }
 
@@ -282,7 +282,7 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertSame(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
 
     }
 
@@ -791,7 +791,7 @@ public class OreControlUtilTest {
     @Test
     public void GetOreSettings_When_BiomeOreSettingsAndOreSettingsExists_Expect_ReturnTheOreSettings() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final Set<OreSettings> oreSettingsSet = new LinkedHashSet<>();
+        final List<OreSettings> oreSettingsSet = new LinkedList<>();
 
         for (Biome biome : Biome.values()) {
             final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);

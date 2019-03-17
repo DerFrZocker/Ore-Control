@@ -31,7 +31,9 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static int getAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config) {
-        return config.getOreSettings(ore).orElseGet(() -> OreControl.getInstance().getSettings().getDefaultSettings(ore)).getValue(setting).orElseThrow(() -> new IllegalArgumentException("The ore '" + ore + "' don't have the setting '" + setting + "'!"));
+        valid(ore, setting);
+
+        return config.getOreSettings(ore).map(oreSettings -> oreSettings.getValue(setting).orElseGet(() -> getDefault(ore, setting))).orElseGet(() -> getDefault(ore, setting));
     }
 
     /**
@@ -57,7 +59,15 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static int getAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final @NonNull Biome biome) {
-        return getOreSettings(ore, config, biome).getValue(setting).orElseThrow(() -> new IllegalArgumentException("The ore '" + ore + "' don't have the setting '" + setting + "'!"));
+        valid(ore, setting);
+        valid(biome, ore);
+
+        return config.getBiomeOreSettings(biome).
+                map(biomeOreSettings1 -> biomeOreSettings1.getOreSettings(ore).
+                        map(oreSettings1 -> oreSettings1.getValue(setting).
+                                orElseGet(() -> getAmount(ore, setting, config))).
+                        orElseGet(() -> getAmount(ore, setting, config))).
+                orElseGet(() -> getAmount(ore, setting, config));
     }
 
     /**
@@ -74,8 +84,7 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static void setAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final int value) {
-        if (!Sets.newHashSet(ore.getSettings()).contains(setting))
-            throw new IllegalArgumentException("The Ore '" + ore + "' don't have the Setting '" + setting + "'!");
+        valid(ore, setting);
 
         config.getOreSettings(ore).orElseGet(() -> {
             OreSettings oreSettings = OreControl.getInstance().getSettings().getDefaultSettings(ore);
@@ -102,6 +111,9 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static void setAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final int value, final @NonNull Biome biome) {
+        valid(ore, setting);
+        valid(biome, ore);
+
         BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
             BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
             config.setBiomeOreSettings(biomeOreSettings);
@@ -125,6 +137,8 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static int getDefault(final @NonNull Ore ore, final @NonNull Setting setting) {
+        valid(ore, setting);
+
         return OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).orElseThrow(() -> new IllegalArgumentException("The ore '" + ore + "' don't have the setting '" + setting + "'!"));
     }
 
@@ -156,8 +170,7 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      */
     public static OreSettings getOreSettings(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final @NonNull Biome biome) { //TODO find better name
-        if (!Sets.newHashSet(biome.getOres()).contains(ore))
-            throw new IllegalArgumentException("The biome '" + biome + "' don't have the ore '" + ore + "'!");
+        valid(biome, ore);
 
         return config.getBiomeOreSettings(biome).
                 map(value -> value.getOreSettings(ore).
@@ -243,6 +256,8 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      */
     public static boolean isActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final @NonNull Biome biome) {
+        valid(biome, ore);
+
         return getOreSettings(ore, config, biome).isActivated();
     }
 
@@ -275,6 +290,8 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      */
     public static void setActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig config, final boolean status, final @NonNull Biome biome) {
+        valid(biome, ore);
+
         BiomeOreSettings biomeSettings = config.getBiomeOreSettings(biome).orElseGet(() -> {
             BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
             config.setBiomeOreSettings(biomeOreSettings);
@@ -463,6 +480,16 @@ public class OreControlUtil {
             }
 
         return optional;
+    }
+
+    private static void valid(final Ore ore, final Setting setting) {
+        if (!Sets.newHashSet(ore.getSettings()).contains(setting))
+            throw new IllegalArgumentException("The Ore '" + ore + "' don't have the Setting '" + setting + "'!");
+    }
+
+    private static void valid(final Biome biome, final Ore ore) {
+        if (!Sets.newHashSet(biome.getOres()).contains(ore))
+            throw new IllegalArgumentException("The Biome '" + biome + "' don't have the Ore '" + ore + "'!");
     }
 
 }
