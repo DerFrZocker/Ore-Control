@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldOreConfig {
 
     @Deprecated

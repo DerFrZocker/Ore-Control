@@ -6,6 +6,7 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.utils.CommandUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import org.bukkit.Bukkit;
@@ -33,7 +34,7 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
+        CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
             final String oreName = args[0];
             final String settingName = args[1];
             final String configName = args[2];

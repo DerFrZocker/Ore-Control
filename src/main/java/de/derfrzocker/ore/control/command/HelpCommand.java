@@ -2,7 +2,7 @@ package de.derfrzocker.ore.control.command;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
-import org.bukkit.Bukkit;
+import de.derfrzocker.ore.control.utils.CommandUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -20,7 +20,7 @@ public class HelpCommand implements TabExecutor {
         if (!Permissions.hasAnyCommandPermission(sender))
             return false;
 
-        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
+        CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
 
             if (args.length == 1) {
                 if ("set".equalsIgnoreCase(args[0]) && Permissions.SET_PERMISSION.hasPermission(sender)) {

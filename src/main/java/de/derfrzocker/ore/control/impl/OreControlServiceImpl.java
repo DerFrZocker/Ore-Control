@@ -7,12 +7,14 @@ import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.bukkit.World;
 
 import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
+@ToString
 public class OreControlServiceImpl implements OreControlService {
 
     @Getter

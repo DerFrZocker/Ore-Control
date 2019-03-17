@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettings {
 
     private static final String ORE_KEY = "ore";

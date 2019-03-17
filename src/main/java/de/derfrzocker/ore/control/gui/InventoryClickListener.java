@@ -31,6 +31,8 @@ public class InventoryClickListener implements Listener {
             try {
                 ((InventoryGui) event.getView().getTopInventory().getHolder()).onInventoryClick(event);
             } catch (Exception e) {
+                event.getWhoClicked().sendMessage("§4Error while execute gui action, see console for more information.");
+                event.getWhoClicked().sendMessage("§4Please report the error to the Developer.");
                 e.printStackTrace();
             } finally {
                 playerSet.remove(event.getWhoClicked());

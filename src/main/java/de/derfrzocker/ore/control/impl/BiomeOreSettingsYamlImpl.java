@@ -5,10 +5,7 @@ import de.derfrzocker.ore.control.api.BiomeOreSettings;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
@@ -18,6 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, BiomeOreSettings {
 
     private static final String BIOME_KEY = "biome";

@@ -29,7 +29,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
         try {
             yaml.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unexpected error while save YamlConfiguration to file: " + file, e);
         }
     }
 
@@ -45,7 +45,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
         try {
             yaml.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unexpected error while save YamlConfiguration to file: " + file + ", while remove WorldOreConfig: " + config, e);
         }
     }
 
@@ -59,7 +59,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
         try {
             yaml.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unexpected error while save YamlConfiguration to file: " + file + ", while save WorldOreConfig: " + config, e);
         }
     }
 

@@ -3,6 +3,7 @@ package de.derfrzocker.ore.control.command;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.utils.CommandUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import org.bukkit.Bukkit;
@@ -30,7 +31,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () -> {
+        CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
             final String biomeName = args[0];
             final String oreName = args[1];
             final String settingName = args[2];
