@@ -15,6 +15,7 @@ import de.derfrzocker.ore.control.utils.Config;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -48,6 +49,8 @@ public class OreControl extends JavaPlugin implements Listener {
     private NMSReplacer nmsReplacer = null;
 
     private final OreControlCommand oreControlCommand = new OreControlCommand();
+
+    private Metrics metrics;
 
     @Override
     public void onLoad() {
@@ -83,6 +86,10 @@ public class OreControl extends JavaPlugin implements Listener {
         if (nmsReplacer == null)
             return;
 
+        nmsReplacer.replaceNMS();
+
+        setUpMetric();
+
         Bukkit.getServicesManager().register(OreControlService.class,
                 new OreControlServiceImpl(
                         nmsReplacer,
@@ -93,9 +100,13 @@ public class OreControl extends JavaPlugin implements Listener {
 
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
 
-        nmsReplacer.replaceNMS();
-
         Bukkit.getPluginManager().registerEvents(this, this);
+    }
+
+    private void setUpMetric() {
+        metrics = new Metrics(this);
+
+        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getName()));
     }
 
     private void registerCommands() {
