@@ -50,20 +50,19 @@ public class OreControl extends JavaPlugin implements Listener {
 
     private final OreControlCommand oreControlCommand = new OreControlCommand();
 
-    private Metrics metrics;
-
     @Override
     public void onLoad() {
         instance = this;
 
         checkFile("data/settings.yml");
         checkFile("data/biome_gui.yml");
+        checkFile("data/ore_gui.yml");
         checkFile("data/ore_settings_gui.yml");
         checkFile("data/settings_gui.yml");
         checkFile("data/world_config_gui.yml");
         checkFile("data/world_gui.yml");
 
-        String version = getVersion();
+        final String version = getVersion();
 
         if (version.equalsIgnoreCase("v1_13_R1"))
             nmsReplacer = new NMSReplacer_v1_13_R1();
@@ -104,7 +103,7 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private void setUpMetric() {
-        metrics = new Metrics(this);
+       final Metrics metrics = new Metrics(this);
 
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getName()));
     }
@@ -117,17 +116,20 @@ public class OreControl extends JavaPlugin implements Listener {
         oreControlCommand.registerExecutor(new CreateCommand(), "create");
         oreControlCommand.registerExecutor(new GuiCommand(), "");
 
-        HelpCommand helpCommand = new HelpCommand();
+        final HelpCommand helpCommand = new HelpCommand();
         oreControlCommand.registerExecutor(helpCommand, null);
         oreControlCommand.registerExecutor(helpCommand, "help");
     }
 
     private void checkFile(String name) {
-        File file = new File(getDataFolder(), name);
+        final File file = new File(getDataFolder(), name);
 
-        YamlConfiguration configuration = new Config(new File(getDataFolder(), name));
+        if (!file.exists())
+            return;
 
-        YamlConfiguration configuration2 = new Config(getResource(name));
+        final YamlConfiguration configuration = new Config(file);
+
+        final YamlConfiguration configuration2 = new Config(getResource(name));
 
         if (configuration.getInt("version") == configuration2.getInt("version"))
             return;
@@ -138,6 +140,12 @@ public class OreControl extends JavaPlugin implements Listener {
             throw new RuntimeException("can't delete file " + name + " stop plugin start!");
 
         saveResource(name, true);
+    }
+
+    private String getVersion() {
+        final String name = Bukkit.getServer().getClass().getPackage().getName();
+
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     @EventHandler //TODO maybe extra class
@@ -152,14 +160,8 @@ public class OreControl extends JavaPlugin implements Listener {
         );
     }
 
-    private String getVersion() {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-
-        return name.substring(name.lastIndexOf('.') + 1);
-    }
-
     public static OreControlService getService() {
-        OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 
         if (service == null)
             throw new IllegalStateException("The Bukkit Service have no " + OreControlService.class.getName() + " registered", new NullPointerException("service can't be null"));
