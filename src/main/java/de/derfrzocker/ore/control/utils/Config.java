@@ -31,7 +31,7 @@ public class Config extends YamlConfiguration {
                 Files.createParentDirs(file);
                 file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while create a new File: "+ file ,e);
             }
         }
 
@@ -39,7 +39,7 @@ public class Config extends YamlConfiguration {
         try {
             this.load(file);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while load data from file: "+ file ,e);
         }
 
     }
@@ -50,7 +50,7 @@ public class Config extends YamlConfiguration {
         try {
             this.load(input);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while load data from InputStream: "+ input ,e);
         }
 
     }
@@ -59,22 +59,19 @@ public class Config extends YamlConfiguration {
         try {
             this.loadFromString(input);
         } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while load data from String: "+ input ,e);
         }
     }
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
     public void save(@NonNull File file) throws IOException {
-
         Files.createParentDirs(file);
 
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file),
                 Charsets.UTF_8)) {
 
             writer.write(this.saveToString());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -113,7 +110,7 @@ public class Config extends YamlConfiguration {
             try {
                 config.save(file);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while save data to file: "+ file ,e);
             }
         }
 
