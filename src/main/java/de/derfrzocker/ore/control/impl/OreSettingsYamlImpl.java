@@ -62,7 +62,9 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
 
     @Override
     public OreSettingsYamlImpl clone() {
-        return new OreSettingsYamlImpl(getOre(), getSettings());
+        final OreSettingsYamlImpl  oreSettingsYaml = new OreSettingsYamlImpl(getOre(), getSettings());
+        oreSettingsYaml.setActivated(isActivated());
+        return oreSettingsYaml;
     }
 
     public static OreSettingsYamlImpl deserialize(final Map<String, Object> map) {

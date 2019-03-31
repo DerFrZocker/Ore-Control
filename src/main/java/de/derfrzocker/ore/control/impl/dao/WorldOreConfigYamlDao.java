@@ -52,7 +52,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     @Override
     public void save(@NonNull WorldOreConfig config) {
         if (!(config instanceof ConfigurationSerializable))
-            config = new WorldOreConfigYamlImpl(config.getName(), config.isTemplate(), config.getOreSettings());
+            config = new WorldOreConfigYamlImpl(config.getName(), config.isTemplate(), config.getOreSettings(), config.getBiomeOreSettings());
 
         yaml.set(config.getName(), config);
 
