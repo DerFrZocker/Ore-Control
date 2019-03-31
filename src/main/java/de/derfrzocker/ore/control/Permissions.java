@@ -15,7 +15,11 @@ public enum Permissions {
     RELOAD_PERMISSION("reload", true),
     SET_PERMISSION("set", true),
     SET_BIOME_PERMISSION("set.biome", true),
-    CREATE_TEMPLATE_PERMISSION("template.create", true);
+    CREATE_TEMPLATE_PERMISSION("template.create", true),
+    DELETE_TEMPLATE_PERMISSION("template.delete", false),
+    RESET_VALUES_PERMISSION("value.reset", false),
+    COPY_VALUES_PERMISSION("value.copy", false),
+    EDIT_CONFIG_PERMISSION("config.edit", false);
 
     @NonNull
     private final String permission;

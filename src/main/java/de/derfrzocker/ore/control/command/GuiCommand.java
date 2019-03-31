@@ -23,7 +23,7 @@ public class GuiCommand implements TabExecutor {
         if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender) && !Permissions.SET_PERMISSION.hasPermission(sender))
             return false;
 
-        ((Player) sender).openInventory(new WorldGui().getInventory());
+        ((Player) sender).openInventory(new WorldGui(sender).getInventory());
 
         return true;
     }

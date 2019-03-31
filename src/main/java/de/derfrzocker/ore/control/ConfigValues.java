@@ -27,11 +27,19 @@ public class ConfigValues implements ReloadAble {
     }
 
     public Language getLanguage() {
-        return Language.getLanguage(yaml.getString("language"));
+        return Language.getLanguage(yaml.getString("language", "english"));
     }
 
     public boolean isTranslateTabCompilation() {
         return yaml.getBoolean("translate_tab_compilation", true);
+    }
+
+    public boolean verifyCopyAction(){
+        return yaml.getBoolean("verify.copy_action",true);
+    }
+
+    public boolean verifyResetAction(){
+        return yaml.getBoolean("verify.reset_action", true);
     }
 
     @Override

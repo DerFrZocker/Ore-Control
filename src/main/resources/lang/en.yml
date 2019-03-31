@@ -168,6 +168,9 @@ setting:
   HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
 
 gui:
+  anvil:
+    name_already_exist: "Name already Exists!"
+    title: "Type a name!"
   previous_page: "&rPrevious page"
   next_page: "&rNext page"
   back: "&rGo one step Back"
@@ -180,20 +183,36 @@ gui:
     lore_current: "current: %amount%"
   world:
     name: "Choose a World!"
+    template:
+      create: "Create a new Template!"
+    config:
+      edit: "Change the config settings!"
   world_config:
     name: "Choose a Type!"
     biome: "§bSet a value for a specific §dbiome§b!"
     ore: "§bSet a value for the whole §dworld§b!"
+    reset: "Reset all settings to the default values!"
+    copy: "Copy all settings to an other World or Template"
+    delete: "Delete this Template!"
   biome:
     name: "Choose a Biome!"
+    reset: "Reset all Biome settings to the default values!"
+    copy: "Copy all Biome settings to an other World or Template!"
   ore:
     name: "Choose an Ore!"
-    biome_name: "Choose an Ore!"
+    reset: "Reset all Ore settings to the default values!"
+    copy: "Copy all Ore settings to an other World or Template!"
   ore_settings:
     name: "Choose a Setting!"
-    biome_name: "Choose a Setting!"
     activate: "§aActivate the Ore Generation!"
     deactivate: "§cDeactivate the Ore Generation!"
+    reset: "Reset all settings of this Ore to the default values!"
+    copy: "Copy all settings of this Ore to an other World or Template!"
   settings:
     name: "Set a value!"
-    biome_name: "Set a value!"
+    reset: "Reset this setting to the default value!"
+    copy: "Copy this setting to an other World or Template!"
+  verify:
+    name: "Accept or Deny the Action!"
+    accpet: "Accept"
+    deny: "Deny"

@@ -172,6 +172,9 @@ setting:
   HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
 
 gui:
+  anvil:
+    name_already_exist: "Name existiert bereits!"
+    title: "Schreibe einen Namen!"
   previous_page: "&rVorherige Seite"
   next_page: "&rNächste Seite"
   back: "&rGehe einen Schritt zurück"
@@ -184,20 +187,36 @@ gui:
     lore_current: "Aktuell: %amount%"
   world:
     name: "Wähle eine Welt!"
+    template:
+      create: "Erstelle eine neue Vorlage!"
+    config:
+      edit: "Ändere Config Einstellungen!"
   world_config:
     name: "Wähle einen Typ!"
     biome: "§bLege eine Wert für ein bestimmtes §dBiom§b fest!"
     ore: "§bLege einen Wert für die ganze §dWelt§b fest!"
+    reset: "Setze alle Werte auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Eintellugen zu einer anderen Welt oder Vorlage!"
+    delete: "Lösches diese Vorlage!"
   biome:
     name: "Wähle ein Biom!"
+    reset: "Setze alle Biome Werte auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Biome Eintellugen zu einer anderen Welt oder Vorlage!"
   ore:
     name: "Wähle ein Erz!"
-    biome_name: "Wähle ein Erz!"
+    reset: "Setze alle Erz Werte auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Erz Eintellugen zu einer anderen Welt oder Vorlage!"
   ore_settings:
     name: "Wähle eine Einstellung!"
-    biome_name: "Wähle eine Einstellung!"
     activate: "§aAktiviere die Erzgenerierung!"
     deactivate: "§cDeaktiviere die Erzgeneration!"
+    reset: "Setze alle Werte von diesem Erz auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Eintellugen von diesem Erz zu einer anderen Welt oder Vorlage!"
   settings:
     name: "Einen Wert einstellen!"
-    biome_name: "Einen Wert einstellen!"
+    reset: "Setze diesen Wert auf die Standart einstellung zurück!"
+    copy: "Kopiere diese Eintellung zu einer anderen Welt oder Vorlage!"
+  verify:
+    name: "Akzeptiere oder lehne die Aktion ab!"
+    accpet: "Akzeptieren"
+    deny: "Ablehnen"

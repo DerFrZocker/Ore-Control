@@ -4,7 +4,6 @@ inventory:
   name: "%%translation:[gui.ore.name]%"
   rows: 3
   ore_gap: 2
-  biome_name: "%%translation:[gui.ore.biome_name]%"
 back:
   slot: 18
   item_stack:
@@ -48,3 +47,24 @@ info:
       lore:
         - "%%translation:[gui.info.lore_world]%"
         - "%%translation:[gui.info.lore_biome]%"
+value:
+  reset:
+    slot: 9
+    item_stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1631
+      type: NETHER_STAR
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: "%%translation:[gui.ore.reset]%"
+  copy:
+    slot: 10
+    item_stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1631
+      type: ANVIL
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: "%%translation:[gui.ore.copy]%"

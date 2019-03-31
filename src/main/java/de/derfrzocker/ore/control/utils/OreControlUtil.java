@@ -466,6 +466,45 @@ public class OreControlUtil {
         return optional;
     }
 
+    /**
+     * Copy all values from the given WorldOreConfig to an other WorldOreConfig
+     *
+     * @param from the source of the values that get copy
+     * @param to the destinations of the values
+     * @throws NullPointerException if one of the WorldOreConfig is null
+     * @throws IllegalArgumentException if the WorldOreConfigs are the same or have the same name
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to) {
+        if (from == to || from.getName().equals(to.getName()))
+            throw new IllegalArgumentException("The given WorldOreConfig (" + from.getName() + ") are the same!");
+
+        reset(to);
+
+        from.getBiomeOreSettings().forEach((biome, biomeOreSettings) -> biomeOreSettings.getOreSettings().forEach((ore, oreSettings) ->{
+            oreSettings.getSettings().forEach(((setting, integer) -> setAmount(ore, setting, to, integer, biome)));
+            setActivated(ore, to, oreSettings.isActivated(), biome);
+        }));
+    }
+
+    /**
+     * This clear all set values from the given WorldOreConfig, it not remove the OreSettings or the BiomeOreSettings Object itself.
+     *
+     * @param worldOreConfig that should reset
+     * @throws NullPointerException if WorldOreConfig is null
+     */
+    public static void reset(final @NonNull WorldOreConfig worldOreConfig) {
+        worldOreConfig.getBiomeOreSettings().forEach(((biome, biomeOreSettings) -> biomeOreSettings.getOreSettings().forEach(((ore, oreSettings) -> {
+            oreSettings.getSettings().clear();
+            oreSettings.setActivated(true);
+        }))));
+
+        worldOreConfig.getOreSettings().forEach(((ore, oreSettings) -> {
+            oreSettings.getSettings().clear();
+            oreSettings.setActivated(true);
+        }));
+    }
+
+
     private static void valid(final Ore ore, final Setting setting) {
         if (!Sets.newHashSet(ore.getSettings()).contains(setting))
             throw new IllegalArgumentException("The Ore '" + ore + "' don't have the Setting '" + setting + "'!");

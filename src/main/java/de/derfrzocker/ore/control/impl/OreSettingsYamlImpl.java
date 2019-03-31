@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -21,7 +22,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     private static final String STATUS_KEY = "status";
 
     @Getter
-    private final Map<Setting, Integer> settings = new HashMap<>();
+    private final Map<Setting, Integer> settings = new ConcurrentHashMap<>();
 
     @NonNull
     @Getter

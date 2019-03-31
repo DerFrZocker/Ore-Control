@@ -1,0 +1,23 @@
+inventory:
+  name: %%translation:[gui.verify.name]%
+  rows: 3
+accept:
+  slot: 11
+  item_stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: GREEN_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: %%translation:[gui.verify.accept]%
+deny:
+  slot: 13
+  item_stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: RED_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: %%translation:[gui.verify.deny]%
