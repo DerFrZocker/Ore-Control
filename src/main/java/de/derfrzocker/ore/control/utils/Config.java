@@ -31,7 +31,7 @@ public class Config extends YamlConfiguration {
                 Files.createParentDirs(file);
                 file.createNewFile();
             } catch (IOException e) {
-                throw new RuntimeException("Error while create a new File: "+ file ,e);
+                throw new RuntimeException("Error while create a new File: " + file, e);
             }
         }
 
@@ -39,7 +39,7 @@ public class Config extends YamlConfiguration {
         try {
             this.load(file);
         } catch (Exception e) {
-            throw new RuntimeException("Error while load data from file: "+ file ,e);
+            throw new RuntimeException("Error while load data from file: " + file, e);
         }
 
     }
@@ -50,7 +50,7 @@ public class Config extends YamlConfiguration {
         try {
             this.load(input);
         } catch (Exception e) {
-            throw new RuntimeException("Error while load data from InputStream: "+ input ,e);
+            throw new RuntimeException("Error while load data from InputStream: " + input, e);
         }
 
     }
@@ -59,7 +59,7 @@ public class Config extends YamlConfiguration {
         try {
             this.loadFromString(input);
         } catch (InvalidConfigurationException e) {
-            throw new RuntimeException("Error while load data from String: "+ input ,e);
+            throw new RuntimeException("Error while load data from String: " + input, e);
         }
     }
 
@@ -110,7 +110,7 @@ public class Config extends YamlConfiguration {
             try {
                 config.save(file);
             } catch (IOException e) {
-                throw new RuntimeException("Error while save data to file: "+ file ,e);
+                throw new RuntimeException("Error while save data to file: " + file, e);
             }
         }
 
