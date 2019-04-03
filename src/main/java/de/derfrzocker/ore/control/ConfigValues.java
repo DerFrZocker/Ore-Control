@@ -34,11 +34,11 @@ public class ConfigValues implements ReloadAble {
         return yaml.getBoolean("translate_tab_compilation", true);
     }
 
-    public boolean verifyCopyAction(){
-        return yaml.getBoolean("verify.copy_action",true);
+    public boolean verifyCopyAction() {
+        return yaml.getBoolean("verify.copy_action", true);
     }
 
-    public boolean verifyResetAction(){
+    public boolean verifyResetAction() {
         return yaml.getBoolean("verify.reset_action", true);
     }
 

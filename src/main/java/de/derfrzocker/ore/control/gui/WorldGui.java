@@ -91,12 +91,14 @@ public class WorldGui extends PageGui<String> {
         if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
             openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
                 OreControlUtil.copy(this.worldOreConfig, worldOreConfig);
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
                 closeSync(event.getWhoClicked());
             }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
             return;
         }
-        OreControlUtil.copy(this.worldOreConfig, worldOreConfig);
 
+        OreControlUtil.copy(this.worldOreConfig, worldOreConfig);
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
         closeSync(event.getWhoClicked());
     }
 

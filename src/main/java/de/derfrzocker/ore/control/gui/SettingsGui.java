@@ -39,7 +39,7 @@ public class SettingsGui extends BasicGui {
 
     private final int oreSlot;
 
-    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible){
+    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible) {
         this.worldOreConfig = worldOreConfig;
         this.ore = ore;
         this.setting = setting;
@@ -76,7 +76,7 @@ public class SettingsGui extends BasicGui {
         };
     }
 
-    private void updateItemStack(){
+    private void updateItemStack() {
         ItemStack itemStack = biome == null ? getSettings().getDefaultOreItemStack() : getSettings().getDefaultBiomeOreItemStack();
         itemStack.setType(ore.getMaterial());
         itemStack = MessageUtil.replaceItemStack(itemStack, getMessagesValues());

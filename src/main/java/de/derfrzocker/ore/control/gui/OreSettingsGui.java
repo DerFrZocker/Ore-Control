@@ -172,7 +172,7 @@ public class OreSettingsGui extends BasicGui {
 
         @Override
         public void accept(final InventoryClickEvent event) {
-            openSync(event.getWhoClicked(), new SettingsGui(worldOreConfig, ore, setting, biome,event.getWhoClicked()).getInventory());
+            openSync(event.getWhoClicked(), new SettingsGui(worldOreConfig, ore, setting, biome, event.getWhoClicked()).getInventory());
         }
     }
 

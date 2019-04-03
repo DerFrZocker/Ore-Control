@@ -14,7 +14,7 @@ interface InventoryGui extends InventoryHolder {
 
     void onInventoryClick(InventoryClickEvent event);
 
-    default void openSync(final @NonNull HumanEntity entity,final @NonNull Inventory inventory) {
+    default void openSync(final @NonNull HumanEntity entity, final @NonNull Inventory inventory) {
         if (Bukkit.isPrimaryThread()) {
             entity.openInventory(inventory);
             return;
