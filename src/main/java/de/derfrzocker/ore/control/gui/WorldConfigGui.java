@@ -5,7 +5,9 @@ import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
 import lombok.NonNull;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
@@ -24,13 +26,13 @@ public class WorldConfigGui extends BasicGui {
             addItem(getSettings().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getBiomeItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory()));
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
+            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
             addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(worldOreConfig).getInventory()));
 
         if (Permissions.DELETE_TEMPLATE_PERMISSION.hasPermission(permissible) && worldOreConfig.isTemplate())
-            addItem(getSettings().getTemplateDeleteSlot(), MessageUtil.replaceItemStack(getSettings().getTemplateDeleteItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
+            addItem(getSettings().getTemplateDeleteSlot(), MessageUtil.replaceItemStack(getSettings().getTemplateDeleteItemStack()), this::handleDeleteTemplate); // TODO add right consumer
 
         addItem(getSettings().getBackSlot(), MessageUtil.replaceItemStack(getSettings().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(event.getWhoClicked()).getInventory()));
         addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(getSettings().getInfoItemStack(), getMessagesValues()));
@@ -43,6 +45,28 @@ public class WorldConfigGui extends BasicGui {
 
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
+    }
+
+    private void handleResetValues(final InventoryClickEvent event) {
+        if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
+            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+                OreControlUtil.reset(this.worldOreConfig);
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                closeSync(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            return;
+        }
+
+        OreControlUtil.reset(worldOreConfig);
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        closeSync(event.getWhoClicked());
+    }
+
+    private void handleDeleteTemplate(final InventoryClickEvent event) {
+        openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+            OreControl.getService().removeWorldOreConfig(worldOreConfig);
+            closeSync(event.getWhoClicked());
+        }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
     }
 
     private static final class WorldConfigGuiSettings extends BasicSettings {

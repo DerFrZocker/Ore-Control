@@ -526,7 +526,7 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Biome destinations dont have the given Ore destinations
      */
     public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Ore toOre, final @NonNull Biome toBiome) { //TODO add test cases
-        valid(from, to);
+        valid(fromOre, toOre);
         valid(toBiome, toOre);
         reset(to, toOre, toBiome);
 
@@ -536,18 +536,56 @@ public class OreControlUtil {
         });
     }
 
-    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Biome fromBiome, final @NonNull Ore toOre){
-        valid(from, to);
-        valid(toBiome, toOre);
-        reset(to, toOre, toBiome);
+    /**
+     * Copy the OreSettings from a specific Biome to an other OreSettings.
+     *
+     * @param from      the source of the values that get copy
+     * @param to        the destinations of the values
+     * @param fromOre   the source Ore
+     * @param fromBiome the source Biome
+     * @param toOre     the destinations Ore
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the given Ores dont have the same Settings
+     * @throws IllegalArgumentException if the Biome source dont have the given Ore source
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Biome fromBiome, final @NonNull Ore toOre) { //TODO add test cases
+        valid(fromBiome, fromOre);
+        valid(fromOre, toOre);
+        reset(to, toOre);
+
+        from.getBiomeOreSettings(fromBiome).ifPresent(biomeOreSettings -> biomeOreSettings.getOreSettings(fromOre).ifPresent(oreSettings -> {
+            oreSettings.getSettings().forEach((setting, integer) -> setAmount(toOre, setting, to, integer));
+            setActivated(toOre, to, oreSettings.isActivated());
+        }));
+
     }
 
-    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore ore, final @NonNull Setting setting) {//TODO add test cases
-        valid(from, to);
-        valid(ore, setting);
-        reset(to, ore, setting);
+    /**
+     * Copy the OreSettings from a specific Biome to an other OreSettings in a specific Biome.
+     *
+     * @param from      the source of the values that get copy
+     * @param to        the destinations of the values
+     * @param fromOre   the source Ore
+     * @param fromBiome the source Biome
+     * @param toOre     the destinations Ore
+     * @param toBiome   the destinations Biome
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the given Ores dont have the same Settings
+     * @throws IllegalArgumentException if the Biome source dont have the given Ore source
+     * @throws IllegalArgumentException if the Biome destination dont have the given Ore destination
+     * @throws IllegalArgumentException if the WorldOreConfig, Ore and Biome are the same
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Biome fromBiome, final @NonNull Ore toOre, final @NonNull Biome toBiome) { //TODO add test cases
+        valid(fromOre, toOre);
+        valid(fromBiome, fromOre);
+        valid(toBiome, toOre);
+        valid(from, to, toOre, fromOre, toBiome, fromBiome);
+        reset(to, toOre, toBiome);
 
-        from.getOreSettings(ore).ifPresent(oreSettings -> oreSettings.getValue(setting).ifPresent(integer -> setAmount(ore, setting, to, integer)));
+        from.getBiomeOreSettings(fromBiome).ifPresent(biomeOreSettings -> biomeOreSettings.getOreSettings(fromOre).ifPresent(oreSettings -> {
+            oreSettings.getSettings().forEach((setting, integer) -> setAmount(toOre, setting, to, integer, toBiome));
+            setActivated(toOre, to, oreSettings.isActivated(), toBiome);
+        }));
     }
 
     /**
@@ -667,6 +705,11 @@ public class OreControlUtil {
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1) {
         if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1)
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + ") and the given Ores (" + ore + ") are the same!");
+    }
+
+    private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Biome biome, final Biome biome1) {
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1)
+            throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + ") and the given Biomes (" + biome + ") are the same!");
     }
 
 }

@@ -51,7 +51,7 @@ public class OreSettingsGui extends BasicGui {
         addItem(statusSlot, MessageUtil.replaceItemStack(activated ? getSettings().getDeactivateItemStack() : getSettings().getActivateItemStack()), event -> handleStatusUpdate());
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
+            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
             addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
@@ -90,6 +90,28 @@ public class OreSettingsGui extends BasicGui {
         getInventory().setItem(statusSlot, MessageUtil.replaceItemStack(activated ? getSettings().getDeactivateItemStack() : getSettings().getActivateItemStack()));
 
         OreControl.getService().saveWorldOreConfig(worldOreConfig);
+    }
+
+    private void handleResetValues(final InventoryClickEvent event) {
+        if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
+            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+                if (biome != null)
+                    OreControlUtil.reset(worldOreConfig, ore, biome);
+                else
+                    OreControlUtil.reset(worldOreConfig, ore);
+
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                closeSync(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            return;
+        }
+        if (biome != null)
+            OreControlUtil.reset(worldOreConfig, ore, biome);
+        else
+            OreControlUtil.reset(worldOreConfig, ore);
+
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        closeSync(event.getWhoClicked());
     }
 
     private static final class OreSettingsGuiSettings extends BasicSettings {

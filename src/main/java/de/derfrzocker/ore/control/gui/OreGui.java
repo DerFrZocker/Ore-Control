@@ -8,6 +8,7 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class OreGui extends BasicGui {
         addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
+            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
             addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
@@ -54,6 +55,32 @@ public class OreGui extends BasicGui {
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName()),
                 new MessageValue("biome", biome == null ? "" : biome.toString())};
+    }
+
+    private void handleResetValues(final InventoryClickEvent event) {
+        if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
+            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+                if (biome != null)
+                    for (Ore ore : Ore.values())
+                        OreControlUtil.reset(worldOreConfig, ore, biome);
+                else
+                    for (Ore ore : Ore.values())
+                        OreControlUtil.reset(worldOreConfig, ore);
+
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                closeSync(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            return;
+        }
+        if (biome != null)
+            for (Ore ore : Ore.values())
+                OreControlUtil.reset(worldOreConfig, ore, biome);
+        else
+            for (Ore ore : Ore.values())
+                OreControlUtil.reset(worldOreConfig, ore);
+
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        closeSync(event.getWhoClicked());
     }
 
     private ItemStack getOreItemStack(final Ore ore) {
