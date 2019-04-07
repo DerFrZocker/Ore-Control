@@ -5,9 +5,9 @@ import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -22,12 +22,12 @@ public class WorldGui extends PageGui<String> {
 
     private Map<String, WorldOreConfig> worldOreConfigs = new HashMap<>();
 
-    private final WorldOreConfig worldOreConfig;
+    private final CopyAction copyAction;
 
     public WorldGui(final Permissible permissible) {
-        this.worldOreConfig = null;
+        this.copyAction = null;
 
-        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
+        init(getStrings(false), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
 
         if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
             addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
@@ -39,10 +39,9 @@ public class WorldGui extends PageGui<String> {
         worldOreConfigs = null;
     }
 
-    WorldGui(final WorldOreConfig worldOreConfig) {
-        this.worldOreConfig = worldOreConfig;
-
-        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyWorldOreConfigClick);
+    WorldGui(final CopyAction copyAction) {
+        this.copyAction = copyAction;
+        init(getStrings(true), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
     }
 
     private ItemStack getItemStack(final String value) {
@@ -69,7 +68,7 @@ public class WorldGui extends PageGui<String> {
             });
     }
 
-    private String[] getStrings() {
+    private String[] getStrings(final boolean filter) {
         final Set<String> configsSet = new LinkedHashSet<>();
 
         Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
@@ -78,28 +77,16 @@ public class WorldGui extends PageGui<String> {
         worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
         configsSet.addAll(worldOreConfigs.keySet());
 
-        if (worldOreConfig != null)
-            configsSet.remove(worldOreConfig.getName());
+        if (copyAction != null && filter)
+            configsSet.remove(copyAction.getWorldOreConfigSource().getName());
 
         return configsSet.toArray(new String[0]);
     }
 
+    private void handleCopyAction(final String configName, final InventoryClickEvent event) {
+        copyAction.setWorldOreConfigTarget(getWorldOreConfig(configName));
 
-    private void handleCopyWorldOreConfigClick(final String configName, final InventoryClickEvent event) {
-        final WorldOreConfig worldOreConfig = getWorldOreConfig(configName);
-
-        if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
-            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
-                OreControlUtil.copy(this.worldOreConfig, worldOreConfig);
-                OreControl.getService().saveWorldOreConfig(worldOreConfig);
-                closeSync(event.getWhoClicked());
-            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
-            return;
-        }
-
-        OreControlUtil.copy(this.worldOreConfig, worldOreConfig);
-        OreControl.getService().saveWorldOreConfig(worldOreConfig);
-        closeSync(event.getWhoClicked());
+        copyAction.next(event.getWhoClicked(), this);
     }
 
     private WorldOreConfig getWorldOreConfig(final String configName) {

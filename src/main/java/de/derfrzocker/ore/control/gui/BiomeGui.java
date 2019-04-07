@@ -4,6 +4,7 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
@@ -29,8 +30,7 @@ class BiomeGui extends PageGui<Biome> {
             addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> {
-            }); // TODO add right consumer
+            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).getInventory()));
     }
 
     private ItemStack getItemStack(final Biome biome) {

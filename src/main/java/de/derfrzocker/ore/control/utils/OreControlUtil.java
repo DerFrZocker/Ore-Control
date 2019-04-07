@@ -589,6 +589,35 @@ public class OreControlUtil {
     }
 
     /**
+     * Copy all OreSettings from the given Biome to an other Biome. If the Target Biome dont need one OreSettings,
+     * for example EMERALD than this OreSetting dont get copy.
+     *
+     * @param from      the source of the values that get copy
+     * @param to        the destinations of the values
+     * @param fromBiome the source Biome
+     * @param toBiome   the destinations Biome
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the given WorldOreConfig and the given Biome are the same
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Biome fromBiome, final @NonNull Biome toBiome) { //TODO add test cases
+        valid(from, to, fromBiome, toBiome);
+        reset(to, toBiome);
+
+        from.getBiomeOreSettings(fromBiome).ifPresent(biomeOreSettings -> biomeOreSettings.getOreSettings().values().stream().filter(oreSettings -> {
+            try {
+                valid(toBiome, oreSettings.getOre());
+            } catch (IllegalArgumentException e) {
+                return false;
+            }
+            return true;
+        }).forEach(oreSettings -> {
+            oreSettings.getSettings().forEach((setting, integer) -> setAmount(oreSettings.getOre(), setting, to, integer, toBiome));
+            setActivated(oreSettings.getOre(), to, oreSettings.isActivated(), toBiome);
+        }));
+
+    }
+
+    /**
      * This clear all set values from the given WorldOreConfig, it not remove the OreSettings or the BiomeOreSettings Object itself.
      *
      * @param worldOreConfig that should reset
@@ -710,6 +739,11 @@ public class OreControlUtil {
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Biome biome, final Biome biome1) {
         if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1)
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + ") and the given Biomes (" + biome + ") are the same!");
+    }
+
+    private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Biome biome, final Biome biome1) {
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && biome == biome1)
+            throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + ") and the given Biomes (" + biome + ") are the same!");
     }
 
 }
