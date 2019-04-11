@@ -8,6 +8,7 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
+import lombok.NonNull;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -27,7 +28,7 @@ public class WorldGui extends PageGui<String> {
     public WorldGui(final Permissible permissible) {
         this.copyAction = null;
 
-        init(getStrings(false), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
+        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
 
         if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
             addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
@@ -39,9 +40,9 @@ public class WorldGui extends PageGui<String> {
         worldOreConfigs = null;
     }
 
-    WorldGui(final CopyAction copyAction) {
+    WorldGui(final @NonNull CopyAction copyAction) {
         this.copyAction = copyAction;
-        init(getStrings(true), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
+        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
     }
 
     private ItemStack getItemStack(final String value) {
@@ -68,7 +69,7 @@ public class WorldGui extends PageGui<String> {
             });
     }
 
-    private String[] getStrings(final boolean filter) {
+    private String[] getStrings() {
         final Set<String> configsSet = new LinkedHashSet<>();
 
         Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
@@ -77,7 +78,7 @@ public class WorldGui extends PageGui<String> {
         worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
         configsSet.addAll(worldOreConfigs.keySet());
 
-        if (copyAction != null && filter)
+        if (copyAction != null && copyAction.isFilterWorldOreConfig())
             configsSet.remove(copyAction.getWorldOreConfigSource().getName());
 
         return configsSet.toArray(new String[0]);

@@ -4,6 +4,7 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
@@ -13,13 +14,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
-class BiomeGui extends PageGui<Biome> {
+public class BiomeGui extends PageGui<Biome> {
 
     @NonNull
     private final WorldOreConfig worldOreConfig;
 
+    private final CopyAction copyAction;
+
     BiomeGui(final Permissible permissible, final WorldOreConfig worldOreConfig) {
         this.worldOreConfig = worldOreConfig;
+        this.copyAction = null;
 
         init(Biome.values(), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
@@ -33,12 +37,25 @@ class BiomeGui extends PageGui<Biome> {
             addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).getInventory()));
     }
 
+    public BiomeGui(final WorldOreConfig worldOreConfig, final @NonNull CopyAction copyAction) {
+        this.worldOreConfig = worldOreConfig;
+        this.copyAction = copyAction;
+
+        init(Biome.values(), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
+
+    }
+
     private ItemStack getItemStack(final Biome biome) {
         return MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeItemStack(biome));
     }
 
     private void handleNormalClick(final Biome biome, final InventoryClickEvent event) {
         openSync(event.getWhoClicked(), new OreGui(worldOreConfig, biome, event.getWhoClicked()).getInventory());
+    }
+
+    private void handleCopyAction(final Biome biome, final InventoryClickEvent event) {
+        copyAction.setBiomeTarget(biome);
+        copyAction.next(event.getWhoClicked(), this);
     }
 
     private void handleResetValues(final InventoryClickEvent event) {

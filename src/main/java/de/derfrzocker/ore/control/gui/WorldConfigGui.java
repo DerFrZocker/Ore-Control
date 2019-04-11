@@ -3,6 +3,7 @@ package de.derfrzocker.ore.control.gui;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyWorldOreConfigAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
@@ -17,8 +18,11 @@ public class WorldConfigGui extends BasicGui {
     @NonNull
     private final WorldOreConfig worldOreConfig;
 
+    private final CopyAction copyAction;
+
     WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible) {
         this.worldOreConfig = worldOreConfig;
+        this.copyAction = null;
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible))
             addItem(getSettings().getOreItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getOreItemStack()), event -> openSync(event.getWhoClicked(), new OreGui(worldOreConfig, null, event.getWhoClicked()).getInventory()));
@@ -39,9 +43,33 @@ public class WorldConfigGui extends BasicGui {
         addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(getSettings().getInfoItemStack(), getMessagesValues()));
     }
 
+    public WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible, final @NonNull CopyAction copyAction) {
+        this.worldOreConfig = worldOreConfig;
+        this.copyAction = copyAction;
+
+        if (Permissions.SET_PERMISSION.hasPermission(permissible))
+            addItem(getSettings().getOreItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getOreItemStack()), this::handleCopyAction);
+
+        if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible))
+            addItem(getSettings().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getBiomeItemStack()), this::handleCopyActionBiome);
+
+        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(getSettings().getInfoItemStack(), getMessagesValues()));
+    }
+
+
     @Override
     public WorldConfigGuiSettings getSettings() {
         return WorldConfigGuiSettings.getInstance();
+    }
+
+    private void handleCopyAction(final InventoryClickEvent event) {
+        copyAction.setChooseBiome(false);
+        copyAction.next(event.getWhoClicked(), this);
+    }
+
+    private void handleCopyActionBiome(final InventoryClickEvent event) {
+        copyAction.setChooseBiome(true);
+        copyAction.next(event.getWhoClicked(), this);
     }
 
     private MessageValue[] getMessagesValues() {

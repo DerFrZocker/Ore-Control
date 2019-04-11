@@ -5,6 +5,8 @@ import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
+import de.derfrzocker.ore.control.gui.copy.CopyOresAction;
 import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
@@ -24,10 +26,12 @@ public class OreGui extends BasicGui {
     private final WorldOreConfig worldOreConfig;
 
     private final Biome biome;
+    private final CopyAction copyAction;
 
     OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final Permissible permissible) {
         this.worldOreConfig = worldOreConfig;
         this.biome = biome;
+        this.copyAction = null;
 
         final Ore[] ores = biome == null ? Ore.values() : biome.getOres();
 
@@ -43,8 +47,25 @@ public class OreGui extends BasicGui {
             addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory())); // TODO add right consumer
+            addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyOresAction(worldOreConfig, biome == null ? Ore.values() : biome.getOres(), biome)).getInventory()));
 
+    }
+
+    public OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final @NonNull CopyAction copyAction) {
+        this.worldOreConfig = worldOreConfig;
+        this.biome = biome;
+        this.copyAction = copyAction;
+
+        final Ore[] ores = biome == null ? Ore.values() : biome.getOres();
+
+        for (int i = 0; i < ores.length; i++) {
+            if (worldOreConfig == copyAction.getWorldOreConfigSource() && biome == copyAction.getBiomeSource() && ores[i] == copyAction.getOreSource())
+                continue;
+
+            addItem(InventoryUtil.calculateSlot(i, getSettings().getOreGap()), getOreItemStack(ores[i]), new OreCopyConsumer(ores[i]));
+        }
+
+        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
     }
 
     @Override
@@ -161,6 +182,20 @@ public class OreGui extends BasicGui {
         @Override
         public void accept(final InventoryClickEvent event) {
             openSync(event.getWhoClicked(), new OreSettingsGui(worldOreConfig, ore, biome, event.getWhoClicked()).getInventory());
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private final class OreCopyConsumer implements Consumer<InventoryClickEvent> {
+
+        private final Ore ore;
+
+        @Override
+        public void accept(final InventoryClickEvent event) {
+            copyAction.setOreTarget(ore);
+
+            copyAction.next(event.getWhoClicked(), OreGui.this);
         }
     }
 
