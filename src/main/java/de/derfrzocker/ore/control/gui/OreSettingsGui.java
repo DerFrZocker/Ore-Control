@@ -6,6 +6,7 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyOreAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
@@ -31,6 +32,8 @@ public class OreSettingsGui extends BasicGui {
 
     private final int statusSlot;
 
+    private final CopyAction copyAction;
+
     private boolean activated;
 
     OreSettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Biome biome, final Permissible permissible) {
@@ -38,6 +41,7 @@ public class OreSettingsGui extends BasicGui {
         this.ore = ore;
         this.biome = biome;
         this.statusSlot = getSettings().getStatusSlot();
+        copyAction = null;
 
         final Setting[] settings = ore.getSettings();
 
@@ -56,6 +60,21 @@ public class OreSettingsGui extends BasicGui {
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
             addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyOreAction(worldOreConfig, ore, biome)).getInventory()));
+    }
+
+    public OreSettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Biome biome, final @NonNull CopyAction copyAction) {
+        this.worldOreConfig = worldOreConfig;
+        this.ore = ore;
+        this.biome = biome;
+        this.statusSlot = -1;
+        this.copyAction = copyAction;
+
+        final Setting[] settings = ore.getSettings();
+
+        for (int i = 0; i < settings.length; i++)
+            addItem(i + getSettings().getSettingStartSlot(), getSettingItemStack(settings[i]), new SettingCopyConsumer(settings[i]));
+
+        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
     }
 
     @Override
@@ -196,6 +215,20 @@ public class OreSettingsGui extends BasicGui {
         @Override
         public void accept(final InventoryClickEvent event) {
             openSync(event.getWhoClicked(), new SettingsGui(worldOreConfig, ore, setting, biome, event.getWhoClicked()).getInventory());
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private final class SettingCopyConsumer implements Consumer<InventoryClickEvent> {
+
+        private final Setting setting;
+
+        @Override
+        public void accept(final InventoryClickEvent event) {
+            copyAction.setSettingTarget(setting);
+
+            copyAction.next(event.getWhoClicked(), OreSettingsGui.this);
         }
     }
 

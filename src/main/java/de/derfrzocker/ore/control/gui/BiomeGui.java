@@ -43,6 +43,7 @@ public class BiomeGui extends PageGui<Biome> {
 
         init(Biome.values(), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
 
+        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
     private ItemStack getItemStack(final Biome biome) {

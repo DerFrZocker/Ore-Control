@@ -59,9 +59,6 @@ public class OreGui extends BasicGui {
         final Ore[] ores = biome == null ? Ore.values() : biome.getOres();
 
         for (int i = 0; i < ores.length; i++) {
-            if (worldOreConfig == copyAction.getWorldOreConfigSource() && biome == copyAction.getBiomeSource() && ores[i] == copyAction.getOreSource())
-                continue;
-
             addItem(InventoryUtil.calculateSlot(i, getSettings().getOreGap()), getOreItemStack(ores[i]), new OreCopyConsumer(ores[i]));
         }
 

@@ -1,5 +1,5 @@
 inventory:
-  name: %%translation:[gui.verify.name]%
+  name: '%%translation:[gui.verify.name]%'
   rows: 3
 accept:
   slot: 11
@@ -10,9 +10,9 @@ accept:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: %%translation:[gui.verify.accept]%
+      display-name: '%%translation:[gui.verify.accept]%'
 deny:
-  slot: 13
+  slot: 15
   item_stack:
     ==: org.bukkit.inventory.ItemStack
     v: 1631
@@ -20,4 +20,4 @@ deny:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: %%translation:[gui.verify.deny]%
+      display-name: '%%translation:[gui.verify.deny]%'

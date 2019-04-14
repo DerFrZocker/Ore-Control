@@ -618,6 +618,105 @@ public class OreControlUtil {
     }
 
     /**
+     * Copy the value of the given Setting, Ore and WorldOreConfig to an other WorldOreConfig, Ore and Setting.
+     *
+     * @param from        the source of the value that get copy
+     * @param to          the destination of the value
+     * @param fromOre     the source Ore
+     * @param fromSetting the source Setting
+     * @param toOre       the destination Ore
+     * @param toSetting   the destination Setting
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the given WorldOreConfig, Ore and Setting are the same
+     * @throws IllegalArgumentException if the Ore source dont have the given Setting source
+     * @throws IllegalArgumentException if the Ore destination dont have the given Setting destination
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Setting fromSetting, final @NonNull Ore toOre, final @NonNull Setting toSetting) { //TODO add test cases
+        valid(from, to, fromOre, toOre, fromSetting, toSetting);
+        valid(fromOre, fromSetting);
+        valid(toOre, toSetting);
+        reset(to, toOre, toSetting);
+
+        from.getOreSettings(fromOre).ifPresent(oreSettings -> oreSettings.getValue(fromSetting).ifPresent(integer -> setAmount(toOre, toSetting, to, integer)));
+    }
+
+    /**
+     * Copy the value of the given Setting, Ore, Biome and WorldOreConfig to an other WorldOreConfig, Ore and Setting
+     *
+     * @param from        the source of the value that get copy
+     * @param to          the destination of the value
+     * @param fromOre     the source Ore
+     * @param fromBiome   the source Biome
+     * @param fromSetting the source Setting
+     * @param toOre       the destination Ore
+     * @param toSetting   the destination Setting
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the Biome source dont have the given Ore source
+     * @throws IllegalArgumentException if the Ore source dont have the given Setting source
+     * @throws IllegalArgumentException if the Ore destination dont have the given Setting destination
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Biome fromBiome, final @NonNull Setting fromSetting, final @NonNull Ore toOre, final @NonNull Setting toSetting) { //TODO add test cases
+        valid(fromBiome, fromOre);
+        valid(fromOre, fromSetting);
+        valid(toOre, toSetting);
+        reset(to, toOre, toSetting);
+
+        from.getBiomeOreSettings(fromBiome).ifPresent(biomeOreSettings -> biomeOreSettings.getOreSettings(fromOre).ifPresent(oreSettings -> oreSettings.getValue(fromSetting).ifPresent(integer -> setAmount(toOre, toSetting, to, integer))));
+    }
+
+    /**
+     * Copy the value of the given Setting, Ore and WorldOreConfig to an other WorldOreConfig, Ore, Biome and Setting
+     *
+     * @param from        the source of the value that get copy
+     * @param to          the destination of the value
+     * @param fromOre     the source Ore
+     * @param fromSetting the source Setting
+     * @param toOre       the destination Ore
+     * @param toBiome     the destination Biome
+     * @param toSetting   the destination Setting
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the Ore source dont have the given Setting source
+     * @throws IllegalArgumentException if the Ore destination dont have the given Setting destination
+     * @throws IllegalArgumentException if the Biome destination dont have the given Ore destination
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Setting fromSetting, final @NonNull Ore toOre, final @NonNull Biome toBiome, final @NonNull Setting toSetting) {//TODO add test cases
+        valid(fromOre, fromSetting);
+        valid(toBiome, toOre);
+        valid(toOre, toSetting);
+        reset(to, toOre, toBiome, toSetting);
+
+        from.getOreSettings(fromOre).ifPresent(oreSettings -> oreSettings.getValue(fromSetting).ifPresent(integer -> setAmount(toOre, toSetting, to, integer, toBiome)));
+    }
+
+    /**
+     * Copy the value of the given Setting, Ore, Biome and WorldOreConfig to an other WorldOreConfig, Ore, Biome Setting
+     *
+     * @param from        the source of the value that get copy
+     * @param to          the destination of the value
+     * @param fromOre     the source Ore
+     * @param fromBiome   the source Biome
+     * @param fromSetting the source Setting
+     * @param toOre       the destination Ore
+     * @param toBiome     the destination Biome
+     * @param toSetting   the destination Setting
+     * @throws NullPointerException     if one of the arguments is null
+     * @throws IllegalArgumentException if the Biome destination dont have the given Ore destination
+     * @throws IllegalArgumentException if the Ore source dont have the given Setting source
+     * @throws IllegalArgumentException if the Ore destination dont have the given Setting destination
+     * @throws IllegalArgumentException if the Biome destination dont have the given Ore destination
+     */
+    public static void copy(final @NonNull WorldOreConfig from, final @NonNull WorldOreConfig to, final @NonNull Ore fromOre, final @NonNull Biome fromBiome, final @NonNull Setting fromSetting, final @NonNull Ore toOre, final @NonNull Biome toBiome, final @NonNull Setting toSetting) {//TODO add test cases
+        valid(from, to, fromOre, toOre, fromBiome, toBiome, fromSetting, toSetting);
+        valid(fromBiome, fromOre);
+        valid(fromOre, fromSetting);
+        valid(toBiome, toOre);
+        valid(toOre, toSetting);
+        reset(to, toOre, toBiome, toSetting);
+
+        from.getBiomeOreSettings(fromBiome).ifPresent(biomeOreSettings -> biomeOreSettings.getOreSettings(fromOre).ifPresent(oreSettings -> oreSettings.getValue(fromSetting).ifPresent(integer -> setAmount(toOre, toSetting, to, integer, toBiome))));
+    }
+
+    /**
      * This clear all set values from the given WorldOreConfig, it not remove the OreSettings or the BiomeOreSettings Object itself.
      *
      * @param worldOreConfig that should reset
@@ -744,6 +843,16 @@ public class OreControlUtil {
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Biome biome, final Biome biome1) {
         if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && biome == biome1)
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + ") and the given Biomes (" + biome + ") are the same!");
+    }
+
+    private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Setting setting, final Setting setting1) {
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && setting == setting1)
+            throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + ") and the given Settings (" + setting + ") are the same!");
+    }
+
+    private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Biome biome, final Biome biome1, final Setting setting, final Setting setting1) {
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1 && setting == setting1)
+            throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + "), the given Biomes (" + biome + ") and the given Settings (" + setting + ") are the same!");
     }
 
 }
