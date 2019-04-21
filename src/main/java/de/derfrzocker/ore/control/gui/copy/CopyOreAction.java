@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui.copy;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
@@ -75,12 +76,14 @@ public class CopyOreAction implements CopyAction {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, oreTarget);
                     OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
+                    OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
             else
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, oreTarget);
                     OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
+                    OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
 
             status++;
@@ -93,12 +96,14 @@ public class CopyOreAction implements CopyAction {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, oreTarget, biomeTarget);
                     OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
+                    OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
             else
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, oreTarget, biomeTarget);
                     OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
+                    OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
 
             status++;

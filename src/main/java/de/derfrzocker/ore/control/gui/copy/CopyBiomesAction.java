@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui.copy;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
@@ -57,6 +58,7 @@ public class CopyBiomesAction implements CopyAction {
 
                 OreControl.getService().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);
+                OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
             }, clickEvent1 -> inventoryGui.openSync(humanEntity, inventoryGui.getInventory())).getInventory());
             return;
         }
@@ -66,6 +68,7 @@ public class CopyBiomesAction implements CopyAction {
 
         OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
         inventoryGui.closeSync(humanEntity);
+        OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
     }
 
     @Override

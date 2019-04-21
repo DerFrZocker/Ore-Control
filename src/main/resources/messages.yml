@@ -168,6 +168,8 @@ setting:
   HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
 
 gui:
+  copy_value_success: "&aCopy the values with Success!"
+  reset_value_success: "&aReset the values with Success!"
   anvil:
     name_already_exist: "Name already Exists!"
     title: "Type a name!"
@@ -214,5 +216,5 @@ gui:
     copy: "Copy this setting to an other World or Template!"
   verify:
     name: "Accept or Deny the Action!"
-    accpet: "Accept"
+    accept: "Accept"
     deny: "Deny"

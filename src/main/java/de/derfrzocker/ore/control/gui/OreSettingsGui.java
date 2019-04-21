@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
@@ -129,7 +130,10 @@ public class OreSettingsGui extends BasicGui {
                     OreControlUtil.reset(worldOreConfig, ore);
 
                 OreControl.getService().saveWorldOreConfig(worldOreConfig);
-                closeSync(event.getWhoClicked());
+                activated = biome == null ? OreControlUtil.isActivated(ore, worldOreConfig) : OreControlUtil.isActivated(ore, worldOreConfig, biome);
+                getInventory().setItem(statusSlot, MessageUtil.replaceItemStack(activated ? getSettings().getDeactivateItemStack() : getSettings().getActivateItemStack()));
+                openSync(event.getWhoClicked(), getInventory());
+                OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
             }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
             return;
         }
@@ -139,7 +143,9 @@ public class OreSettingsGui extends BasicGui {
             OreControlUtil.reset(worldOreConfig, ore);
 
         OreControl.getService().saveWorldOreConfig(worldOreConfig);
-        closeSync(event.getWhoClicked());
+        activated = biome == null ? OreControlUtil.isActivated(ore, worldOreConfig) : OreControlUtil.isActivated(ore, worldOreConfig, biome);
+        getInventory().setItem(statusSlot, MessageUtil.replaceItemStack(activated ? getSettings().getDeactivateItemStack() : getSettings().getActivateItemStack()));
+        OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
     private static final class OreSettingsGuiSettings extends BasicSettings {

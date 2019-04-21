@@ -2,6 +2,7 @@ package de.derfrzocker.ore.control.gui.copy;
 
 import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
@@ -71,6 +72,7 @@ public class CopyOresAction implements CopyAction {
 
                 OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
                 inventoryGui.closeSync(humanEntity);
+                OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
             }
 
             status++;
@@ -93,6 +95,7 @@ public class CopyOresAction implements CopyAction {
             status++;
             OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
             inventoryGui.closeSync(humanEntity);
+            OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
         }
 
     }

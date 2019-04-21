@@ -56,6 +56,10 @@ public class OreControlMessages extends Messages {
     public final static MessageKey ANVIL_NAME_ALREADY_EXISTS = new MessageKey(getInstance(), "gui.anvil.name_already_exist");
     public final static MessageKey ANVIL_TITLE = new MessageKey(getInstance(), "gui.anvil.title");
 
+    //copy / reset
+    public final static MessageKey COPY_VALUE_SUCCESS = new MessageKey(getInstance(), "gui.copy_value_success");
+    public final static MessageKey RESET_VALUE_SUCCESS = new MessageKey(getInstance(), "gui.reset_value_success");
+
     public OreControlMessages() {
         super(OreControl.getInstance(), () -> OreControl.getInstance().getConfigValues().getLanguage());
     }

@@ -172,6 +172,8 @@ setting:
   HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
 
 gui:
+  copy_value_success: "&aDie Werte wurden erfolgreich kopiert!"
+  reset_value_success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
   anvil:
     name_already_exist: "Name existiert bereits!"
     title: "Schreibe einen Namen!"
@@ -218,5 +220,5 @@ gui:
     copy: "Kopiere diese Eintellung zu einer anderen Welt oder Vorlage!"
   verify:
     name: "Akzeptiere oder lehne die Aktion ab!"
-    accpet: "Akzeptieren"
+    accept: "Akzeptieren"
     deny: "Ablehnen"

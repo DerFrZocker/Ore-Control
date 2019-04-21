@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
@@ -75,7 +76,8 @@ public class BiomeGui extends PageGui<Biome> {
                     OreControlUtil.reset(this.worldOreConfig, biome);
 
                 OreControl.getService().saveWorldOreConfig(worldOreConfig);
-                closeSync(event.getWhoClicked());
+                openSync(event.getWhoClicked(), getInventory());
+                OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
             }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
             return;
         }
@@ -84,7 +86,7 @@ public class BiomeGui extends PageGui<Biome> {
             OreControlUtil.reset(this.worldOreConfig, biome);
 
         OreControl.getService().saveWorldOreConfig(worldOreConfig);
-        closeSync(event.getWhoClicked());
+        OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
     private MessageValue[] getMessagesValues() {

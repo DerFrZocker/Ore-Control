@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.utils.MessageUtil;
 import lombok.NonNull;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -11,8 +12,8 @@ import java.util.function.Consumer;
 public class VerifyGui extends BasicGui {
 
     public VerifyGui(final @NonNull Consumer<InventoryClickEvent> acceptAction, final @NonNull Consumer<InventoryClickEvent> denyAction) {
-        addItem(getSettings().getAcceptSlot(), getSettings().getAcceptItemStack(), acceptAction);
-        addItem(getSettings().getDenySlot(), getSettings().getDenyItemStack(), denyAction);
+        addItem(getSettings().getAcceptSlot(), MessageUtil.replaceItemStack(getSettings().getAcceptItemStack()), acceptAction);
+        addItem(getSettings().getDenySlot(), MessageUtil.replaceItemStack(getSettings().getDenyItemStack()), denyAction);
     }
 
     @Override
