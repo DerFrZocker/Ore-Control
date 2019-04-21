@@ -19,24 +19,13 @@ import org.bukkit.entity.HumanEntity;
 @Setter
 public class CopyBiomesAction implements CopyAction {
 
-    private final boolean filterWorldOreConfig = false;
+    private final boolean filterWorldOreConfig = true;
 
     private final WorldOreConfig worldOreConfigSource;
 
     private final Biome[] biomes;
 
     private WorldOreConfig worldOreConfigTarget = null;
-
-
-    @Override
-    public Biome getBiomeSource() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Ore getOreSource() {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public void setBiomeTarget(final Biome biome) {
@@ -49,17 +38,12 @@ public class CopyBiomesAction implements CopyAction {
     }
 
     @Override
-    public void setBiomesTarget(final Biome[] biomes) {
+    public void setChooseBiome(final boolean bool) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setChooseBiome(boolean bool) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setOreTarget(Ore ore) {
+    public void setOreTarget(final Ore ore) {
         throw new UnsupportedOperationException();
     }
 
@@ -82,6 +66,26 @@ public class CopyBiomesAction implements CopyAction {
 
         OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
         inventoryGui.closeSync(humanEntity);
+    }
+
+    @Override
+    public boolean shouldSet(final Biome biome) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore, final Biome biome) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Setting setting) {
+        throw new UnsupportedOperationException();
     }
 
 }

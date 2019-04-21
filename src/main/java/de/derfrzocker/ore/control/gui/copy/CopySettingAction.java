@@ -8,7 +8,6 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.*;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.HumanEntity;
@@ -42,12 +41,6 @@ public class CopySettingAction implements CopyAction {
     private Setting settingTarget;
 
     private int status = 0;
-
-
-    @Override
-    public void setBiomesTarget(Biome[] biomes) {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public void next(HumanEntity humanEntity, InventoryGui inventoryGui) {
@@ -122,8 +115,36 @@ public class CopySettingAction implements CopyAction {
 
     }
 
+    @Override
+    public boolean shouldSet(final Biome biome) {
+        return true;
+    }
 
-    private void openVerifyIfNeeded(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui, final @NonNull Consumer<InventoryClickEvent> acceptAction) {
+    @Override
+    public boolean shouldSet(final Ore ore) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore, final Biome biome) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldSet(final Setting setting) {
+        if (biomeSource != biomeTarget)
+            return true;
+
+        if (oreSource != oreTarget)
+            return true;
+
+        if (worldOreConfigSource != worldOreConfigTarget || !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName()))
+            return true;
+
+        return settingSource != setting;
+    }
+
+    private void openVerifyIfNeeded(final HumanEntity humanEntity, final InventoryGui inventoryGui, final Consumer<InventoryClickEvent> acceptAction) {
         if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
             inventoryGui.openSync(humanEntity, new VerifyGui(acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).getInventory());
             return;

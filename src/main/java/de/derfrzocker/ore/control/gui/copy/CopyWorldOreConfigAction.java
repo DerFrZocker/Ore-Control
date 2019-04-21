@@ -26,16 +26,6 @@ public class CopyWorldOreConfigAction implements CopyAction {
     private WorldOreConfig worldOreConfigTarget = null;
 
     @Override
-    public Biome getBiomeSource() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Ore getOreSource() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void setBiomeTarget(final Biome biome) {
         throw new UnsupportedOperationException();
     }
@@ -46,22 +36,17 @@ public class CopyWorldOreConfigAction implements CopyAction {
     }
 
     @Override
-    public void setBiomesTarget(final Biome[] biomes) {
+    public void setChooseBiome(final boolean bool) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setChooseBiome(boolean bool) {
+    public void setOreTarget(final Ore ore) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setOreTarget(Ore ore) {
-
-    }
-
-    @Override
-    public void next(final @NonNull HumanEntity humanEntity, InventoryGui inventoryGui) {
+    public void next(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui) {
         if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
             inventoryGui.openSync(humanEntity, new VerifyGui(clickEvent -> {
                 OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget);
@@ -74,5 +59,25 @@ public class CopyWorldOreConfigAction implements CopyAction {
         OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget);
         OreControl.getService().saveWorldOreConfig(worldOreConfigTarget);
         inventoryGui.closeSync(humanEntity);
+    }
+
+    @Override
+    public boolean shouldSet(final Biome biome) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore, final Biome biome) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Setting setting) {
+        throw new UnsupportedOperationException();
     }
 }

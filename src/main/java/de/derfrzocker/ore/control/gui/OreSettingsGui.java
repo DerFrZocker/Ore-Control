@@ -18,6 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class OreSettingsGui extends BasicGui {
@@ -69,7 +71,13 @@ public class OreSettingsGui extends BasicGui {
         this.statusSlot = -1;
         this.copyAction = copyAction;
 
-        final Setting[] settings = ore.getSettings();
+        final Set<Setting> settingSet = new LinkedHashSet<>();
+
+        for (Setting setting : ore.getSettings())
+            if (copyAction.shouldSet(setting))
+                settingSet.add(setting);
+
+        final Setting[] settings = settingSet.toArray(new Setting[0]);
 
         for (int i = 0; i < settings.length; i++)
             addItem(i + getSettings().getSettingStartSlot(), getSettingItemStack(settings[i]), new SettingCopyConsumer(settings[i]));

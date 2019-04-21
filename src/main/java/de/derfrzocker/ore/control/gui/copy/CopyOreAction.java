@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor
@@ -40,12 +41,7 @@ public class CopyOreAction implements CopyAction {
     private int status = 0;
 
     @Override
-    public void setSettingTarget(Setting setting) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setBiomesTarget(Biome[] biomes) {
+    public void setSettingTarget(final Setting setting) {
         throw new UnsupportedOperationException();
     }
 
@@ -108,6 +104,51 @@ public class CopyOreAction implements CopyAction {
             status++;
 
         }
+    }
+
+    @Override
+    public boolean shouldSet(final Biome biome) {
+        for (Ore ore : biome.getOres())
+            if (Arrays.equals(ore.getSettings(), oreSource.getSettings()))
+                return true;
+
+        return false;
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore) {
+        if (!Arrays.equals(ore.getSettings(), oreSource.getSettings()))
+            return false;
+
+        if (biomeSource != null)
+            return true;
+
+        if (worldOreConfigSource != worldOreConfigTarget && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName()))
+            return true;
+
+        return ore != oreSource;
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore, final Biome biome) {
+        if (!Arrays.equals(ore.getSettings(), oreSource.getSettings()))
+            return false;
+
+        if (biomeSource == null)
+            return true;
+
+        if (worldOreConfigSource != worldOreConfigTarget && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName()))
+            return true;
+
+        if (biome != biomeSource)
+            return true;
+
+        return ore != oreSource;
+    }
+
+    @Override
+    public boolean shouldSet(final Setting setting) {
+        throw new UnsupportedOperationException();
     }
 
     private void openVerifyIfNeeded(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui, final @NonNull Consumer<InventoryClickEvent> acceptAction) {

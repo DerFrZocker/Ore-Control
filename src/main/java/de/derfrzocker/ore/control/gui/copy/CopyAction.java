@@ -11,19 +11,11 @@ public interface CopyAction {
 
     WorldOreConfig getWorldOreConfigSource();
 
-    Biome getBiomeSource();
-
-    Ore getOreSource();
-
     void setWorldOreConfigTarget(WorldOreConfig worldOreConfig);
-
-    WorldOreConfig getWorldOreConfigTarget();
 
     void setBiomeTarget(Biome biome);
 
     void setSettingTarget(Setting setting);
-
-    void setBiomesTarget(Biome[] biomes);
 
     void setChooseBiome(boolean bool);
 
@@ -32,5 +24,13 @@ public interface CopyAction {
     void next(HumanEntity humanEntity, InventoryGui inventoryGui);
 
     boolean isFilterWorldOreConfig();
+
+    boolean shouldSet(Biome biome);
+
+    boolean shouldSet(Ore ore);
+
+    boolean shouldSet(Ore ore, Biome biome);
+
+    boolean shouldSet(Setting setting);
 
 }

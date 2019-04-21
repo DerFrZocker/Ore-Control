@@ -40,22 +40,12 @@ public class CopyOresAction implements CopyAction {
     private int status = 0;
 
     @Override
-    public Ore getOreSource() {
+    public void setSettingTarget(final Setting setting) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSettingTarget(Setting setting) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setBiomesTarget(Biome[] biomes) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setOreTarget(Ore ore) {
+    public void setOreTarget(final Ore ore) {
         throw new UnsupportedOperationException();
     }
 
@@ -97,7 +87,7 @@ public class CopyOresAction implements CopyAction {
                 final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
                 for (Ore ore : oresSource)
                     if (oreSet.contains(ore))
-                        OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore);
+                        OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore, biomeTarget);
             }
 
             status++;
@@ -105,6 +95,32 @@ public class CopyOresAction implements CopyAction {
             inventoryGui.closeSync(humanEntity);
         }
 
+    }
+
+    @Override
+    public boolean shouldSet(final Biome biome) {
+        if (biomeSource == null)
+            return true;
+
+        if (worldOreConfigSource != worldOreConfigTarget && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName()))
+            return true;
+
+        return biomeSource != biome;
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore) {
+        return (worldOreConfigTarget != worldOreConfigSource && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName())) || biomeSource != null;
+    }
+
+    @Override
+    public boolean shouldSet(final Ore ore, final Biome biome) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean shouldSet(final Setting setting) {
+        throw new UnsupportedOperationException();
     }
 
 }

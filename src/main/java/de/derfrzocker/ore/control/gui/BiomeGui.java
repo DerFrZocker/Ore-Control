@@ -14,6 +14,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class BiomeGui extends PageGui<Biome> {
 
     @NonNull
@@ -41,7 +44,13 @@ public class BiomeGui extends PageGui<Biome> {
         this.worldOreConfig = worldOreConfig;
         this.copyAction = copyAction;
 
-        init(Biome.values(), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
+        final Set<Biome> biomes = new LinkedHashSet<>();
+
+        for (Biome biome : Biome.values())
+            if (copyAction.shouldSet(biome))
+                biomes.add(biome);
+
+        init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
 
         addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }

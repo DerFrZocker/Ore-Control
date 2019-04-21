@@ -18,6 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class OreGui extends BasicGui {
@@ -56,11 +58,20 @@ public class OreGui extends BasicGui {
         this.biome = biome;
         this.copyAction = copyAction;
 
-        final Ore[] ores = biome == null ? Ore.values() : biome.getOres();
+        final Set<Ore> ores = new LinkedHashSet<>();
 
-        for (int i = 0; i < ores.length; i++) {
-            addItem(InventoryUtil.calculateSlot(i, getSettings().getOreGap()), getOreItemStack(ores[i]), new OreCopyConsumer(ores[i]));
+        for (Ore ore : biome == null ? Ore.values() : biome.getOres()) {
+            if (biome == null) {
+                if (copyAction.shouldSet(ore))
+                    ores.add(ore);
+            } else if (copyAction.shouldSet(ore, biome))
+                ores.add(ore);
         }
+
+        final Ore[] oresArray = ores.toArray(new Ore[0]);
+
+        for (int i = 0; i < oresArray.length; i++)
+            addItem(InventoryUtil.calculateSlot(i, getSettings().getOreGap()), getOreItemStack(oresArray[i]), new OreCopyConsumer(oresArray[i]));
 
         addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
     }

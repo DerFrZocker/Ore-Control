@@ -2,6 +2,8 @@ package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
+import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyWorldOreConfigAction;
@@ -47,11 +49,32 @@ public class WorldConfigGui extends BasicGui {
         this.worldOreConfig = worldOreConfig;
         this.copyAction = copyAction;
 
-        if (Permissions.SET_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getOreItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getOreItemStack()), this::handleCopyAction);
+        if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
+            boolean bool = false;
 
-        if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getBiomeItemStack()), this::handleCopyActionBiome);
+            for (Ore ore : Ore.values())
+                if (copyAction.shouldSet(ore)) {
+                    bool = true;
+                    break;
+                }
+
+            if (bool)
+                addItem(getSettings().getOreItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getOreItemStack()), this::handleCopyAction);
+        }
+
+        if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible)) {
+            boolean bool = false;
+
+            for (Biome biome : Biome.values())
+                if (copyAction.shouldSet(biome)) {
+                    bool = true;
+                    break;
+                }
+
+
+            if (bool)
+                addItem(getSettings().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getBiomeItemStack()), this::handleCopyActionBiome);
+        }
 
         addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(getSettings().getInfoItemStack(), getMessagesValues()));
     }
