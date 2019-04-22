@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 
 public class MessageUtil {
 
+    private final static int DEFAULT_LORE_LENGTH = 40;
+    private final static int MINIMUM_LORE_LENGTH = 15;
+
     public static String replacePlaceHolder(@NonNull String string, @NonNull MessageValue... messageValues) {
 
         string = replaceTranslation(string, messageValues);
@@ -45,17 +48,36 @@ public class MessageUtil {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static ItemMeta replaceItemMeta(@NonNull ItemMeta meta, @NonNull MessageValue... messageValues) {
-        meta = meta.clone();
+    public static ItemMeta replaceItemMeta(@NonNull ItemMeta itemMeta, @NonNull MessageValue... messageValues) {
+        final ItemMeta meta = itemMeta.clone();
 
         if (meta.hasDisplayName())
             meta.setDisplayName(replacePlaceHolder(meta.getDisplayName(), messageValues));
 
-        if (meta.hasLore())
-            meta.setLore(replaceList(meta.getLore(), messageValues));
+        if (meta.hasLore()) {
+            final List<String> lore = new LinkedList<>();
+
+            replaceList(meta.getLore(), messageValues).forEach(string -> lore.addAll(splitString(string, meta.hasDisplayName() ? meta.getDisplayName().length() < MINIMUM_LORE_LENGTH ? DEFAULT_LORE_LENGTH : meta.getDisplayName().length() : DEFAULT_LORE_LENGTH)));
+
+            meta.setLore(lore);
+        }
+
 
         return meta;
     }
+
+    public static List<String> splitString(String msg, int lineSize) {
+        final List<String> strings = new LinkedList<>();
+
+        final Pattern pattern = Pattern.compile("\\b.{1," + (lineSize - 1) + "}\\b\\W?");
+        final Matcher matcher = pattern.matcher(msg);
+
+        while (matcher.find())
+            strings.add(matcher.group());
+
+        return strings;
+    }
+
 
     // %%translation:[example.string]%
     public static String replaceTranslation(@NonNull String string, @NonNull MessageValue... messageValues) {

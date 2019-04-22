@@ -12,12 +12,12 @@ command:
     setting_not_valid:
       - '&4Die Einstellung &f''&9%setting%&f'' &4ist nicht für das'
       - '&4Erz &f''&9%ore%&f''&4 bestimmt!'
-    not_save:
+    not_safe:
       - '&4Die Nummer &f''&9%value%&f'' &4ist nicht sicher!'
       - '&4Wenn du sie trozdem setzen möchtes,'
-      - '&4setze in der config den Wert &f''&9save_mode&f'' &4auf &f''&9false&f'''
+      - '&4setze in der config den Wert &f''&9safe_mode&f'' &4auf &f''&9false&f'''
       - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
-    not_save_warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
+    not_safe_warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
     ore_not_found:
       - '&4Das Erz &f''&9%ore%&f'' &4existiert nicht!, '
       - '&cbenutze &f''&9diamond&f'', ''&9coal&f'', ''&9lapis&f'', ''&9iron&f'', ''&9gold&f'',
@@ -172,6 +172,11 @@ setting:
   HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
 
 gui:
+  copy_value_success: "&aDie Werte wurden erfolgreich kopiert!"
+  reset_value_success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
+  anvil:
+    name_already_exist: "Name existiert bereits!"
+    title: "Schreibe einen Namen!"
   previous_page: "&rVorherige Seite"
   next_page: "&rNächste Seite"
   back: "&rGehe einen Schritt zurück"
@@ -182,22 +187,63 @@ gui:
     lore_ore: "Erz: %%translation:[ore.%ore%]%"
     lore_setting: "Einstellung: %%translation:[setting.%setting%]%"
     lore_current: "Aktuell: %amount%"
+    lore_default: "Standart: %value%"
   world:
     name: "Wähle eine Welt!"
+    template:
+      create: "Erstelle eine neue Vorlage!"
+    config:
+      edit: "Ändere Config Einstellungen!"
   world_config:
     name: "Wähle einen Typ!"
     biome: "§bLege eine Wert für ein bestimmtes §dBiom§b fest!"
     ore: "§bLege einen Wert für die ganze §dWelt§b fest!"
+    reset: "Setze alle Werte auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Eintellugen zu einer anderen Welt oder Vorlage!"
+    delete: "Lösches diese Vorlage!"
   biome:
     name: "Wähle ein Biom!"
+    reset: "Setze alle Biome Werte auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Biome Eintellugen zu einer anderen Welt oder Vorlage!"
   ore:
     name: "Wähle ein Erz!"
-    biome_name: "Wähle ein Erz!"
+    reset: "Setze alle Erz Werte auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Erz Eintellugen zu einer anderen Welt oder Vorlage!"
   ore_settings:
     name: "Wähle eine Einstellung!"
-    biome_name: "Wähle eine Einstellung!"
     activate: "§aAktiviere die Erzgenerierung!"
     deactivate: "§cDeaktiviere die Erzgeneration!"
+    reset: "Setze alle Werte von diesem Erz auf Standart einstellungen zurück!"
+    copy: "Kopiere alle Eintellugen von diesem Erz zu einer anderen Welt oder Vorlage!"
   settings:
     name: "Einen Wert einstellen!"
-    biome_name: "Einen Wert einstellen!"
+    reset: "Setze diesen Wert auf die Standart einstellung zurück!"
+    copy: "Kopiere diese Eintellung zu einer anderen Welt oder Vorlage!"
+  verify:
+    name: "Akzeptiere oder lehne die Aktion ab!"
+    accept: "Akzeptieren"
+    deny: "Ablehnen"
+  config:
+    name: "Wähle eine Config Option!"
+    language:
+      name: "Ändere die Sprache!"
+      description: "Ändere die Sprache von diesem Plugin, du kannst auch neue Sprachen einreichen. Einfach die messages.yml im Ore-Control Ordner übersetzen und an mich senden."
+    safe_mode:
+      name:  "Aktiviere / Deaktiviere den Sicherheitsmodus!"
+      description: "Wähle ob dich das Plugin hindern soll, wenn du einen nicht sicheren Wert setzen willst"
+    translate_tab_compilation:
+      name: "Aktiviere / Deaktiviere Tab Übersetzung!"
+      description: "Wähle ob du Biom / Erz / Einstellungs namen in deiner gewählten Sprache in den Befehlen nutzen kannst"
+    verify:
+      copy_action:
+        name: "Aktiviere / Deaktiviere bestädigung für Kopier Aktionen!"
+        description: "Wähle ob to Kopier Aktionen Bestätigen must oder nicht"
+      reset_action:
+        name: "Aktiviere / Deaktiviere bestädigung für Reset Aktionen!"
+        description: "Wähle ob to Reset Aktionen Bestätigen must oder nicht"
+  language:
+    name: "Wähle eine Sprache!"
+  boolean:
+    name: "Aktiviere oder Deaktiviere"
+    true: "Aktiviere"
+    false: "Deaktiviere"

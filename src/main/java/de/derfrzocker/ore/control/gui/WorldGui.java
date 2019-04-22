@@ -1,39 +1,75 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
+import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
-import de.derfrzocker.ore.control.utils.Config;
+import de.derfrzocker.ore.control.gui.config.ConfigGui;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
-import de.derfrzocker.ore.control.utils.ReloadAble;
-import lombok.Getter;
+import lombok.NonNull;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permissible;
 
 import java.util.*;
 
-public class WorldGui implements InventoryGui {
-
-    private final Map<Integer, SubWorldGui> guis = new HashMap<>();
-
-    private final int pages;
-
-    private final int nextPage;
-
-    private final int previousPage;
+public class WorldGui extends PageGui<String> {
 
     private Map<String, WorldOreConfig> worldOreConfigs = new HashMap<>();
 
-    public WorldGui() {
-        this.nextPage = Settings.getInstance().getNextPageSlot();
-        this.previousPage = Settings.getInstance().getPreviousPageSlot();
+    private final CopyAction copyAction;
 
+    public WorldGui(final Permissible permissible) {
+        this.copyAction = null;
+
+        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
+
+        if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
+            addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
+
+        if (Permissions.EDIT_CONFIG_PERMISSION.hasPermission(permissible))
+            addItem(WorldGuiSettings.getInstance().getEditConfigSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getEditConfigItemStack()), event -> openSync(event.getWhoClicked(), new ConfigGui().getInventory()));
+
+        worldOreConfigs = null;
+    }
+
+    WorldGui(final @NonNull CopyAction copyAction) {
+        this.copyAction = copyAction;
+        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
+    }
+
+    private ItemStack getItemStack(final String value) {
+        if (worldOreConfigs.containsKey(value) && worldOreConfigs.get(value).isTemplate())
+            return MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getTemplateItemStack(), new MessageValue("template", value));
+        else
+            return MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getWorldItemStack(), new MessageValue("world", value));
+    }
+
+
+    private void handleCreateTemplate(final InventoryClickEvent event) {
+        if (event.getWhoClicked() instanceof Player)
+            new AnvilGUI(OreControl.getInstance(), (Player) event.getWhoClicked(), OreControlMessages.ANVIL_TITLE.getMessage(), (player, value) -> {
+                final OreControlService service = OreControl.getService();
+
+                if (Bukkit.getWorld(value) != null || service.getWorldOreConfig(value).isPresent())
+                    return OreControlMessages.ANVIL_NAME_ALREADY_EXISTS.getMessage();
+
+                service.createWorldOreConfigTemplate(value);
+
+                openSync(player, new WorldGui(player).getInventory());
+
+                return "";
+            });
+    }
+
+    private String[] getStrings() {
         final Set<String> configsSet = new LinkedHashSet<>();
 
         Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
@@ -42,172 +78,75 @@ public class WorldGui implements InventoryGui {
         worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
         configsSet.addAll(worldOreConfigs.keySet());
 
-        final String[] configs = configsSet.toArray(new String[0]);
+        if (copyAction != null && copyAction.isFilterWorldOreConfig())
+            configsSet.remove(copyAction.getWorldOreConfigSource().getName());
 
-        int slots = InventoryUtil.calculateSlots(Settings.getInstance().getRows(), Settings.getInstance().getConfigGap());
-
-        pages = InventoryUtil.calculatePages(slots, configs.length);
-
-        for (int i = 0; i < pages; i++) {
-            String[] worlds;
-
-            if (i == pages - 1) {
-                int rest = configs.length - i * slots;
-                worlds = new String[rest];
-            } else
-                worlds = new String[slots];
-
-            System.arraycopy(configs, i * slots, worlds, 0, worlds.length);
-
-            guis.put(i, new SubWorldGui(worlds, i));
-        }
-
-        worldOreConfigs = null;
+        return configsSet.toArray(new String[0]);
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        throw new UnsupportedOperationException();
+    private void handleCopyAction(final String configName, final InventoryClickEvent event) {
+        copyAction.setWorldOreConfigTarget(getWorldOreConfig(configName));
+
+        copyAction.next(event.getWhoClicked(), this);
     }
 
-    @Override
-    public Inventory getInventory() {
-        return guis.get(0).getInventory();
+    private WorldOreConfig getWorldOreConfig(final String configName) {
+        final OreControlService service = OreControl.getService();
+
+        final World world = Bukkit.getWorld(configName);
+
+        final Optional<WorldOreConfig> optionalWorldOreConfig = service.getWorldOreConfig(configName);
+
+        final WorldOreConfig worldOreConfig;
+
+        if (!optionalWorldOreConfig.isPresent())
+            if (world != null)
+                worldOreConfig = service.createWorldOreConfig(world);
+            else
+                worldOreConfig = service.createWorldOreConfigTemplate(configName);
+        else worldOreConfig = optionalWorldOreConfig.get();
+
+        return worldOreConfig;
     }
 
-    private static final class Settings implements ReloadAble {
+    private static final class WorldGuiSettings extends PageSettings {
+        private static WorldGuiSettings instance = null;
 
-        private final static String file = "data/world_gui.yml";
-
-        private YamlConfiguration yaml;
-
-        private static Settings instance = null;
-
-        private static Settings getInstance() {
+        private static WorldGuiSettings getInstance() {
             if (instance == null)
-                instance = new Settings();
+                instance = new WorldGuiSettings();
 
             return instance;
         }
 
-        private Settings() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
-            RELOAD_ABLES.add(this);
-        }
-
-        private String getInventoryName() {
-            return yaml.getString("inventory.name");
-        }
-
-        private int getRows() {
-            return yaml.getInt("inventory.rows");
-        }
-
-        private int getConfigGap() {
-            return yaml.getInt("inventory.config_gap");
+        private WorldGuiSettings() {
+            super(OreControl.getInstance(), "data/world_gui.yml");
         }
 
         private ItemStack getWorldItemStack() {
-            return yaml.getItemStack("world_item_stack").clone();
+            return getYaml().getItemStack("world_item_stack").clone();
         }
 
         private ItemStack getTemplateItemStack() {
-            return yaml.getItemStack("template_item_stack").clone();
+            return getYaml().getItemStack("template.item_stack").clone();
         }
 
-        private int getNextPageSlot() {
-            return yaml.getInt("next_page.slot");
+        private ItemStack getCreateTemplateItemStack() {
+            return getYaml().getItemStack("template.create.item_stack").clone();
         }
 
-        private ItemStack getNextPageItemStack() {
-            return yaml.getItemStack("next_page.item_stack").clone();
+        private int getCreateTemplateSlot() {
+            return getYaml().getInt("template.create.slot");
         }
 
-        private int getPreviousPageSlot() {
-            return yaml.getInt("previous_page.slot");
+        private int getEditConfigSlot() {
+            return getYaml().getInt("config.edit.slot");
         }
 
-        private ItemStack getPreviousPageItemStack() {
-            return yaml.getItemStack("previous_page.item_stack").clone();
-        }
-
-
-        @Override
-        public void reload() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
-        }
-    }
-
-    private final class SubWorldGui implements InventoryGui {
-
-        @Getter
-        private final Inventory inventory;
-
-        private final int page;
-
-        private final Map<Integer, String> values = new HashMap<>();
-
-        private SubWorldGui(String[] configs, int page) {
-            this.page = page;
-
-            MessageValue[] messageValues = new MessageValue[]{new MessageValue("page", String.valueOf(page)), new MessageValue("pages", String.valueOf(pages))};
-
-            this.inventory = Bukkit.createInventory(this, Settings.getInstance().getRows() * 9,
-                    MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), messageValues));
-
-            if (page + 1 != pages)
-                inventory.setItem(nextPage, MessageUtil.replaceItemStack(Settings.getInstance().getNextPageItemStack(), messageValues));
-
-            if (page != 0)
-                inventory.setItem(previousPage, MessageUtil.replaceItemStack(Settings.getInstance().getPreviousPageItemStack(), messageValues));
-
-            for (int i = 0; i < configs.length; i++) {
-                final String configName = configs[i];
-                int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getConfigGap());
-
-                if (worldOreConfigs.containsKey(configName) && worldOreConfigs.get(configName).isTemplate())
-                    inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getTemplateItemStack(), new MessageValue("template", configName)));
-                else
-                    inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getWorldItemStack(), new MessageValue("world", configName)));
-
-                values.put(slot, configName);
-            }
-        }
-
-        @Override
-        public void onInventoryClick(InventoryClickEvent event) {
-            if (event.getRawSlot() == previousPage && page != 0) {
-                openSync(event.getWhoClicked(), guis.get(page - 1).getInventory());
-                return;
-            }
-
-            if (event.getRawSlot() == nextPage && page + 1 != pages) {
-                openSync(event.getWhoClicked(), guis.get(page + 1).getInventory());
-                return;
-            }
-
-            if (!values.containsKey(event.getRawSlot()))
-                return;
-
-            final OreControlService service = OreControl.getService();
-
-            final String configName = values.get(event.getRawSlot());
-
-            final World world = Bukkit.getWorld(configName);
-
-            final Optional<WorldOreConfig> optionalWorldOreConfig = service.getWorldOreConfig(configName);
-
-            final WorldOreConfig worldOreConfig;
-
-            if (!optionalWorldOreConfig.isPresent())
-                if (world != null)
-                    worldOreConfig = service.createWorldOreConfig(world);
-                else
-                    worldOreConfig = service.createWorldOreConfigTemplate(configName);
-            else worldOreConfig = optionalWorldOreConfig.get();
-
-            openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory());
+        private ItemStack getEditConfigItemStack() {
+            return getYaml().getItemStack("config.edit.item_stack").clone();
         }
 
     }
+
 }

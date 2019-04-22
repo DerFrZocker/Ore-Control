@@ -10,12 +10,12 @@ command:
     no_number: "&f'&9%value%&f' &4is not a valid number!"
     setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
     setting_not_valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
-    not_save:
-      - "&4The number &f'&9%value%&f' &4is not save!"
+    not_safe:
+      - "&4The number &f'&9%value%&f' &4is not safe!"
       - "&4If you want to use it anyway,"
-      - "&4set &f'&9save_mode&f' &4in the config to &f'&9false&f'"
+      - "&4set &f'&9safe_mode&f' &4in the config to &f'&9false&f'"
       - "&4And execute the &f'&9/orecontrol reload&f' &4command"
-    not_save_warning: "&eWarn: The number &f'&9%value%&f' &eis not save!"
+    not_safe_warning: "&eWarn: The number &f'&9%value%&f' &eis not safe!"
     ore_not_found:
       - "&4The ore &f'&9%ore%&f' &4does not exist!, "
       - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"
@@ -168,6 +168,11 @@ setting:
   HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
 
 gui:
+  copy_value_success: "&aCopy the values with Success!"
+  reset_value_success: "&aReset the values with Success!"
+  anvil:
+    name_already_exist: "Name already Exists!"
+    title: "Type a name!"
   previous_page: "&rPrevious page"
   next_page: "&rNext page"
   back: "&rGo one step Back"
@@ -178,22 +183,63 @@ gui:
     lore_ore: "ore: %%translation:[ore.%ore%]%"
     lore_setting: "setting: %%translation:[setting.%setting%]%"
     lore_current: "current: %amount%"
+    lore_default: "default: %value%"
   world:
     name: "Choose a World!"
+    template:
+      create: "Create a new Template!"
+    config:
+      edit: "Change the config settings!"
   world_config:
     name: "Choose a Type!"
     biome: "§bSet a value for a specific §dbiome§b!"
     ore: "§bSet a value for the whole §dworld§b!"
+    reset: "Reset all settings to the default values!"
+    copy: "Copy all settings to an other World or Template"
+    delete: "Delete this Template!"
   biome:
     name: "Choose a Biome!"
+    reset: "Reset all Biome settings to the default values!"
+    copy: "Copy all Biome settings to an other World or Template!"
   ore:
     name: "Choose an Ore!"
-    biome_name: "Choose an Ore!"
+    reset: "Reset all Ore settings to the default values!"
+    copy: "Copy all Ore settings to an other World or Template!"
   ore_settings:
     name: "Choose a Setting!"
-    biome_name: "Choose a Setting!"
     activate: "§aActivate the Ore Generation!"
     deactivate: "§cDeactivate the Ore Generation!"
+    reset: "Reset all settings of this Ore to the default values!"
+    copy: "Copy all settings of this Ore to an other World or Template!"
   settings:
     name: "Set a value!"
-    biome_name: "Set a value!"
+    reset: "Reset this setting to the default value!"
+    copy: "Copy this setting to an other World or Template!"
+  verify:
+    name: "Accept or Deny the Action!"
+    accept: "Accept"
+    deny: "Deny"
+  config:
+    name: "Select a config option!"
+    language:
+      name: "Change the Language!"
+      description: "Change the Language of this Plugin, you can submit a new Language if you want. Simply translate the messages.yml in the Ore-Control folder and send it to me"
+    safe_mode:
+      name:  "Activate / Deactivate safe mode!"
+      description: "Choose if the plugin should warn you if you set a unsafe value"
+    translate_tab_compilation:
+      name: "Activate / Deactivate Tab translation!"
+      description: "Choose if you can type Biomes / Ores / Settings in your select Language, in the commands"
+    verify:
+      copy_action:
+        name: "Activate / Deactivate Verify for Copy Actions!"
+        description: "Choose if you must verify a copy action or not"
+      reset_action:
+        name: "Activate / Deactivate Verify for Reset Actions!"
+        description: "Choose if you must verify a reset action or not"
+  language:
+    name: "Choose a Language!"
+  boolean:
+    name: "Activate or Deactivate"
+    true: "Activate"
+    false: "Deactivate"

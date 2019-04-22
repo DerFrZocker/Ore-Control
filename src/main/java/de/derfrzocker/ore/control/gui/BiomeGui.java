@@ -1,214 +1,147 @@
 package de.derfrzocker.ore.control.gui;
 
-import com.google.common.base.Preconditions;
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
+import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.gui.utils.InventoryUtil;
-import de.derfrzocker.ore.control.utils.Config;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
+import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
-import de.derfrzocker.ore.control.utils.ReloadAble;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
+import lombok.NonNull;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permissible;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-public class BiomeGui implements InventoryGui {
+public class BiomeGui extends PageGui<Biome> {
 
-    private final WorldOreConfig config;
+    @NonNull
+    private final WorldOreConfig worldOreConfig;
 
-    private final Map<Integer, SubBiomeGui> guis = new HashMap<>();
+    private final CopyAction copyAction;
 
-    private final int pages;
+    BiomeGui(final Permissible permissible, final WorldOreConfig worldOreConfig) {
+        this.worldOreConfig = worldOreConfig;
+        this.copyAction = null;
 
-    private final int backSlot;
+        init(Biome.values(), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
-    private final int nextPage;
+        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
+        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
 
-    private final int previousPage;
+        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+            addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-    BiomeGui(WorldOreConfig config) {
-        this.config = config;
-        this.backSlot = Settings.getInstance().getBackSlot();
-        this.nextPage = Settings.getInstance().getNextPageSlot();
-        this.previousPage = Settings.getInstance().getPreviousPageSlot();
+        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).getInventory()));
+    }
 
-        Biome[] biome = Biome.values();
+    public BiomeGui(final WorldOreConfig worldOreConfig, final @NonNull CopyAction copyAction) {
+        this.worldOreConfig = worldOreConfig;
+        this.copyAction = copyAction;
 
-        int slots = InventoryUtil.calculateSlots(Settings.getInstance().getRows(), Settings.getInstance().getBiomeGap());
+        final Set<Biome> biomes = new LinkedHashSet<>();
 
-        pages = InventoryUtil.calculatePages(slots, biome.length);
+        for (Biome biome : Biome.values())
+            if (copyAction.shouldSet(biome))
+                biomes.add(biome);
 
-        for (int i = 0; i < pages; i++) {
-            Biome[] biomes;
+        init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
 
-            if (i == pages - 1) {
-                int rest = biome.length - i * slots;
-                biomes = new Biome[rest];
-            } else
-                biomes = new Biome[slots];
+        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
+    }
 
-            System.arraycopy(biome, i * slots, biomes, 0, biomes.length);
+    private ItemStack getItemStack(final Biome biome) {
+        return MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeItemStack(biome));
+    }
 
-            guis.put(i, new SubBiomeGui(biomes, i));
+    private void handleNormalClick(final Biome biome, final InventoryClickEvent event) {
+        openSync(event.getWhoClicked(), new OreGui(worldOreConfig, biome, event.getWhoClicked()).getInventory());
+    }
+
+    private void handleCopyAction(final Biome biome, final InventoryClickEvent event) {
+        copyAction.setBiomeTarget(biome);
+        copyAction.next(event.getWhoClicked(), this);
+    }
+
+    private void handleResetValues(final InventoryClickEvent event) {
+        if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
+            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+                for (Biome biome : Biome.values())
+                    OreControlUtil.reset(this.worldOreConfig, biome);
+
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                openSync(event.getWhoClicked(), getInventory());
+                OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            return;
         }
-    }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        throw new UnsupportedOperationException();
-    }
+        for (Biome biome : Biome.values())
+            OreControlUtil.reset(this.worldOreConfig, biome);
 
-    @Override
-    public Inventory getInventory() {
-        return guis.get(0).getInventory();
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getName())};
+        return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
     }
 
-    private static final class Settings implements ReloadAble {
+    private static final class BiomeGuiSettings extends PageSettings {
+        private static BiomeGuiSettings instance = null;
 
-        private final static String file = "data/biome_gui.yml";
-
-        private YamlConfiguration yaml;
-
-        private static Settings instance = null;
-
-        private static Settings getInstance() {
+        private static BiomeGuiSettings getInstance() {
             if (instance == null)
-                instance = new Settings();
+                instance = new BiomeGuiSettings();
 
             return instance;
         }
 
-        private Settings() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
-            RELOAD_ABLES.add(this);
+        private BiomeGuiSettings() {
+            super(OreControl.getInstance(), "data/biome_gui.yml");
         }
 
-        private String getInventoryName() {
-            return yaml.getString("inventory.name");
-        }
-
-        private int getRows() {
-            return yaml.getInt("inventory.rows");
-        }
-
-        private int getBiomeGap() {
-            return yaml.getInt("inventory.biome_gap");
-        }
-
-        private ItemStack getBiomeItemStack(Biome biome) {
-            return yaml.getItemStack("biomes." + biome.toString()).clone();
+        private ItemStack getBiomeItemStack(final Biome biome) {
+            return getYaml().getItemStack("biomes." + biome.toString()).clone();
         }
 
         private ItemStack getInfoItemStack() {
-            return yaml.getItemStack("info.item_stack").clone();
+            return getYaml().getItemStack("info.item_stack").clone();
         }
 
         private int getInfoSlot() {
-            return yaml.getInt("info.slot");
+            return getYaml().getInt("info.slot");
         }
 
         private ItemStack getBackItemStack() {
-            return yaml.getItemStack("back.item_stack").clone();
+            return getYaml().getItemStack("back.item_stack").clone();
         }
 
         private int getBackSlot() {
-            return yaml.getInt("back.slot");
+            return getYaml().getInt("back.slot");
         }
 
-        private int getNextPageSlot() {
-            return yaml.getInt("next_page.slot");
+        private int getResetValueSlot() {
+            return getYaml().getInt("value.reset.slot");
         }
 
-        private ItemStack getNextPageItemStack() {
-            return yaml.getItemStack("next_page.item_stack").clone();
+        private ItemStack getResetValueItemStack() {
+            return getYaml().getItemStack("value.reset.item_stack").clone();
         }
 
-        private int getPreviousPageSlot() {
-            return yaml.getInt("previous_page.slot");
+        private int getCopyValueSlot() {
+            return getYaml().getInt("value.copy.slot");
         }
 
-        private ItemStack getPreviousPageItemStack() {
-            return yaml.getItemStack("previous_page.item_stack").clone();
+        private ItemStack getCopyValueItemStack() {
+            return getYaml().getItemStack("value.copy.item_stack").clone();
         }
-
-        @Override
-        public void reload() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
-        }
-    }
-
-    private final class SubBiomeGui implements InventoryGui {
-
-        @Getter
-        private final Inventory inventory;
-
-        private final int page;
-
-        private final Map<Integer, Biome> values = new HashMap<>();
-
-        private SubBiomeGui(Biome[] biomes, int page) {
-            this.page = page;
-            this.inventory = Bukkit.createInventory(this, Settings.getInstance().getRows() * 9,
-                    MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(),
-                            new MessageValue("page", String.valueOf(page)),
-                            new MessageValue("pages", String.valueOf(pages)),
-                            new MessageValue("world", config.getName())));
-
-            inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
-            inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
-
-            if (page + 1 != pages)
-                inventory.setItem(nextPage, MessageUtil.replaceItemStack(Settings.getInstance().getNextPageItemStack()));
-
-            if (page != 0)
-                inventory.setItem(previousPage, MessageUtil.replaceItemStack(Settings.getInstance().getPreviousPageItemStack()));
-
-            for (int i = 0; i < biomes.length; i++) {
-                int slot = InventoryUtil.calculateSlot(i, Settings.getInstance().getBiomeGap());
-                inventory.setItem(slot, MessageUtil.replaceItemStack(Settings.getInstance().getBiomeItemStack(biomes[i])));
-                values.put(slot, biomes[i]);
-            }
-        }
-
-
-        @Override
-        public void onInventoryClick(InventoryClickEvent event) {
-            if (event.getRawSlot() == backSlot) {
-                openSync(event.getWhoClicked(), new WorldConfigGui(config, event.getWhoClicked()).getInventory());
-                return;
-            }
-
-            if (event.getRawSlot() == previousPage && page != 0) {
-                openSync(event.getWhoClicked(), guis.get(page - 1).getInventory());
-                return;
-            }
-
-            if (event.getRawSlot() == nextPage && page + 1 != pages) {
-                openSync(event.getWhoClicked(), guis.get(page + 1).getInventory());
-                return;
-            }
-
-            if (!values.containsKey(event.getRawSlot()))
-                return;
-
-            Biome biome = values.get(event.getRawSlot());
-
-            Preconditions.checkNotNull(biome);
-
-            openSync(event.getWhoClicked(), new OreGui(config, biome).getInventory());
-        }
-
     }
 
 }

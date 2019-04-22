@@ -103,7 +103,7 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private void setUpMetric() {
-       final Metrics metrics = new Metrics(this);
+        final Metrics metrics = new Metrics(this);
 
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getName()));
     }

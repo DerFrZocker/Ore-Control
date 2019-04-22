@@ -1,3 +1,6 @@
-save_mode: true
+safe_mode: true
 language: english
 translate_tab_compilation: true
+verify:
+  copy_action: true
+  reset_action: true

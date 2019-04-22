@@ -1,221 +1,180 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
+import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.utils.*;
+import de.derfrzocker.ore.control.gui.copy.CopySettingAction;
+import de.derfrzocker.ore.control.utils.MessageUtil;
+import de.derfrzocker.ore.control.utils.MessageValue;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permissible;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
-import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAVE;
-import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAVE_WARNING;
+import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAFE;
+import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAFE_WARNING;
 
-public class SettingsGui implements InventoryGui {
+public class SettingsGui extends BasicGui {
 
-    @Getter
-    private final Inventory inventory;
+    @NonNull
+    private final WorldOreConfig worldOreConfig;
 
-    private final WorldOreConfig config;
-
-    private final Setting setting;
-
+    @NonNull
     private final Ore ore;
 
-    private final Map<Integer, Integer> values = new HashMap<>();
-
-    private final int oreSlot;
+    @NonNull
+    private final Setting setting;
 
     private final Biome biome;
 
-    private final int backSlot;
+    private final int oreSlot;
 
-    SettingsGui(WorldOreConfig config, Ore ore, Setting setting, Biome biome) {
+    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible) {
+        super(SettingsGuiSettings.getInstance());
+        this.worldOreConfig = worldOreConfig;
         this.ore = ore;
         this.setting = setting;
-        this.config = config;
         this.biome = biome;
-        this.inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(biome == null ? Settings.getInstance().getInventoryName() : Settings.getInstance().getBiomeInventoryName(), getMessagesValues()));
-        this.backSlot = Settings.getInstance().getBackSlot();
+        this.oreSlot = SettingsGuiSettings.getInstance().getOreSlot();
 
-        inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
+        SettingsGuiSettings.getInstance().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(value.getItemStack()), new SettingConsumer(value.getValue())));
 
-        inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? Settings.getInstance().getInfoItemStack() : Settings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
+        addItem(SettingsGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(SettingsGuiSettings.getInstance().getBackItemStack()),
+                event -> openSync(event.getWhoClicked(), new OreSettingsGui(worldOreConfig, ore, biome, event.getWhoClicked()).getInventory()));
 
-        Settings.getInstance().getItemStackValues().forEach(value -> {
-            inventory.setItem(value.getSlot(), MessageUtil.replaceItemStack(value.getItemStack()));
-            values.put(value.getSlot(), value.getValue());
-        });
+        addItem(SettingsGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? SettingsGuiSettings.getInstance().getInfoItemStack() : SettingsGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
-        oreSlot = Settings.getInstance().getOreSlot();
+        updateItemStack();
 
-        updateItemStack(config);
-    }
+        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+            addItem(SettingsGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(SettingsGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getRawSlot() == backSlot) {
-            openSync(event.getWhoClicked(), new OreSettingsGui(config, ore, biome).getInventory());
-            return;
-        }
-
-        if (!values.containsKey(event.getRawSlot()))
-            return;
-
-        int value = values.get(event.getRawSlot());
-
-        int current = biome == null ? OreControlUtil.getAmount(ore, setting, config) : OreControlUtil.getAmount(ore, setting, config, biome);
-
-        int newValue = current + value;
-
-        if (OreControlUtil.isUnSafe(setting, newValue)) {
-            if (OreControl.getInstance().getConfigValues().isSaveMode()) {
-                SET_NOT_SAVE.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
-                return;
-            }
-            SET_NOT_SAVE_WARNING.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
-        }
-
-        if (biome == null)
-            OreControlUtil.setAmount(ore, setting, config, newValue);
-        else
-            OreControlUtil.setAmount(ore, setting, config, newValue, biome);
-
-        OreControl.getService().saveWorldOreConfig(config);
-
-        updateItemStack(config);
-    }
-
-    private void updateItemStack(WorldOreConfig config) {
-        ItemStack itemStack = biome == null ? Settings.getInstance().getDefaultOreItemStack() : Settings.getInstance().getDefaultBiomeOreItemStack();
-        itemStack.setType(ore.getMaterial());
-        itemStack = MessageUtil.replaceItemStack(itemStack, biome == null ? getMessageValues(config) : getBiomeMessageValues(config));
-        inventory.setItem(oreSlot, itemStack);
+        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+            addItem(SettingsGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(SettingsGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopySettingAction(worldOreConfig, ore, biome, setting)).getInventory()));
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getName()),
+        return new MessageValue[]{new MessageValue("world", worldOreConfig.getName()),
                 new MessageValue("biome", biome == null ? "" : biome.toString()),
                 new MessageValue("ore", ore.toString()),
-                new MessageValue("setting", setting.toString())};
+                new MessageValue("setting", setting.toString()),
+                new MessageValue("amount", String.valueOf(biome == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome)))
+        };
     }
 
-    private MessageValue[] getMessageValues(WorldOreConfig config) {
-        Set<MessageValue> messageValues = getStandardMessageValue(config);
-
-        messageValues.add(new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, config))));
-
-        return messageValues.toArray(new MessageValue[0]);
+    private void updateItemStack() {
+        ItemStack itemStack = biome == null ? SettingsGuiSettings.getInstance().getDefaultOreItemStack() : SettingsGuiSettings.getInstance().getDefaultBiomeOreItemStack();
+        itemStack.setType(ore.getMaterial());
+        itemStack = MessageUtil.replaceItemStack(itemStack, getMessagesValues());
+        getInventory().setItem(oreSlot, itemStack);
     }
 
-    private MessageValue[] getBiomeMessageValues(WorldOreConfig config) {
-        Set<MessageValue> messageValues = getStandardMessageValue(config);
+    private void handleResetValues(final InventoryClickEvent event) {
+        if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
+            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+                if (biome != null)
+                    OreControlUtil.reset(worldOreConfig, ore, biome, setting);
+                else
+                    OreControlUtil.reset(worldOreConfig, ore, setting);
 
-        messageValues.add(new MessageValue("biome", biome.toString()));
-        messageValues.add(new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, config, biome))));
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                openSync(event.getWhoClicked(), getInventory());
+                OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            return;
+        }
+        if (biome != null)
+            OreControlUtil.reset(worldOreConfig, ore, biome, setting);
+        else
+            OreControlUtil.reset(worldOreConfig, ore, setting);
 
-        return messageValues.toArray(new MessageValue[0]);
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
-    private Set<MessageValue> getStandardMessageValue(WorldOreConfig config) {
-        Set<MessageValue> set = new HashSet<>();
+    private static final class SettingsGuiSettings extends BasicSettings {
 
-        set.add(new MessageValue("ore", ore.toString()));
-        set.add(new MessageValue("setting", setting.toString()));
-        set.add(new MessageValue("world", config.getName()));
+        private static SettingsGuiSettings instance = null;
 
-        return set;
-    }
-
-    private static final class Settings implements ReloadAble {
-
-        private final static String file = "data/settings_gui.yml";
-
-        private YamlConfiguration yaml;
-
-        private static Settings instance = null;
-
-        private static Settings getInstance() {
+        private static SettingsGuiSettings getInstance() {
             if (instance == null)
-                instance = new Settings();
+                instance = new SettingsGuiSettings();
 
             return instance;
         }
 
-        private Settings() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
-            RELOAD_ABLES.add(this);
-        }
-
-        private String getInventoryName() {
-            return yaml.getString("inventory.name");
-        }
-
-        private String getBiomeInventoryName() {
-            return yaml.getString("inventory.biome_name");
-        }
-
-        private int getSlots() {
-            return yaml.getInt("inventory.rows") * 9;
+        private SettingsGuiSettings() {
+            super(OreControl.getInstance(), "data/settings_gui.yml");
         }
 
         private int getOreSlot() {
-            return yaml.getInt("inventory.ore.slot");
+            return getYaml().getInt("inventory.ore.slot");
         }
 
         private ItemStack getInfoItemStack() {
-            return yaml.getItemStack("info.item_stack").clone();
+            return getYaml().getItemStack("info.item_stack").clone();
         }
 
         private ItemStack getInfoBiomeItemStack() {
-            return yaml.getItemStack("info.biome_item_stack").clone();
+            return getYaml().getItemStack("info.biome_item_stack").clone();
         }
 
         private int getInfoSlot() {
-            return yaml.getInt("info.slot");
+            return getYaml().getInt("info.slot");
         }
 
-        private Set<ItemStackValues> getItemStackValues() {
-            Set<ItemStackValues> set = new HashSet<>();
-            yaml.getConfigurationSection("inventory.items").
+        private Set<SettingsGuiSettings.ItemStackValues> getItemStackValues() {
+            Set<SettingsGuiSettings.ItemStackValues> set = new HashSet<>();
+            getYaml().getConfigurationSection("inventory.items").
                     getKeys(false).stream().
-                    map(value -> yaml.getConfigurationSection("inventory.items." + value)).
-                    map(value -> new ItemStackValues(value.getInt("slot", 0), value.getInt("value", 0), value.getItemStack("item_stack"))).
+                    map(value -> getYaml().getConfigurationSection("inventory.items." + value)).
+                    map(value -> new SettingsGuiSettings.ItemStackValues(value.getInt("slot", 0), value.getInt("value", 0), value.getItemStack("item_stack"))).
                     forEach(set::add);
             return set;
         }
 
         private ItemStack getDefaultOreItemStack() {
-            return yaml.getItemStack("default_ore_item_stack").clone();
+            return getYaml().getItemStack("default_ore_item_stack").clone();
         }
 
         private ItemStack getDefaultBiomeOreItemStack() {
-            return yaml.getItemStack("default_biome_ore_item_stack").clone();
+            return getYaml().getItemStack("default_biome_ore_item_stack").clone();
         }
 
         private ItemStack getBackItemStack() {
-            return yaml.getItemStack("back.item_stack").clone();
+            return getYaml().getItemStack("back.item_stack").clone();
         }
 
         private int getBackSlot() {
-            return yaml.getInt("back.slot");
+            return getYaml().getInt("back.slot");
         }
 
-        @Override
-        public void reload() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
+        private int getResetValueSlot() {
+            return getYaml().getInt("value.reset.slot");
+        }
+
+        private ItemStack getResetValueItemStack() {
+            return getYaml().getItemStack("value.reset.item_stack").clone();
+        }
+
+        private int getCopyValueSlot() {
+            return getYaml().getInt("value.copy.slot");
+        }
+
+        private ItemStack getCopyValueItemStack() {
+            return getYaml().getItemStack("value.copy.item_stack").clone();
         }
 
         @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -225,7 +184,36 @@ public class SettingsGui implements InventoryGui {
             private final int value;
             private final ItemStack itemStack;
         }
+    }
 
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private final class SettingConsumer implements Consumer<InventoryClickEvent> {
+
+        private final int value;
+
+        @Override
+        public void accept(final InventoryClickEvent event) {
+            int current = biome == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
+
+            int newValue = current + value;
+
+            if (OreControlUtil.isUnSafe(setting, newValue)) {
+                if (OreControl.getInstance().getConfigValues().isSafeMode()) {
+                    SET_NOT_SAFE.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                    return;
+                }
+                SET_NOT_SAFE_WARNING.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+            }
+
+            if (biome == null)
+                OreControlUtil.setAmount(ore, setting, worldOreConfig, newValue);
+            else
+                OreControlUtil.setAmount(ore, setting, worldOreConfig, newValue, biome);
+
+            OreControl.getService().saveWorldOreConfig(worldOreConfig);
+
+            updateItemStack();
+        }
     }
 
 }

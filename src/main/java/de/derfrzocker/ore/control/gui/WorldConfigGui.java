@@ -1,139 +1,193 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
+import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.utils.Config;
+import de.derfrzocker.ore.control.gui.copy.CopyAction;
+import de.derfrzocker.ore.control.gui.copy.CopyWorldOreConfigAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
-import de.derfrzocker.ore.control.utils.ReloadAble;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
+import de.derfrzocker.ore.control.utils.OreControlUtil;
+import lombok.NonNull;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
-public class WorldConfigGui implements InventoryGui {
+public class WorldConfigGui extends BasicGui {
 
-    @Getter
-    private final Inventory inventory;
+    @NonNull
+    private final WorldOreConfig worldOreConfig;
 
-    private final int biome;
+    private final CopyAction copyAction;
 
-    private final int ores;
+    WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible) {
+        super(WorldConfigGuiSettings.getInstance());
+        this.worldOreConfig = worldOreConfig;
+        this.copyAction = null;
 
-    private final int backSlot;
+        if (Permissions.SET_PERMISSION.hasPermission(permissible))
+            addItem(WorldConfigGuiSettings.getInstance().getOreItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getOreItemStack()), event -> openSync(event.getWhoClicked(), new OreGui(worldOreConfig, null, event.getWhoClicked()).getInventory()));
 
-    private final WorldOreConfig config;
+        if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible))
+            addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getBiomeItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory()));
 
-    WorldConfigGui(WorldOreConfig config, Permissible permissible) {
-        this.config = config;
-        this.backSlot = Settings.getInstance().getBackSlot();
+        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+            addItem(WorldConfigGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-        inventory = Bukkit.createInventory(this, Settings.getInstance().getSlots(), MessageUtil.replacePlaceHolder(Settings.getInstance().getInventoryName(), new MessageValue("world", config.getName())));
+        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+            addItem(WorldConfigGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyWorldOreConfigAction(worldOreConfig)).getInventory()));
 
-        if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
-            ores = Settings.getInstance().getOreItemStackSlot();
-            inventory.setItem(ores, MessageUtil.replaceItemStack(Settings.getInstance().getOreItemStack()));
-        } else
-            ores = -245;
+        if (Permissions.DELETE_TEMPLATE_PERMISSION.hasPermission(permissible) && worldOreConfig.isTemplate())
+            addItem(WorldConfigGuiSettings.getInstance().getTemplateDeleteSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getTemplateDeleteItemStack()), this::handleDeleteTemplate);
 
-        if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible)) {
-            biome = Settings.getInstance().getBiomeItemStackSlot();
-            inventory.setItem(biome, MessageUtil.replaceItemStack(Settings.getInstance().getBiomeItemStack()));
-        } else
-            biome = -245;
-
-        inventory.setItem(backSlot, MessageUtil.replaceItemStack(Settings.getInstance().getBackItemStack()));
-        inventory.setItem(Settings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(Settings.getInstance().getInfoItemStack(), getMessagesValues()));
+        addItem(WorldConfigGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(event.getWhoClicked()).getInventory()));
+        addItem(WorldConfigGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getRawSlot() == backSlot) {
-            openSync(event.getWhoClicked(), new WorldGui().getInventory());
-            return;
+    public WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible, final @NonNull CopyAction copyAction) {
+        super(WorldConfigGuiSettings.getInstance());
+        this.worldOreConfig = worldOreConfig;
+        this.copyAction = copyAction;
+
+        if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
+            boolean bool = false;
+
+            for (Ore ore : Ore.values())
+                if (copyAction.shouldSet(ore)) {
+                    bool = true;
+                    break;
+                }
+
+            if (bool)
+                addItem(WorldConfigGuiSettings.getInstance().getOreItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getOreItemStack()), this::handleCopyAction);
         }
 
-        if (event.getRawSlot() == ores) {
-            openSync(event.getWhoClicked(), new OreGui(config, null).getInventory());
-            return;
+        if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible)) {
+            boolean bool = false;
+
+            for (Biome biome : Biome.values())
+                if (copyAction.shouldSet(biome)) {
+                    bool = true;
+                    break;
+                }
+
+
+            if (bool)
+                addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getBiomeItemStack()), this::handleCopyActionBiome);
         }
 
-        if (event.getRawSlot() == biome)
-            openSync(event.getWhoClicked(), new BiomeGui(config).getInventory());
+        addItem(WorldConfigGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
+    }
+
+    private void handleCopyAction(final InventoryClickEvent event) {
+        copyAction.setChooseBiome(false);
+        copyAction.next(event.getWhoClicked(), this);
+    }
+
+    private void handleCopyActionBiome(final InventoryClickEvent event) {
+        copyAction.setChooseBiome(true);
+        copyAction.next(event.getWhoClicked(), this);
     }
 
     private MessageValue[] getMessagesValues() {
-        return new MessageValue[]{new MessageValue("world", config.getName())};
+        return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
     }
 
-    private static final class Settings implements ReloadAble {
+    private void handleResetValues(final InventoryClickEvent event) {
+        if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
+            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+                OreControlUtil.reset(this.worldOreConfig);
+                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                openSync(event.getWhoClicked(), getInventory());
+                OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            return;
+        }
 
-        private final static String file = "data/world_config_gui.yml";
+        OreControlUtil.reset(worldOreConfig);
+        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
+    }
 
-        private YamlConfiguration yaml;
+    private void handleDeleteTemplate(final InventoryClickEvent event) {
+        openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+            OreControl.getService().removeWorldOreConfig(worldOreConfig);
+            closeSync(event.getWhoClicked());
+        }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+    }
 
-        private static Settings instance = null;
+    private static final class WorldConfigGuiSettings extends BasicSettings {
+        private static WorldConfigGuiSettings instance = null;
 
-        private static Settings getInstance() {
+        private static WorldConfigGuiSettings getInstance() {
             if (instance == null)
-                instance = new Settings();
+                instance = new WorldConfigGuiSettings();
 
             return instance;
         }
 
-        private Settings() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
-            RELOAD_ABLES.add(this);
-        }
-
-        private String getInventoryName() {
-            return yaml.getString("inventory.name");
-        }
-
-        private int getSlots() {
-            return yaml.getInt("inventory.rows") * 9;
+        private WorldConfigGuiSettings() {
+            super(OreControl.getInstance(), "data/world_config_gui.yml");
         }
 
         private int getBiomeItemStackSlot() {
-            return yaml.getInt("biome.slot");
+            return getYaml().getInt("biome.slot");
         }
 
         private ItemStack getBiomeItemStack() {
-            return yaml.getItemStack("biome.item_stack").clone();
+            return getYaml().getItemStack("biome.item_stack").clone();
         }
 
         private int getOreItemStackSlot() {
-            return yaml.getInt("ore.slot");
+            return getYaml().getInt("ore.slot");
         }
 
         private ItemStack getOreItemStack() {
-            return yaml.getItemStack("ore.item_stack").clone();
+            return getYaml().getItemStack("ore.item_stack").clone();
         }
 
         private ItemStack getBackItemStack() {
-            return yaml.getItemStack("back.item_stack").clone();
+            return getYaml().getItemStack("back.item_stack").clone();
         }
 
         private ItemStack getInfoItemStack() {
-            return yaml.getItemStack("info.item_stack").clone();
+            return getYaml().getItemStack("info.item_stack").clone();
         }
 
         private int getInfoSlot() {
-            return yaml.getInt("info.slot");
+            return getYaml().getInt("info.slot");
         }
 
         private int getBackSlot() {
-            return yaml.getInt("back.slot");
+            return getYaml().getInt("back.slot");
         }
 
-        @Override
-        public void reload() {
-            yaml = Config.getConfig(OreControl.getInstance(), file);
+        private int getResetValueSlot() {
+            return getYaml().getInt("value.reset.slot");
         }
+
+        private ItemStack getResetValueItemStack() {
+            return getYaml().getItemStack("value.reset.item_stack").clone();
+        }
+
+        private int getCopyValueSlot() {
+            return getYaml().getInt("value.copy.slot");
+        }
+
+        private ItemStack getCopyValueItemStack() {
+            return getYaml().getItemStack("value.copy.item_stack").clone();
+        }
+
+        private int getTemplateDeleteSlot() {
+            return getYaml().getInt("template.delete.slot");
+        }
+
+        private ItemStack getTemplateDeleteItemStack() {
+            return getYaml().getItemStack("template.delete.item_stack").clone();
+        }
+
     }
-
 }
