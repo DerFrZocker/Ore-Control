@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAVE;
-import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAVE_WARNING;
+import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAFE;
+import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAFE_WARNING;
 
 public class SettingsGui extends BasicGui {
 
@@ -42,31 +42,27 @@ public class SettingsGui extends BasicGui {
     private final int oreSlot;
 
     SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible) {
+        super(SettingsGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.ore = ore;
         this.setting = setting;
         this.biome = biome;
-        this.oreSlot = getSettings().getOreSlot();
+        this.oreSlot = SettingsGuiSettings.getInstance().getOreSlot();
 
-        getSettings().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(value.getItemStack()), new SettingConsumer(value.getValue())));
+        SettingsGuiSettings.getInstance().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(value.getItemStack()), new SettingConsumer(value.getValue())));
 
-        addItem(getSettings().getBackSlot(), MessageUtil.replaceItemStack(getSettings().getBackItemStack()),
+        addItem(SettingsGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(SettingsGuiSettings.getInstance().getBackItemStack()),
                 event -> openSync(event.getWhoClicked(), new OreSettingsGui(worldOreConfig, ore, biome, event.getWhoClicked()).getInventory()));
 
-        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
+        addItem(SettingsGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? SettingsGuiSettings.getInstance().getInfoItemStack() : SettingsGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         updateItemStack();
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
+            addItem(SettingsGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(SettingsGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopySettingAction(worldOreConfig, ore, biome, setting)).getInventory()));
-    }
-
-    @Override
-    public SettingsGuiSettings getSettings() {
-        return SettingsGuiSettings.getInstance();
+            addItem(SettingsGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(SettingsGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopySettingAction(worldOreConfig, ore, biome, setting)).getInventory()));
     }
 
     private MessageValue[] getMessagesValues() {
@@ -79,7 +75,7 @@ public class SettingsGui extends BasicGui {
     }
 
     private void updateItemStack() {
-        ItemStack itemStack = biome == null ? getSettings().getDefaultOreItemStack() : getSettings().getDefaultBiomeOreItemStack();
+        ItemStack itemStack = biome == null ? SettingsGuiSettings.getInstance().getDefaultOreItemStack() : SettingsGuiSettings.getInstance().getDefaultBiomeOreItemStack();
         itemStack.setType(ore.getMaterial());
         itemStack = MessageUtil.replaceItemStack(itemStack, getMessagesValues());
         getInventory().setItem(oreSlot, itemStack);
@@ -202,11 +198,11 @@ public class SettingsGui extends BasicGui {
             int newValue = current + value;
 
             if (OreControlUtil.isUnSafe(setting, newValue)) {
-                if (OreControl.getInstance().getConfigValues().isSaveMode()) {
-                    SET_NOT_SAVE.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                if (OreControl.getInstance().getConfigValues().isSafeMode()) {
+                    SET_NOT_SAFE.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
                     return;
                 }
-                SET_NOT_SAVE_WARNING.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                SET_NOT_SAFE_WARNING.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
             }
 
             if (biome == null)

@@ -11,21 +11,22 @@ import java.util.function.Consumer;
 
 public class VerifyGui extends BasicGui {
 
+
     public VerifyGui(final @NonNull Consumer<InventoryClickEvent> acceptAction, final @NonNull Consumer<InventoryClickEvent> denyAction) {
-        addItem(getSettings().getAcceptSlot(), MessageUtil.replaceItemStack(getSettings().getAcceptItemStack()), acceptAction);
-        addItem(getSettings().getDenySlot(), MessageUtil.replaceItemStack(getSettings().getDenyItemStack()), denyAction);
+        this(acceptAction, denyAction, VerifyGuiSettings.getInstance());
     }
 
-    @Override
-    public VerifyGuiSettings getSettings() {
-        return VerifyGuiSettings.getInstance();
+    public <T extends BasicSettings & VerifyGui.VerifyGuiSettingsInterface> VerifyGui(final @NonNull Consumer<InventoryClickEvent> acceptAction, final @NonNull Consumer<InventoryClickEvent> denyAction, final T setting) {
+        super(setting);
+        addItem(setting.getAcceptSlot(), MessageUtil.replaceItemStack(setting.getAcceptItemStack()), acceptAction);
+        addItem(setting.getDenySlot(), MessageUtil.replaceItemStack(setting.getDenyItemStack()), denyAction);
     }
 
-    private static final class VerifyGuiSettings extends BasicSettings {
+    public static final class VerifyGuiSettings extends BasicSettings implements VerifyGui.VerifyGuiSettingsInterface {
 
         private static VerifyGuiSettings instance = null;
 
-        private static VerifyGuiSettings getInstance() {
+        public static VerifyGuiSettings getInstance() {
             if (instance == null)
                 instance = new VerifyGuiSettings();
 
@@ -36,21 +37,37 @@ public class VerifyGui extends BasicGui {
             super(OreControl.getInstance(), "data/verify_gui.yml");
         }
 
-        private int getAcceptSlot() {
+        @Override
+        public int getAcceptSlot() {
             return getYaml().getInt("accept.slot");
         }
 
-        private ItemStack getAcceptItemStack() {
+        @Override
+        public ItemStack getAcceptItemStack() {
             return getYaml().getItemStack("accept.item_stack").clone();
         }
 
-        private ItemStack getDenyItemStack() {
+        @Override
+        public ItemStack getDenyItemStack() {
             return getYaml().getItemStack("deny.item_stack").clone();
         }
 
-        private int getDenySlot() {
+        @Override
+        public int getDenySlot() {
             return getYaml().getInt("deny.slot");
         }
+
+    }
+
+    public interface VerifyGuiSettingsInterface {
+
+        int getAcceptSlot();
+
+        ItemStack getAcceptItemStack();
+
+        ItemStack getDenyItemStack();
+
+        int getDenySlot();
 
     }
 

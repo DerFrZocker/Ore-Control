@@ -20,12 +20,11 @@ value:
         ==: ItemMeta
         meta-type: UNSPECIFIC
         display-name: '%%translation:[gui.ore.copy]%'
-version: 2
+version: 3
 inventory:
   name: '%%translation:[gui.ore.name]%'
   rows: 3
   ore_gap: 2
-  biome_name: '%%translation:[gui.ore.biome_name]%'
 back:
   slot: 18
   item_stack:
@@ -43,7 +42,7 @@ default_ore_item_stack:
   meta:
     ==: ItemMeta
     meta-type: UNSPECIFIC
-    display-name: ยงr%%translation:[ore.%ore%]%
+    display-name: §r%%translation:[ore.%ore%]%
 info:
   slot: 26
   item_stack:

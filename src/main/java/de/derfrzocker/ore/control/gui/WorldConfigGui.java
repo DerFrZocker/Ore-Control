@@ -24,29 +24,31 @@ public class WorldConfigGui extends BasicGui {
     private final CopyAction copyAction;
 
     WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible) {
+        super(WorldConfigGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = null;
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getOreItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getOreItemStack()), event -> openSync(event.getWhoClicked(), new OreGui(worldOreConfig, null, event.getWhoClicked()).getInventory()));
+            addItem(WorldConfigGuiSettings.getInstance().getOreItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getOreItemStack()), event -> openSync(event.getWhoClicked(), new OreGui(worldOreConfig, null, event.getWhoClicked()).getInventory()));
 
         if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getBiomeItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory()));
+            addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getBiomeItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory()));
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
+            addItem(WorldConfigGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyWorldOreConfigAction(worldOreConfig)).getInventory()));
+            addItem(WorldConfigGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyWorldOreConfigAction(worldOreConfig)).getInventory()));
 
         if (Permissions.DELETE_TEMPLATE_PERMISSION.hasPermission(permissible) && worldOreConfig.isTemplate())
-            addItem(getSettings().getTemplateDeleteSlot(), MessageUtil.replaceItemStack(getSettings().getTemplateDeleteItemStack()), this::handleDeleteTemplate);
+            addItem(WorldConfigGuiSettings.getInstance().getTemplateDeleteSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getTemplateDeleteItemStack()), this::handleDeleteTemplate);
 
-        addItem(getSettings().getBackSlot(), MessageUtil.replaceItemStack(getSettings().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(event.getWhoClicked()).getInventory()));
-        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(getSettings().getInfoItemStack(), getMessagesValues()));
+        addItem(WorldConfigGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(event.getWhoClicked()).getInventory()));
+        addItem(WorldConfigGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
     public WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible, final @NonNull CopyAction copyAction) {
+        super(WorldConfigGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = copyAction;
 
@@ -60,7 +62,7 @@ public class WorldConfigGui extends BasicGui {
                 }
 
             if (bool)
-                addItem(getSettings().getOreItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getOreItemStack()), this::handleCopyAction);
+                addItem(WorldConfigGuiSettings.getInstance().getOreItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getOreItemStack()), this::handleCopyAction);
         }
 
         if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible)) {
@@ -74,16 +76,10 @@ public class WorldConfigGui extends BasicGui {
 
 
             if (bool)
-                addItem(getSettings().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(getSettings().getBiomeItemStack()), this::handleCopyActionBiome);
+                addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getBiomeItemStack()), this::handleCopyActionBiome);
         }
 
-        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(getSettings().getInfoItemStack(), getMessagesValues()));
-    }
-
-
-    @Override
-    public WorldConfigGuiSettings getSettings() {
-        return WorldConfigGuiSettings.getInstance();
+        addItem(WorldConfigGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(WorldConfigGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
     private void handleCopyAction(final InventoryClickEvent event) {

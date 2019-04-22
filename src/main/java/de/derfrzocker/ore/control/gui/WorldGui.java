@@ -5,6 +5,7 @@ import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.gui.config.ConfigGui;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.utils.MessageUtil;
 import de.derfrzocker.ore.control.utils.MessageValue;
@@ -34,8 +35,7 @@ public class WorldGui extends PageGui<String> {
             addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
 
         if (Permissions.EDIT_CONFIG_PERMISSION.hasPermission(permissible))
-            addItem(WorldGuiSettings.getInstance().getEditConfigSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getEditConfigItemStack()), event -> {
-            }); // TODO add right consumer
+            addItem(WorldGuiSettings.getInstance().getEditConfigSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getEditConfigItemStack()), event -> openSync(event.getWhoClicked(), new ConfigGui().getInventory()));
 
         worldOreConfigs = null;
     }

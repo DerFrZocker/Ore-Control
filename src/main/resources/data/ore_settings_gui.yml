@@ -20,12 +20,11 @@ value:
         ==: ItemMeta
         meta-type: UNSPECIFIC
         display-name: '%%translation:[gui.ore_settings.copy]%'
-version: 2
+version: 3
 inventory:
   name: '%%translation:[gui.ore_settings.name]%'
   rows: 2
   setting_start_slot: 2
-  biome_name: '%%translation:[gui.ore_settings.biome_name]%'
 status:
   slot: 13
   activate:

@@ -32,6 +32,7 @@ public class OreGui extends BasicGui {
     private final CopyAction copyAction;
 
     OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final Permissible permissible) {
+        super(OreGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.biome = biome;
         this.copyAction = null;
@@ -39,22 +40,23 @@ public class OreGui extends BasicGui {
         final Ore[] ores = biome == null ? Ore.values() : biome.getOres();
 
         for (int i = 0; i < ores.length; i++)
-            addItem(InventoryUtil.calculateSlot(i, getSettings().getOreGap()), getOreItemStack(ores[i]), new OreConsumer(ores[i]));
+            addItem(InventoryUtil.calculateSlot(i, OreGuiSettings.getInstance().getOreGap()), getOreItemStack(ores[i]), new OreConsumer(ores[i]));
 
-        addItem(getSettings().getBackSlot(), MessageUtil.replaceItemStack(getSettings().getBackItemStack()),
+        addItem(OreGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreGuiSettings.getInstance().getBackItemStack()),
                 event -> openSync(event.getWhoClicked(), biome == null ? new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory() : new BiomeGui(event.getWhoClicked(), worldOreConfig).getInventory()));
 
-        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
+        addItem(OreGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? OreGuiSettings.getInstance().getInfoItemStack() : OreGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getResetValueSlot(), MessageUtil.replaceItemStack(getSettings().getResetValueItemStack()), this::handleResetValues);
+            addItem(OreGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(getSettings().getCopyValueSlot(), MessageUtil.replaceItemStack(getSettings().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyOresAction(worldOreConfig, biome == null ? Ore.values() : biome.getOres(), biome)).getInventory()));
+            addItem(OreGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyOresAction(worldOreConfig, biome == null ? Ore.values() : biome.getOres(), biome)).getInventory()));
 
     }
 
     public OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final @NonNull CopyAction copyAction) {
+        super(OreGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.biome = biome;
         this.copyAction = copyAction;
@@ -72,14 +74,9 @@ public class OreGui extends BasicGui {
         final Ore[] oresArray = ores.toArray(new Ore[0]);
 
         for (int i = 0; i < oresArray.length; i++)
-            addItem(InventoryUtil.calculateSlot(i, getSettings().getOreGap()), getOreItemStack(oresArray[i]), new OreCopyConsumer(oresArray[i]));
+            addItem(InventoryUtil.calculateSlot(i, OreGuiSettings.getInstance().getOreGap()), getOreItemStack(oresArray[i]), new OreCopyConsumer(oresArray[i]));
 
-        addItem(getSettings().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? getSettings().getInfoItemStack() : getSettings().getInfoBiomeItemStack(), getMessagesValues()));
-    }
-
-    @Override
-    public OreGuiSettings getSettings() {
-        return OreGuiSettings.getInstance();
+        addItem(OreGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? OreGuiSettings.getInstance().getInfoItemStack() : OreGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
     }
 
     private MessageValue[] getMessagesValues() {
@@ -115,7 +112,7 @@ public class OreGui extends BasicGui {
     }
 
     private ItemStack getOreItemStack(final Ore ore) {
-        ItemStack itemStack = getSettings().getDefaultOreItemStack();
+        ItemStack itemStack = OreGuiSettings.getInstance().getDefaultOreItemStack();
 
         itemStack.setType(ore.getMaterial());
 

@@ -29,9 +29,14 @@ public class Config extends YamlConfiguration {
         if (!file.exists()) {
             try {
                 Files.createParentDirs(file);
+            } catch (IOException e) {
+                throw new RuntimeException("Error while create parent dirs for file: " + file.getName(), e);
+            }
+
+            try {
                 file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while create new file: " + file.getName(), e);
             }
         }
 
@@ -39,7 +44,7 @@ public class Config extends YamlConfiguration {
         try {
             this.load(file);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while load config from file: " + file.getName(), e);
         }
 
     }
@@ -50,7 +55,7 @@ public class Config extends YamlConfiguration {
         try {
             this.load(input);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while load config from InputStream", e);
         }
 
     }
@@ -59,7 +64,7 @@ public class Config extends YamlConfiguration {
         try {
             this.loadFromString(input);
         } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while load config from String: " + input, e);
         }
     }
 
@@ -73,8 +78,6 @@ public class Config extends YamlConfiguration {
                 Charsets.UTF_8)) {
 
             writer.write(this.saveToString());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -96,7 +99,7 @@ public class Config extends YamlConfiguration {
         if (!name.endsWith(".yml"))
             name = format("%s.yml", name);
 
-        File file = new File(plugin.getDataFolder().getPath(), name);
+        final File file = new File(plugin.getDataFolder().getPath(), name);
 
         Config defaults = null;
 
@@ -105,7 +108,7 @@ public class Config extends YamlConfiguration {
         else
             plugin.saveResource(name, true);
 
-        Config config = new Config(file);
+        final Config config = new Config(file);
 
         if (defaults != null) {
             config.setDefaults(defaults);
@@ -113,7 +116,7 @@ public class Config extends YamlConfiguration {
             try {
                 config.save(file);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while save: " + file.getName(), e);
             }
         }
 

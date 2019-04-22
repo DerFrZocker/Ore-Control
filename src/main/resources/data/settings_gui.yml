@@ -50,7 +50,6 @@ inventory:
           ==: ItemMeta
           meta-type: UNSPECIFIC
           display-name: '+3'
-  biome_name: '%%translation:[gui.settings.biome_name]%'
 back:
   slot: 9
   item_stack:

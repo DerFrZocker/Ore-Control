@@ -12,12 +12,12 @@ command:
     setting_not_valid:
       - '&4Die Einstellung &f''&9%setting%&f'' &4ist nicht für das'
       - '&4Erz &f''&9%ore%&f''&4 bestimmt!'
-    not_save:
+    not_safe:
       - '&4Die Nummer &f''&9%value%&f'' &4ist nicht sicher!'
       - '&4Wenn du sie trozdem setzen möchtes,'
-      - '&4setze in der config den Wert &f''&9save_mode&f'' &4auf &f''&9false&f'''
+      - '&4setze in der config den Wert &f''&9safe_mode&f'' &4auf &f''&9false&f'''
       - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
-    not_save_warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
+    not_safe_warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
     ore_not_found:
       - '&4Das Erz &f''&9%ore%&f'' &4existiert nicht!, '
       - '&cbenutze &f''&9diamond&f'', ''&9coal&f'', ''&9lapis&f'', ''&9iron&f'', ''&9gold&f'',
@@ -187,6 +187,7 @@ gui:
     lore_ore: "Erz: %%translation:[ore.%ore%]%"
     lore_setting: "Einstellung: %%translation:[setting.%setting%]%"
     lore_current: "Aktuell: %amount%"
+    lore_default: "Standart: %value%"
   world:
     name: "Wähle eine Welt!"
     template:
@@ -222,3 +223,27 @@ gui:
     name: "Akzeptiere oder lehne die Aktion ab!"
     accept: "Akzeptieren"
     deny: "Ablehnen"
+  config:
+    name: "Wähle eine Config Option!"
+    language:
+      name: "Ändere die Sprache!"
+      description: "Ändere die Sprache von diesem Plugin, du kannst auch neue Sprachen einreichen. Einfach die messages.yml im Ore-Control Ordner übersetzen und an mich senden."
+    safe_mode:
+      name:  "Aktiviere / Deaktiviere den Sicherheitsmodus!"
+      description: "Wähle ob dich das Plugin hindern soll, wenn du einen nicht sicheren Wert setzen willst"
+    translate_tab_compilation:
+      name: "Aktiviere / Deaktiviere Tab Übersetzung!"
+      description: "Wähle ob du Biom / Erz / Einstellungs namen in deiner gewählten Sprache in den Befehlen nutzen kannst"
+    verify:
+      copy_action:
+        name: "Aktiviere / Deaktiviere bestädigung für Kopier Aktionen!"
+        description: "Wähle ob to Kopier Aktionen Bestätigen must oder nicht"
+      reset_action:
+        name: "Aktiviere / Deaktiviere bestädigung für Reset Aktionen!"
+        description: "Wähle ob to Reset Aktionen Bestätigen must oder nicht"
+  language:
+    name: "Wähle eine Sprache!"
+  boolean:
+    name: "Aktiviere oder Deaktiviere"
+    true: "Aktiviere"
+    false: "Deaktiviere"

@@ -19,11 +19,12 @@ public abstract class BasicGui implements InventoryGui {
 
     private final Map<Integer, Consumer<InventoryClickEvent>> button = new HashMap<>();
 
-    public BasicGui() {
-        inventory = Bukkit.createInventory(this, getSettings().getRows() * 9, MessageUtil.replacePlaceHolder(getSettings().getInventoryName()));
-    }
+    private final BasicSettings basicSettings;
 
-    public abstract BasicSettings getSettings();
+    public BasicGui(final BasicSettings basicSettings) {
+        this.basicSettings = basicSettings;
+        inventory = Bukkit.createInventory(this, basicSettings.getRows() * 9, MessageUtil.replacePlaceHolder(basicSettings.getInventoryName()));
+    }
 
     public void addItem(final int slot, final @NonNull ItemStack itemStack) {
         getInventory().setItem(slot, itemStack);

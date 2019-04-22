@@ -95,11 +95,11 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
             final int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
 
             if (OreControlUtil.isUnSafe(setting, value2)) {
-                if (OreControl.getInstance().getConfigValues().isSaveMode()) {
-                    SET_NOT_SAVE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                if (OreControl.getInstance().getConfigValues().isSafeMode()) {
+                    SET_NOT_SAFE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
                     return;
                 }
-                SET_NOT_SAVE_WARNING.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                SET_NOT_SAFE_WARNING.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
             }
 
             OreControlUtil.setAmount(ore, setting, worldOreConfig, value2);

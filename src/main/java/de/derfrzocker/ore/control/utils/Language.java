@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public enum Language {
 
-    ENGLISH("English", "lang/en.yml"), GERMAN("Deutsch", "lang/de.yml"), CUSTOM("custom", "messages.yml");
+    ENGLISH("English", "lang/en.yml"), GERMAN("Deutsch", "lang/de.yml"), CUSTOM("Custom", "messages.yml");
 
     @Getter
     private final String name;
