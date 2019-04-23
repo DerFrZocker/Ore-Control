@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.utils;
+package de.derfrzocker.spigot.utils;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

@@ -17,12 +17,20 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
-      <excludeFolder url="file://$MODULE_DIR$/../../ore-control-impl/ore-control-impl-yaml/target" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ore-control-impl/ore-control-impl-v1_13_R2/target" />
     </content>
     <orderEntry type="jdk" jdkName="1.8.0_191" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="orecontrolapi" scope="PROVIDED" />
-    <orderEntry type="module" module-name="spigotutils" scope="PROVIDED" />
+    <orderEntry type="module-library">
+      <library name="Maven: minecraft:nms-1.13.2:1.13.2">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/spigot-1.13.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.13.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />

@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.utils;
+package de.derfrzocker.spigot.utils;
 
 import lombok.NonNull;
 import org.bukkit.Bukkit;

@@ -1,0 +1,245 @@
+command:
+
+  player_only_command: "This Command is only for Players!"
+
+  set:
+    not_enough_args:
+      - "&4Wrong amount of arguments!"
+      - "&cuse &f/&9orecontrol set &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
+    config_not_found: "&4The config &f'&9%config_name%&f'&4 does not exist!"
+    no_number: "&f'&9%value%&f' &4is not a valid number!"
+    setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
+    setting_not_valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
+    not_safe:
+      - "&4The number &f'&9%value%&f' &4is not safe!"
+      - "&4If you want to use it anyway,"
+      - "&4set &f'&9safe_mode&f' &4in the config to &f'&9false&f'"
+      - "&4And execute the &f'&9/orecontrol reload&f' &4command"
+    not_safe_warning: "&eWarn: The number &f'&9%value%&f' &eis not safe!"
+    ore_not_found:
+      - "&4The ore &f'&9%ore%&f' &4does not exist!, "
+      - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"
+      - "&f'&9redstone&f'"
+    success: "&aThe value has been updated successfully!"
+    biome:
+      not_enough_args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse &f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
+        - "                                 <&9world&f> <&9amount&f(&9%&f)>"
+      biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
+      ore_not_valid: "&4The Ore &f'&9%ore%&f' &4is not valid for the biome &f'&9%biome%&f'&4!"
+
+  create:
+    not_enough_args:
+      - "&4Wrong amount of arguments!"
+      - "&cuse &f/&9orecontrol create &f<&9name&f>"
+    name_already_exist: "&4The Config &f'&9%config_name%&f' &4already exist!"
+    success: "&aThe template &f'&9%config_name%&f' &awas created successfully!"
+
+  reload:
+    begin: "&aBegin with the reload!"
+    end: "&aReload finish!"
+
+  help:
+    header: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    footer: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    separator: "  "
+    set:
+      command: "&f/&9orecontrol set &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
+      description:
+        - "   -> &9permission&f: ore.control.set"
+        - "   -> &9description&f: Set a specific value to an ore type and world"
+      biome:
+        command:
+          - "&f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
+          - "                            <&9world&f> <&9amount&f(&9%&f)>"
+        description:
+          - "   -> &9permission&f: ore.control.set.biome"
+          - "   -> &9description&f: Set a specific value for an ore setting, "
+          - "                      for a specific biome in a specific world"
+    create:
+      command: "&f/&9orecontrol create &f<&9name&f>"
+      description:
+        - "   -> &9permission&f: ore.control.template.create"
+        - "   -> &9description&f: Create a template file, in there you can set values before create a new world"
+    reload:
+      command: "&f/&9orecontrol reload"
+      description:
+        - "   -> &9permission&f: ore.control.reload"
+        - "   -> &9description&f: Reload config, messages and gui settings"
+    help:
+      command: "&f/&9orecontrol help &f(<&9subcommand&f>)"
+      description:
+        - "   -> &9permission&f: any command permission"
+        - "   -> &9description&f: Displays all commands and if a subcommand "
+        - "                       is specified, more details are displayed"
+
+biome:
+  OCEAN: "Ocean"
+  PLAINS: "Plains"
+  DESERT: "Desert"
+  MOUNTAINS: "Mountains"
+  FOREST: "Forest"
+  TAIGA: "Taiga"
+  SWAMP: "Swamp"
+  RIVER: "River"
+  FROZEN_OCEAN: "Frozen Ocean"
+  FROZEN_RIVER: "Frozen River"
+  SNOWY_TUNDRA: "Snowy Tundra"
+  SNOWY_MOUNTAINS: "Snowy Mountains"
+  MUSHROOM_FIELDS: "Mushroom Fields"
+  MUSHROOM_FIELD_SHORE: "Mushroom Field Shore"
+  BEACH: "Beach"
+  DESERT_HILLS: "Desert Hills"
+  WOODED_HILLS: "Wooded Hills"
+  TAIGA_HILLS: "Taiga Hills"
+  MOUNTAIN_EDGE: "Mountain Edge"
+  JUNGLE: "Jungle"
+  JUNGLE_HILLS: "Jungle Hills"
+  JUNGLE_EDGE: "Jungle Edge"
+  DEEP_OCEAN: "Deep Ocean"
+  STONE_SHORE: "Stone Shore"
+  SNOWY_BEACH: "Snowy Beach"
+  BIRCH_FOREST: "Birch Forest"
+  BIRCH_FOREST_HILLS: "Birch Forest Hills"
+  DARK_FOREST: "Dark Forest"
+  SNOWY_TAIGA: "Snowy Taiga"
+  SNOWY_TAIGA_HILLS: "Snowy Taiga Hills"
+  GIANT_TREE_TAIGA: "Giant Tree Taiga"
+  GIANT_TREE_TAIGA_HILLS: "Giant Tree Taiga Hills"
+  WOODED_MOUNTAINS: "Wooded Mountains"
+  SAVANNA: "Savanna"
+  SAVANNA_PLATEAU: "Savanna Plateau"
+  BADLANDS: "Badlands"
+  WOODED_BADLANDS_PLATEAU: "Wooded Badlands Plateau"
+  BADLANDS_PLATEAU: "Badlands Plateau"
+  WARM_OCEAN: "Warm Ocean"
+  LUKEWARM_OCEAN: "Lukewarm Ocean"
+  COLD_OCEAN: "Cold Ocean"
+  DEEP_WARM_OCEAN: "Deep Warm Ocean"
+  DEEP_LUKEWARM_OCEAN: "Deep Lukewarm Ocean"
+  DEEP_COLD_OCEAN: "Deep Cold Ocean"
+  DEEP_FROZEN_OCEAN: "Deep Frozen Ocean"
+  SUNFLOWER_PLAINS: "Sunflower Plains"
+  DESERT_LAKES: "Desert Lakes"
+  GRAVELLY_MOUNTAINS: "Gravelly Mountains"
+  FLOWER_FOREST: "Flower Forest"
+  TAIGA_MOUNTAINS: "Taiga Mountains"
+  SWAMP_HILLS: "Swamp Hills"
+  ICE_SPIKES: "Ice Spikes"
+  MODIFIED_JUNGLE: "Modified Jungle"
+  MODIFIED_JUNGLE_EDGE: "Modified Jungle Edge"
+  TALL_BIRCH_FOREST: "Tall Birch Forest"
+  TALL_BIRCH_HILLS: "Tall Birch Hills"
+  DARK_FOREST_HILLS: "Dark Forest Hills"
+  SNOWY_TAIGA_MOUNTAINS: "Snowy Taiga Mountains"
+  GIANT_SPRUCE_TAIGA: "Giant Spruce Taiga"
+  GIANT_SPRUCE_TAIGA_HILLS: "Giant Spruce Taiga Hills"
+  MODIFIED_GRAVELLY_MOUNTAINS: "Modified Gravelly Mountains"
+  SHATTERED_SAVANNA: "Shattered Savanna"
+  SHATTERED_SAVANNA_PLATEAU: "Shattered Savanna Plateau"
+  ERODED_BADLANDS: "Eroded Badlands"
+  MODIFIED_WOODED_BADLANDS_PLATEAU: "Modified Wooded Badlands Plateau"
+  MODIFIED_BADLANDS_PLATEAU: "Modified Badlands Plateau"
+
+ore:
+  DIAMOND: "Diamond"
+  COAL: "Coal"
+  GOLD: "Gold"
+  GOLD_BADLANDS: "Badlands Gold"
+  LAPIS: "Lapis"
+  IRON: "Iron"
+  REDSTONE: "Redstone"
+  EMERALD: "Emerald"
+  DIRT: "Dirt"
+  GRAVEL: "Gravel"
+  GRANITE: "Granite"
+  DIORITE: "Diorite"
+  ANDESITE: "Andesite"
+
+setting:
+  VEIN_SIZE: "Vein Size"
+  VEINS_PER_CHUNK: "Veins per Chunk"
+  HEIGHT_RANGE: "Height Range"
+  HEIGHT_CENTER: "Height Center"
+  MINIMUM_ORES_PER_CHUNK: "Minimum Ores Per Chunk"
+  ORES_PER_CHUNK_RANGE: "Ores per Chunk Range"
+  MINIMUM_HEIGHT: "Minimum Height"
+  HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
+
+gui:
+  copy_value_success: "&aCopy the values with Success!"
+  reset_value_success: "&aReset the values with Success!"
+  anvil:
+    name_already_exist: "Name already Exists!"
+    title: "Type a name!"
+  previous_page: "&rPrevious page"
+  next_page: "&rNext page"
+  back: "&rGo one step Back"
+  info:
+    name: "Info"
+    lore_world: "world: %world%"
+    lore_biome: "biome: %%translation:[biome.%biome%]%"
+    lore_ore: "ore: %%translation:[ore.%ore%]%"
+    lore_setting: "setting: %%translation:[setting.%setting%]%"
+    lore_current: "current: %amount%"
+    lore_default: "default: %value%"
+  world:
+    name: "Choose a World!"
+    template:
+      create: "Create a new Template!"
+    config:
+      edit: "Change the config settings!"
+  world_config:
+    name: "Choose a Type!"
+    biome: "§bSet a value for a specific §dbiome§b!"
+    ore: "§bSet a value for the whole §dworld§b!"
+    reset: "Reset all settings to the default values!"
+    copy: "Copy all settings to an other World or Template!"
+    delete: "Delete this Template!"
+  biome:
+    name: "Choose a Biome!"
+    reset: "Reset all Biome settings to the default values!"
+    copy: "Copy all Biome settings to an other World or Template!"
+  ore:
+    name: "Choose an Ore!"
+    reset: "Reset all Ore settings to the default values!"
+    copy: "Copy all Ore settings to an other World or Template!"
+  ore_settings:
+    name: "Choose a Setting!"
+    activate: "§aActivate the Ore Generation!"
+    deactivate: "§cDeactivate the Ore Generation!"
+    reset: "Reset all settings of this Ore to the default values!"
+    copy: "Copy all settings of this Ore to an other World or Template!"
+  settings:
+    name: "Set a value!"
+    reset: "Reset this setting to the default value!"
+    copy: "Copy this setting to an other World or Template!"
+  verify:
+    name: "Accept or Deny the Action!"
+    accept: "Accept"
+    deny: "Deny"
+  config:
+    name: "Select a config option!"
+    language:
+      name: "Change the Language!"
+      description: "Change the Language of this Plugin, you can submit a new Language if you want. Simply translate the messages.yml in the Ore-Control folder and send it to me"
+    safe_mode:
+      name:  "Activate / Deactivate safe mode!"
+      description: "Choose if the plugin should warn you if you set a unsafe value"
+    translate_tab_compilation:
+      name: "Activate / Deactivate Tab translation!"
+      description: "Choose if you can type Biomes / Ores / Settings in your select Language, in the commands"
+    verify:
+      copy_action:
+        name: "Activate / Deactivate Verify for Copy Actions!"
+        description: "Choose if you must verify a copy action or not"
+      reset_action:
+        name: "Activate / Deactivate Verify for Reset Actions!"
+        description: "Choose if you must verify a reset action or not"
+  language:
+    name: "Choose a Language!"
+  boolean:
+    name: "Activate or Deactivate"
+    true: "Activate"
+    false: "Deactivate"

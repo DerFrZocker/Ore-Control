@@ -6,6 +6,7 @@ import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
 import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
+import de.derfrzocker.spigot.utils.MessageKey;
 import lombok.NonNull;
 
 import java.util.Arrays;

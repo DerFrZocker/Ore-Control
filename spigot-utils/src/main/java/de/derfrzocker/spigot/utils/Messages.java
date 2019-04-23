@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.utils;
+package de.derfrzocker.spigot.utils;
 
 import com.google.common.collect.Lists;
 import lombok.Getter;
