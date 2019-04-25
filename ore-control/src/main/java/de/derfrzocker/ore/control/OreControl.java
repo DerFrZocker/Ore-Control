@@ -28,6 +28,7 @@ import java.io.File;
 
 public class OreControl extends JavaPlugin implements Listener {
 
+    // register the ConfigurationSerializable's in a static block, that we can easy use them in Test cases
     static {
         ConfigurationSerialization.registerClass(WorldOreConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(OreSettingsYamlImpl.class);
@@ -37,22 +38,59 @@ public class OreControl extends JavaPlugin implements Listener {
     @Getter
     @Setter
     @NonNull
-    private static OreControl instance;
+    private static OreControl instance; // A static instance of this Plugin, that we can easy access it from any Location
 
     @Getter
-    private ConfigValues configValues;
+    private ConfigValues configValues; // The Config values of this plugin
 
     @Getter
-    private Settings settings;
+    private Settings settings; // The Settings of this Plugin, other than the ConfigValues, this Values should not be modified
 
-    private NMSReplacer nmsReplacer = null;
+    private NMSReplacer nmsReplacer = null; // The NMSReplacer, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
 
-    private final OreControlCommand oreControlCommand = new OreControlCommand();
+    private final OreControlCommand oreControlCommand = new OreControlCommand(); // The OreControlCommand handler
 
     @Override
     public void onLoad() {
+        // initial instance variable
         instance = this;
 
+        // get version and check if the Server run a suitable version
+        final String version = getVersion();
+
+        if (version.equalsIgnoreCase("v1_13_R1"))
+            nmsReplacer = new NMSReplacer_v1_13_R1();
+        else if (version.equalsIgnoreCase("v1_13_R2"))
+            nmsReplacer = new NMSReplacer_v1_13_R2();
+
+        // if no suitable version was found, throw an Exception and stop onLoad part
+        if (nmsReplacer == null)
+            throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
+
+        // load the config values of this plugin
+        configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
+
+        // call #getInstance so that the variable get initialed
+        // if we not do this, the Messages in the gui wont get translated, since the Variable in Messages is not initialed from the OreControlMessages
+        //noinspection ResultOfMethodCallIgnored
+        OreControlMessages.getInstance();
+    }
+
+    @Override
+    public void onEnable() {
+        // return if no suitable NMSReplacer was found in onLoad
+        if (nmsReplacer == null)
+            return;
+
+        // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
+        Bukkit.getServicesManager().register(OreControlService.class,
+                new OreControlServiceImpl(
+                        nmsReplacer,
+                        new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"))),
+                this, ServicePriority.Normal);
+
+
+        // check all files, that can be have other values (not other not new one), so we can replace them
         checkFile("data/settings.yml");
         checkFile("data/biome_gui.yml");
         checkFile("data/ore_gui.yml");
@@ -61,54 +99,39 @@ public class OreControl extends JavaPlugin implements Listener {
         checkFile("data/world_config_gui.yml");
         checkFile("data/world_gui.yml");
 
-        final String version = getVersion();
-
-        if (version.equalsIgnoreCase("v1_13_R1"))
-            nmsReplacer = new NMSReplacer_v1_13_R1();
-        else if (version.equalsIgnoreCase("v1_13_R2"))
-            nmsReplacer = new NMSReplacer_v1_13_R2();
-
-        if (nmsReplacer == null)
-            throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
-
-        configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
-
+        // load the Settings
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
 
-        //noinspection ResultOfMethodCallIgnored
-        OreControlMessages.getInstance();
-    }
-
-    @Override
-    public void onEnable() {
-        if (nmsReplacer == null)
-            return;
-
-        nmsReplacer.replaceNMS();
-
+        // start the Metric of this Plugin (https://bstats.org/plugin/bukkit/Ore-Control)
         setUpMetric();
 
-        Bukkit.getServicesManager().register(OreControlService.class,
-                new OreControlServiceImpl(
-                        nmsReplacer,
-                        new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"))),
-                this, ServicePriority.Normal);
+        // hook in the WorldGenerator, we try this before we register the commands and events, that if something goes wrong here
+        // the player see that no command function, and looks in to the log to see if a error happen
+        nmsReplacer.replaceNMS();
 
+        // register the command and subcommand's
         registerCommands();
 
+        // register the Listener for the Gui
         InventoryClickListener.init(this);
 
+        // register the Listener for the WorldLoad event
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     private void setUpMetric() {
+        // create a new Metrics
         final Metrics metrics = new Metrics(this);
 
+        // add a simple Pie with the current Language that the user use
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getName()));
     }
 
     private void registerCommands() {
+        // register the command handler to Bukkit
         getCommand("orecontrol").setExecutor(oreControlCommand);
+
+        // register all subcommand's to the command handler
         oreControlCommand.registerExecutor(new SetCommand(), "set");
         oreControlCommand.registerExecutor(new ReloadCommand(), "reload");
         oreControlCommand.registerExecutor(new SetBiomeCommand(), "setbiome");
