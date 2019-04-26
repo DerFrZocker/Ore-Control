@@ -28,11 +28,11 @@ public class WorldGenDecoratorHeightAverageOverrider_v1_14_R1 extends WorldGenDe
         if (oreConfig.isPresent() && !service.isActivated(Ore.LAPIS, oreConfig.get(), biome))
             return true;
 
-        return oreConfig.map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition,new WorldGenDecoratorHeightAverageConfiguration(
+        return oreConfig.map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition, new WorldGenDecoratorHeightAverageConfiguration(
                 service.getValue(Ore.LAPIS, Setting.VEINS_PER_CHUNK, worldOreConfig, biome),
                 service.getValue(Ore.LAPIS, Setting.HEIGHT_CENTER, worldOreConfig, biome),
-                service.getValue(Ore.LAPIS, Setting.HEIGHT_RANGE, worldOreConfig, biome)), new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), Ore.LAPIS, worldGenFeatureConfigured.b,biome )))).
-                orElseGet(() -> super.a(generatorAccess, chunkGenerator, random,blockPosition, worldGenDecoratorHeightAverageConfiguration, worldGenFeatureConfigured));
-     }
+                service.getValue(Ore.LAPIS, Setting.HEIGHT_RANGE, worldOreConfig, biome)), new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), Ore.LAPIS, worldGenFeatureConfigured.b, biome)))).
+                orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenDecoratorHeightAverageConfiguration, worldGenFeatureConfigured));
+    }
 
 }

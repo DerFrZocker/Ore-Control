@@ -16,12 +16,12 @@ public class WorldGenDecoratorEmeraldOverrider_v1_14_R1 extends WorldGenDecorato
     @NonNull
     private final Biome biome;
 
-    public WorldGenDecoratorEmeraldOverrider_v1_14_R1(final Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> dynamicFunction ,final Biome biome ) {
+    public WorldGenDecoratorEmeraldOverrider_v1_14_R1(final Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> dynamicFunction, final Biome biome) {
         super(dynamicFunction);
         this.biome = biome;
     }
 
-@Override
+    @Override
     public <C extends WorldGenFeatureConfiguration> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettingsDefault> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureDecoratorEmptyConfiguration worldGenFeatureDecoratorEmptyConfiguration, final WorldGenFeatureConfigured<C> worldGenFeatureConfigured) {
         final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
         final Optional<WorldOreConfig> config = service.getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());

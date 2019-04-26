@@ -122,7 +122,7 @@ public class NMSReplacer_v1_14_R1 implements NMSReplacer {
         {
             final Field field = getField(worldGenFeatureDecoratorConfiguration.b.getClass(), "a");
             field.setAccessible(true);
-            field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorEmeraldOverrider_v1_14_R1(getDynamicFunction1(worldGenFeatureDecoratorConfiguration.b.a),biome));
+            field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorEmeraldOverrider_v1_14_R1(getDynamicFunction1(worldGenFeatureDecoratorConfiguration.b.a), biome));
         }
 
         return true;
@@ -152,7 +152,7 @@ public class NMSReplacer_v1_14_R1 implements NMSReplacer {
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.b;
 
-        if(!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight))
+        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight))
             return;
 
         {
@@ -170,14 +170,14 @@ public class NMSReplacer_v1_14_R1 implements NMSReplacer {
     }
 
     @SuppressWarnings("unchecked")
-    private Function<Dynamic<?>, ? extends  WorldGenFeatureDecoratorEmptyConfiguration> getDynamicFunction1(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
+    private Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> getDynamicFunction1(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
         final Field field = getField(worldGenDecorator.getClass(), "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration>) field.get(worldGenDecorator);
     }
 
     @SuppressWarnings("unchecked")
-    private Function<Dynamic<?>, ? extends  WorldGenDecoratorHeightAverageConfiguration> getDynamicFunction2(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
+    private Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration> getDynamicFunction2(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
         final Field field = getField(worldGenDecorator.getClass(), "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration>) field.get(worldGenDecorator);
