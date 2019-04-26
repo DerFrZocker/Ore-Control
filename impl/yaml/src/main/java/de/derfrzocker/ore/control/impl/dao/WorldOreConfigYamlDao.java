@@ -61,7 +61,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
         return Sets.newHashSet(yaml.getKeys(false).stream().map(yaml::get).filter(Objects::nonNull).filter(value -> value instanceof WorldOreConfig).map(value -> (WorldOreConfig) value).toArray(WorldOreConfig[]::new));
     }
 
-    public void init(){
+    public void init() {
         yaml = new Config(file);
         try {
             yaml.save(file);
