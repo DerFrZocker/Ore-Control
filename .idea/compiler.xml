@@ -8,10 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="orecontrol" />
         <module name="orecontrolapi" />
-        <module name="orecontrolimplv1_13_R1" />
-        <module name="orecontrolimplv1_13_R2" />
         <module name="orecontrolimplyaml" />
         <module name="spigotutils" />
+        <module name="v1_13_R1" />
+        <module name="v1_13_R2" />
+        <module name="v1_14_R1" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,10 +20,11 @@
       <module name="orecontrol" target="1.8" />
       <module name="orecontrolapi" target="1.8" />
       <module name="orecontrolimpl" target="1.8" />
-      <module name="orecontrolimplv1_13_R1" target="1.8" />
-      <module name="orecontrolimplv1_13_R2" target="1.8" />
       <module name="orecontrolimplyaml" target="1.8" />
       <module name="spigotutils" target="1.8" />
+      <module name="v1_13_R1" target="1.8" />
+      <module name="v1_13_R2" target="1.8" />
+      <module name="v1_14_R1" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
