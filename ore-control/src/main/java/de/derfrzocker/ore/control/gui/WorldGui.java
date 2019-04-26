@@ -33,7 +33,7 @@ public class WorldGui extends PageGui<String> {
 
         init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
 
-        if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
+        if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible) && !OreControl.is_1_14)
             addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
 
         if (Permissions.EDIT_CONFIG_PERMISSION.hasPermission(permissible))

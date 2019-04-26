@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -80,7 +80,7 @@ public enum Biome {
     private Ore ore = null;
 
     public Ore[] getOres() {
-        Set<Ore> ores = Sets.newHashSet(Ore.values());
+        final List<Ore> ores = new ArrayList<>(Arrays.asList(Ore.values()));
 
         if (ore == null) {
             ores.remove(Ore.GOLD_BADLANDS);

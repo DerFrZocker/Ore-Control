@@ -36,6 +36,10 @@ public class OreControl extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
     }
 
+    // temporary variable, since the anvil gui is at the moment not update to 1.14
+    @Deprecated
+    public static boolean is_1_14 = false;
+
     @Getter
     @Setter
     @NonNull
@@ -63,9 +67,10 @@ public class OreControl extends JavaPlugin implements Listener {
             nmsReplacer = new NMSReplacer_v1_13_R1();
         else if (version.equalsIgnoreCase("v1_13_R2"))
             nmsReplacer = new NMSReplacer_v1_13_R2();
-        else if (version.equalsIgnoreCase("v1_14_R1"))
+        else if (version.equalsIgnoreCase("v1_14_R1")) {
             nmsReplacer = new NMSReplacer_v1_14_R1();
-
+            is_1_14 = true;
+        }
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsReplacer == null)
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
@@ -85,13 +90,17 @@ public class OreControl extends JavaPlugin implements Listener {
         if (nmsReplacer == null)
             return;
 
+        final WorldOreConfigYamlDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"));
+
         // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
         Bukkit.getServicesManager().register(OreControlService.class,
                 new OreControlServiceImpl(
                         nmsReplacer,
-                        new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"))),
+                        worldOreConfigYamlDao),
                 this, ServicePriority.Normal);
 
+        // we init the WorldOreConfigYamlDao later, since it need the Service, to load the WorldOreConfig's correctly
+        worldOreConfigYamlDao.init();
 
         // check all files, that can be have other values (not other not new one), so we can replace them
         checkFile("data/settings.yml");

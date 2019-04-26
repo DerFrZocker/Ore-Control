@@ -48,6 +48,7 @@ public class OreSettingsGui extends BasicGui {
         this.ore = ore;
         this.biome = biome;
         this.statusSlot = OreSettingsGuiSettings.getInstance().getStatusSlot();
+        this.activated = biome == null ? OreControlUtil.isActivated(ore, worldOreConfig) : OreControlUtil.isActivated(ore, worldOreConfig, biome);
         copyAction = null;
 
         final Setting[] settings = ore.getSettings();

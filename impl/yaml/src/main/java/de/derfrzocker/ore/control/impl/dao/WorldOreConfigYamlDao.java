@@ -20,17 +20,10 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     @NonNull
     private final File file;
 
-    @NonNull
-    private final YamlConfiguration yaml; //TODO Check Thread safety
+    private YamlConfiguration yaml; //TODO Check Thread safety
 
     public WorldOreConfigYamlDao(final File file) {
         this.file = file;
-        yaml = new Config(file);
-        try {
-            yaml.save(file);
-        } catch (IOException e) {
-            throw new RuntimeException("Unexpected error while save YamlConfiguration to file: " + file, e);
-        }
     }
 
     @Override
@@ -66,6 +59,15 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao {
     @Override
     public Set<WorldOreConfig> getAll() {
         return Sets.newHashSet(yaml.getKeys(false).stream().map(yaml::get).filter(Objects::nonNull).filter(value -> value instanceof WorldOreConfig).map(value -> (WorldOreConfig) value).toArray(WorldOreConfig[]::new));
+    }
+
+    public void init(){
+        yaml = new Config(file);
+        try {
+            yaml.save(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Unexpected error while save YamlConfiguration to file: " + file, e);
+        }
     }
 
 }
