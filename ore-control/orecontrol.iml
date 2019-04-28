@@ -27,7 +27,7 @@
     <orderEntry type="module-library">
       <library name="Maven: minecraft:nms-1.13:1.13">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../impl/v1_13_R1/lib/spigot-1.13.jar!/" />
+          <root url="jar://$MODULE_DIR$/../impl/v1_13_R1/lib/spigot-1.13-simple.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,7 +37,7 @@
     <orderEntry type="module-library">
       <library name="Maven: minecraft:nms-1.13.2:1.13.2">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../impl/v1_13_R2/lib/spigot-1.13.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../impl/v1_13_R2/lib/spigot-1.13.2-simple.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -49,7 +49,7 @@
     <orderEntry type="module-library">
       <library name="Maven: minecraft:nms-1.14:1.14">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../impl/v1_14_R1/lib/spigot-1.14.jar!/" />
+          <root url="jar://$MODULE_DIR$/../impl/v1_14_R1/lib/spigot-1.14-simple.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
