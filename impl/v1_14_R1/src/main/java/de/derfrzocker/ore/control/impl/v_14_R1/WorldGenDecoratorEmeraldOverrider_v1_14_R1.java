@@ -44,7 +44,7 @@ public class WorldGenDecoratorEmeraldOverrider_v1_14_R1 extends WorldGenDecorato
             final int var7 = random.nextInt(16);
             final int var8 = random.nextInt(var3) + var4;
             final int var9 = random.nextInt(16);
-            worldGenFeatureConfigured.a.generate(generatorAccess, chunkGenerator, random, new BlockPosition(var7, var8, var9), worldGenFeatureConfigured.b);
+            worldGenFeatureConfigured.a.generate(generatorAccess, chunkGenerator, random, blockPosition.b(var7, var8, var9), worldGenFeatureConfigured.b);
         }
 
         return true;
