@@ -25,7 +25,7 @@
             <artifactId>nms-1.13</artifactId>
             <version>1.13</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.13-simple.jar</systemPath>
+            <systemPath>${basedir}/lib/spigot-1.13.jar</systemPath>
         </dependency>
     </dependencies>
 

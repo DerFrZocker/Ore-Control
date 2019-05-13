@@ -36,6 +36,8 @@ public class BiomeGui extends PageGui<Biome> {
 
         addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
         addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
+        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
+        addItem(BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeGroupItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGroupGui(worldOreConfig).getInventory()));
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
             addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
@@ -60,7 +62,7 @@ public class BiomeGui extends PageGui<Biome> {
     }
 
     private ItemStack getItemStack(final Biome biome) {
-        return MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeItemStack(biome));
+        return MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeItemStack(biome.toString()));
     }
 
     private void handleNormalClick(final Biome biome, final InventoryClickEvent event) {
@@ -96,10 +98,10 @@ public class BiomeGui extends PageGui<Biome> {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
     }
 
-    private static final class BiomeGuiSettings extends PageSettings {
+    static final class BiomeGuiSettings extends PageSettings {
         private static BiomeGuiSettings instance = null;
 
-        private static BiomeGuiSettings getInstance() {
+        protected static BiomeGuiSettings getInstance() {
             if (instance == null)
                 instance = new BiomeGuiSettings();
 
@@ -110,8 +112,20 @@ public class BiomeGui extends PageGui<Biome> {
             super(OreControl.getInstance(), "data/biome_gui.yml");
         }
 
-        private ItemStack getBiomeItemStack(final Biome biome) {
-            return getYaml().getItemStack("biomes." + biome.toString()).clone();
+        ItemStack getBiomeItemStack(final String biome) {
+            return getYaml().getItemStack("biomes." + biome).clone();
+        }
+
+        int getBiomeGroupSwitchSlot() {
+            return getYaml().getInt("biome_group.slot");
+        }
+
+        ItemStack getBiomeGroupItemStack() {
+            return getYaml().getItemStack("biome_group.group.item_stack").clone();
+        }
+
+        ItemStack getBiomeItemStack() {
+            return getYaml().getItemStack("biome_group.biome.item_stack").clone();
         }
 
         private ItemStack getInfoItemStack() {
@@ -122,11 +136,11 @@ public class BiomeGui extends PageGui<Biome> {
             return getYaml().getInt("info.slot");
         }
 
-        private ItemStack getBackItemStack() {
+        ItemStack getBackItemStack() {
             return getYaml().getItemStack("back.item_stack").clone();
         }
 
-        private int getBackSlot() {
+        int getBackSlot() {
             return getYaml().getInt("back.slot");
         }
 

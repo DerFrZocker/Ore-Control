@@ -1,5 +1,6 @@
 package de.derfrzocker.ore.control.gui;
 
+import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
@@ -32,6 +33,7 @@ public class OreGui extends BasicGui {
     private final WorldOreConfig worldOreConfig;
 
     private final Biome biome;
+    private final BiomeGroupGui.BiomeGroup biomeGroup;
     private final CopyAction copyAction;
 
     OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final Permissible permissible) {
@@ -39,6 +41,7 @@ public class OreGui extends BasicGui {
         this.worldOreConfig = worldOreConfig;
         this.biome = biome;
         this.copyAction = null;
+        this.biomeGroup = null;
 
         final Ore[] ores = biome == null ? Ore.values() : biome.getOres();
 
@@ -63,6 +66,7 @@ public class OreGui extends BasicGui {
         this.worldOreConfig = worldOreConfig;
         this.biome = biome;
         this.copyAction = copyAction;
+        this.biomeGroup = null;
 
         final Set<Ore> ores = new LinkedHashSet<>();
 
@@ -82,9 +86,30 @@ public class OreGui extends BasicGui {
         addItem(OreGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(biome == null ? OreGuiSettings.getInstance().getInfoItemStack() : OreGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
     }
 
+    OreGui(final WorldOreConfig worldOreConfig, final BiomeGroupGui.BiomeGroup biomeGroup) {
+        super(OreGuiSettings.getInstance());
+        this.worldOreConfig = worldOreConfig;
+        this.biomeGroup = biomeGroup;
+        this.biome = null;
+        this.copyAction = null;
+
+        final Set<Ore> ores = new LinkedHashSet<>();
+
+        biomeGroup.getBiomes().forEach(biome -> ores.addAll(Sets.newHashSet(biome.getOres())));
+
+        final Ore[] oresArray = ores.toArray(new Ore[0]);
+
+        for (int i = 0; i < oresArray.length; i++)
+            addItem(InventoryUtil.calculateSlot(i, OreGuiSettings.getInstance().getOreGap()), getOreItemStack(oresArray[i]), new OreBiomeGroupConsumer(oresArray[i]));
+
+        addItem(OreGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
+        addItem(OreGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreGuiSettings.getInstance().getBackItemStack()),
+                event -> openSync(event.getWhoClicked(), new BiomeGroupGui(worldOreConfig).getInventory()));
+    }
+
     private MessageValue[] getMessagesValues() {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName()),
-                new MessageValue("biome", biome == null ? "" : biome.toString())};
+                new MessageValue("biome", biome == null ? biomeGroup == null ? "" : biomeGroup.getName() : biome.toString())};
     }
 
     private void handleResetValues(final InventoryClickEvent event) {
@@ -206,6 +231,17 @@ public class OreGui extends BasicGui {
             copyAction.setOreTarget(ore);
 
             copyAction.next(event.getWhoClicked(), OreGui.this);
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private final class OreBiomeGroupConsumer implements Consumer<InventoryClickEvent> {
+
+        private final Ore ore;
+
+        @Override
+        public void accept(final InventoryClickEvent event) {
+            openSync(event.getWhoClicked(), new OreSettingsGui(worldOreConfig, ore, biomeGroup).getInventory());
         }
     }
 
