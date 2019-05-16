@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class WorldGui extends PageGui<String> {
 
@@ -33,7 +34,7 @@ public class WorldGui extends PageGui<String> {
 
         init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
 
-        if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible) && !OreControl.is_1_14)
+        if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
             addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
 
         if (Permissions.EDIT_CONFIG_PERMISSION.hasPermission(permissible))
@@ -56,19 +57,24 @@ public class WorldGui extends PageGui<String> {
 
 
     private void handleCreateTemplate(final InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player)
-            new AnvilGUI(OreControl.getInstance(), (Player) event.getWhoClicked(), OreControlMessages.ANVIL_TITLE.getMessage(), (player, value) -> {
-                final OreControlService service = OreControl.getService();
+        if (event.getWhoClicked() instanceof Player) {
+            try {
+                Bukkit.getScheduler().callSyncMethod(OreControl.getInstance(), () -> new AnvilGUI(OreControl.getInstance(), (Player) event.getWhoClicked(), OreControlMessages.ANVIL_TITLE.getMessage(), (player, value) -> {
+                    final OreControlService service = OreControl.getService();
 
-                if (Bukkit.getWorld(value) != null || service.getWorldOreConfig(value).isPresent())
-                    return OreControlMessages.ANVIL_NAME_ALREADY_EXISTS.getMessage();
+                    if (Bukkit.getWorld(value) != null || service.getWorldOreConfig(value).isPresent())
+                        return OreControlMessages.ANVIL_NAME_ALREADY_EXISTS.getMessage();
 
-                service.createWorldOreConfigTemplate(value);
+                    service.createWorldOreConfigTemplate(value);
 
-                openSync(player, new WorldGui(player).getInventory());
+                    openSync(player, new WorldGui(player).getInventory());
 
-                return "";
-            });
+                    return "";
+                })).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private String[] getStrings() {

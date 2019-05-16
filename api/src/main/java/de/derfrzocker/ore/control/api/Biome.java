@@ -1,6 +1,6 @@
 package de.derfrzocker.ore.control.api;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 public enum Biome {
 
     OCEAN,
@@ -76,9 +75,22 @@ public enum Biome {
     SHATTERED_SAVANNA_PLATEAU,
     ERODED_BADLANDS(Ore.GOLD_BADLANDS),
     MODIFIED_WOODED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
-    MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS);
+    MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
+    BAMBOO_JUNGLE(true),
+    BAMBOO_JUNGLE_HILLS(true);
 
     private Ore ore = null;
+
+    @Getter
+    private boolean v1_14 = false;
+
+    Biome(final Ore ore) {
+        this.ore = ore;
+    }
+
+    Biome(final boolean v1_14) {
+        this.v1_14 = v1_14;
+    }
 
     public Ore[] getOres() {
         final List<Ore> ores = new ArrayList<>(Arrays.asList(Ore.values()));

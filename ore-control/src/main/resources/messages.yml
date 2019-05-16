@@ -141,6 +141,8 @@ biome:
   ERODED_BADLANDS: "Eroded Badlands"
   MODIFIED_WOODED_BADLANDS_PLATEAU: "Modified Wooded Badlands Plateau"
   MODIFIED_BADLANDS_PLATEAU: "Modified Badlands Plateau"
+  BAMBOO_JUNGLE: "Bamboo Jungle"
+  BAMBOO_JUNGLE_HILLS: "Bamboo Jungle Hills"
 
 ore:
   DIAMOND: "Diamond"

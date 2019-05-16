@@ -145,6 +145,8 @@ biome:
   ERODED_BADLANDS: "Ausgehöhltes Ödland"
   MODIFIED_WOODED_BADLANDS_PLATEAU: "Modifiziertes Bewaldetes Ödland Plateau"
   MODIFIED_BADLANDS_PLATEAU: "Modified Ödland Plateau"
+  BAMBOO_JUNGLE: "Bambus Dschungel"
+  BAMBOO_JUNGLE_HILLS: "Bambus Dschungelhügel"
 
 ore:
   DIAMOND: "Diamant"

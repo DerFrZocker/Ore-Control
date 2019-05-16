@@ -406,10 +406,12 @@ public class OreControlUtil {
         Optional<Biome> optional;
 
         if (translated)
-            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
+            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> !(!OreControl.is_1_14 && entry.getKey().isV1_14())).filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
         else
             try {
                 optional = Optional.of(Biome.valueOf(biomeName.toUpperCase()));
+                if (!OreControl.is_1_14 && optional.get().isV1_14())
+                    optional = Optional.empty();
             } catch (IllegalArgumentException e) {
                 optional = Optional.empty();
             }
