@@ -27,19 +27,20 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     private final WorldOreConfig worldOreConfig;
 
     BiomeGroupGui(final WorldOreConfig worldOreConfig) {
+        super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
         init(BiomeGroups.getInstance().getGroups(), BiomeGroup[]::new, BiomeGui.BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
-        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGui.BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
-        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGroupGui(worldOreConfig).getInventory()));
+        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
+        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGroupGui(worldOreConfig).openSync(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(final BiomeGroup biomeGroup) {
-        return MessageUtil.replaceItemStack(BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack(biomeGroup.getName().toUpperCase()));
+        return MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack(biomeGroup.getName().toUpperCase()));
     }
 
     private void handleNormalClick(final BiomeGroup biomeGroup, final InventoryClickEvent event) {
-        openSync(event.getWhoClicked(), new OreGui(worldOreConfig, biomeGroup).getInventory());
+        new OreGui(worldOreConfig, biomeGroup).openSync(event.getWhoClicked());
     }
 
     private static class BiomeGroups implements ReloadAble {

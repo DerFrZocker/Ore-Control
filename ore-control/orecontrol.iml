@@ -44,7 +44,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="orecontrolimplyaml" />
-    <orderEntry type="module" module-name="spigotutils" />
     <orderEntry type="module" module-name="v1_14_R1" />
     <orderEntry type="module-library">
       <library name="Maven: minecraft:nms-1.14:1.14">
@@ -55,6 +54,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Maven: de.derfrzocker:spigot-utils:dev-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.13.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />

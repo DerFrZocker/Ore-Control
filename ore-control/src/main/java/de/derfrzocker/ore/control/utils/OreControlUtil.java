@@ -2,11 +2,11 @@ package de.derfrzocker.ore.control.utils;
 
 import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.OreControl;
-import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
 import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
 import de.derfrzocker.spigot.utils.MessageKey;
+import de.derfrzocker.spigot.utils.Version;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -306,7 +306,7 @@ public class OreControlUtil {
     public static HashMap<Ore, String> getTranslatedOres(final @NonNull Ore... ores) { //TODO add test cases
         final HashMap<Ore, String> map = new HashMap<>();
 
-        Stream.of(ores).forEach(value -> map.put(value, new MessageKey(OreControlMessages.getInstance(), "ore." + value.toString()).getMessage().replace(" ", "_")));
+        Stream.of(ores).forEach(value -> map.put(value, new MessageKey(OreControl.getInstance(), "ore." + value.toString()).getMessage().replace(" ", "_")));
 
         return map;
     }
@@ -317,7 +317,7 @@ public class OreControlUtil {
     public static HashMap<Biome, String> getTranslatedBiomes() { //TODO add test cases
         final HashMap<Biome, String> map = new HashMap<>();
 
-        Stream.of(Biome.values()).forEach(value -> map.put(value, new MessageKey(OreControlMessages.getInstance(), "biome." + value.toString()).getMessage().replace(" ", "_")));
+        Stream.of(Biome.values()).forEach(value -> map.put(value, new MessageKey(OreControl.getInstance(), "biome." + value.toString()).getMessage().replace(" ", "_")));
 
         return map;
     }
@@ -337,7 +337,7 @@ public class OreControlUtil {
     public static HashMap<Setting, String> getTranslatedSettings(final @NonNull Setting... settings) { //TODO add test cases
         final HashMap<Setting, String> map = new HashMap<>();
 
-        Stream.of(settings).forEach(value -> map.put(value, new MessageKey(OreControlMessages.getInstance(), "setting." + value.toString()).getMessage().replace(" ", "_")));
+        Stream.of(settings).forEach(value -> map.put(value, new MessageKey(OreControl.getInstance(), "setting." + value.toString()).getMessage().replace(" ", "_")));
 
         return map;
     }
@@ -406,11 +406,11 @@ public class OreControlUtil {
         Optional<Biome> optional;
 
         if (translated)
-            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> !(!OreControl.is_1_14 && entry.getKey().isV1_14())).filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
+            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> Version.getCurrent().isOlderOrSameVersion(entry.getKey().getSince())).filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
         else
             try {
                 optional = Optional.of(Biome.valueOf(biomeName.toUpperCase()));
-                if (!OreControl.is_1_14 && optional.get().isV1_14())
+                if (Version.getCurrent().isNewerVersion(optional.get().getSince()))
                     optional = Optional.empty();
             } catch (IllegalArgumentException e) {
                 optional = Optional.empty();

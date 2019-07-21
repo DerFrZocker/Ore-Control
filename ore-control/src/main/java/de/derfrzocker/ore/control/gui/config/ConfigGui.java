@@ -15,95 +15,95 @@ public class ConfigGui extends BasicGui {
 
 
     public ConfigGui() {
-        super(ConfigGuiSettings.getInstance());
-        addItem(ConfigGuiSettings.getInstance().getLanguageSlot(), MessageUtil.replaceItemStack(ConfigGuiSettings.getInstance().getLanguageItemStack(),
+        super(OreControl.getInstance(), ConfigGuiSettings.getInstance());
+        addItem(ConfigGuiSettings.getInstance().getLanguageSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getLanguageItemStack(),
                 new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getName()),
                 new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getName())
-        ), event -> openSync(event.getWhoClicked(), new LanguageGui().getInventory()));
+        ), event -> new LanguageGui().openSync(event.getWhoClicked()));
 
-        addItem(ConfigGuiSettings.getInstance().getsafeModeSlot(), MessageUtil.replaceItemStack(ConfigGuiSettings.getInstance().getsafeModeItemStack(),
+        addItem(ConfigGuiSettings.getInstance().getsafeModeSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getsafeModeItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().isSafeMode())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultSafeMode()))
         ), this::handlesafeMode);
 
-        addItem(ConfigGuiSettings.getInstance().getTranslateTabCompilationSlot(), MessageUtil.replaceItemStack(ConfigGuiSettings.getInstance().getTranslateTabCompilationItemStack(),
+        addItem(ConfigGuiSettings.getInstance().getTranslateTabCompilationSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getTranslateTabCompilationItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().isTranslateTabCompilation())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultTranslateTabCompilation()))
         ), this::handleTranslateTabCompilation);
 
-        addItem(ConfigGuiSettings.getInstance().getVerifyCopyActionSlot(), MessageUtil.replaceItemStack(ConfigGuiSettings.getInstance().getVerifyCopyActionItemStack(),
+        addItem(ConfigGuiSettings.getInstance().getVerifyCopyActionSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getVerifyCopyActionItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().verifyCopyAction())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultVerifyCopyAction()))
         ), this::handleVerifyCopyAction);
 
-        addItem(ConfigGuiSettings.getInstance().getVerifyResetActionSlot(), MessageUtil.replaceItemStack(ConfigGuiSettings.getInstance().getVerifyResetActionItemStack(),
+        addItem(ConfigGuiSettings.getInstance().getVerifyResetActionSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getVerifyResetActionItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().verifyResetAction())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultVerifyResetAction()))
         ), this::handleVerifyResetAction);
     }
 
     private void handlesafeMode(final InventoryClickEvent event) {
-        final VerifyGui verifyGui = new VerifyGui(event1 -> {
+        final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setSafeMode(true);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, event1 -> {
             OreControl.getInstance().getConfigValues().SET.setSafeMode(false);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, BooleanGuiSetting.getInstance());
 
-        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BooleanGuiSetting.getInstance().getInfoItemStack(),
+        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BooleanGuiSetting.getInstance().getInfoItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().isSafeMode())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultSafeMode()))));
 
-        openSync(event.getWhoClicked(), verifyGui.getInventory());
+        verifyGui.openSync(event.getWhoClicked());
     }
 
     private void handleTranslateTabCompilation(final InventoryClickEvent event) {
-        final VerifyGui verifyGui = new VerifyGui(event1 -> {
+        final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setTranslateTabCompilation(true);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, event1 -> {
             OreControl.getInstance().getConfigValues().SET.setTranslateTabCompilation(false);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, BooleanGuiSetting.getInstance());
 
-        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BooleanGuiSetting.getInstance().getInfoItemStack(),
+        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BooleanGuiSetting.getInstance().getInfoItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().isTranslateTabCompilation())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultTranslateTabCompilation()))));
 
-        openSync(event.getWhoClicked(), verifyGui.getInventory());
+        verifyGui.openSync(event.getWhoClicked());
     }
 
     private void handleVerifyCopyAction(final InventoryClickEvent event) {
-        final VerifyGui verifyGui = new VerifyGui(event1 -> {
+        final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setVerifyCopyAction(true);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, event1 -> {
             OreControl.getInstance().getConfigValues().SET.setVerifyCopyAction(false);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, BooleanGuiSetting.getInstance());
 
-        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BooleanGuiSetting.getInstance().getInfoItemStack(),
+        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BooleanGuiSetting.getInstance().getInfoItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().verifyCopyAction())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultVerifyCopyAction()))));
 
-        openSync(event.getWhoClicked(), verifyGui.getInventory());
+        verifyGui.openSync(event.getWhoClicked());
     }
 
     private void handleVerifyResetAction(final InventoryClickEvent event) {
-        final VerifyGui verifyGui = new VerifyGui(event1 -> {
+        final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setVerifyResetAction(true);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, event1 -> {
             OreControl.getInstance().getConfigValues().SET.setVerifyResetAction(false);
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }, BooleanGuiSetting.getInstance());
 
-        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BooleanGuiSetting.getInstance().getInfoItemStack(),
+        verifyGui.addItem(BooleanGuiSetting.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BooleanGuiSetting.getInstance().getInfoItemStack(),
                 new MessageValue("amount", valueOf(OreControl.getInstance().getConfigValues().verifyResetAction())),
                 new MessageValue("value", valueOf(OreControl.getInstance().getConfigValues().DEFAULT.defaultVerifyResetAction()))));
 
-        openSync(event.getWhoClicked(), verifyGui.getInventory());
+        verifyGui.openSync(event.getWhoClicked());
     }
 
     private static final class ConfigGuiSettings extends BasicSettings {

@@ -51,35 +51,35 @@ public class CopySettingAction implements CopyAction {
     @Override
     public void next(HumanEntity humanEntity, InventoryGui inventoryGui) {
         if (status == 0) {
-            inventoryGui.openSync(humanEntity, new WorldConfigGui(worldOreConfigTarget, humanEntity, this).getInventory());
+            new WorldConfigGui(worldOreConfigTarget, humanEntity, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 1) {
             if (chooseBiome)
-                inventoryGui.openSync(humanEntity, new BiomeGui(worldOreConfigTarget, this).getInventory());
+                new BiomeGui(worldOreConfigTarget, this).openSync(humanEntity);
             else
-                inventoryGui.openSync(humanEntity, new OreGui(worldOreConfigTarget, biomeTarget, this).getInventory());
+                new OreGui(worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
 
             status++;
             return;
         }
 
         if (status == 2 && chooseBiome) {
-            inventoryGui.openSync(humanEntity, new OreGui(worldOreConfigTarget, biomeTarget, this).getInventory());
+            new OreGui(worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 2) {
-            inventoryGui.openSync(humanEntity, new OreSettingsGui(worldOreConfigTarget, oreTarget, biomeTarget, this).getInventory());
+            new OreSettingsGui(worldOreConfigTarget, oreTarget, biomeTarget, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 3 && chooseBiome) {
-            inventoryGui.openSync(humanEntity, new OreSettingsGui(worldOreConfigTarget, oreTarget, biomeTarget, this).getInventory());
+            new OreSettingsGui(worldOreConfigTarget, oreTarget, biomeTarget, this).openSync(humanEntity);
             status++;
             return;
         }
@@ -156,7 +156,7 @@ public class CopySettingAction implements CopyAction {
 
     private void openVerifyIfNeeded(final HumanEntity humanEntity, final InventoryGui inventoryGui, final Consumer<InventoryClickEvent> acceptAction) {
         if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
-            inventoryGui.openSync(humanEntity, new VerifyGui(acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).getInventory());
+            new VerifyGui(OreControl.getInstance(), acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).openSync(humanEntity);
             return;
         }
 

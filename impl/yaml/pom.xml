@@ -20,12 +20,6 @@
             <version>0.0.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>spigot-utils</artifactId>
-            <version>0.0.0.0</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>

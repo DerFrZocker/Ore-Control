@@ -11,7 +11,6 @@
         <module>api</module>
         <module>impl</module>
         <module>ore-control</module>
-        <module>spigot-utils</module>
     </modules>
     <packaging>pom</packaging>
     <description>An ore control plugin</description>
@@ -32,6 +31,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>derfrzocker-repo</id>
+            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -45,6 +48,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.13.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>spigot-utils</artifactId>
+            <version>dev-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

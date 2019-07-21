@@ -11,6 +11,7 @@ import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.MessageUtil;
 import de.derfrzocker.spigot.utils.MessageValue;
+import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.PageSettings;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -30,13 +31,14 @@ public class BiomeGui extends PageGui<Biome> {
     private final CopyAction copyAction;
 
     BiomeGui(final Permissible permissible, final WorldOreConfig worldOreConfig) {
+        super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = null;
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
         for (Biome biome : Biome.values()) {
-            if (!OreControl.is_1_14 && biome.isV1_14())
+            if (Version.getCurrent().isNewerVersion(biome.getSince()))
                 continue;
 
             biomes.add(biome);
@@ -44,26 +46,27 @@ public class BiomeGui extends PageGui<Biome> {
 
         init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
-        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
-        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
-        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
-        addItem(BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeGroupItemStack()), event -> openSync(event.getWhoClicked(), new BiomeGroupGui(worldOreConfig).getInventory()));
+        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
+        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
+        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
+        addItem(BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBiomeGroupItemStack()), event -> new BiomeGroupGui(worldOreConfig).openSync(event.getWhoClicked()));
 
         if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
+            addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
-            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> openSync(event.getWhoClicked(), new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).getInventory()));
+            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).openSync(event.getWhoClicked()));
     }
 
     public BiomeGui(final WorldOreConfig worldOreConfig, final @NonNull CopyAction copyAction) {
+        super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = copyAction;
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
         for (Biome biome : Biome.values()) {
-            if (!OreControl.is_1_14 && biome.isV1_14())
+            if (Version.getCurrent().isNewerVersion(biome.getSince()))
                 continue;
 
             if (copyAction.shouldSet(biome))
@@ -71,15 +74,15 @@ public class BiomeGui extends PageGui<Biome> {
         }
         init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
 
-        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
+        addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
     private ItemStack getItemStack(final Biome biome) {
-        return MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBiomeItemStack(biome.toString()));
+        return MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBiomeItemStack(biome.toString()));
     }
 
     private void handleNormalClick(final Biome biome, final InventoryClickEvent event) {
-        openSync(event.getWhoClicked(), new OreGui(worldOreConfig, biome, event.getWhoClicked()).getInventory());
+        new OreGui(worldOreConfig, biome, event.getWhoClicked()).openSync(event.getWhoClicked());
     }
 
     private void handleCopyAction(final Biome biome, final InventoryClickEvent event) {
@@ -89,14 +92,14 @@ public class BiomeGui extends PageGui<Biome> {
 
     private void handleResetValues(final InventoryClickEvent event) {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
-            openSync(event.getWhoClicked(), new VerifyGui(clickEvent -> {
+            new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 for (Biome biome : Biome.values())
                     OreControlUtil.reset(this.worldOreConfig, biome);
 
                 OreControl.getService().saveWorldOreConfig(worldOreConfig);
-                openSync(event.getWhoClicked(), getInventory());
+                openSync(event.getWhoClicked());
                 OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
-            }, clickEvent1 -> openSync(event.getWhoClicked(), getInventory())).getInventory());
+            }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
             return;
         }
 
@@ -123,7 +126,7 @@ public class BiomeGui extends PageGui<Biome> {
 
         private BiomeGuiSettings() {
             super(OreControl.getInstance(), "data/biome_gui.yml");
-            if (OreControl.is_1_14)
+            if (Version.getCurrent() == Version.v1_14_R1)
                 getYaml().setDefaults(Config.getConfig(OreControl.getInstance(), "data/biome_gui_v1.14.yml"));
 
         }
@@ -131,7 +134,7 @@ public class BiomeGui extends PageGui<Biome> {
         @Override
         public void reload() {
             super.reload();
-            if (OreControl.is_1_14)
+            if (Version.getCurrent() == Version.v1_14_R1)
                 getYaml().setDefaults(Config.getConfig(OreControl.getInstance(), "data/biome_gui_v1.14.yml"));
         }
 

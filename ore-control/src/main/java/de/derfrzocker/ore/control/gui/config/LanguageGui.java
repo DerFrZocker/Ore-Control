@@ -4,7 +4,6 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.MessageUtil;
 import de.derfrzocker.spigot.utils.MessageValue;
-import de.derfrzocker.spigot.utils.Messages;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.InventoryUtil;
@@ -19,13 +18,13 @@ import java.util.function.Consumer;
 public class LanguageGui extends BasicGui {
 
     LanguageGui() {
-        super(LanguageGuiSettings.getInstance());
+        super(OreControl.getInstance(), LanguageGuiSettings.getInstance());
         final Language[] languages = Language.values();
 
         for (int i = 0; i < languages.length; i++)
-            addItem(InventoryUtil.calculateSlot(i, LanguageGuiSettings.getInstance().getLanguageGap()), MessageUtil.replaceItemStack(LanguageGuiSettings.getInstance().getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
+            addItem(InventoryUtil.calculateSlot(i, LanguageGuiSettings.getInstance().getLanguageGap()), MessageUtil.replaceItemStack(OreControl.getInstance(), LanguageGuiSettings.getInstance().getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
 
-        addItem(LanguageGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(LanguageGuiSettings.getInstance().getInfoItemStack(),
+        addItem(LanguageGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), LanguageGuiSettings.getInstance().getInfoItemStack(),
                 new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getName()),
                 new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getName())
         ));
@@ -72,8 +71,7 @@ public class LanguageGui extends BasicGui {
         @Override
         public void accept(final InventoryClickEvent event) {
             OreControl.getInstance().getConfigValues().SET.setLanguage(language);
-            Messages.getInstance().reload();
-            openSync(event.getWhoClicked(), new ConfigGui().getInventory());
+            new ConfigGui().openSync(event.getWhoClicked());
         }
     }
 

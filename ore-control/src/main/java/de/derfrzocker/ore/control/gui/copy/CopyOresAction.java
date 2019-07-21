@@ -54,14 +54,14 @@ public class CopyOresAction implements CopyAction {
     public void next(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui) {
 
         if (status == 0) {
-            inventoryGui.openSync(humanEntity, new WorldConfigGui(worldOreConfigTarget, humanEntity, this).getInventory());
+            new WorldConfigGui(worldOreConfigTarget, humanEntity, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 1) {
             if (chooseBiome) {
-                inventoryGui.openSync(humanEntity, new BiomeGui(worldOreConfigTarget, this).getInventory());
+                new BiomeGui(worldOreConfigTarget, this).openSync(humanEntity);
             } else {
                 if (biomeSource == null)
                     for (Ore ore : oresSource)

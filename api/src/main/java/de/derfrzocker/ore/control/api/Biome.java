@@ -1,5 +1,6 @@
 package de.derfrzocker.ore.control.api;
 
+import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -76,20 +77,20 @@ public enum Biome {
     ERODED_BADLANDS(Ore.GOLD_BADLANDS),
     MODIFIED_WOODED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
     MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
-    BAMBOO_JUNGLE(true),
-    BAMBOO_JUNGLE_HILLS(true);
+    BAMBOO_JUNGLE(Version.v1_14_R1),
+    BAMBOO_JUNGLE_HILLS(Version.v1_14_R1);
 
     private Ore ore = null;
 
     @Getter
-    private boolean v1_14 = false;
+    private Version since = Version.v1_13_R1;
 
     Biome(final Ore ore) {
         this.ore = ore;
     }
 
-    Biome(final boolean v1_14) {
-        this.v1_14 = v1_14;
+    Biome(final Version since) {
+        this.since = since;
     }
 
     public Ore[] getOres() {

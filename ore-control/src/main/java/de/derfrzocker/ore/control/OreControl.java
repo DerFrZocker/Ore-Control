@@ -11,7 +11,8 @@ import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v_14_R1.NMSReplacer_v1_14_R1;
 import de.derfrzocker.spigot.utils.Config;
-import de.derfrzocker.spigot.utils.gui.InventoryClickListener;
+import de.derfrzocker.spigot.utils.Language;
+import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -36,10 +37,6 @@ public class OreControl extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
     }
 
-    // temporary variable, since the anvil gui is at the moment not update to 1.14
-    @Deprecated
-    public static boolean is_1_14 = false;
-
     @Getter
     @Setter
     @NonNull
@@ -60,16 +57,12 @@ public class OreControl extends JavaPlugin implements Listener {
         // initial instance variable
         instance = this;
 
-        // get version and check if the Server run a suitable version
-        final String version = getVersion();
-
-        if (version.equalsIgnoreCase("v1_13_R1"))
+        if (Version.getCurrent() == Version.v1_13_R1)
             nmsReplacer = new NMSReplacer_v1_13_R1();
-        else if (version.equalsIgnoreCase("v1_13_R2"))
+        else if (Version.getCurrent() == Version.v1_13_R2)
             nmsReplacer = new NMSReplacer_v1_13_R2();
-        else if (version.equalsIgnoreCase("v1_14_R1")) {
+        else if (Version.getCurrent() == Version.v1_14_R1) {
             nmsReplacer = new NMSReplacer_v1_14_R1();
-            is_1_14 = true;
         }
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsReplacer == null)
@@ -78,10 +71,8 @@ public class OreControl extends JavaPlugin implements Listener {
         // load the config values of this plugin
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
 
-        // call #getInstance so that the variable get initialed
-        // if we not do this, the Messages in the gui wont get translated, since the Variable in Messages is not initialed from the OreControlMessages
-        //noinspection ResultOfMethodCallIgnored
-        OreControlMessages.getInstance();
+        // Set default language
+        Language.setDefaultLanguage(() -> getConfigValues().getLanguage());
     }
 
     @Override
@@ -111,7 +102,7 @@ public class OreControl extends JavaPlugin implements Listener {
         checkFile("data/world_config_gui.yml");
         checkFile("data/world_gui.yml");
 
-        if (is_1_14) {
+        if (Version.getCurrent() == Version.v1_14_R1) {
             checkFile("data/biome_gui_v1.14.yml");
         }
 
@@ -127,9 +118,6 @@ public class OreControl extends JavaPlugin implements Listener {
 
         // register the command and subcommand's
         registerCommands();
-
-        // register the Listener for the Gui
-        InventoryClickListener.init(this);
 
         // register the Listener for the WorldLoad event
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -178,12 +166,6 @@ public class OreControl extends JavaPlugin implements Listener {
             throw new RuntimeException("can't delete file " + name + " stop plugin start!");
 
         saveResource(name, true);
-    }
-
-    private String getVersion() {
-        final String name = Bukkit.getServer().getClass().getPackage().getName();
-
-        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     @EventHandler //TODO maybe extra class

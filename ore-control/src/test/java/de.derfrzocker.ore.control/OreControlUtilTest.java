@@ -9,6 +9,7 @@ import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.TestUtil;
 import de.derfrzocker.spigot.utils.Config;
+import de.derfrzocker.spigot.utils.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.ServicesManager;
@@ -47,6 +48,7 @@ public class OreControlUtilTest {
         {
             server = mock(Server.class);
             when(server.getLogger()).thenReturn(mock(Logger.class));
+            when(server.getName()).thenReturn("spigot");
             Bukkit.setServer(server);
         }
 
@@ -73,6 +75,8 @@ public class OreControlUtilTest {
         settings = new Settings(new Config(connection.getInputStream()));
 
         when(oreControl.getSettings()).thenReturn(settings);
+
+        Version.setCurrentVersion(Version.v1_14_R1);
     }
 
     //Test OreControlUtil#getAmount(Ore, Setting, WorldOreConfig) begin

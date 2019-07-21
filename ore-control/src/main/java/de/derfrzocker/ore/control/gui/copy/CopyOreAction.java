@@ -53,23 +53,23 @@ public class CopyOreAction implements CopyAction {
     @Override
     public void next(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui) {
         if (status == 0) {
-            inventoryGui.openSync(humanEntity, new WorldConfigGui(worldOreConfigTarget, humanEntity, this).getInventory());
+            new WorldConfigGui(worldOreConfigTarget, humanEntity, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 1) {
             if (chooseBiome)
-                inventoryGui.openSync(humanEntity, new BiomeGui(worldOreConfigTarget, this).getInventory());
+                new BiomeGui(worldOreConfigTarget, this).openSync(humanEntity);
             else
-                inventoryGui.openSync(humanEntity, new OreGui(worldOreConfigTarget, biomeTarget, this).getInventory());
+                new OreGui(worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
 
             status++;
             return;
         }
 
         if (status == 2 && chooseBiome) {
-            inventoryGui.openSync(humanEntity, new OreGui(worldOreConfigTarget, biomeTarget, this).getInventory());
+            new OreGui(worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
             status++;
             return;
         }
@@ -162,7 +162,7 @@ public class CopyOreAction implements CopyAction {
 
     private void openVerifyIfNeeded(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui, final @NonNull Consumer<InventoryClickEvent> acceptAction) {
         if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
-            inventoryGui.openSync(humanEntity, new VerifyGui(acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).getInventory());
+            new VerifyGui(OreControl.getInstance(), acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).openSync(humanEntity);
             return;
         }
 

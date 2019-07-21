@@ -30,29 +30,31 @@ public class WorldGui extends PageGui<String> {
     private final CopyAction copyAction;
 
     public WorldGui(final Permissible permissible) {
+        super(OreControl.getInstance());
         this.copyAction = null;
 
-        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> openSync(event.getWhoClicked(), new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).getInventory()));
+        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).openSync(event.getWhoClicked()));
 
         if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
-            addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
+            addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
 
         if (Permissions.EDIT_CONFIG_PERMISSION.hasPermission(permissible))
-            addItem(WorldGuiSettings.getInstance().getEditConfigSlot(), MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getEditConfigItemStack()), event -> openSync(event.getWhoClicked(), new ConfigGui().getInventory()));
+            addItem(WorldGuiSettings.getInstance().getEditConfigSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldGuiSettings.getInstance().getEditConfigItemStack()), event -> new ConfigGui().openSync(event.getWhoClicked()));
 
         worldOreConfigs = null;
     }
 
     WorldGui(final @NonNull CopyAction copyAction) {
+        super(OreControl.getInstance());
         this.copyAction = copyAction;
         init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
     }
 
     private ItemStack getItemStack(final String value) {
         if (worldOreConfigs.containsKey(value) && worldOreConfigs.get(value).isTemplate())
-            return MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getTemplateItemStack(), new MessageValue("template", value));
+            return MessageUtil.replaceItemStack(OreControl.getInstance(), WorldGuiSettings.getInstance().getTemplateItemStack(), new MessageValue("template", value));
         else
-            return MessageUtil.replaceItemStack(WorldGuiSettings.getInstance().getWorldItemStack(), new MessageValue("world", value));
+            return MessageUtil.replaceItemStack(OreControl.getInstance(), WorldGuiSettings.getInstance().getWorldItemStack(), new MessageValue("world", value));
     }
 
 
@@ -67,12 +69,12 @@ public class WorldGui extends PageGui<String> {
 
                     service.createWorldOreConfigTemplate(value);
 
-                    openSync(player, new WorldGui(player).getInventory());
+                    new WorldGui(player).openSync(event.getWhoClicked());
 
                     return "";
                 })).get();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Unexpected Error while create Template", e);
             }
         }
     }
