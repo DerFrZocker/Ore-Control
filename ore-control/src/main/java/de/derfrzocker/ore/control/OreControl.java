@@ -111,6 +111,10 @@ public class OreControl extends JavaPlugin implements Listener {
         checkFile("data/world_config_gui.yml");
         checkFile("data/world_gui.yml");
 
+        if (is_1_14) {
+            checkFile("data/biome_gui_v1.14.yml");
+        }
+
         // load the Settings
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
 

@@ -8,6 +8,7 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
+import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.MessageUtil;
 import de.derfrzocker.spigot.utils.MessageValue;
 import de.derfrzocker.spigot.utils.gui.PageGui;
@@ -32,7 +33,16 @@ public class BiomeGui extends PageGui<Biome> {
         this.worldOreConfig = worldOreConfig;
         this.copyAction = null;
 
-        init(Biome.values(), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
+        final Set<Biome> biomes = new LinkedHashSet<>();
+
+        for (Biome biome : Biome.values()) {
+            if (!OreControl.is_1_14 && biome.isV1_14())
+                continue;
+
+            biomes.add(biome);
+        }
+
+        init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
         addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
         addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getBackItemStack()), event -> openSync(event.getWhoClicked(), new WorldConfigGui(worldOreConfig, event.getWhoClicked()).getInventory()));
@@ -52,10 +62,13 @@ public class BiomeGui extends PageGui<Biome> {
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
-        for (Biome biome : Biome.values())
+        for (Biome biome : Biome.values()) {
+            if (!OreControl.is_1_14 && biome.isV1_14())
+                continue;
+
             if (copyAction.shouldSet(biome))
                 biomes.add(biome);
-
+        }
         init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
 
         addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
@@ -110,6 +123,16 @@ public class BiomeGui extends PageGui<Biome> {
 
         private BiomeGuiSettings() {
             super(OreControl.getInstance(), "data/biome_gui.yml");
+            if (OreControl.is_1_14)
+                getYaml().setDefaults(Config.getConfig(OreControl.getInstance(), "data/biome_gui_v1.14.yml"));
+
+        }
+
+        @Override
+        public void reload() {
+            super.reload();
+            if (OreControl.is_1_14)
+                getYaml().setDefaults(Config.getConfig(OreControl.getInstance(), "data/biome_gui_v1.14.yml"));
         }
 
         ItemStack getBiomeItemStack(final String biome) {
