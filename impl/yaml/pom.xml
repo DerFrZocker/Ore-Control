@@ -7,17 +7,16 @@
     <parent>
         <artifactId>ore-control-impl</artifactId>
         <groupId>de.derfrzocker</groupId>
-        <version>0.0.0.0</version>
+        <version>${revision}</version>
     </parent>
 
-    <version>0.0.0.0</version>
     <artifactId>ore-control-impl-yaml</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-api</artifactId>
-            <version>0.0.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

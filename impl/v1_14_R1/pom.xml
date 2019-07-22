@@ -7,17 +7,16 @@
     <parent>
         <artifactId>ore-control-impl</artifactId>
         <groupId>de.derfrzocker</groupId>
-        <version>0.0.0.0</version>
+        <version>${revision}</version>
     </parent>
 
-    <version>0.0.0.0</version>
     <artifactId>ore-control-impl-v1_14_R1</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-api</artifactId>
-            <version>0.0.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -25,7 +24,7 @@
             <artifactId>nms-1.14</artifactId>
             <version>1.14</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.14.jar</systemPath>
+            <systemPath>${basedir}/lib/spigot-1.14-simple.jar</systemPath>
         </dependency>
     </dependencies>
 

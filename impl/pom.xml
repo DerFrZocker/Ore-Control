@@ -7,18 +7,18 @@
     <parent>
         <artifactId>ore-control-parent</artifactId>
         <groupId>de.derfrzocker</groupId>
-        <version>0.0.0.0</version>
+        <version>${revision}</version>
     </parent>
 
-    <version>0.0.0.0</version>
-    <artifactId>ore-control-impl</artifactId>
-    <packaging>pom</packaging>
     <modules>
         <module>v1_14_R1</module>
         <module>v1_13_R1</module>
         <module>v1_13_R2</module>
         <module>yaml</module>
     </modules>
+
+    <artifactId>ore-control-impl</artifactId>
+    <packaging>pom</packaging>
 
 
 </project>
