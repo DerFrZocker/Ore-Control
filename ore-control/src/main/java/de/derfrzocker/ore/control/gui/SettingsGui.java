@@ -47,7 +47,7 @@ public class SettingsGui extends BasicGui {
 
     private final int oreSlot;
 
-    private int current = 1;
+    private int current = 0;
 
     SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible) {
         super(OreControl.getInstance(), SettingsGuiSettings.getInstance());
