@@ -28,11 +28,26 @@ public class WorldGenDecoratorHeightAverageOverrider_v1_14_R1 extends WorldGenDe
         if (oreConfig.isPresent() && !service.isActivated(Ore.LAPIS, oreConfig.get(), biome))
             return true;
 
-        return oreConfig.map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition, new WorldGenDecoratorHeightAverageConfiguration(
-                service.getValue(Ore.LAPIS, Setting.VEINS_PER_CHUNK, worldOreConfig, biome),
-                service.getValue(Ore.LAPIS, Setting.HEIGHT_CENTER, worldOreConfig, biome),
-                service.getValue(Ore.LAPIS, Setting.HEIGHT_RANGE, worldOreConfig, biome)), new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), Ore.LAPIS, worldGenFeatureConfigured.b, biome)))).
-                orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenDecoratorHeightAverageConfiguration, worldGenFeatureConfigured));
+        try {
+            return oreConfig.map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition, new WorldGenDecoratorHeightAverageConfiguration(
+                    service.getValue(Ore.LAPIS, Setting.VEINS_PER_CHUNK, worldOreConfig, biome),
+                    service.getValue(Ore.LAPIS, Setting.HEIGHT_CENTER, worldOreConfig, biome),
+                    service.getValue(Ore.LAPIS, Setting.HEIGHT_RANGE, worldOreConfig, biome)), new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), Ore.LAPIS, worldGenFeatureConfigured.b, biome)))).
+                    orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenDecoratorHeightAverageConfiguration, worldGenFeatureConfigured));
+        } catch (Exception e) {
+            if (!oreConfig.isPresent())
+                throw e;
+
+            throw new RuntimeException("Error while generate Chunk" +
+                    " Name: " + oreConfig.get().getName() +
+                    " Ore: " + Ore.LAPIS +
+                    " Biome: " + biome +
+                    " VEINS_PER_CHUNK: " + service.getValue(Ore.LAPIS, Setting.VEINS_PER_CHUNK, oreConfig.get(), biome) +
+                    " HEIGHT_CENTER: " + service.getValue(Ore.LAPIS, Setting.HEIGHT_CENTER, oreConfig.get(), biome) +
+                    " HEIGHT_RANGE: " + service.getValue(Ore.LAPIS, Setting.HEIGHT_RANGE, oreConfig.get(), biome) +
+                    " VEIN_SIZE: " + service.getValue(Ore.LAPIS, Setting.VEIN_SIZE, oreConfig.get(), biome)
+                    , e);
+        }
     }
 
 }

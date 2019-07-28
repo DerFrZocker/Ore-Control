@@ -1,10 +1,7 @@
 package de.derfrzocker.ore.control.impl.v_14_R1;
 
 import com.mojang.datafixers.Dynamic;
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.OreControlService;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import lombok.NonNull;
 import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
@@ -32,10 +29,26 @@ public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_14_R1 extends
         if (oreConfig.isPresent() && !service.isActivated(Ore.GOLD_BADLANDS, oreConfig.get(), biome))
             return true;
 
-        return oreConfig.
-                map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition, NMSUtil_v1_14_R1.getCountConfiguration(worldOreConfig, Ore.GOLD_BADLANDS, worldGenFeatureChanceDecoratorCountConfiguration, biome),
-                        new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), Ore.GOLD_BADLANDS, worldGenFeatureConfigured.b, biome)))).
-                orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenFeatureChanceDecoratorCountConfiguration, worldGenFeatureConfigured));
+        try {
+            return oreConfig.
+                    map(worldOreConfig -> super.a(generatorAccess, chunkGenerator, random, blockPosition, NMSUtil_v1_14_R1.getCountConfiguration(worldOreConfig, Ore.GOLD_BADLANDS, worldGenFeatureChanceDecoratorCountConfiguration, biome),
+                            new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), Ore.GOLD_BADLANDS, worldGenFeatureConfigured.b, biome)))).
+                    orElseGet(() -> super.a(generatorAccess, chunkGenerator, random, blockPosition, worldGenFeatureChanceDecoratorCountConfiguration, worldGenFeatureConfigured));
+        } catch (Exception e) {
+            if (!oreConfig.isPresent())
+                throw e;
+
+            throw new RuntimeException("Error while generate Chunk" +
+                    " Name: " + oreConfig.get().getName() +
+                    " Ore: " + Ore.GOLD_BADLANDS +
+                    " Biome: " + biome +
+                    " VEIN_SIZE: " + service.getValue(Ore.GOLD_BADLANDS, Setting.VEIN_SIZE, oreConfig.get(), biome) +
+                    " VEINS_PER_CHUNK: " + service.getValue(Ore.GOLD_BADLANDS, Setting.VEINS_PER_CHUNK, oreConfig.get(), biome) +
+                    " HEIGHT_RANGE: " + service.getValue(Ore.GOLD_BADLANDS, Setting.HEIGHT_RANGE, oreConfig.get(), biome) +
+                    " MINIMUM_HEIGHT: " + service.getValue(Ore.GOLD_BADLANDS, Setting.MINIMUM_HEIGHT, oreConfig.get(), biome) +
+                    " HEIGHT_SUBTRACT_VALUE: " + service.getValue(Ore.GOLD_BADLANDS, Setting.HEIGHT_SUBTRACT_VALUE, oreConfig.get(), biome)
+                    , e);
+        }
     }
 
 }
