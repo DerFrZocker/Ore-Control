@@ -37,6 +37,15 @@ language:
       meta-type: SKULL
       display-name: 'English'
       internal: H4sIAAAAAAAAAE2OzU6DQBhFP01MkPgYbkmG35aFC2vRDukM0o4MsIMyDdChNhQM8FQ+onTn7t7cc5KrAqjwtD/1Un6238dKCgXucQHPjp3pWVEstFzPkWa5t4SsQhOZm9umsdTF0lBBnaWLaLtKXB9B6cTQ9a24qgBwp8BDlMlewK8YfZTGJSpiXx5G7Myd7ZEMcH1Z4HM05m/Ywc28b16d7ej+Y+0u47ZMTL9Mz2GfNxHamjspNjv90Hz9JE0kKScWZasybfyKGqEVrMOJ1ImeMA/RGg+Ev9cBJwZhUUMnMqUftKbcs1KGh4Ctbv5I18Up5d5EKt89xuhlfg9/zfkAfRgBAAA=
+  CHINESE:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '中国'
+      internal: H4sIAAAAAAAAAE2PzU6DQBhFP01MkPgYbkmG4a8sXFShdEinaEuhMzso0xSYqU0LCj6XDyhLlzfnnMXVAXR42ra9lO/Xz2MthQb3pIJndBSlhT3XmJmVZ9izwjJmll8atueUpm9hs3CEDvoUXcS1q8XtEbRODF1/FTcdAO40eMgK2Qv4FWOM+P6Eqn0sDyNxp51ukUxIc/HIORvLN+ISNfHl3F2N/j/X6YrckcyKT/z80ZcqQytrI8VyYx7U7muNmcMU/aY/WcMjatOIDSwnJk/DIUlPijZSUbxoKeYtD+J6HcRtkoc4yReSNQzxaOck6RwnQWjT4LWempaNsX/co5fpAfwBiBRtoxwBAAA=
   CUSTOM:
     ==: org.bukkit.inventory.ItemStack
     v: 1631

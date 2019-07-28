@@ -133,7 +133,7 @@ public class OreControl extends JavaPlugin implements Listener {
         final Metrics metrics = new Metrics(this);
 
         // add a simple Pie with the current Language that the user use
-        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getName()));
+        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getNames()[0]));
     }
 
     private void registerCommands() {

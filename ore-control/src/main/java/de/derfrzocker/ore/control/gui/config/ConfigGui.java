@@ -17,8 +17,8 @@ public class ConfigGui extends BasicGui {
     public ConfigGui() {
         super(OreControl.getInstance(), ConfigGuiSettings.getInstance());
         addItem(ConfigGuiSettings.getInstance().getLanguageSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getLanguageItemStack(),
-                new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getName()),
-                new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getName())
+                new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getNames()[0]),
+                new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ), event -> new LanguageGui().openSync(event.getWhoClicked()));
 
         addItem(ConfigGuiSettings.getInstance().getsafeModeSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), ConfigGuiSettings.getInstance().getsafeModeItemStack(),

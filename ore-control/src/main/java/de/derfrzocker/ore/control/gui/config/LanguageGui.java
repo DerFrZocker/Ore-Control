@@ -25,8 +25,8 @@ public class LanguageGui extends BasicGui {
             addItem(InventoryUtil.calculateSlot(i, LanguageGuiSettings.getInstance().getLanguageGap()), MessageUtil.replaceItemStack(OreControl.getInstance(), LanguageGuiSettings.getInstance().getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
 
         addItem(LanguageGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), LanguageGuiSettings.getInstance().getInfoItemStack(),
-                new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getName()),
-                new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getName())
+                new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getNames()[0]),
+                new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ));
     }
 
