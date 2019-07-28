@@ -143,6 +143,8 @@ biome:
   MODIFIED_BADLANDS_PLATEAU: "Modified Badlands Plateau"
   BAMBOO_JUNGLE: "Bamboo Jungle"
   BAMBOO_JUNGLE_HILLS: "Bamboo Jungle Hills"
+  HILLS: "Hills"
+  SNOWY: "Snowy"
 
 ore:
   DIAMOND: "Diamond"
@@ -201,6 +203,8 @@ gui:
     delete: "Delete this Template!"
   biome:
     name: "Choose a Biome!"
+    biome: "Biomes"
+    biome_group: "Biome Groups"
     reset: "Reset all Biome settings to the default values!"
     copy: "Copy all Biome settings to an other World or Template!"
   ore:

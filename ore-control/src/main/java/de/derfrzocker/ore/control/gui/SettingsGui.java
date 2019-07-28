@@ -1,5 +1,6 @@
 package de.derfrzocker.ore.control.gui;
 
+import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
@@ -267,7 +268,9 @@ public class SettingsGui extends BasicGui {
                 SET_NOT_SAFE_WARNING.sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
             }
 
-            biomeGroup.getBiomes().forEach(biome -> OreControlUtil.setAmount(ore, setting, worldOreConfig, newValue, biome));
+            current = newValue;
+
+            biomeGroup.getBiomes().stream().filter(biome -> Sets.newHashSet(biome.getOres()).contains(ore)).forEach(biome -> OreControlUtil.setAmount(ore, setting, worldOreConfig, current, biome));
 
             OreControl.getService().saveWorldOreConfig(worldOreConfig);
 

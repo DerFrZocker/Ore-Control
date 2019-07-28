@@ -32,7 +32,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         init(BiomeGroups.getInstance().getGroups(), BiomeGroup[]::new, BiomeGui.BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
         addItem(BiomeGui.BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
-        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGroupGui(worldOreConfig).openSync(event.getWhoClicked()));
+        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(final BiomeGroup biomeGroup) {
@@ -73,7 +73,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
                 final List<String> stringList = section.getStringList(string);
 
-                stringList.forEach(biome -> biomeSet.add(OreControlUtil.getBiome(biome, false).orElseThrow(() -> new IllegalArgumentException("String: " + biome + " is not a biome!"))));
+                stringList.forEach(biomeName -> OreControlUtil.getBiome(biomeName, false).ifPresent(biomeSet::add));
 
                 return new BiomeGroup(string, biomeSet);
             }).toArray(BiomeGroup[]::new);

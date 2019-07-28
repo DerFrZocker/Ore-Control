@@ -94,11 +94,16 @@ public class OreControl extends JavaPlugin implements Listener {
         worldOreConfigYamlDao.init();
 
         // check all files, that can be have other values (not other not new one), so we can replace them
-        checkFile("data/settings.yml");
+        checkFile("data/biome_groups.yml");
         checkFile("data/biome_gui.yml");
+        checkFile("data/boolean_gui.yml");
+        checkFile("data/config_gui.yml");
+        checkFile("data/language_gui.yml");
         checkFile("data/ore_gui.yml");
         checkFile("data/ore_settings_gui.yml");
+        checkFile("data/settings.yml");
         checkFile("data/settings_gui.yml");
+        checkFile("data/verify_gui.yml");
         checkFile("data/world_config_gui.yml");
         checkFile("data/world_gui.yml");
 

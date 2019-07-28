@@ -147,6 +147,8 @@ biome:
   MODIFIED_BADLANDS_PLATEAU: "Modified Ödland Plateau"
   BAMBOO_JUNGLE: "Bambus Dschungel"
   BAMBOO_JUNGLE_HILLS: "Bambus Dschungelhügel"
+  HILLS: "Hügels"
+  SNOWY: "Verschneite"
 
 ore:
   DIAMOND: "Diamant"
@@ -205,6 +207,8 @@ gui:
     delete: "Lösches diese Vorlage!"
   biome:
     name: "Wähle ein Biom!"
+    biome: "Biome"
+    biome_group: "Biome Gruppen"
     reset: "Setze alle Biome Werte auf Standart einstellungen zurück!"
     copy: "Kopiere alle Biome Eintellugen zu einer anderen Welt oder Vorlage!"
   ore:
