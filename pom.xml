@@ -137,8 +137,12 @@
     <distributionManagement>
         <repository>
             <id>derfrzocker-repo</id>
-            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+            <url>https://nexus.derfrzocker.de/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>derfrzocker-repo</id>
+            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>
