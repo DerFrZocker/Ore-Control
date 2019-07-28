@@ -24,7 +24,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.build.timestamp.format>yyyy.MM.d</maven.build.timestamp.format>
-        <project.authors>DerFrZocker</project.authors>
+        <project.author>DerFrZocker</project.author>
+        <project.authors>Pings</project.authors>
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
     </properties>
