@@ -116,7 +116,7 @@ public class OreGui extends BasicGui {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 if (biome != null)
-                    for (Ore ore : Ore.values())
+                    for (Ore ore : biome.getOres())
                         OreControlUtil.reset(worldOreConfig, ore, biome);
                 else
                     for (Ore ore : Ore.values())
@@ -129,7 +129,7 @@ public class OreGui extends BasicGui {
             return;
         }
         if (biome != null)
-            for (Ore ore : Ore.values())
+            for (Ore ore : biome.getOres())
                 OreControlUtil.reset(worldOreConfig, ore, biome);
         else
             for (Ore ore : Ore.values())
