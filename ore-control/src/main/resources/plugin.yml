@@ -15,7 +15,7 @@ permissions:
     description: "Base permission"
     default: op
   ore.control.*:
-    description: "Gives access to all Ore Control commands"
+    description: "Gives access to all Ore Control commands and functions"
     default: op
     children:
       ore.control: true
