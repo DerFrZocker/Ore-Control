@@ -9,7 +9,7 @@ import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
-import de.derfrzocker.ore.control.impl.v_14_R1.NMSReplacer_v1_14_R1;
+import de.derfrzocker.ore.control.impl.v1_14_R1.NMSReplacer_v1_14_R1;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Version;

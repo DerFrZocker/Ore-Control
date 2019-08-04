@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.impl.v_14_R1;
+package de.derfrzocker.ore.control.impl.v1_14_R1;
 
 import de.derfrzocker.ore.control.api.*;
 import net.minecraft.server.v1_14_R1.*;
