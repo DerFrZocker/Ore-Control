@@ -8,7 +8,7 @@ import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.CommandUtil;
-import de.derfrzocker.spigot.utils.MessageValue;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;

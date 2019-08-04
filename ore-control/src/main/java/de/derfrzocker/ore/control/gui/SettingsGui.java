@@ -10,11 +10,11 @@ import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopySettingAction;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import de.derfrzocker.spigot.utils.MessageUtil;
-import de.derfrzocker.spigot.utils.MessageValue;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -67,10 +67,10 @@ public class SettingsGui extends BasicGui {
 
         updateItemStack();
 
-        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.RESET_VALUE_PERMISSION.hasPermission(permissible))
             addItem(SettingsGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
             addItem(SettingsGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopySettingAction(worldOreConfig, ore, biome, setting)).openSync(event.getWhoClicked()));
     }
 

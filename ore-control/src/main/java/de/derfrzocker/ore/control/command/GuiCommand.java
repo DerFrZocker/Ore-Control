@@ -20,7 +20,7 @@ public class GuiCommand implements TabExecutor {
             return true;
         }
 
-        if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender) && !Permissions.SET_PERMISSION.hasPermission(sender))
+        if (!Permissions.OPEN_GUI_PERMISSION.hasPermission(sender))
             return false;
 
         new WorldGui(sender).openSync((Player) sender);
