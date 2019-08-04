@@ -81,7 +81,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
         if (template)
             map.put(TEMPLATE_KEY, true);
 
-        getOreSettings().entrySet().stream().
+        getOreSettings().entrySet().stream().filter(entry -> !entry.getValue().getSettings().isEmpty()).
                 map(entry -> {
                     if (entry.getValue() instanceof ConfigurationSerializable)
                         return entry.getValue();
@@ -90,11 +90,12 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
                     return oreSettingsYaml;
                 }).forEach(value -> map.put(value.getOre().toString(), value));
 
-        getBiomeOreSettings().entrySet().stream().map(entry -> {
-            if (entry.getValue() instanceof ConfigurationSerializable)
-                return entry.getValue();
-            return new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings());
-        }).forEach(value -> map.put(value.getBiome().toString(), value));
+        getBiomeOreSettings().entrySet().stream().filter(entry -> entry.getValue().getOreSettings().entrySet().stream().anyMatch(entry2 -> !entry2.getValue().getSettings().isEmpty())).
+                map(entry -> {
+                    if (entry.getValue() instanceof ConfigurationSerializable)
+                        return entry.getValue();
+                    return new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings());
+                }).forEach(value -> map.put(value.getBiome().toString(), value));
 
         return map;
     }

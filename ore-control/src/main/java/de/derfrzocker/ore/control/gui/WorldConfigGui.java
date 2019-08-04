@@ -9,11 +9,11 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyWorldOreConfigAction;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import de.derfrzocker.spigot.utils.MessageUtil;
-import de.derfrzocker.spigot.utils.MessageValue;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.NonNull;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -37,10 +37,10 @@ public class WorldConfigGui extends BasicGui {
         if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible))
             addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
 
-        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.RESET_VALUE_PERMISSION.hasPermission(permissible))
             addItem(WorldConfigGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
             addItem(WorldConfigGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyWorldOreConfigAction(worldOreConfig)).openSync(event.getWhoClicked()));
 
         if (Permissions.DELETE_TEMPLATE_PERMISSION.hasPermission(permissible) && worldOreConfig.isTemplate())

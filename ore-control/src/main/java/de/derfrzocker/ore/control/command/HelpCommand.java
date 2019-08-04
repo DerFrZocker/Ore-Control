@@ -3,6 +3,7 @@ package de.derfrzocker.ore.control.command;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.spigot.utils.CommandUtil;
+import de.derfrzocker.spigot.utils.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -17,7 +18,7 @@ public class HelpCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!Permissions.hasAnyCommandPermission(sender))
+        if (!Permission.hasAnyCommandPermission(OreControl.getInstance(), sender))
             return false;
 
         CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
@@ -124,7 +125,7 @@ public class HelpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         final List<String> list = new ArrayList<>();
 
-        if (args.length == 2 && Permissions.hasAnyCommandPermission(sender)) {
+        if (args.length == 2 && Permission.hasAnyCommandPermission(OreControl.getInstance(), sender)) {
             final String subcommand = args[1].toLowerCase();
 
             if ("set".startsWith(subcommand) && Permissions.SET_PERMISSION.hasPermission(sender))

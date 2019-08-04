@@ -10,12 +10,12 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyOresAction;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import de.derfrzocker.spigot.utils.MessageUtil;
-import de.derfrzocker.spigot.utils.MessageValue;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.InventoryUtil;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -53,10 +53,10 @@ public class OreGui extends BasicGui {
 
         addItem(OreGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), biome == null ? OreGuiSettings.getInstance().getInfoItemStack() : OreGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
 
-        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.RESET_VALUE_PERMISSION.hasPermission(permissible))
             addItem(OreGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), OreGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
             addItem(OreGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), OreGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyOresAction(worldOreConfig, biome == null ? Ore.values() : biome.getOres(), biome)).openSync(event.getWhoClicked()));
 
     }
@@ -116,7 +116,7 @@ public class OreGui extends BasicGui {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 if (biome != null)
-                    for (Ore ore : Ore.values())
+                    for (Ore ore : biome.getOres())
                         OreControlUtil.reset(worldOreConfig, ore, biome);
                 else
                     for (Ore ore : Ore.values())
@@ -129,7 +129,7 @@ public class OreGui extends BasicGui {
             return;
         }
         if (biome != null)
-            for (Ore ore : Ore.values())
+            for (Ore ore : biome.getOres())
                 OreControlUtil.reset(worldOreConfig, ore, biome);
         else
             for (Ore ore : Ore.values())

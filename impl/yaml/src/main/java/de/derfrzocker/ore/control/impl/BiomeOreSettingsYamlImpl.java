@@ -51,7 +51,7 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
 
         map.put(BIOME_KEY, getBiome().toString());
 
-        getOreSettings().entrySet().stream().
+        getOreSettings().entrySet().stream().filter(entry -> !entry.getValue().getSettings().isEmpty()).
                 map(entry -> {
                     if (entry.getValue() instanceof ConfigurationSerializable)
                         return entry.getValue();

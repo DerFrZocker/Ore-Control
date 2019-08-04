@@ -1,6 +1,6 @@
 package de.derfrzocker.ore.control;
 
-import de.derfrzocker.spigot.utils.MessageKey;
+import de.derfrzocker.spigot.utils.message.MessageKey;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

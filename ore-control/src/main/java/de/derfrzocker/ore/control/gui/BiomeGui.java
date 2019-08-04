@@ -9,12 +9,12 @@ import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.Config;
-import de.derfrzocker.spigot.utils.MessageUtil;
-import de.derfrzocker.spigot.utils.MessageValue;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.PageSettings;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.NonNull;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -51,10 +51,10 @@ public class BiomeGui extends PageGui<Biome> {
         addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
         addItem(BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBiomeGroupItemStack()), event -> new BiomeGroupGui(worldOreConfig).openSync(event.getWhoClicked()));
 
-        if (Permissions.RESET_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.RESET_VALUE_PERMISSION.hasPermission(permissible))
             addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
-        if (Permissions.COPY_VALUES_PERMISSION.hasPermission(permissible))
+        if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
             addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).openSync(event.getWhoClicked()));
     }
 

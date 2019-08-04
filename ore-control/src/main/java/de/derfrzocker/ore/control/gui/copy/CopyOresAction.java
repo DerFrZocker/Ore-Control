@@ -85,7 +85,7 @@ public class CopyOresAction implements CopyAction {
         }
 
         if (status == 2 && chooseBiome) {
-            openVerifyIfNeeded(humanEntity, inventoryGui,event -> {
+            openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                 if (biomeSource == null) {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
                     for (Ore ore : oresSource)

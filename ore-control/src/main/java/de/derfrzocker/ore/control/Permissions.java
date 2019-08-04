@@ -1,44 +1,30 @@
 package de.derfrzocker.ore.control;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.permissions.Permissible;
 
-import java.util.stream.Stream;
+import de.derfrzocker.spigot.utils.Permission;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
-@Getter
-public enum Permissions {
 
-    BASE_PERMISSION("ore.control", false),
-    RELOAD_PERMISSION("reload", true),
-    SET_PERMISSION("set", true),
-    SET_BIOME_PERMISSION("set.biome", true),
-    CREATE_TEMPLATE_PERMISSION("template.create", true),
-    DELETE_TEMPLATE_PERMISSION("template.delete", false),
-    RESET_VALUES_PERMISSION("value.reset", false),
-    COPY_VALUES_PERMISSION("value.copy", false),
-    EDIT_CONFIG_PERMISSION("config.edit", false);
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Permissions {
 
-    @NonNull
-    private final String permission;
+    public final static Permission BASE_PERMISSION = new Permission(null, "ore.control", OreControl.getInstance(), false);
 
-    private final boolean commandPermission;
 
-    public String getPermission() {
-        if (this == BASE_PERMISSION)
-            return permission;
+    public final static Permission RELOAD_PERMISSION = new Permission(BASE_PERMISSION, "reload", OreControl.getInstance(), true);
+    public final static Permission SET_PERMISSION = new Permission(BASE_PERMISSION, "set", OreControl.getInstance(), true);
+    public final static Permission SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", OreControl.getInstance(), true);
+    public final static Permission OPEN_GUI_PERMISSION = new Permission(BASE_PERMISSION, "gui", OreControl.getInstance(), false);
 
-        return String.format("%s.%s", BASE_PERMISSION.getPermission(), permission);
-    }
+    public final static Permission TEMPLATE_PERMISSION = new Permission(BASE_PERMISSION, "template", OreControl.getInstance(), false);
+    public final static Permission CREATE_TEMPLATE_PERMISSION = new Permission(TEMPLATE_PERMISSION, "create", OreControl.getInstance(), true);
+    public final static Permission DELETE_TEMPLATE_PERMISSION = new Permission(TEMPLATE_PERMISSION, "delete", OreControl.getInstance(), false);
 
-    public boolean hasPermission(@NonNull Permissible permissible) {
-        return permissible.hasPermission(getPermission());
-    }
+    public final static Permission VALUE_PERMISSION = new Permission(BASE_PERMISSION, "value", OreControl.getInstance(), false);
+    public final static Permission RESET_VALUE_PERMISSION = new Permission(VALUE_PERMISSION, "reset", OreControl.getInstance(), false);
+    public final static Permission COPY_VALUE_PERMISSION = new Permission(VALUE_PERMISSION, "copy", OreControl.getInstance(), false);
 
-    public static boolean hasAnyCommandPermission(@NonNull Permissible permissible) {
-        return Stream.of(values()).filter(Permissions::isCommandPermission).anyMatch(value -> permissible.hasPermission(value.getPermission()));
-    }
+    public final static Permission EDIT_CONFIG_PERMISSION = new Permission(BASE_PERMISSION, "config.edit", OreControl.getInstance(), false);
 
 }

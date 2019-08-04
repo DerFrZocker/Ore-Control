@@ -1,4 +1,4 @@
-package de.derfrzocker.ore.control.impl.v_14_R1;
+package de.derfrzocker.ore.control.impl.v1_14_R1;
 
 import com.mojang.datafixers.Dynamic;
 import de.derfrzocker.ore.control.api.*;
@@ -16,6 +16,8 @@ public class WorldGenDecoratorEmeraldOverrider_v1_14_R1 extends WorldGenDecorato
     @NonNull
     private final Biome biome;
 
+    private OreControlService service;
+
     public WorldGenDecoratorEmeraldOverrider_v1_14_R1(final Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> dynamicFunction, final Biome biome) {
         super(dynamicFunction);
         this.biome = biome;
@@ -23,7 +25,14 @@ public class WorldGenDecoratorEmeraldOverrider_v1_14_R1 extends WorldGenDecorato
 
     @Override
     public <C extends WorldGenFeatureConfiguration> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettingsDefault> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureDecoratorEmptyConfiguration worldGenFeatureDecoratorEmptyConfiguration, final WorldGenFeatureConfigured<C> worldGenFeatureConfigured) {
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
+
+        if (service == null && tempService == null)
+            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
+
+        if (tempService != null && service != tempService)
+            this.service = tempService;
+
         final Optional<WorldOreConfig> oreConfig = service.getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
 
         int var1 = 3, var2 = 6, var3 = 28, var4 = 4;

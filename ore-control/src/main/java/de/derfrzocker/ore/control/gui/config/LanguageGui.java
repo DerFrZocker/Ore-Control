@@ -2,11 +2,11 @@ package de.derfrzocker.ore.control.gui.config;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.spigot.utils.Language;
-import de.derfrzocker.spigot.utils.MessageUtil;
-import de.derfrzocker.spigot.utils.MessageValue;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.InventoryUtil;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.inventory.InventoryClickEvent;
