@@ -16,17 +16,9 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R2 extends World
     @NonNull
     private final Biome biome;
 
-    private OreControlService service;
-
     @Override
     public <C extends WorldGenFeatureConfiguration> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettings> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, final WorldGenerator<C> worldGenerator, C c) {
-        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
-
-        if (service == null && tempService == null)
-            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
-
-        if (tempService != null && service != tempService)
-            service = tempService;
+        final OreControlService service = NMSUtil_v1_13_R2.getOreControlService();
 
         final Optional<WorldOreConfig> oreConfig = service.getWorldOreConfig(generatorAccess.getMinecraftWorld().getWorld());
 

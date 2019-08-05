@@ -7,11 +7,25 @@ import org.bukkit.Bukkit;
 @SuppressWarnings("Duplicates")
 public class NMSUtil_v1_13_R2 {
 
+    private static OreControlService service; //TODO better method
+
+    static OreControlService getOreControlService(){
+        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
+
+        if (service == null && tempService == null)
+            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
+
+        if (tempService != null && service != tempService)
+            service = tempService;
+
+        return service;
+    }
+
     static WorldGenFeatureChanceDecoratorCountConfiguration getCountConfiguration(final WorldOreConfig config, final Ore ore, WorldGenFeatureChanceDecoratorCountConfiguration countConfiguration, final Biome biome) {
         if (ore == null)
             return countConfiguration;
 
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+        final OreControlService service = getOreControlService();
 
         return new WorldGenFeatureChanceDecoratorCountConfiguration(
                 service.getValue(ore, Setting.VEINS_PER_CHUNK, config, biome),
@@ -24,7 +38,7 @@ public class NMSUtil_v1_13_R2 {
         if (ore == null)
             return c;
 
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+        final OreControlService  service = getOreControlService();
 
         return (C) new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.a, ((WorldGenFeatureOreConfiguration) c).d, service.getValue(ore, Setting.VEIN_SIZE, config, biome));
     }
