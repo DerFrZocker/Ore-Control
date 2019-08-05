@@ -118,6 +118,14 @@ settings_item_stack:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       display-name: '%%translation:[setting.HEIGHT_SUBTRACT_VALUE]%'
+  VEINS_PER_BIOME:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: 'VEINS_PER_BIOME //TODO add translation'
 info:
   slot: 17
   item_stack:

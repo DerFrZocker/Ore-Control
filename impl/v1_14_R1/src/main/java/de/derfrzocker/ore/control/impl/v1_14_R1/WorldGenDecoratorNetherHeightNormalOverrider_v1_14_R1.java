@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 
 @SuppressWarnings("Duplicates")
@@ -39,6 +40,47 @@ public class WorldGenDecoratorNetherHeightNormalOverrider_v1_14_R1 extends World
 
         if (ore != null && oreConfig.isPresent() && !service.isActivated(ore, oreConfig.get(), biome))
             return true;
+
+        if (oreConfig.isPresent()) {
+            int veinsPerBiome = service.getValue(ore, Setting.VEINS_PER_BIOME, oreConfig.get(), biome);
+
+            if (veinsPerBiome > 0) {
+                ChunkCoordIntPair chunkCoordIntPair = new ChunkCoordIntPair(blockPosition.getX(), blockPosition.getZ());
+                Set<ChunkCoordIntPair> chunkCoordIntPairs = null;
+
+                try {
+                    chunkCoordIntPairs = NMSUtil_v1_14_R1.getChunkCoordIntPair(chunkGenerator.getWorldChunkManager(), blockPosition.getX(), blockPosition.getZ());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ChunkCoordIntPair[] coordIntPairs = chunkCoordIntPairs.toArray(new ChunkCoordIntPair[0]);
+
+                Random random1 = NMSUtil_v1_14_R1.getRandom(chunkGenerator.getSeed(), coordIntPairs[0].x, coordIntPairs[0].z);
+
+                int veinsAmount = 0;
+
+                if (coordIntPairs.length == 1) {
+                    veinsAmount = veinsPerBiome;
+                } else {
+                    for (int i = 0; i < veinsPerBiome; i++) {
+                        int randomInt = random1.nextInt((coordIntPairs.length - 1));
+                        ChunkCoordIntPair coordIntPair = coordIntPairs[randomInt];
+                        if (coordIntPair.equals(chunkCoordIntPair))
+                            veinsAmount++;
+                    }
+                }
+
+                if (veinsAmount == 0)
+                    return true;
+
+                return super.a(generatorAccess, chunkGenerator, random, blockPosition, new WorldGenFeatureChanceDecoratorCountConfiguration(
+                                veinsAmount,
+                                service.getValue(ore, Setting.MINIMUM_HEIGHT, oreConfig.get(), biome),
+                                service.getValue(ore, Setting.HEIGHT_SUBTRACT_VALUE, oreConfig.get(), biome),
+                                service.getValue(ore, Setting.HEIGHT_RANGE, oreConfig.get(), biome)),
+                        new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, NMSUtil_v1_14_R1.getFeatureConfiguration(oreConfig.get(), ore, worldGenFeatureConfigured.b, biome)));
+            }
+        }
 
         try {
             return oreConfig.
