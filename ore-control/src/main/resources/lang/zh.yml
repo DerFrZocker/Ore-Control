@@ -161,6 +161,7 @@ setting:
   ORES_PER_CHUNK_RANGE: "&r矿石生成规模"
   MINIMUM_HEIGHT: "&r最低生成高度"
   HEIGHT_SUBTRACT_VALUE: "&r生成高度减去值（未知功能，推荐不要设置）"
+  VEINS_PER_BIOME: "&r每个生物群系的静脉"
 gui:
   copy_value_success: "&a复制成功！"
   reset_value_success: "&a已重置"

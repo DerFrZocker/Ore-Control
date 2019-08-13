@@ -125,7 +125,7 @@ settings_item_stack:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: 'VEINS_PER_BIOME //TODO add translation'
+      display-name: '%%translation:[setting.VEINS_PER_BIOME]%'
 info:
   slot: 17
   item_stack:

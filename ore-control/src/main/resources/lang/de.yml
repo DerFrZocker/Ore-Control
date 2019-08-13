@@ -174,6 +174,7 @@ setting:
   ORES_PER_CHUNK_RANGE: "Erze pro Chunk Bereich"
   MINIMUM_HEIGHT: "Mindesthöhe"
   HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
+  VEINS_PER_BIOME: "Adern pro Biome"
 
 gui:
   copy_value_success: "&aDie Werte wurden erfolgreich kopiert!"

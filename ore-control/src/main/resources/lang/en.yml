@@ -170,6 +170,7 @@ setting:
   ORES_PER_CHUNK_RANGE: "Ores per Chunk Range"
   MINIMUM_HEIGHT: "Minimum Height"
   HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
+  VEINS_PER_BIOME: "Veins Per Biome"
 
 gui:
   copy_value_success: "&aCopy the values with Success!"
