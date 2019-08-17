@@ -1,7 +1,8 @@
 package de.derfrzocker.ore.control.impl.v1_13_R1;
 
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.NMSReplacer;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R1.*;
 
 import java.lang.reflect.Field;
@@ -9,10 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("Duplicates")
-public class NMSReplacer_v1_13_R1 implements NMSReplacer {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+class NMSReplacer_v1_13_R1 {
 
-    @Override
-    public void replaceNMS() {
+
+    void replaceNMS() {
         for (Field field : Biomes.class.getFields()) {
             try {
                 replaceBase((BiomeBase) field.get(null));

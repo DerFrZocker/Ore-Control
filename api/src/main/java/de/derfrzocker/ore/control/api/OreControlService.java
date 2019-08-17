@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface OreControlService {
 
-    NMSReplacer getNMSReplacer();
+    NMSService getNMSService();
 
     Optional<WorldOreConfig> getWorldOreConfig(World world);
 

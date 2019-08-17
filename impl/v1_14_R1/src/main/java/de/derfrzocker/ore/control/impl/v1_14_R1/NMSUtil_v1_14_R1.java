@@ -1,127 +1,83 @@
 package de.derfrzocker.ore.control.impl.v1_14_R1;
 
-import com.google.common.collect.Sets;
-import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.NMSUtil;
+import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.OreControlService;
+import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
+import lombok.NonNull;
 import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
-
-import java.util.*;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 
 @SuppressWarnings("Duplicates")
-public class NMSUtil_v1_14_R1 {
+public class NMSUtil_v1_14_R1 implements NMSUtil {
 
-    static WorldGenFeatureChanceDecoratorCountConfiguration getCountConfiguration(final WorldOreConfig config, final Ore ore, WorldGenFeatureChanceDecoratorCountConfiguration countConfiguration, final Biome biome) {
-        if (ore == null)
-            return countConfiguration;
+    private static OreControlService service;
 
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+    static OreControlService getOreControlService() {
+        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
 
-        return new WorldGenFeatureChanceDecoratorCountConfiguration(
-                service.getValue(ore, Setting.VEINS_PER_CHUNK, config, biome),
-                service.getValue(ore, Setting.MINIMUM_HEIGHT, config, biome),
-                service.getValue(ore, Setting.HEIGHT_SUBTRACT_VALUE, config, biome),
-                service.getValue(ore, Setting.HEIGHT_RANGE, config, biome));
+        if (service == null && tempService == null)
+            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
+
+        if (tempService != null && service != tempService)
+            service = tempService;
+
+        return service;
     }
 
-    static <C extends WorldGenFeatureConfiguration> C getFeatureConfiguration(final WorldOreConfig config, final Ore ore, final C c, final Biome biome) {
-        if (ore == null)
-            return c;
-
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
-
-        return (C) new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.Target.NATURAL_STONE, ((WorldGenFeatureOreConfiguration) c).c, service.getValue(ore, Setting.VEIN_SIZE, config, biome));
+    @Override
+    public void replaceNMS() {
+        new NMSReplacer_v1_14_R1().replaceNMS();
     }
 
-    static Ore getOre(final Block block) {
-        if (block == Blocks.DIAMOND_ORE)
+    @Override
+    public Biome getBiome(final @NonNull World world, final @NonNull ChunkCoordIntPair chunkCoordIntPair) {
+        final BiomeBase biomeBase = ((CraftWorld) world).getHandle().getChunkProvider().getChunkGenerator().getWorldChunkManager().getBiome(chunkCoordIntPair.getX() << 4, chunkCoordIntPair.getZ() << 4);
+
+        return Biome.valueOf(IRegistry.BIOME.getKey(biomeBase).getKey().toUpperCase());
+    }
+
+    @Override
+    public Object createFeatureConfiguration(final @NonNull Object defaultFeatureConfiguration, final @NonNull int veinsSize) {
+        return new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.Target.NATURAL_STONE, ((WorldGenFeatureOreConfiguration) defaultFeatureConfiguration).c, veinsSize);
+    }
+
+    @Override
+    public Object createCountConfiguration(final int veinsPerChunk, final int minimumHeight, final int heightSubtractValue, final int heightRange) {
+        return new WorldGenFeatureChanceDecoratorCountConfiguration(veinsPerChunk, minimumHeight, heightSubtractValue, heightRange);
+    }
+
+    @Override
+    public Object createHeightAverageConfiguration(final int veinsPerChunk, final int heightCenter, final int heightRange) {
+        return new WorldGenDecoratorHeightAverageConfiguration(veinsPerChunk, heightCenter, heightRange);
+    }
+
+    @Override
+    public Ore getOre(final @NonNull Object object) {
+        if (object == Blocks.DIAMOND_ORE)
             return Ore.DIAMOND;
-        if (block == Blocks.COAL_ORE)
+        if (object == Blocks.COAL_ORE)
             return Ore.COAL;
-        if (block == Blocks.IRON_ORE)
+        if (object == Blocks.IRON_ORE)
             return Ore.IRON;
-        if (block == Blocks.REDSTONE_ORE)
+        if (object == Blocks.REDSTONE_ORE)
             return Ore.REDSTONE;
-        if (block == Blocks.GOLD_ORE)
+        if (object == Blocks.GOLD_ORE)
             return Ore.GOLD;
-        if (block == Blocks.DIRT)
+        if (object == Blocks.DIRT)
             return Ore.DIRT;
-        if (block == Blocks.GRAVEL)
+        if (object == Blocks.GRAVEL)
             return Ore.GRAVEL;
-        if (block == Blocks.GRANITE)
+        if (object == Blocks.GRANITE)
             return Ore.GRANITE;
-        if (block == Blocks.DIORITE)
+        if (object == Blocks.DIORITE)
             return Ore.DIORITE;
-        if (block == Blocks.ANDESITE)
+        if (object == Blocks.ANDESITE)
             return Ore.ANDESITE;
 
         return null;
     }
-
-    static Random getRandom(long seed, int x, int z) {
-        Random random = new Random(seed);
-
-        long long1 = random.nextLong();
-        long long2 = random.nextLong();
-        long newseed = (long) x * long1 ^ (long) z * long2 ^ seed;
-        random.setSeed(newseed);
-
-        return random;
-    }
-
-    static Set<ChunkCoordIntPair> getChunkCoordIntPair(WorldChunkManager worldChunkManager, int x, int z) { // TODO better algorithms
-        final BiomeBase biomeBase = worldChunkManager.getBiome(x + 8, z + 8);
-
-        Set<ChunkCoordIntPair> chunkCoordIntPairs = new TreeSet<>((o1, o2) -> {
-            if (o1.x < o2.x)
-                return 1;
-
-            if (o1.x > o2.x)
-                return -1;
-
-            if(o1.z < o2.z)
-                return 1;
-
-            if(o1.z > o2.z)
-                return -1;
-
-            return 0;
-        });
-
-        Set<ChunkCoordIntPair> chunkCoordIntPairs2 = Sets.newHashSet(new ChunkCoordIntPair(x, z));
-
-        Iterator<ChunkCoordIntPair> iterator = chunkCoordIntPairs2.iterator();
-
-        while (iterator.hasNext()) {
-            ChunkCoordIntPair chunkCoordIntPair = iterator.next();
-            chunkCoordIntPairs.add(chunkCoordIntPair);
-            chunkCoordIntPairs2.remove(chunkCoordIntPair);
-            Set<ChunkCoordIntPair> set = get(worldChunkManager, chunkCoordIntPair.x, chunkCoordIntPair.z, biomeBase);
-            set.removeAll(chunkCoordIntPairs);
-
-            chunkCoordIntPairs2.addAll(set);
-            iterator = chunkCoordIntPairs2.iterator();
-        }
-
-        return chunkCoordIntPairs;
-    }
-
-    private static Set<ChunkCoordIntPair> get(WorldChunkManager worldChunkManager, int centerX, int centerZ, BiomeBase biome) {
-        Set<ChunkCoordIntPair> chunkCoordIntPairs = new HashSet<>();
-
-        for (int x = -1; x < 2; x++) {
-            for (int z = -1; z < 2; z++) {
-                int newX = centerX + (x * 16);
-                int newZ = centerZ + (z * 16);
-
-                BiomeBase biomeBase = worldChunkManager.getBiome(newX + 8, newZ + 8);
-
-                if (biome.equals(biomeBase)) {
-                    chunkCoordIntPairs.add(new ChunkCoordIntPair(newX, newZ));
-                }
-            }
-        }
-
-        return chunkCoordIntPairs;
-    }
-
 }

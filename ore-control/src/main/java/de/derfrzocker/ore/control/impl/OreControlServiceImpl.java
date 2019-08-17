@@ -1,8 +1,7 @@
-package de.derfrzocker.ore.control;
+package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
-import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import lombok.Getter;
 import lombok.NonNull;
@@ -19,7 +18,7 @@ public class OreControlServiceImpl implements OreControlService {
 
     @Getter
     @NonNull
-    private final NMSReplacer NMSReplacer;
+    private final NMSService NMSService;
 
     @NonNull
     private final WorldOreConfigDao dao;

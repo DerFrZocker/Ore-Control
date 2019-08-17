@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
+import de.derfrzocker.ore.control.impl.OreControlServiceImpl;
 import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
 import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
@@ -54,7 +55,7 @@ public class OreControlUtilTest {
 
         // mock OreControlService
         {
-            final OreControlService oreControlService = new OreControlServiceImpl(mock(NMSReplacer.class), mock(WorldOreConfigDao.class));
+            final OreControlService oreControlService = new OreControlServiceImpl(mock(NMSService.class), mock(WorldOreConfigDao.class));
 
             final ServicesManager servicesManager = mock(ServicesManager.class);
 

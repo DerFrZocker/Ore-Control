@@ -1,15 +1,13 @@
 package de.derfrzocker.ore.control;
 
-import de.derfrzocker.ore.control.api.NMSReplacer;
+import de.derfrzocker.ore.control.api.NMSService;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.command.*;
-import de.derfrzocker.ore.control.impl.BiomeOreSettingsYamlImpl;
-import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
-import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
+import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
-import de.derfrzocker.ore.control.impl.v1_13_R1.NMSReplacer_v1_13_R1;
-import de.derfrzocker.ore.control.impl.v1_13_R2.NMSReplacer_v1_13_R2;
-import de.derfrzocker.ore.control.impl.v1_14_R1.NMSReplacer_v1_14_R1;
+import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
+import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
+import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Version;
@@ -48,7 +46,7 @@ public class OreControl extends JavaPlugin implements Listener {
     @Getter
     private Settings settings; // The Settings of this Plugin, other than the ConfigValues, this Values should not be modified
 
-    private NMSReplacer nmsReplacer = null; // The NMSReplacer, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
+    private NMSService nmsService = null; // The NMSService, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
 
     private final OreControlCommand oreControlCommand = new OreControlCommand(); // The OreControlCommand handler
 
@@ -58,14 +56,14 @@ public class OreControl extends JavaPlugin implements Listener {
         instance = this;
 
         if (Version.getCurrent() == Version.v1_13_R1)
-            nmsReplacer = new NMSReplacer_v1_13_R1();
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1());
         else if (Version.getCurrent() == Version.v1_13_R2)
-            nmsReplacer = new NMSReplacer_v1_13_R2();
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2());
         else if (Version.getCurrent() == Version.v1_14_R1) {
-            nmsReplacer = new NMSReplacer_v1_14_R1();
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1());
         }
         // if no suitable version was found, throw an Exception and stop onLoad part
-        if (nmsReplacer == null)
+        if (nmsService == null)
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
 
         // load the config values of this plugin
@@ -77,8 +75,8 @@ public class OreControl extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        // return if no suitable NMSReplacer was found in onLoad
-        if (nmsReplacer == null)
+        // return if no suitable NMSService was found in onLoad
+        if (nmsService == null)
             return;
 
         final WorldOreConfigYamlDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"));
@@ -86,7 +84,7 @@ public class OreControl extends JavaPlugin implements Listener {
         // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
         Bukkit.getServicesManager().register(OreControlService.class,
                 new OreControlServiceImpl(
-                        nmsReplacer,
+                        nmsService,
                         worldOreConfigYamlDao),
                 this, ServicePriority.Normal);
 
@@ -119,7 +117,7 @@ public class OreControl extends JavaPlugin implements Listener {
 
         // hook in the WorldGenerator, we try this before we register the commands and events, that if something goes wrong here
         // the player see that no command function, and looks in to the log to see if a error happen
-        nmsReplacer.replaceNMS();
+        nmsService.replaceNMS();
 
         // register the command and subcommand's
         registerCommands();

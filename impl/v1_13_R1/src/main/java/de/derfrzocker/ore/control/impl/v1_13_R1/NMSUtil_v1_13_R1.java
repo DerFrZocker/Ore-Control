@@ -1,57 +1,83 @@
 package de.derfrzocker.ore.control.impl.v1_13_R1;
 
-import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.NMSUtil;
+import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.OreControlService;
+import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
+import lombok.NonNull;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 
 @SuppressWarnings("Duplicates")
-public class NMSUtil_v1_13_R1 {
+public class NMSUtil_v1_13_R1 implements NMSUtil {
 
-    static WorldGenFeatureChanceDecoratorCountConfiguration getCountConfiguration(final WorldOreConfig config, final Ore ore, final WorldGenFeatureChanceDecoratorCountConfiguration countConfiguration, final Biome biome) {
-        if (ore == null)
-            return countConfiguration;
+    private static OreControlService service;
 
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+    static OreControlService getOreControlService() {
+        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
 
-        return new WorldGenFeatureChanceDecoratorCountConfiguration(
-                service.getValue(ore, Setting.VEINS_PER_CHUNK, config, biome),
-                service.getValue(ore, Setting.MINIMUM_HEIGHT, config, biome),
-                service.getValue(ore, Setting.HEIGHT_SUBTRACT_VALUE, config, biome),
-                service.getValue(ore, Setting.HEIGHT_RANGE, config, biome));
+        if (service == null && tempService == null)
+            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
+
+        if (tempService != null && service != tempService)
+            service = tempService;
+
+        return service;
     }
 
-    static <C extends WorldGenFeatureConfiguration> C getFeatureConfiguration(final WorldOreConfig config, final Ore ore, final C c, final Biome biome) {
-        if (ore == null)
-            return c;
-
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
-
-        return (C) new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.a, ((WorldGenFeatureOreConfiguration) c).d, service.getValue(ore, Setting.VEIN_SIZE, config, biome));
+    @Override
+    public void replaceNMS() {
+        new NMSReplacer_v1_13_R1().replaceNMS();
     }
 
-    static Ore getOre(final Block block) {
-        if (block == Blocks.DIAMOND_ORE)
+    @Override
+    public Biome getBiome(final @NonNull World world, final @NonNull ChunkCoordIntPair chunkCoordIntPair) {
+        final BiomeBase biomeBase = ((CraftWorld) world).getHandle().getChunkProvider().getChunkGenerator().getWorldChunkManager().getBiome(new BlockPosition(chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4), null);
+
+        return Biome.valueOf(BiomeBase.REGISTRY_ID.b(biomeBase).getKey().toUpperCase());
+    }
+
+    @Override
+    public Object createFeatureConfiguration(final @NonNull Object defaultFeatureConfiguration, final int veinsSize) {
+        return new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.a, ((WorldGenFeatureOreConfiguration) defaultFeatureConfiguration).d, veinsSize);
+    }
+
+    @Override
+    public Object createCountConfiguration(int veinsPerChunk, int minimumHeight, int heightSubtractValue, int heightRange) {
+        return new WorldGenFeatureChanceDecoratorCountConfiguration(veinsPerChunk, minimumHeight, heightSubtractValue, heightRange);
+    }
+
+    @Override
+    public Object createHeightAverageConfiguration(int veinsPerChunk, int heightCenter, int heightRange) {
+        return new WorldGenDecoratorHeightAverageConfiguration(veinsPerChunk, heightCenter, heightRange);
+    }
+
+    @Override
+    public Ore getOre(final @NonNull Object object) {
+        if (object == Blocks.DIAMOND_ORE)
             return Ore.DIAMOND;
-        if (block == Blocks.COAL_ORE)
+        if (object == Blocks.COAL_ORE)
             return Ore.COAL;
-        if (block == Blocks.IRON_ORE)
+        if (object == Blocks.IRON_ORE)
             return Ore.IRON;
-        if (block == Blocks.REDSTONE_ORE)
+        if (object == Blocks.REDSTONE_ORE)
             return Ore.REDSTONE;
-        if (block == Blocks.GOLD_ORE)
+        if (object == Blocks.GOLD_ORE)
             return Ore.GOLD;
-        if (block == Blocks.DIRT)
+        if (object == Blocks.DIRT)
             return Ore.DIRT;
-        if (block == Blocks.GRAVEL)
+        if (object == Blocks.GRAVEL)
             return Ore.GRAVEL;
-        if (block == Blocks.GRANITE)
+        if (object == Blocks.GRANITE)
             return Ore.GRANITE;
-        if (block == Blocks.DIORITE)
+        if (object == Blocks.DIORITE)
             return Ore.DIORITE;
-        if (block == Blocks.ANDESITE)
+        if (object == Blocks.ANDESITE)
             return Ore.ANDESITE;
 
         return null;
     }
-
 }
