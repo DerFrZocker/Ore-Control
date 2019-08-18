@@ -42,7 +42,10 @@ public class NMSUtil_v1_14_R1 implements NMSUtil {
 
     @Override
     public Object createFeatureConfiguration(final @NonNull Object defaultFeatureConfiguration, final @NonNull int veinsSize) {
-        return new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.Target.NATURAL_STONE, ((WorldGenFeatureOreConfiguration) defaultFeatureConfiguration).c, veinsSize);
+        final WorldGenFeatureConfigured<WorldGenFeatureOreConfiguration> worldGenFeatureConfigured = (WorldGenFeatureConfigured<WorldGenFeatureOreConfiguration>) defaultFeatureConfiguration;
+        final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.Target.NATURAL_STONE, (worldGenFeatureConfigured.b).c, veinsSize);
+
+        return new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.a, worldGenFeatureOreConfiguration);
     }
 
     @Override

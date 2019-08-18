@@ -14,7 +14,7 @@ public enum Setting {
     ORES_PER_CHUNK_RANGE(1),
     MINIMUM_HEIGHT(0),
     HEIGHT_SUBTRACT_VALUE(0),
-    VEINS_PER_BIOME(1);
+    VEINS_PER_BIOME(0);
 
     @Getter
     private final int minimumValue;

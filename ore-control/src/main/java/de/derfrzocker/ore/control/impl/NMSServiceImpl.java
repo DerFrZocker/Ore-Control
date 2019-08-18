@@ -92,7 +92,6 @@ public class NMSServiceImpl implements NMSService {
             return passFunction.apply(configuration, featureConfiguration);
 
         } catch (final Exception e) {
-            e.printStackTrace();
             final StringBuilder errorMessage = new StringBuilder("Error while generate Chunk" +
                     ", Worldname: " + worldOreConfig.getName() +
                     ", Ore: " + ore +
