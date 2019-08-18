@@ -94,12 +94,12 @@ public class NMSServiceImpl implements NMSService {
         } catch (final Exception e) {
             e.printStackTrace();
             final StringBuilder errorMessage = new StringBuilder("Error while generate Chunk" +
-                    " Name: " + worldOreConfig.getName() +
-                    " Ore: " + ore +
-                    " Biome: " + biome);
+                    ", Worldname: " + worldOreConfig.getName() +
+                    ", Ore: " + ore +
+                    ", Biome: " + biome);
 
             for (final Setting setting : ore.getSettings())
-                errorMessage.append(" ").append(setting).append(": ").append(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome));
+                errorMessage.append(", ").append(setting).append(": ").append(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome));
 
             throw new RuntimeException(errorMessage.toString(), e);
         }
