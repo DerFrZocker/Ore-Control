@@ -1,26 +1,23 @@
-package de.derfrzocker.ore.control;
+package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.impl.OreSettingsYamlImpl;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore
 public class OreSettingsYamlImplTest {
 
+    //Test OreSettingsYamlImpl Constructor begin
     @Test
     public void When_OreSettingsIsInitialedWithANullValue_Expect_ThrowNullPointerException() {
         assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(null));
         assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(null, new HashMap<>()));
         assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(Ore.EMERALD, null));
+        assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(null, null));
     }
 
     //Test OreSettingsYamlImpl#getOre() begin
@@ -72,5 +69,39 @@ public class OreSettingsYamlImplTest {
     }
 
     //Test OreSettingsYamlImpl#getValue(Setting) end
+
+    //Test OreSettingsYamlImpl#serialize() begin
+
+    @Test
+    public void Serialize_When_OreSettingHasNoValuesAndIsActivated_Expect_ReturnMapWithOneEntry(){
+        for(final Ore ore: Ore.values()) {
+           final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(ore);
+
+            final Map<String, Object> map = oreSettingsYaml.serialize();
+
+            assertSame(1, map.size());
+            assertTrue(map.containsKey("ore"));
+            assertEquals(ore.toString(), map.get("ore"));
+        }
+    }
+
+    @Test
+    public void Serialize_When_OreSettingHasNoValuesAndIsNotActivated_Expect_ReturnMapWithTwoEntry(){
+        for(final Ore ore: Ore.values()) {
+            final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(ore);
+
+            oreSettingsYaml.setActivated(false);
+
+            final Map<String, Object> map = oreSettingsYaml.serialize();
+
+            assertSame(2, map.size());
+            assertTrue(map.containsKey("ore"));
+            assertEquals(ore.toString(), map.get("ore"));
+            assertTrue(map.containsKey("status"));
+            assertFalse((Boolean) map.get("status"));
+        }
+    }
+
+    //Test OreSettingsYamlImpl#serialize() end
 
 }
