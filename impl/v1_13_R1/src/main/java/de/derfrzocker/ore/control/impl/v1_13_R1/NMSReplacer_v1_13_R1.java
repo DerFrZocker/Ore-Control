@@ -1,18 +1,23 @@
 package de.derfrzocker.ore.control.impl.v1_13_R1;
 
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.OreControlService;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R1.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class NMSReplacer_v1_13_R1 {
 
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
 
     void replaceNMS() {
         for (Field field : Biomes.class.getFields()) {
@@ -107,7 +112,7 @@ class NMSReplacer_v1_13_R1 {
         {
             final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
-            field.set(composite, new WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_13_R1(biome));
+            field.set(composite, new WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_13_R1(biome, serviceSupplier));
         }
 
         return true;
@@ -128,7 +133,7 @@ class NMSReplacer_v1_13_R1 {
         {
             final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
-            field.set(composite, new WorldGenDecoratorEmeraldOverrider_v1_13_R1(biome));
+            field.set(composite, new WorldGenDecoratorEmeraldOverrider_v1_13_R1(biome, serviceSupplier));
         }
 
         return true;
@@ -149,7 +154,7 @@ class NMSReplacer_v1_13_R1 {
         {
             final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
-            field.set(composite, new WorldGenDecoratorHeightAverageOverrider_v1_13_R1(biome));
+            field.set(composite, new WorldGenDecoratorHeightAverageOverrider_v1_13_R1(biome, serviceSupplier));
         }
 
         return true;
@@ -166,7 +171,7 @@ class NMSReplacer_v1_13_R1 {
         {
             final Field field = getField(composite.getClass(), "c");
             field.setAccessible(true);
-            field.set(composite, new WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1(biome));
+            field.set(composite, new WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1(biome, serviceSupplier));
         }
     }
 

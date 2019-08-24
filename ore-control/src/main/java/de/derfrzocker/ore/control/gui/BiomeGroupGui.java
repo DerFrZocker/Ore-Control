@@ -2,6 +2,7 @@ package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.Config;
@@ -20,19 +21,24 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
     @NonNull
     private final WorldOreConfig worldOreConfig;
 
-    BiomeGroupGui(final WorldOreConfig worldOreConfig) {
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
+
+    BiomeGroupGui(final WorldOreConfig worldOreConfig, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
+        this.serviceSupplier = serviceSupplier;
         init(BiomeGroups.getInstance().getGroups(), BiomeGroup[]::new, BiomeGui.BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
-        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
-        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
+        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
+        addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig, serviceSupplier).openSync(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(final BiomeGroup biomeGroup) {
@@ -40,7 +46,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     }
 
     private void handleNormalClick(final BiomeGroup biomeGroup, final InventoryClickEvent event) {
-        new OreGui(worldOreConfig, biomeGroup).openSync(event.getWhoClicked());
+        new OreGui(worldOreConfig, biomeGroup, serviceSupplier).openSync(event.getWhoClicked());
     }
 
     private static class BiomeGroups implements ReloadAble {

@@ -4,6 +4,7 @@ import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
@@ -22,6 +23,7 @@ import org.bukkit.permissions.Permissible;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class BiomeGui extends PageGui<Biome> {
 
@@ -30,10 +32,14 @@ public class BiomeGui extends PageGui<Biome> {
 
     private final CopyAction copyAction;
 
-    BiomeGui(final Permissible permissible, final WorldOreConfig worldOreConfig) {
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
+
+    BiomeGui(final Permissible permissible, final WorldOreConfig worldOreConfig, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = null;
+        this.serviceSupplier = serviceSupplier;
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
@@ -47,21 +53,22 @@ public class BiomeGui extends PageGui<Biome> {
         init(biomes.toArray(new Biome[0]), Biome[]::new, BiomeGuiSettings.getInstance(), this::getItemStack, this::handleNormalClick);
 
         addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
-        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
-        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked()).openSync(event.getWhoClicked()));
-        addItem(BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBiomeGroupItemStack()), event -> new BiomeGroupGui(worldOreConfig).openSync(event.getWhoClicked()));
+        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
+        addItem(BiomeGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBackItemStack()), event -> new WorldConfigGui(worldOreConfig, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
+        addItem(BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBiomeGroupItemStack()), event -> new BiomeGroupGui(worldOreConfig, serviceSupplier).openSync(event.getWhoClicked()));
 
         if (Permissions.RESET_VALUE_PERMISSION.hasPermission(permissible))
             addItem(BiomeGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
-            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values())).openSync(event.getWhoClicked()));
+            addItem(BiomeGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyBiomesAction(worldOreConfig, Biome.values(), serviceSupplier), serviceSupplier).openSync(event.getWhoClicked()));
     }
 
-    public BiomeGui(final WorldOreConfig worldOreConfig, final @NonNull CopyAction copyAction) {
+    public BiomeGui(final WorldOreConfig worldOreConfig, final @NonNull CopyAction copyAction, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = copyAction;
+        this.serviceSupplier = serviceSupplier;
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
@@ -82,7 +89,7 @@ public class BiomeGui extends PageGui<Biome> {
     }
 
     private void handleNormalClick(final Biome biome, final InventoryClickEvent event) {
-        new OreGui(worldOreConfig, biome, event.getWhoClicked()).openSync(event.getWhoClicked());
+        new OreGui(worldOreConfig, biome, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked());
     }
 
     private void handleCopyAction(final Biome biome, final InventoryClickEvent event) {
@@ -96,7 +103,7 @@ public class BiomeGui extends PageGui<Biome> {
                 for (Biome biome : Biome.values())
                     OreControlUtil.reset(this.worldOreConfig, biome);
 
-                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
             }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
@@ -106,7 +113,7 @@ public class BiomeGui extends PageGui<Biome> {
         for (Biome biome : Biome.values())
             OreControlUtil.reset(this.worldOreConfig, biome);
 
-        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
         OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 

@@ -2,10 +2,7 @@ package de.derfrzocker.ore.control.gui.copy;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -14,6 +11,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.HumanEntity;
+
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 @Getter
@@ -27,6 +26,9 @@ public class CopyBiomesAction implements CopyAction {
     private final Biome[] biomes;
 
     private WorldOreConfig worldOreConfigTarget = null;
+
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
 
     @Override
     public void setBiomeTarget(final Biome biome) {
@@ -55,7 +57,7 @@ public class CopyBiomesAction implements CopyAction {
                 for (Biome biome : biomes)
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, biome, biome);
 
-                OreControl.getService().saveWorldOreConfig(worldOreConfigTarget);
+                serviceSupplier.get().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);
                 OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
             }, clickEvent1 -> inventoryGui.openSync(humanEntity)).openSync(humanEntity);
@@ -66,7 +68,7 @@ public class CopyBiomesAction implements CopyAction {
         for (Biome biome : biomes)
             OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, biome, biome);
 
-        OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
+        serviceSupplier.get().saveWorldOreConfig(worldOreConfigSource);
         inventoryGui.closeSync(humanEntity);
         OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
     }

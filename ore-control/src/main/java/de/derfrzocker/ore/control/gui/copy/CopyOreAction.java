@@ -2,10 +2,7 @@ package de.derfrzocker.ore.control.gui.copy;
 
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.gui.BiomeGui;
 import de.derfrzocker.ore.control.gui.OreGui;
 import de.derfrzocker.ore.control.gui.WorldConfigGui;
@@ -21,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 @Getter
@@ -45,6 +43,9 @@ public class CopyOreAction implements CopyAction {
 
     private int status = 0;
 
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
+
     @Override
     public void setSettingTarget(final Setting setting) {
         throw new UnsupportedOperationException();
@@ -53,23 +54,23 @@ public class CopyOreAction implements CopyAction {
     @Override
     public void next(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui) {
         if (status == 0) {
-            new WorldConfigGui(worldOreConfigTarget, humanEntity, this).openSync(humanEntity);
+            new WorldConfigGui(worldOreConfigTarget, humanEntity, this, serviceSupplier).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 1) {
             if (chooseBiome)
-                new BiomeGui(worldOreConfigTarget, this).openSync(humanEntity);
+                new BiomeGui(worldOreConfigTarget, this, serviceSupplier).openSync(humanEntity);
             else
-                new OreGui(worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+                new OreGui(worldOreConfigTarget, biomeTarget, this, serviceSupplier).openSync(humanEntity);
 
             status++;
             return;
         }
 
         if (status == 2 && chooseBiome) {
-            new OreGui(worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+            new OreGui(worldOreConfigTarget, biomeTarget, this, serviceSupplier).openSync(humanEntity);
             status++;
             return;
         }
@@ -78,14 +79,14 @@ public class CopyOreAction implements CopyAction {
             if (biomeSource == null)
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, oreTarget);
-                    OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
+                    serviceSupplier.get().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
             else
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, oreTarget);
-                    OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
+                    serviceSupplier.get().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
@@ -98,14 +99,14 @@ public class CopyOreAction implements CopyAction {
             if (biomeSource == null)
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, oreTarget, biomeTarget);
-                    OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
+                    serviceSupplier.get().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });
             else
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, oreTarget, biomeTarget);
-                    OreControl.getService().saveWorldOreConfig(worldOreConfigSource);
+                    serviceSupplier.get().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
                 });

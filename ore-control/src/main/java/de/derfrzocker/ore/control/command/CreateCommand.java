@@ -6,6 +6,8 @@ import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.spigot.utils.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -15,10 +17,15 @@ import org.bukkit.command.TabExecutor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static de.derfrzocker.ore.control.OreControlMessages.*;
 
+@RequiredArgsConstructor
 public class CreateCommand implements TabExecutor {
+
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -33,7 +40,7 @@ public class CreateCommand implements TabExecutor {
         CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
             final String configName = args[0];
 
-            final OreControlService service = OreControl.getService();
+            final OreControlService service = serviceSupplier.get();
 
             final World world = Bukkit.getWorld(configName);
 

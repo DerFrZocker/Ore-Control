@@ -9,6 +9,8 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -18,11 +20,16 @@ import org.bukkit.command.TabExecutor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static de.derfrzocker.ore.control.OreControlMessages.*;
 
+@RequiredArgsConstructor
 public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome command
+
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -64,7 +71,7 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
                 return;
             }
 
-            final OreControlService service = OreControl.getService();
+            final OreControlService service = serviceSupplier.get();
 
             final World world = Bukkit.getWorld(configName);
 
@@ -161,7 +168,7 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
             final String configName = args[3].toLowerCase();
 
             Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(configName)).forEach(list::add);
-            OreControl.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
+            serviceSupplier.get().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
 
             return list;
         }
@@ -179,7 +186,7 @@ public class SetCommand implements TabExecutor { //TODO "merge" set and setbiome
 
             final World world = Bukkit.getWorld(args[3]);
 
-            final Optional<WorldOreConfig> worldOreConfig = OreControl.getService().getWorldOreConfig(args[3]);
+            final Optional<WorldOreConfig> worldOreConfig = serviceSupplier.get().getWorldOreConfig(args[3]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;

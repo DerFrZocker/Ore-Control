@@ -4,10 +4,7 @@ import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.gui.copy.CopySettingAction;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
@@ -26,6 +23,7 @@ import org.bukkit.permissions.Permissible;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAFE;
 import static de.derfrzocker.ore.control.OreControlMessages.SET_NOT_SAFE_WARNING;
@@ -49,7 +47,10 @@ public class SettingsGui extends BasicGui {
 
     private int current = 0;
 
-    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible) {
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
+
+    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), SettingsGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.ore = ore;
@@ -57,11 +58,12 @@ public class SettingsGui extends BasicGui {
         this.biome = biome;
         this.oreSlot = SettingsGuiSettings.getInstance().getOreSlot();
         this.biomeGroup = null;
+        this.serviceSupplier = serviceSupplier;
 
         SettingsGuiSettings.getInstance().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), value.getItemStack()), new SettingConsumer(value.getValue())));
 
         addItem(SettingsGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getBackItemStack()),
-                event -> new OreSettingsGui(worldOreConfig, ore, biome, event.getWhoClicked()).openSync(event.getWhoClicked()));
+                event -> new OreSettingsGui(worldOreConfig, ore, biome, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
 
         addItem(SettingsGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), biome == null ? SettingsGuiSettings.getInstance().getInfoItemStack() : SettingsGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues(false)));
 
@@ -71,10 +73,10 @@ public class SettingsGui extends BasicGui {
             addItem(SettingsGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
-            addItem(SettingsGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopySettingAction(worldOreConfig, ore, biome, setting)).openSync(event.getWhoClicked()));
+            addItem(SettingsGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopySettingAction(worldOreConfig, ore, biome, setting, serviceSupplier), serviceSupplier).openSync(event.getWhoClicked()));
     }
 
-    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final BiomeGroupGui.BiomeGroup biomeGroup) {
+    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final BiomeGroupGui.BiomeGroup biomeGroup, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), SettingsGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.ore = ore;
@@ -82,12 +84,13 @@ public class SettingsGui extends BasicGui {
         this.biome = null;
         this.oreSlot = SettingsGuiSettings.getInstance().getOreSlot();
         this.biomeGroup = biomeGroup;
+        this.serviceSupplier = serviceSupplier;
 
         SettingsGuiSettings.getInstance().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), value.getItemStack()), new SettingBiomeGroupConsumer(value.getValue())));
 
         addItem(SettingsGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues(true)));
         addItem(SettingsGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), SettingsGuiSettings.getInstance().getBackItemStack()),
-                event -> new OreSettingsGui(worldOreConfig, ore, biomeGroup).openSync(event.getWhoClicked()));
+                event -> new OreSettingsGui(worldOreConfig, ore, biomeGroup, serviceSupplier).openSync(event.getWhoClicked()));
 
         updateBiomeGroupItemStack(true);
     }
@@ -123,7 +126,7 @@ public class SettingsGui extends BasicGui {
                 else
                     OreControlUtil.reset(worldOreConfig, ore, setting);
 
-                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
             }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
@@ -134,7 +137,7 @@ public class SettingsGui extends BasicGui {
         else
             OreControlUtil.reset(worldOreConfig, ore, setting);
 
-        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
         OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
@@ -244,7 +247,7 @@ public class SettingsGui extends BasicGui {
             else
                 OreControlUtil.setAmount(ore, setting, worldOreConfig, newValue, biome);
 
-            OreControl.getService().saveWorldOreConfig(worldOreConfig);
+            serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
 
             updateItemStack();
         }
@@ -272,7 +275,7 @@ public class SettingsGui extends BasicGui {
 
             biomeGroup.getBiomes().stream().filter(biome -> Sets.newHashSet(biome.getOres()).contains(ore)).forEach(biome -> OreControlUtil.setAmount(ore, setting, worldOreConfig, current, biome));
 
-            OreControl.getService().saveWorldOreConfig(worldOreConfig);
+            serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
 
             updateBiomeGroupItemStack(false);
         }

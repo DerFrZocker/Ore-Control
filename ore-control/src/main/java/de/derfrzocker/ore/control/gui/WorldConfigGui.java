@@ -5,6 +5,7 @@ import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyWorldOreConfigAction;
@@ -19,6 +20,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
+import java.util.function.Supplier;
+
 public class WorldConfigGui extends BasicGui {
 
     @NonNull
@@ -26,34 +29,39 @@ public class WorldConfigGui extends BasicGui {
 
     private final CopyAction copyAction;
 
-    WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible) {
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
+
+    WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), WorldConfigGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = null;
+        this.serviceSupplier = serviceSupplier;
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible))
-            addItem(WorldConfigGuiSettings.getInstance().getOreItemStackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getOreItemStack()), event -> new OreGui(worldOreConfig, null, event.getWhoClicked()).openSync(event.getWhoClicked()));
+            addItem(WorldConfigGuiSettings.getInstance().getOreItemStackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getOreItemStack()), event -> new OreGui(worldOreConfig, null, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
 
         if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible))
-            addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
+            addItem(WorldConfigGuiSettings.getInstance().getBiomeItemStackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig, serviceSupplier).openSync(event.getWhoClicked()));
 
         if (Permissions.RESET_VALUE_PERMISSION.hasPermission(permissible))
             addItem(WorldConfigGuiSettings.getInstance().getResetValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getResetValueItemStack()), this::handleResetValues);
 
         if (Permissions.COPY_VALUE_PERMISSION.hasPermission(permissible))
-            addItem(WorldConfigGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyWorldOreConfigAction(worldOreConfig)).openSync(event.getWhoClicked()));
+            addItem(WorldConfigGuiSettings.getInstance().getCopyValueSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getCopyValueItemStack()), event -> new WorldGui(new CopyWorldOreConfigAction(worldOreConfig, serviceSupplier), serviceSupplier).openSync(event.getWhoClicked()));
 
         if (Permissions.DELETE_TEMPLATE_PERMISSION.hasPermission(permissible) && worldOreConfig.isTemplate())
             addItem(WorldConfigGuiSettings.getInstance().getTemplateDeleteSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getTemplateDeleteItemStack()), this::handleDeleteTemplate);
 
-        addItem(WorldConfigGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getBackItemStack()), event -> new WorldGui(event.getWhoClicked()).openSync(event.getWhoClicked()));
+        addItem(WorldConfigGuiSettings.getInstance().getBackSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getBackItemStack()), event -> new WorldGui(event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
         addItem(WorldConfigGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
-    public WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible, final @NonNull CopyAction copyAction) {
+    public WorldConfigGui(final WorldOreConfig worldOreConfig, final @NonNull Permissible permissible, final @NonNull CopyAction copyAction, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), WorldConfigGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = copyAction;
+        this.serviceSupplier = serviceSupplier;
 
         if (Permissions.SET_PERMISSION.hasPermission(permissible)) {
             boolean bool = false;
@@ -103,7 +111,7 @@ public class WorldConfigGui extends BasicGui {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 OreControlUtil.reset(this.worldOreConfig);
-                OreControl.getService().saveWorldOreConfig(worldOreConfig);
+                serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
             }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
@@ -111,13 +119,13 @@ public class WorldConfigGui extends BasicGui {
         }
 
         OreControlUtil.reset(worldOreConfig);
-        OreControl.getService().saveWorldOreConfig(worldOreConfig);
+        serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
         OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
     private void handleDeleteTemplate(final InventoryClickEvent event) {
         new VerifyGui(OreControl.getInstance(), clickEvent -> {
-            OreControl.getService().removeWorldOreConfig(worldOreConfig);
+            serviceSupplier.get().removeWorldOreConfig(worldOreConfig);
             closeSync(event.getWhoClicked());
         }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
     }

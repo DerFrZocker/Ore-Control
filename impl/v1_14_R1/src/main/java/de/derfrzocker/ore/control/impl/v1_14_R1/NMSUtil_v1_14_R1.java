@@ -6,31 +6,23 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_14_R1.*;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 
+import java.util.function.Supplier;
+
 @SuppressWarnings("Duplicates")
+@RequiredArgsConstructor
 public class NMSUtil_v1_14_R1 implements NMSUtil {
 
-    private static OreControlService service;
-
-    static OreControlService getOreControlService() {
-        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
-
-        if (service == null && tempService == null)
-            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
-
-        if (tempService != null && service != tempService)
-            service = tempService;
-
-        return service;
-    }
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
 
     @Override
     public void replaceNMS() {
-        new NMSReplacer_v1_14_R1().replaceNMS();
+        new NMSReplacer_v1_14_R1(serviceSupplier).replaceNMS();
     }
 
     @Override

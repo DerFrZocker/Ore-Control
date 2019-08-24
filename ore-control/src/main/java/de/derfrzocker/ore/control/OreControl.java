@@ -25,6 +25,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 public class OreControl extends JavaPlugin implements Listener {
 
@@ -56,11 +57,11 @@ public class OreControl extends JavaPlugin implements Listener {
         instance = this;
 
         if (Version.getCurrent() == Version.v1_13_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1());
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
         else if (Version.getCurrent() == Version.v1_13_R2)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2());
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
         else if (Version.getCurrent() == Version.v1_14_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1());
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
         }
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsService == null)
@@ -139,11 +140,11 @@ public class OreControl extends JavaPlugin implements Listener {
         getCommand("orecontrol").setExecutor(oreControlCommand);
 
         // register all subcommand's to the command handler
-        oreControlCommand.registerExecutor(new SetCommand(), "set");
+        oreControlCommand.registerExecutor(new SetCommand(OreControlServiceSupplier.INSTANCE), "set");
         oreControlCommand.registerExecutor(new ReloadCommand(), "reload");
-        oreControlCommand.registerExecutor(new SetBiomeCommand(), "setbiome");
-        oreControlCommand.registerExecutor(new CreateCommand(), "create");
-        oreControlCommand.registerExecutor(new GuiCommand(), "");
+        oreControlCommand.registerExecutor(new SetBiomeCommand(OreControlServiceSupplier.INSTANCE), "setbiome");
+        oreControlCommand.registerExecutor(new CreateCommand(OreControlServiceSupplier.INSTANCE), "create");
+        oreControlCommand.registerExecutor(new GuiCommand(OreControlServiceSupplier.INSTANCE), "");
 
         final HelpCommand helpCommand = new HelpCommand();
         oreControlCommand.registerExecutor(helpCommand, null);
@@ -174,22 +175,34 @@ public class OreControl extends JavaPlugin implements Listener {
     @EventHandler //TODO maybe extra class
     public void onWorldLoad(WorldLoadEvent event) {
         Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () ->
-                getService().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
+                OreControlServiceSupplier.INSTANCE.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
                     if (value.isTemplate()) {
                         value.setTemplate(false);
-                        getService().saveWorldOreConfig(value);
+                        OreControlServiceSupplier.INSTANCE.get().saveWorldOreConfig(value);
                     }
                 })
         );
     }
 
-    public static OreControlService getService() {
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
+    private static final class OreControlServiceSupplier implements Supplier<OreControlService> {
 
-        if (service == null)
-            throw new IllegalStateException("The Bukkit Service have no " + OreControlService.class.getName() + " registered", new NullPointerException("service can't be null"));
+        private static final OreControlServiceSupplier INSTANCE = new OreControlServiceSupplier();
 
-        return service;
+        private OreControlService service;
+
+        @Override
+        public OreControlService get() {
+            final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
+
+            if (service == null && tempService == null)
+                throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
+
+            if (tempService != null && service != tempService)
+                service = tempService;
+
+            return service;
+        }
+
     }
 
 }

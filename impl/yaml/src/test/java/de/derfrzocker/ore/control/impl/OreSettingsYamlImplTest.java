@@ -1,7 +1,6 @@
 package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
 import org.junit.Test;
 
@@ -73,9 +72,9 @@ public class OreSettingsYamlImplTest {
     //Test OreSettingsYamlImpl#serialize() begin
 
     @Test
-    public void Serialize_When_OreSettingHasNoValuesAndIsActivated_Expect_ReturnMapWithOneEntry(){
-        for(final Ore ore: Ore.values()) {
-           final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(ore);
+    public void Serialize_When_OreSettingHasNoValuesAndIsActivated_Expect_ReturnMapWithOneEntry() {
+        for (final Ore ore : Ore.values()) {
+            final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(ore);
 
             final Map<String, Object> map = oreSettingsYaml.serialize();
 
@@ -86,8 +85,8 @@ public class OreSettingsYamlImplTest {
     }
 
     @Test
-    public void Serialize_When_OreSettingHasNoValuesAndIsNotActivated_Expect_ReturnMapWithTwoEntry(){
-        for(final Ore ore: Ore.values()) {
+    public void Serialize_When_OreSettingHasNoValuesAndIsNotActivated_Expect_ReturnMapWithTwoEntry() {
+        for (final Ore ore : Ore.values()) {
             final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(ore);
 
             oreSettingsYaml.setActivated(false);

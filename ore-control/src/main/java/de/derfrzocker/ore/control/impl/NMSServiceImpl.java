@@ -7,12 +7,12 @@ import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public class NMSServiceImpl implements NMSService {
@@ -21,19 +21,8 @@ public class NMSServiceImpl implements NMSService {
     @Getter
     private final NMSUtil nMSUtil;
 
-    private OreControlService service;
-
-    private OreControlService getOreControlService() {
-        final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
-
-        if (service == null && tempService == null)
-            throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
-
-        if (tempService != null && service != tempService)
-            service = tempService;
-
-        return service;
-    }
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
 
     @Override
     public void replaceNMS() {
@@ -45,7 +34,7 @@ public class NMSServiceImpl implements NMSService {
                             final @NonNull Object defaultConfiguration, final @NonNull Object defaultFeatureConfiguration,
                             final BiFunction<Location, Integer, Boolean> generateFunction, final @NonNull BiFunction<Object, Object, Boolean> passFunction, final @NonNull Random random) {
 
-        final OreControlService service = getOreControlService();
+        final OreControlService service = serviceSupplier.get();
 
         if (ore == null)
             return passFunction.apply(defaultConfiguration, defaultFeatureConfiguration);

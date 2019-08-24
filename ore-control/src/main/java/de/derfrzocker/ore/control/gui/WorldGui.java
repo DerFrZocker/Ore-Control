@@ -22,6 +22,7 @@ import org.bukkit.permissions.Permissible;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 public class WorldGui extends PageGui<String> {
 
@@ -29,11 +30,15 @@ public class WorldGui extends PageGui<String> {
 
     private final CopyAction copyAction;
 
-    public WorldGui(final Permissible permissible) {
+    @NonNull
+    private final Supplier<OreControlService> serviceSupplier;
+
+    public WorldGui(final Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.copyAction = null;
+        this.serviceSupplier = serviceSupplier;
 
-        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked()).openSync(event.getWhoClicked()));
+        init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, (configName, event) -> new WorldConfigGui(getWorldOreConfig(configName), event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked()));
 
         if (Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(permissible))
             addItem(WorldGuiSettings.getInstance().getCreateTemplateSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldGuiSettings.getInstance().getCreateTemplateItemStack()), this::handleCreateTemplate);
@@ -44,9 +49,10 @@ public class WorldGui extends PageGui<String> {
         worldOreConfigs = null;
     }
 
-    WorldGui(final @NonNull CopyAction copyAction) {
+    WorldGui(final @NonNull CopyAction copyAction, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.copyAction = copyAction;
+        this.serviceSupplier = serviceSupplier;
         init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
     }
 
@@ -62,14 +68,14 @@ public class WorldGui extends PageGui<String> {
         if (event.getWhoClicked() instanceof Player) {
             try {
                 Bukkit.getScheduler().callSyncMethod(OreControl.getInstance(), () -> new AnvilGUI(OreControl.getInstance(), (Player) event.getWhoClicked(), OreControlMessages.ANVIL_TITLE.getMessage(), (player, value) -> {
-                    final OreControlService service = OreControl.getService();
+                    final OreControlService service = serviceSupplier.get();
 
                     if (Bukkit.getWorld(value) != null || service.getWorldOreConfig(value).isPresent())
                         return OreControlMessages.ANVIL_NAME_ALREADY_EXISTS.getMessage();
 
                     service.createWorldOreConfigTemplate(value);
 
-                    new WorldGui(player).openSync(event.getWhoClicked());
+                    new WorldGui(player, serviceSupplier).openSync(event.getWhoClicked());
 
                     return "";
                 })).get();
@@ -83,7 +89,7 @@ public class WorldGui extends PageGui<String> {
         final Set<String> configsSet = new LinkedHashSet<>();
 
         Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
-        OreControl.getService().getAllWorldOreConfigs().forEach(value -> worldOreConfigs.put(value.getName(), value));
+        serviceSupplier.get().getAllWorldOreConfigs().forEach(value -> worldOreConfigs.put(value.getName(), value));
 
         worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
         configsSet.addAll(worldOreConfigs.keySet());
@@ -101,7 +107,7 @@ public class WorldGui extends PageGui<String> {
     }
 
     private WorldOreConfig getWorldOreConfig(final String configName) {
-        final OreControlService service = OreControl.getService();
+        final OreControlService service = serviceSupplier.get();
 
         final World world = Bukkit.getWorld(configName);
 
