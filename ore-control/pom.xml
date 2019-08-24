@@ -21,10 +21,6 @@
             <id>wesjd-repo</id>
             <url>https://nexus.wesjd.net/repository/thirdparty/</url>
         </repository>
-        <repository>
-            <id>derfrzocker-repo</id>
-            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
-        </repository>
     </repositories>
 
     <dependencies>
