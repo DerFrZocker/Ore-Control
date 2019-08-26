@@ -20,11 +20,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.13.2</artifactId>
-            <version>1.13.2</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.13.2-simple.jar</systemPath>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
