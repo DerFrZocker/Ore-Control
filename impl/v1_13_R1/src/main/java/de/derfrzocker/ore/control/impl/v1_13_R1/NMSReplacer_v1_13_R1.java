@@ -20,21 +20,21 @@ class NMSReplacer_v1_13_R1 {
     private final Supplier<OreControlService> serviceSupplier;
 
     void replaceNMS() {
-        for (Field field : Biomes.class.getFields()) {
+        for (final Field field : Biomes.class.getFields()) {
             try {
                 replaceBase((BiomeBase) field.get(null));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new RuntimeException("Unexpected error while hook in NMS for Biome field: " + field.getName(), e);
             }
         }
     }
 
-    private void replaceBase(final BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceBase(final @NonNull BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
         final Biome biome;
 
         try {
             biome = Biome.valueOf(BiomeBase.REGISTRY_ID.b(base).getKey().toUpperCase());
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             return;
         }
 
@@ -42,12 +42,12 @@ class NMSReplacer_v1_13_R1 {
 
         final List<WorldGenFeatureComposite<?, ?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
 
-        for (WorldGenFeatureComposite<?, ?> composite : list)
+        for (final WorldGenFeatureComposite<?, ?> composite : list)
             replace(composite, biome);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> get(final BiomeBase base)
+    private Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> get(final @NonNull BiomeBase base)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassCastException {
 
         final Field field = getField(BiomeBase.class, "aX");
@@ -57,10 +57,10 @@ class NMSReplacer_v1_13_R1 {
     }
 
     @SuppressWarnings("rawtypes")
-    private Field getField(final Class clazz, final String fieldName) throws NoSuchFieldException {
+    private Field getField(final @NonNull Class clazz, final @NonNull String fieldName) throws NoSuchFieldException {
         try {
             return clazz.getDeclaredField(fieldName);
-        } catch (NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             final Class superClass = clazz.getSuperclass();
             if (superClass == null) {
                 throw e;
@@ -70,7 +70,7 @@ class NMSReplacer_v1_13_R1 {
         }
     }
 
-    private void replace(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replace(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (replaceBadlandsGold(composite, biome))
             return;
 
@@ -83,7 +83,7 @@ class NMSReplacer_v1_13_R1 {
         replaceNormal(composite, biome);
     }
 
-    private boolean replaceBadlandsGold(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceBadlandsGold(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         final Object object;
 
         {
@@ -118,7 +118,7 @@ class NMSReplacer_v1_13_R1 {
         return true;
     }
 
-    private boolean replaceEmerald(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceEmerald(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         final Object object;
 
         {
@@ -139,7 +139,7 @@ class NMSReplacer_v1_13_R1 {
         return true;
     }
 
-    private boolean replaceLapis(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceLapis(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         final Object object;
 
         {
@@ -160,7 +160,7 @@ class NMSReplacer_v1_13_R1 {
         return true;
     }
 
-    private void replaceNormal(final WorldGenFeatureComposite<?, ?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceNormal(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         {
             final Field field = getField(WorldGenFeatureComposite.class, "b");
             field.setAccessible(true);

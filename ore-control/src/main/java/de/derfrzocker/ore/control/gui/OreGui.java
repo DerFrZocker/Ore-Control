@@ -41,7 +41,7 @@ public class OreGui extends BasicGui {
     @NonNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
+    OreGui(final WorldOreConfig worldOreConfig, final Biome biome, final @NonNull Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), OreGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.biome = biome;
@@ -77,7 +77,7 @@ public class OreGui extends BasicGui {
 
         final Set<Ore> ores = new LinkedHashSet<>();
 
-        for (Ore ore : biome == null ? Ore.values() : biome.getOres()) {
+        for (final Ore ore : biome == null ? Ore.values() : biome.getOres()) {
             if (biome == null) {
                 if (copyAction.shouldSet(ore))
                     ores.add(ore);
@@ -93,7 +93,7 @@ public class OreGui extends BasicGui {
         addItem(OreGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), biome == null ? OreGuiSettings.getInstance().getInfoItemStack() : OreGuiSettings.getInstance().getInfoBiomeItemStack(), getMessagesValues()));
     }
 
-    OreGui(final WorldOreConfig worldOreConfig, final BiomeGroupGui.BiomeGroup biomeGroup, final Supplier<OreControlService> serviceSupplier) {
+    OreGui(final WorldOreConfig worldOreConfig, final @NonNull BiomeGroupGui.BiomeGroup biomeGroup, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), OreGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.biomeGroup = biomeGroup;
@@ -120,7 +120,7 @@ public class OreGui extends BasicGui {
                 new MessageValue("biome", biome == null ? biomeGroup == null ? "" : biomeGroup.getName() : biome.toString())};
     }
 
-    private void handleResetValues(final InventoryClickEvent event) {
+    private void handleResetValues(final @NonNull InventoryClickEvent event) {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 if (biome != null)
@@ -137,17 +137,17 @@ public class OreGui extends BasicGui {
             return;
         }
         if (biome != null)
-            for (Ore ore : biome.getOres())
+            for (final Ore ore : biome.getOres())
                 OreControlUtil.reset(worldOreConfig, ore, biome);
         else
-            for (Ore ore : Ore.values())
+            for (final Ore ore : Ore.values())
                 OreControlUtil.reset(worldOreConfig, ore);
 
         serviceSupplier.get().saveWorldOreConfig(worldOreConfig);
         OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
-    private ItemStack getOreItemStack(final Ore ore) {
+    private ItemStack getOreItemStack(final @NonNull Ore ore) {
         ItemStack itemStack = OreGuiSettings.getInstance().getDefaultOreItemStack();
 
         itemStack.setType(ore.getMaterial());
@@ -223,7 +223,7 @@ public class OreGui extends BasicGui {
         private final Ore ore;
 
         @Override
-        public void accept(final InventoryClickEvent event) {
+        public void accept(final @NonNull InventoryClickEvent event) {
             new OreSettingsGui(worldOreConfig, ore, biome, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked());
         }
     }
@@ -235,7 +235,7 @@ public class OreGui extends BasicGui {
         private final Ore ore;
 
         @Override
-        public void accept(final InventoryClickEvent event) {
+        public void accept(final @NonNull InventoryClickEvent event) {
             copyAction.setOreTarget(ore);
 
             copyAction.next(event.getWhoClicked(), OreGui.this);
@@ -248,7 +248,7 @@ public class OreGui extends BasicGui {
         private final Ore ore;
 
         @Override
-        public void accept(final InventoryClickEvent event) {
+        public void accept(final @NonNull InventoryClickEvent event) {
             new OreSettingsGui(worldOreConfig, ore, biomeGroup, serviceSupplier).openSync(event.getWhoClicked());
         }
     }

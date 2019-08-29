@@ -93,7 +93,7 @@ public class NMSServiceImpl implements NMSService {
         }
     }
 
-    private int calculateVeinsPerChunk(final World world, final Biome biome, final ChunkCoordIntPair chunkCoordIntPair, final int veinsPerBiome) {
+    private int calculateVeinsPerChunk(final @NonNull World world, final @NonNull Biome biome, final @NonNull ChunkCoordIntPair chunkCoordIntPair, final int veinsPerBiome) {
         final Set<ChunkCoordIntPair> chunkCoordIntPairs = getChunkCoordIntPairs(world, biome, chunkCoordIntPair);
         final ChunkCoordIntPair[] coordIntPairs = chunkCoordIntPairs.toArray(new ChunkCoordIntPair[0]);
 
@@ -105,8 +105,8 @@ public class NMSServiceImpl implements NMSService {
             return veinsPerBiome;
         } else {
             for (int i = 0; i < veinsPerBiome; i++) {
-                int randomInt = random.nextInt((coordIntPairs.length - 1));
-                ChunkCoordIntPair coordIntPair = coordIntPairs[randomInt];
+                final int randomInt = random.nextInt((coordIntPairs.length - 1));
+                final ChunkCoordIntPair coordIntPair = coordIntPairs[randomInt];
                 if (coordIntPair.equals(chunkCoordIntPair))
                     veinsAmount++;
             }
@@ -115,7 +115,7 @@ public class NMSServiceImpl implements NMSService {
         return veinsAmount;
     }
 
-    private Set<ChunkCoordIntPair> getChunkCoordIntPairs(final World world, final Biome biome, final ChunkCoordIntPair chunkCoordIntPair) {
+    private Set<ChunkCoordIntPair> getChunkCoordIntPairs(final @NonNull World world, final @NonNull Biome biome, final @NonNull ChunkCoordIntPair chunkCoordIntPair) {
         final Set<ChunkCoordIntPair> chunkCoordIntPairs = new TreeSet<>();
 
         final Set<ChunkCoordIntPair> chunkCoordIntPairsToCheck = Sets.newHashSet(chunkCoordIntPair);
@@ -139,7 +139,7 @@ public class NMSServiceImpl implements NMSService {
 
     }
 
-    private Set<ChunkCoordIntPair> getSurroundedChunkCoordIntPairs(final World world, final Biome biome, final ChunkCoordIntPair chunkCoordIntPair) {
+    private Set<ChunkCoordIntPair> getSurroundedChunkCoordIntPairs(final @NonNull World world, final @NonNull Biome biome, final @NonNull ChunkCoordIntPair chunkCoordIntPair) {
         final Set<ChunkCoordIntPair> chunkCoordIntPairs = new HashSet<>();
 
         for (int x = -1; x < 2; x++) {

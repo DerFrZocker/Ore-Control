@@ -22,21 +22,21 @@ class NMSReplacer_v1_14_R1 {
     private final Supplier<OreControlService> serviceSupplier;
 
     void replaceNMS() {
-        for (Field field : Biomes.class.getFields()) {
+        for (final Field field : Biomes.class.getFields()) {
             try {
                 replaceBase((BiomeBase) field.get(null));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new RuntimeException("Unexpected error while hook in NMS for Biome field: " + field.getName(), e);
             }
         }
     }
 
-    private void replaceBase(final BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceBase(final @NonNull BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
         final Biome biome;
 
         try {
             biome = Biome.valueOf(IRegistry.BIOME.getKey(base).getKey().toUpperCase());
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             return;
         }
 
@@ -44,12 +44,12 @@ class NMSReplacer_v1_14_R1 {
 
         final List<WorldGenFeatureConfigured<?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
 
-        for (WorldGenFeatureConfigured<?> composite : list)
+        for (final WorldGenFeatureConfigured<?> composite : list)
             replace(composite, biome);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<WorldGenStage.Decoration, List<WorldGenFeatureConfigured<?>>> get(final BiomeBase base)
+    private Map<WorldGenStage.Decoration, List<WorldGenFeatureConfigured<?>>> get(final @NonNull BiomeBase base)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassCastException {
 
         final Field field = getField(BiomeBase.class, "r");
@@ -59,10 +59,10 @@ class NMSReplacer_v1_14_R1 {
     }
 
     @SuppressWarnings("rawtypes")
-    private Field getField(final Class clazz, final String fieldName) throws NoSuchFieldException {
+    private Field getField(final @NonNull Class clazz, final @NonNull String fieldName) throws NoSuchFieldException {
         try {
             return clazz.getDeclaredField(fieldName);
-        } catch (NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             final Class superClass = clazz.getSuperclass();
             if (superClass == null) {
                 throw e;
@@ -72,7 +72,7 @@ class NMSReplacer_v1_14_R1 {
         }
     }
 
-    private void replace(final WorldGenFeatureConfigured<?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replace(final @NonNull WorldGenFeatureConfigured<?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (replaceBadlandsGold(composite, biome))
             return;
 
@@ -85,7 +85,7 @@ class NMSReplacer_v1_14_R1 {
         replaceNormal(composite, biome);
     }
 
-    private boolean replaceBadlandsGold(final WorldGenFeatureConfigured<?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceBadlandsGold(final @NonNull WorldGenFeatureConfigured<?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (!(composite.b instanceof WorldGenFeatureCompositeConfiguration))
             return false;
 
@@ -117,7 +117,7 @@ class NMSReplacer_v1_14_R1 {
         return true;
     }
 
-    private boolean replaceEmerald(final WorldGenFeatureConfigured<?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceEmerald(final @NonNull WorldGenFeatureConfigured<?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (!(composite.b instanceof WorldGenFeatureCompositeConfiguration))
             return false;
 
@@ -135,7 +135,7 @@ class NMSReplacer_v1_14_R1 {
         return true;
     }
 
-    private boolean replaceLapis(final WorldGenFeatureConfigured<?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceLapis(final @NonNull WorldGenFeatureConfigured<?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (!(composite.b instanceof WorldGenFeatureCompositeConfiguration))
             return false;
 
@@ -153,7 +153,7 @@ class NMSReplacer_v1_14_R1 {
         return true;
     }
 
-    private void replaceNormal(final WorldGenFeatureConfigured<?> composite, final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceNormal(final @NonNull WorldGenFeatureConfigured<?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (!(composite.b instanceof WorldGenFeatureCompositeConfiguration))
             return;
 
@@ -170,21 +170,21 @@ class NMSReplacer_v1_14_R1 {
     }
 
     @SuppressWarnings("unchecked")
-    private Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration> getDynamicFunction(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
+    private Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration> getDynamicFunction(final @NonNull WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
         final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration>) field.get(worldGenDecorator);
     }
 
     @SuppressWarnings("unchecked")
-    private Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> getDynamicFunction1(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
+    private Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> getDynamicFunction1(final @NonNull WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
         final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration>) field.get(worldGenDecorator);
     }
 
     @SuppressWarnings("unchecked")
-    private Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration> getDynamicFunction2(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
+    private Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration> getDynamicFunction2(final @NonNull WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
         final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration>) field.get(worldGenDecorator);

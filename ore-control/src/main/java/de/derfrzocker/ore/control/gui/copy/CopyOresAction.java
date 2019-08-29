@@ -45,12 +45,12 @@ public class CopyOresAction implements CopyAction {
     private final Supplier<OreControlService> serviceSupplier;
 
     @Override
-    public void setSettingTarget(final Setting setting) {
+    public void setSettingTarget(final @NonNull Setting setting) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setOreTarget(final Ore ore) {
+    public void setOreTarget(final @NonNull Ore ore) {
         throw new UnsupportedOperationException();
     }
 
@@ -89,12 +89,12 @@ public class CopyOresAction implements CopyAction {
             openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                 if (biomeSource == null) {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
-                    for (Ore ore : oresSource)
+                    for (final Ore ore : oresSource)
                         if (oreSet.contains(ore))
                             OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, ore, biomeTarget);
                 } else {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
-                    for (Ore ore : oresSource)
+                    for (final Ore ore : oresSource)
                         if (oreSet.contains(ore))
                             OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore, biomeTarget);
                 }
@@ -109,7 +109,7 @@ public class CopyOresAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Biome biome) {
+    public boolean shouldSet(final @NonNull Biome biome) {
         if (biomeSource == null)
             return true;
 
@@ -120,17 +120,17 @@ public class CopyOresAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Ore ore) {
+    public boolean shouldSet(final @NonNull Ore ore) {
         return (worldOreConfigTarget != worldOreConfigSource && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName())) || biomeSource != null;
     }
 
     @Override
-    public boolean shouldSet(final Ore ore, final Biome biome) {
+    public boolean shouldSet(final @NonNull Ore ore, final @NonNull Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final Setting setting) {
+    public boolean shouldSet(final @NonNull Setting setting) {
         throw new UnsupportedOperationException();
     }
 

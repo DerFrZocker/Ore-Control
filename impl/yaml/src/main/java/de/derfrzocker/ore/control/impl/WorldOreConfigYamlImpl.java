@@ -53,7 +53,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     }
 
     @Override
-    public void setOreSettings(final OreSettings oreSettings) {
+    public void setOreSettings(final @NonNull OreSettings oreSettings) {
         this.oreSettings.put(oreSettings.getOre(), oreSettings);
     }
 
@@ -63,12 +63,12 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     }
 
     @Override
-    public void setBiomeOreSettings(final BiomeOreSettings biomeOreSettings) {
+    public void setBiomeOreSettings(final @NonNull BiomeOreSettings biomeOreSettings) {
         this.biomeOreSettings.put(biomeOreSettings.getBiome(), biomeOreSettings);
     }
 
     @Override
-    public WorldOreConfig clone(String name) {
+    public WorldOreConfig clone(@NonNull String name) {
         return new WorldOreConfigYamlImpl(name, template, oreSettings, biomeOreSettings);
     }
 
@@ -102,7 +102,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
         return map;
     }
 
-    public static WorldOreConfigYamlImpl deserialize(final Map<String, Object> map) {
+    public static WorldOreConfigYamlImpl deserialize(final @NonNull Map<String, Object> map) {
         final Map<Ore, OreSettings> oreSettings = new HashMap<>();
         final Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
         final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);

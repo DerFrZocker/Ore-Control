@@ -35,7 +35,7 @@ public class BiomeGui extends PageGui<Biome> {
     @NonNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    BiomeGui(final Permissible permissible, final WorldOreConfig worldOreConfig, final Supplier<OreControlService> serviceSupplier) {
+    BiomeGui(final @NonNull Permissible permissible, final WorldOreConfig worldOreConfig, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.copyAction = null;
@@ -43,7 +43,7 @@ public class BiomeGui extends PageGui<Biome> {
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
-        for (Biome biome : Biome.values()) {
+        for (final Biome biome : Biome.values()) {
             if (Version.getCurrent().isNewerVersion(biome.getSince()))
                 continue;
 
@@ -72,7 +72,7 @@ public class BiomeGui extends PageGui<Biome> {
 
         final Set<Biome> biomes = new LinkedHashSet<>();
 
-        for (Biome biome : Biome.values()) {
+        for (final Biome biome : Biome.values()) {
             if (Version.getCurrent().isNewerVersion(biome.getSince()))
                 continue;
 
@@ -84,20 +84,20 @@ public class BiomeGui extends PageGui<Biome> {
         addItem(BiomeGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
-    private ItemStack getItemStack(final Biome biome) {
+    private ItemStack getItemStack(final @NonNull Biome biome) {
         return MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGuiSettings.getInstance().getBiomeItemStack(biome.toString()));
     }
 
-    private void handleNormalClick(final Biome biome, final InventoryClickEvent event) {
+    private void handleNormalClick(final @NonNull Biome biome, final @NonNull InventoryClickEvent event) {
         new OreGui(worldOreConfig, biome, event.getWhoClicked(), serviceSupplier).openSync(event.getWhoClicked());
     }
 
-    private void handleCopyAction(final Biome biome, final InventoryClickEvent event) {
+    private void handleCopyAction(final @NonNull Biome biome, final @NonNull InventoryClickEvent event) {
         copyAction.setBiomeTarget(biome);
         copyAction.next(event.getWhoClicked(), this);
     }
 
-    private void handleResetValues(final InventoryClickEvent event) {
+    private void handleResetValues(final @NonNull InventoryClickEvent event) {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 for (Biome biome : Biome.values())
@@ -110,7 +110,7 @@ public class BiomeGui extends PageGui<Biome> {
             return;
         }
 
-        for (Biome biome : Biome.values())
+        for (final Biome biome : Biome.values())
             OreControlUtil.reset(this.worldOreConfig, biome);
 
         serviceSupplier.get().saveWorldOreConfig(worldOreConfig);

@@ -47,7 +47,7 @@ public class CopyOreAction implements CopyAction {
     private final Supplier<OreControlService> serviceSupplier;
 
     @Override
-    public void setSettingTarget(final Setting setting) {
+    public void setSettingTarget(final @NonNull Setting setting) {
         throw new UnsupportedOperationException();
     }
 
@@ -118,7 +118,7 @@ public class CopyOreAction implements CopyAction {
 
     @Override
     public boolean shouldSet(final Biome biome) {
-        for (Ore ore : biome.getOres())
+        for (final Ore ore : biome.getOres())
             if (Arrays.equals(ore.getSettings(), oreSource.getSettings()))
                 return true;
 
@@ -126,7 +126,7 @@ public class CopyOreAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Ore ore) {
+    public boolean shouldSet(final @NonNull Ore ore) {
         if (!Arrays.equals(ore.getSettings(), oreSource.getSettings()))
             return false;
 
@@ -140,7 +140,7 @@ public class CopyOreAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Ore ore, final Biome biome) {
+    public boolean shouldSet(final @NonNull Ore ore, final @NonNull Biome biome) {
         if (!Arrays.equals(ore.getSettings(), oreSource.getSettings()))
             return false;
 
@@ -157,7 +157,7 @@ public class CopyOreAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Setting setting) {
+    public boolean shouldSet(final @NonNull Setting setting) {
         throw new UnsupportedOperationException();
     }
 

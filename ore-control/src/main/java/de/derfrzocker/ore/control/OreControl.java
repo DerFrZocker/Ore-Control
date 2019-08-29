@@ -151,7 +151,7 @@ public class OreControl extends JavaPlugin implements Listener {
         oreControlCommand.registerExecutor(helpCommand, "help");
     }
 
-    private void checkFile(String name) {
+    private void checkFile(final @NonNull String name) {
         final File file = new File(getDataFolder(), name);
 
         if (!file.exists())
@@ -173,7 +173,7 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     @EventHandler //TODO maybe extra class
-    public void onWorldLoad(WorldLoadEvent event) {
+    public void onWorldLoad(final @NonNull WorldLoadEvent event) {
         Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () ->
                 OreControlServiceSupplier.INSTANCE.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
                     if (value.isTemplate()) {

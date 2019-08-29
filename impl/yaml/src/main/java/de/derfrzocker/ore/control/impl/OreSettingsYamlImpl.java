@@ -69,7 +69,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
         return oreSettingsYaml;
     }
 
-    public static OreSettingsYamlImpl deserialize(final Map<String, Object> map) {
+    public static OreSettingsYamlImpl deserialize(final @NonNull Map<String, Object> map) {
         final Map<Setting, Integer> settings = new LinkedHashMap<>();
         final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 

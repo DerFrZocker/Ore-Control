@@ -67,27 +67,27 @@ public class OreControlServiceImpl implements OreControlService {
     }
 
     @Override
-    public int getValue(final Ore ore, final Setting setting, final WorldOreConfig worldOreConfig, final Biome biome) {
+    public int getValue(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig worldOreConfig, final @NonNull Biome biome) {
         return OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
     }
 
     @Override
-    public boolean isActivated(final Ore ore, final WorldOreConfig worldOreConfig, final Biome biome) {
+    public boolean isActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig worldOreConfig, final @NonNull Biome biome) {
         return OreControlUtil.isActivated(ore, worldOreConfig, biome);
     }
 
     @Override
-    public boolean isOre(final String string) {
+    public boolean isOre(final @NonNull String string) {
         return OreControlUtil.isOre(string);
     }
 
     @Override
-    public boolean isBiome(final String string) {
+    public boolean isBiome(final @NonNull String string) {
         return OreControlUtil.isBiome(string);
     }
 
     @Override
-    public boolean isSetting(final String string) {
+    public boolean isSetting(final @NonNull String string) {
         return OreControlUtil.isSetting(string);
     }
 }

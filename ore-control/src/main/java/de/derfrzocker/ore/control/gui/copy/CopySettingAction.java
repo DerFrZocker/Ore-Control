@@ -51,7 +51,7 @@ public class CopySettingAction implements CopyAction {
     private final Supplier<OreControlService> serviceSupplier;
 
     @Override
-    public void next(HumanEntity humanEntity, InventoryGui inventoryGui) {
+    public void next(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui) {
         if (status == 0) {
             new WorldConfigGui(worldOreConfigTarget, humanEntity, this, serviceSupplier).openSync(humanEntity);
             status++;
@@ -128,22 +128,22 @@ public class CopySettingAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Biome biome) {
+    public boolean shouldSet(final @NonNull Biome biome) {
         return true;
     }
 
     @Override
-    public boolean shouldSet(final Ore ore) {
+    public boolean shouldSet(final @NonNull Ore ore) {
         return true;
     }
 
     @Override
-    public boolean shouldSet(final Ore ore, final Biome biome) {
+    public boolean shouldSet(final @NonNull Ore ore, final @NonNull Biome biome) {
         return true;
     }
 
     @Override
-    public boolean shouldSet(final Setting setting) {
+    public boolean shouldSet(final @NonNull Setting setting) {
         if (biomeSource != biomeTarget)
             return true;
 
@@ -156,7 +156,7 @@ public class CopySettingAction implements CopyAction {
         return settingSource != setting;
     }
 
-    private void openVerifyIfNeeded(final HumanEntity humanEntity, final InventoryGui inventoryGui, final Consumer<InventoryClickEvent> acceptAction) {
+    private void openVerifyIfNeeded(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui, final @NonNull Consumer<InventoryClickEvent> acceptAction) {
         if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
             new VerifyGui(OreControl.getInstance(), acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).openSync(humanEntity);
             return;

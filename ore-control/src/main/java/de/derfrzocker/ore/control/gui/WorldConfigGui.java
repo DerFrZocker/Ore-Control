@@ -79,7 +79,7 @@ public class WorldConfigGui extends BasicGui {
         if (Permissions.SET_BIOME_PERMISSION.hasPermission(permissible)) {
             boolean bool = false;
 
-            for (Biome biome : Biome.values())
+            for (final Biome biome : Biome.values())
                 if (copyAction.shouldSet(biome)) {
                     bool = true;
                     break;
@@ -93,12 +93,12 @@ public class WorldConfigGui extends BasicGui {
         addItem(WorldConfigGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), WorldConfigGuiSettings.getInstance().getInfoItemStack(), getMessagesValues()));
     }
 
-    private void handleCopyAction(final InventoryClickEvent event) {
+    private void handleCopyAction(final @NonNull InventoryClickEvent event) {
         copyAction.setChooseBiome(false);
         copyAction.next(event.getWhoClicked(), this);
     }
 
-    private void handleCopyActionBiome(final InventoryClickEvent event) {
+    private void handleCopyActionBiome(final @NonNull InventoryClickEvent event) {
         copyAction.setChooseBiome(true);
         copyAction.next(event.getWhoClicked(), this);
     }
@@ -107,7 +107,7 @@ public class WorldConfigGui extends BasicGui {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
     }
 
-    private void handleResetValues(final InventoryClickEvent event) {
+    private void handleResetValues(final @NonNull InventoryClickEvent event) {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 OreControlUtil.reset(this.worldOreConfig);
@@ -123,7 +123,7 @@ public class WorldConfigGui extends BasicGui {
         OreControlMessages.RESET_VALUE_SUCCESS.sendMessage(event.getWhoClicked());
     }
 
-    private void handleDeleteTemplate(final InventoryClickEvent event) {
+    private void handleDeleteTemplate(final @NonNull InventoryClickEvent event) {
         new VerifyGui(OreControl.getInstance(), clickEvent -> {
             serviceSupplier.get().removeWorldOreConfig(worldOreConfig);
             closeSync(event.getWhoClicked());

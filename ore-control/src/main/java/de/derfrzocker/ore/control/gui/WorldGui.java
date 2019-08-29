@@ -33,7 +33,7 @@ public class WorldGui extends PageGui<String> {
     @NonNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    public WorldGui(final Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
+    public WorldGui(final @NonNull Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance());
         this.copyAction = null;
         this.serviceSupplier = serviceSupplier;
@@ -56,7 +56,7 @@ public class WorldGui extends PageGui<String> {
         init(getStrings(), String[]::new, WorldGuiSettings.getInstance(), this::getItemStack, this::handleCopyAction);
     }
 
-    private ItemStack getItemStack(final String value) {
+    private ItemStack getItemStack(final @NonNull String value) {
         if (worldOreConfigs.containsKey(value) && worldOreConfigs.get(value).isTemplate())
             return MessageUtil.replaceItemStack(OreControl.getInstance(), WorldGuiSettings.getInstance().getTemplateItemStack(), new MessageValue("template", value));
         else
@@ -64,7 +64,7 @@ public class WorldGui extends PageGui<String> {
     }
 
 
-    private void handleCreateTemplate(final InventoryClickEvent event) {
+    private void handleCreateTemplate(final @NonNull InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player) {
             try {
                 Bukkit.getScheduler().callSyncMethod(OreControl.getInstance(), () -> new AnvilGUI(OreControl.getInstance(), (Player) event.getWhoClicked(), OreControlMessages.ANVIL_TITLE.getMessage(), (player, value) -> {
@@ -79,7 +79,7 @@ public class WorldGui extends PageGui<String> {
 
                     return "";
                 })).get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (final InterruptedException | ExecutionException e) {
                 throw new RuntimeException("Unexpected Error while create Template", e);
             }
         }
@@ -100,13 +100,13 @@ public class WorldGui extends PageGui<String> {
         return configsSet.toArray(new String[0]);
     }
 
-    private void handleCopyAction(final String configName, final InventoryClickEvent event) {
+    private void handleCopyAction(final @NonNull String configName, final @NonNull InventoryClickEvent event) {
         copyAction.setWorldOreConfigTarget(getWorldOreConfig(configName));
 
         copyAction.next(event.getWhoClicked(), this);
     }
 
-    private WorldOreConfig getWorldOreConfig(final String configName) {
+    private WorldOreConfig getWorldOreConfig(final @NonNull String configName) {
         final OreControlService service = serviceSupplier.get();
 
         final World world = Bukkit.getWorld(configName);

@@ -31,12 +31,12 @@ public class CopyBiomesAction implements CopyAction {
     private final Supplier<OreControlService> serviceSupplier;
 
     @Override
-    public void setBiomeTarget(final Biome biome) {
+    public void setBiomeTarget(final @NonNull Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSettingTarget(final Setting setting) {
+    public void setSettingTarget(final @NonNull Setting setting) {
         throw new UnsupportedOperationException();
     }
 
@@ -46,7 +46,7 @@ public class CopyBiomesAction implements CopyAction {
     }
 
     @Override
-    public void setOreTarget(final Ore ore) {
+    public void setOreTarget(final @NonNull Ore ore) {
         throw new UnsupportedOperationException();
     }
 
@@ -74,22 +74,22 @@ public class CopyBiomesAction implements CopyAction {
     }
 
     @Override
-    public boolean shouldSet(final Biome biome) {
+    public boolean shouldSet(final @NonNull Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final Ore ore) {
+    public boolean shouldSet(final @NonNull Ore ore) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final Ore ore, final Biome biome) {
+    public boolean shouldSet(final @NonNull Ore ore, final @NonNull Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final Setting setting) {
+    public boolean shouldSet(final @NonNull Setting setting) {
         throw new UnsupportedOperationException();
     }
 

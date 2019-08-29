@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class WorldOreConfigYamlDao extends BasicYamlDao<String, WorldOreConfig> implements WorldOreConfigDao {
 
-    public WorldOreConfigYamlDao(File file) {
+    public WorldOreConfigYamlDao(final @NonNull File file) {
         super(file);
     }
 

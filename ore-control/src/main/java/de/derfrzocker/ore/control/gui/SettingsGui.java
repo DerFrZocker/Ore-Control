@@ -50,7 +50,7 @@ public class SettingsGui extends BasicGui {
     @NonNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
+    SettingsGui(final WorldOreConfig worldOreConfig, final Ore ore, final Setting setting, final Biome biome, final @NonNull Permissible permissible, final Supplier<OreControlService> serviceSupplier) {
         super(OreControl.getInstance(), SettingsGuiSettings.getInstance());
         this.worldOreConfig = worldOreConfig;
         this.ore = ore;
@@ -95,7 +95,7 @@ public class SettingsGui extends BasicGui {
         updateBiomeGroupItemStack(true);
     }
 
-    private MessageValue[] getMessagesValues(boolean firstUpdate) {
+    private MessageValue[] getMessagesValues(final boolean firstUpdate) {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName()),
                 new MessageValue("biome", biome == null ? biomeGroup == null ? "" : biomeGroup.getName() : biome.toString()),
                 new MessageValue("ore", ore.toString()),
@@ -111,14 +111,14 @@ public class SettingsGui extends BasicGui {
         addItem(oreSlot, itemStack);
     }
 
-    private void updateBiomeGroupItemStack(boolean firstUpdate) {
+    private void updateBiomeGroupItemStack(final boolean firstUpdate) {
         ItemStack itemStack = SettingsGuiSettings.getInstance().getDefaultBiomeOreItemStack();
         itemStack.setType(ore.getMaterial());
         itemStack = MessageUtil.replaceItemStack(OreControl.getInstance(), itemStack, getMessagesValues(firstUpdate));
         addItem(oreSlot, itemStack);
     }
 
-    private void handleResetValues(final InventoryClickEvent event) {
+    private void handleResetValues(final @NonNull InventoryClickEvent event) {
         if (OreControl.getInstance().getConfigValues().verifyResetAction()) {
             new VerifyGui(OreControl.getInstance(), clickEvent -> {
                 if (biome != null)
@@ -229,7 +229,7 @@ public class SettingsGui extends BasicGui {
         private final int value;
 
         @Override
-        public void accept(final InventoryClickEvent event) {
+        public void accept(final @NonNull InventoryClickEvent event) {
             int current = biome == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
 
             int newValue = current + value;
@@ -260,7 +260,7 @@ public class SettingsGui extends BasicGui {
         private final int value;
 
         @Override
-        public void accept(final InventoryClickEvent event) {
+        public void accept(final @NonNull InventoryClickEvent event) {
             int newValue = current + value;
 
             if (OreControlUtil.isUnSafe(setting, newValue)) {

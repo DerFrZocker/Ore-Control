@@ -24,7 +24,7 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
     @Getter
     private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
-    public BiomeOreSettingsYamlImpl(final Biome biome, final Map<Ore, OreSettings> oreSettings) {
+    public BiomeOreSettingsYamlImpl(final @NonNull Biome biome, final @NonNull Map<Ore, OreSettings> oreSettings) {
         this.biome = biome;
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
@@ -65,7 +65,7 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
 
 
     @SuppressWarnings("Duplicates")
-    public static BiomeOreSettingsYamlImpl deserialize(final Map<String, Object> map) {
+    public static BiomeOreSettingsYamlImpl deserialize(final @NonNull Map<String, Object> map) {
         final Map<Ore, OreSettings> oreSettings = new HashMap<>();
         final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 

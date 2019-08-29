@@ -57,12 +57,12 @@ public class ConfigValues implements ReloadAble {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public class Set {
 
-        public void setLanguage(final Language language) {
+        public void setLanguage(final @NonNull Language language) {
             yaml.set("language", language.toString());
 
             try {
                 yaml.save(file);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException("Error while save config.yml, while set language to: " + language, e);
             }
         }
@@ -72,7 +72,7 @@ public class ConfigValues implements ReloadAble {
 
             try {
                 yaml.save(file);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException("Error while save config.yml, while set safe_mode to: " + bool, e);
             }
         }
@@ -82,7 +82,7 @@ public class ConfigValues implements ReloadAble {
 
             try {
                 yaml.save(file);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException("Error while save config.yml, while set translate_tab_compilation to: " + bool, e);
             }
         }
@@ -92,7 +92,7 @@ public class ConfigValues implements ReloadAble {
 
             try {
                 yaml.save(file);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException("Error while save config.yml, while set verify.copy_action to: " + bool, e);
             }
         }
@@ -102,7 +102,7 @@ public class ConfigValues implements ReloadAble {
 
             try {
                 yaml.save(file);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException("Error while save config.yml, while set verify.reset_action to: " + bool, e);
             }
         }

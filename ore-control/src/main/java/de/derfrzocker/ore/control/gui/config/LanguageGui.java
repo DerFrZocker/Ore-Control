@@ -8,6 +8,7 @@ import de.derfrzocker.spigot.utils.gui.InventoryUtil;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +46,7 @@ public class LanguageGui extends BasicGui {
             super(OreControl.getInstance(), "data/language_gui.yml");
         }
 
-        private ItemStack getLanguageItemStack(final Language language) {
+        private ItemStack getLanguageItemStack(final @NonNull Language language) {
             return getYaml().getItemStack("language." + language);
         }
 
@@ -69,7 +70,7 @@ public class LanguageGui extends BasicGui {
         private final Language language;
 
         @Override
-        public void accept(final InventoryClickEvent event) {
+        public void accept(final @NonNull InventoryClickEvent event) {
             OreControl.getInstance().getConfigValues().SET.setLanguage(language);
             new ConfigGui().openSync(event.getWhoClicked());
         }

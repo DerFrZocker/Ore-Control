@@ -6,6 +6,7 @@ import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import lombok.NonNull;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -42,7 +43,7 @@ public class ConfigGui extends BasicGui {
         ), this::handleVerifyResetAction);
     }
 
-    private void handlesafeMode(final InventoryClickEvent event) {
+    private void handlesafeMode(final @NonNull InventoryClickEvent event) {
         final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setSafeMode(true);
             new ConfigGui().openSync(event.getWhoClicked());
@@ -58,7 +59,7 @@ public class ConfigGui extends BasicGui {
         verifyGui.openSync(event.getWhoClicked());
     }
 
-    private void handleTranslateTabCompilation(final InventoryClickEvent event) {
+    private void handleTranslateTabCompilation(final @NonNull InventoryClickEvent event) {
         final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setTranslateTabCompilation(true);
             new ConfigGui().openSync(event.getWhoClicked());
@@ -74,7 +75,7 @@ public class ConfigGui extends BasicGui {
         verifyGui.openSync(event.getWhoClicked());
     }
 
-    private void handleVerifyCopyAction(final InventoryClickEvent event) {
+    private void handleVerifyCopyAction(final @NonNull InventoryClickEvent event) {
         final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setVerifyCopyAction(true);
             new ConfigGui().openSync(event.getWhoClicked());
@@ -90,7 +91,7 @@ public class ConfigGui extends BasicGui {
         verifyGui.openSync(event.getWhoClicked());
     }
 
-    private void handleVerifyResetAction(final InventoryClickEvent event) {
+    private void handleVerifyResetAction(final @NonNull InventoryClickEvent event) {
         final VerifyGui verifyGui = new VerifyGui(OreControl.getInstance(), event1 -> {
             OreControl.getInstance().getConfigValues().SET.setVerifyResetAction(true);
             new ConfigGui().openSync(event.getWhoClicked());

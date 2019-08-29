@@ -41,11 +41,11 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         addItem(BiomeGui.BiomeGuiSettings.getInstance().getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack()), event -> new BiomeGui(event.getWhoClicked(), worldOreConfig, serviceSupplier).openSync(event.getWhoClicked()));
     }
 
-    private ItemStack getItemStack(final BiomeGroup biomeGroup) {
+    private ItemStack getItemStack(final @NonNull BiomeGroup biomeGroup) {
         return MessageUtil.replaceItemStack(OreControl.getInstance(), BiomeGui.BiomeGuiSettings.getInstance().getBiomeItemStack(biomeGroup.getName().toUpperCase()));
     }
 
-    private void handleNormalClick(final BiomeGroup biomeGroup, final InventoryClickEvent event) {
+    private void handleNormalClick(final @NonNull BiomeGroup biomeGroup, final @NonNull InventoryClickEvent event) {
         new OreGui(worldOreConfig, biomeGroup, serviceSupplier).openSync(event.getWhoClicked());
     }
 
