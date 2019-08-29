@@ -52,7 +52,7 @@ class NMSReplacer_v1_14_R1 {
     private Map<WorldGenStage.Decoration, List<WorldGenFeatureConfigured<?>>> get(final BiomeBase base)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassCastException {
 
-        final Field field = getField(base.getClass(), "r");
+        final Field field = getField(BiomeBase.class, "r");
         field.setAccessible(true);
 
         return (Map<WorldGenStage.Decoration, List<WorldGenFeatureConfigured<?>>>) field.get(base);
@@ -109,7 +109,7 @@ class NMSReplacer_v1_14_R1 {
             return false;
 
         {
-            final Field field = getField(worldGenFeatureDecoratorConfiguration.b.getClass(), "a");
+            final Field field = getField(WorldGenDecoratorConfigured.class, "a");
             field.setAccessible(true);
             field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_14_R1(getDynamicFunction(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
         }
@@ -127,7 +127,7 @@ class NMSReplacer_v1_14_R1 {
             return false;
 
         {
-            final Field field = getField(worldGenFeatureDecoratorConfiguration.b.getClass(), "a");
+            final Field field = getField(WorldGenDecoratorConfigured.class, "a");
             field.setAccessible(true);
             field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorEmeraldOverrider_v1_14_R1(getDynamicFunction1(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
         }
@@ -145,7 +145,7 @@ class NMSReplacer_v1_14_R1 {
             return false;
 
         {
-            final Field field = getField(worldGenFeatureDecoratorConfiguration.b.getClass(), "a");
+            final Field field = getField(WorldGenDecoratorConfigured.class, "a");
             field.setAccessible(true);
             field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorHeightAverageOverrider_v1_14_R1(getDynamicFunction2(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
         }
@@ -163,7 +163,7 @@ class NMSReplacer_v1_14_R1 {
             return;
 
         {
-            final Field field = getField(worldGenFeatureDecoratorConfiguration.b.getClass(), "a");
+            final Field field = getField(WorldGenDecoratorConfigured.class, "a");
             field.setAccessible(true);
             field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorNetherHeightNormalOverrider_v1_14_R1(getDynamicFunction(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
         }
@@ -171,21 +171,21 @@ class NMSReplacer_v1_14_R1 {
 
     @SuppressWarnings("unchecked")
     private Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration> getDynamicFunction(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
-        final Field field = getField(worldGenDecorator.getClass(), "M");
+        final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration>) field.get(worldGenDecorator);
     }
 
     @SuppressWarnings("unchecked")
     private Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration> getDynamicFunction1(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
-        final Field field = getField(worldGenDecorator.getClass(), "M");
+        final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenFeatureDecoratorEmptyConfiguration>) field.get(worldGenDecorator);
     }
 
     @SuppressWarnings("unchecked")
     private Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration> getDynamicFunction2(WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
-        final Field field = getField(worldGenDecorator.getClass(), "M");
+        final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration>) field.get(worldGenDecorator);
     }
