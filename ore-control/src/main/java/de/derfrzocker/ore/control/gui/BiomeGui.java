@@ -58,8 +58,8 @@ public class BiomeGui extends PageGui<Biome> {
             biomes.add(biome);
         }
 
-        addDecorations();
         init(biomes.toArray(new Biome[0]), Biome[]::new, biomeGuiSettings, this::getItemStack, this::handleNormalClick);
+        addDecorations();
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
         addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
@@ -96,8 +96,8 @@ public class BiomeGui extends PageGui<Biome> {
                 biomes.add(biome);
         }
 
-        addDecorations();
         init(biomes.toArray(new Biome[0]), Biome[]::new, biomeGuiSettings, this::getItemStack, this::handleCopyAction);
+        addDecorations();
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
     }

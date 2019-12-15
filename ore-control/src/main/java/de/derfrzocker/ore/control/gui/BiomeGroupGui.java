@@ -45,8 +45,8 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
 
-        addDecorations();
         init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, biomeGuiSettings, this::getItemStack, this::handleNormalClick);
+        addDecorations();
 
         addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
         addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));

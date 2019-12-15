@@ -47,8 +47,8 @@ public class WorldGui extends PageGui<String> {
 
         final Permissions permissions = oreControlValues.getPermissions();
 
-        addDecorations();
         init(getStrings(), String[]::new, worldGuiSettings, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName)).openSync(event.getWhoClicked()));
+        addDecorations();
 
         if (permissions.getTemplateCreatePermission().hasPermission(permissible))
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
@@ -68,8 +68,8 @@ public class WorldGui extends PageGui<String> {
         this.oreControlValues = oreControlValues;
         this.copyAction = copyAction;
 
-        addDecorations();
         init(getStrings(), String[]::new, worldGuiSettings, this::getItemStack, this::handleCopyAction);
+        addDecorations();
     }
 
     private static void checkSettings(@NotNull final JavaPlugin javaPlugin) {
