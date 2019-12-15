@@ -79,8 +79,10 @@ public class OreControl extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         // return if no suitable NMSService was found in onLoad
-        if (nmsService == null)
+        if (nmsService == null) {
+            getServer().getPluginManager().disablePlugin(this);
             return;
+        }
 
         oreControlMessages = new OreControlMessages(this);
         permissions = new Permissions(this);
