@@ -1,55 +1,56 @@
-package de.derfrzocker.ore.control.command;
+package de.derfrzocker.ore.control.command.set;
 
-import de.derfrzocker.ore.control.OreControl;
-import de.derfrzocker.ore.control.Permissions;
+import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
-import de.derfrzocker.spigot.utils.CommandUtil;
+import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static de.derfrzocker.ore.control.OreControlMessages.*;
-
-@RequiredArgsConstructor
 public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and setbiome command
 
-    @NonNull
-    private final Supplier<OreControlService> serviceSupplier;
+    @NotNull
+    private final OreControlValues oreControlValues;
+
+    public SetBiomeCommand(@NotNull final OreControlValues oreControlValues) {
+        Validate.notNull(oreControlValues, "OreControlValues can't be null");
+
+        this.oreControlValues = oreControlValues;
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
-            return false;
-
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 5) {
-            SET_BIOME_NOT_ENOUGH_ARGS.sendMessage(sender);
+            oreControlValues.getOreControlMessages().getCommandSetBiomeNotEnoughArgsMessage().sendMessage(sender);
             return true;
         }
 
-        CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
+        CommandUtil.runAsynchronously(sender, oreControlValues.getJavaPlugin(), () -> {
             final String biomeName = args[0];
             final String oreName = args[1];
             final String settingName = args[2];
             final String configName = args[3];
             String amount = args[4];
-            final boolean translated = OreControl.getInstance().getConfigValues().isTranslateTabCompilation();
+            final boolean translated = oreControlValues.getConfigValues().isTranslateTabCompilation();
+            final OreControlMessages messages = oreControlValues.getOreControlMessages();
 
-            Optional<Biome> optionalBiome = OreControlUtil.getBiome(biomeName, translated);
+            final Optional<Biome> optionalBiome = OreControlUtil.getBiome(biomeName, translated);
 
             if (!optionalBiome.isPresent()) {
-                SET_BIOME_NOT_FOUND.sendMessage(sender, new MessageValue("biome", biomeName));
+                messages.getBiomeNotFoundMessage().sendMessage(sender, new MessageValue("biome", biomeName));
                 return;
             }
 
@@ -58,39 +59,39 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             final Optional<Ore> optionalOre = OreControlUtil.getOre(oreName, translated);
 
             if (!optionalOre.isPresent()) {
-                SET_ORE_NOT_FOUND.sendMessage(sender, new MessageValue("ore", oreName));
+                messages.getOreNotFoundMessage().sendMessage(sender, new MessageValue("ore", oreName));
                 return;
             }
 
             final Ore ore = optionalOre.get();
 
             if (Stream.of(biome.getOres()).noneMatch(value -> value == ore)) {
-                SET_BIOME_ORE_NOT_VALID.sendMessage(sender, new MessageValue("ore", oreName), new MessageValue("biome", biomeName));
+                messages.getOreNotValidMessage().sendMessage(sender, new MessageValue("ore", oreName), new MessageValue("biome", biomeName));
                 return;
             }
 
             final Optional<Setting> optionalSetting = OreControlUtil.getSetting(settingName, translated);
 
             if (!optionalSetting.isPresent()) {
-                SET_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", settingName));
+                messages.getSettingNotFoundMessage().sendMessage(sender, new MessageValue("setting", settingName));
                 return;
             }
 
             final Setting setting = optionalSetting.get();
 
             if (Stream.of(ore.getSettings()).noneMatch(value -> value == setting)) {
-                SET_SETTING_NOT_VALID.sendMessage(sender, new MessageValue("setting", settingName), new MessageValue("ore", oreName));
+                messages.getSettingNotValidMessage().sendMessage(sender, new MessageValue("setting", settingName), new MessageValue("ore", oreName));
                 return;
             }
 
-            final OreControlService service = serviceSupplier.get();
+            final OreControlService service = oreControlValues.getService();
 
             final World world = Bukkit.getWorld(configName);
 
             final Optional<WorldOreConfig> optionalWorldOreConfig = service.getWorldOreConfig(configName);
 
             if (!optionalWorldOreConfig.isPresent() && world == null) {
-                SET_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("config_name", configName));
+                messages.getWorldConfigNotFoundMessage().sendMessage(sender, new MessageValue("world-config", configName));
                 return;
             }
 
@@ -105,38 +106,36 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             }
 
             try {
-                value = Double.valueOf(amount);
-            } catch (NumberFormatException e) {
-                SET_NO_NUMBER.sendMessage(sender, new MessageValue("value", amount));
+                value = Double.parseDouble(amount);
+            } catch (final NumberFormatException e) {
+                messages.getNumberNotValidMessage().sendMessage(sender, new MessageValue("value", amount));
                 return;
             }
 
-            int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
+            final int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
 
             if (OreControlUtil.isUnSafe(setting, value2)) {
-                if (OreControl.getInstance().getConfigValues().isSafeMode()) {
-                    SET_NOT_SAFE.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                if (oreControlValues.getConfigValues().isSafeMode()) {
+                    messages.getNumberNotSafeMessage().sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
                     return;
                 }
-                SET_NOT_SAFE_WARNING.sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                messages.getNumberNotSafeWarningMessage().sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
             }
 
             OreControlUtil.setAmount(ore, setting, worldOreConfig, value2, biome);
 
             service.saveWorldOreConfig(worldOreConfig);
-            SET_SUCCESS.sendMessage(sender);
+            messages.getCommandSetBiomeSuccessMessage().sendMessage(sender);
         });
 
         return true;
     }
 
+    @Nullable
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
-        final boolean translated = OreControl.getInstance().getConfigValues().isTranslateTabCompilation();
-
-        if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
-            return list;
+        final boolean translated = oreControlValues.getConfigValues().isTranslateTabCompilation();
 
         if (args.length == 2) {
             final String biomeName = args[1].toUpperCase();
@@ -207,7 +206,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             final String worldName = args[4].toLowerCase();
 
             Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(worldName)).forEach(list::add);
-            serviceSupplier.get().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
+            oreControlValues.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
 
             return list;
         }
@@ -230,7 +229,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
 
             final World world = Bukkit.getWorld(args[4]);
 
-            final Optional<WorldOreConfig> worldOreConfig = serviceSupplier.get().getWorldOreConfig(args[4]);
+            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[4]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;
@@ -247,4 +246,5 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
 
         return list;
     }
+
 }

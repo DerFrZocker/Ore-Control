@@ -1,67 +1,68 @@
 package de.derfrzocker.ore.control.command;
 
-import de.derfrzocker.ore.control.OreControl;
-import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.spigot.utils.CommandUtil;
+import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
-import static de.derfrzocker.ore.control.OreControlMessages.*;
-
-@RequiredArgsConstructor
 public class CreateCommand implements TabExecutor {
 
-    @NonNull
-    private final Supplier<OreControlService> serviceSupplier;
+    @NotNull
+    private final OreControlValues oreControlValues;
+
+    public CreateCommand(@NotNull final OreControlValues oreControlValues) {
+        Validate.notNull(oreControlValues, "OreControlValues can't be null");
+
+        this.oreControlValues = oreControlValues;
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.CREATE_TEMPLATE_PERMISSION.hasPermission(sender))
-            return false;
-
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 1) {
-            CREATE_NOT_ENOUGH_ARGS.sendMessage(sender);
+            oreControlValues.getOreControlMessages().getCommandCreateNotEnoughArgsMessage().sendMessage(sender);
             return true;
         }
 
-        CommandUtil.runAsynchronously(sender, OreControl.getInstance(), () -> {
+        CommandUtil.runAsynchronously(sender, oreControlValues.getJavaPlugin(), () -> {
             final String configName = args[0];
 
-            final OreControlService service = serviceSupplier.get();
+            final OreControlService service = oreControlValues.getService();
 
             final World world = Bukkit.getWorld(configName);
 
             final Optional<WorldOreConfig> optionalWorldOreConfig = service.getWorldOreConfig(configName);
 
             if (optionalWorldOreConfig.isPresent() || world != null) {
-                CREATE_NAME_ALREADY_EXIST.sendMessage(sender, new MessageValue("config_name", configName));
+                oreControlValues.getOreControlMessages().getWorldConfigAlreadyExistsMessage().sendMessage(sender, new MessageValue("world-config", configName));
                 return;
             }
 
             service.createWorldOreConfigTemplate(configName);
 
-            CREATE_SUCCESS.sendMessage(sender, new MessageValue("config_name", configName));
+            oreControlValues.getOreControlMessages().getCommandCreateSuccessMessage().sendMessage(sender, new MessageValue("world-config", configName));
 
         });
 
         return true;
     }
 
+    @Nullable
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         return new ArrayList<>();
     }
+
 }

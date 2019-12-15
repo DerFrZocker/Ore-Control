@@ -2,29 +2,28 @@
 value:
   reset:
     slot: 0
-    item_stack:
+    item-stack:
       ==: org.bukkit.inventory.ItemStack
       v: 1631
       type: NETHER_STAR
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '%%translation:[gui.ore_settings.reset]%'
+        display-name: '%%translation:[gui.ore-settings.reset]%'
   copy:
     slot: 8
-    item_stack:
+    item-stack:
       ==: org.bukkit.inventory.ItemStack
       v: 1631
       type: ANVIL
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '%%translation:[gui.ore_settings.copy]%'
+        display-name: '%%translation:[gui.ore-settings.copy]%'
 version: 3
-inventory:
-  name: '%%translation:[gui.ore_settings.name]%'
-  rows: 2
-  setting_start_slot: 2
+name: '%%translation:[gui.ore-settings.name]%'
+rows: 2
+setting-start-slot: 2
 status:
   slot: 13
   activate:
@@ -34,7 +33,7 @@ status:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '%%translation:[gui.ore_settings.activate]%'
+      display-name: '%%translation:[gui.ore-settings.activate]%'
   deactivate:
     ==: org.bukkit.inventory.ItemStack
     v: 1631
@@ -42,10 +41,10 @@ status:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '%%translation:[gui.ore_settings.deactivate]%'
+      display-name: '%%translation:[gui.ore-settings.deactivate]%'
 back:
   slot: 9
-  item_stack:
+  item-stack:
     ==: org.bukkit.inventory.ItemStack
     v: 1631
     type: IRON_DOOR
@@ -53,7 +52,7 @@ back:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       display-name: '%%translation:[gui.back]%'
-settings_item_stack:
+settings-item-stack:
   VEIN_SIZE:
     ==: org.bukkit.inventory.ItemStack
     v: 1631
@@ -128,7 +127,7 @@ settings_item_stack:
       display-name: '%%translation:[setting.VEINS_PER_BIOME]%'
 info:
   slot: 17
-  item_stack:
+  item-stack:
     ==: org.bukkit.inventory.ItemStack
     v: 1631
     type: PLAYER_HEAD
@@ -137,10 +136,10 @@ info:
       meta-type: SKULL
       display-name: '%%translation:[gui.info.name]%'
       lore:
-        - '%%translation:[gui.info.lore_world]%'
-        - '%%translation:[gui.info.lore_ore]%'
+        - '%%translation:[gui.info.lore-world]%'
+        - '%%translation:[gui.info.lore-ore]%'
       internal: H4sIAAAAAAAAAE2PT0+DMByGf5qYIPFjeCUplDJ28GBkyUpW0K2DtTf+dHZQ5rKBjn0uP6AcPb55nufw2gA2PG3awZj389f+YJQF97SG533oeZgUoRMUIXb8kHhOOat8J0Cej8rSdXGhbLCn6KTO/UFdHsHq1bUfzupiA8CdBQ9ZYQYFv2qMkdxpVO9iU400mDbfIJPS5jSjx2ws32hAu4kvX4PVOP/nkr7IiRE41vL4MZRdhlZ4bdRy7Vbd9ltGlCT5grCmHdlNNoxXOM0zLRrdJbwaE17rNBI/yW2BUq51En1iFi1I0rSI5QKJThrGW5flW1/cpJGcXsUmnu936GV6AH9vPz7lHAEAAA==
-  biome_item_stack:
+  biome-item-stack:
     ==: org.bukkit.inventory.ItemStack
     v: 1631
     type: PLAYER_HEAD
@@ -149,7 +148,7 @@ info:
       meta-type: SKULL
       display-name: Info
       lore:
-        - '%%translation:[gui.info.lore_world]%'
-        - '%%translation:[gui.info.lore_biome]%'
-        - '%%translation:[gui.info.lore_ore]%'
+        - '%%translation:[gui.info.lore-world]%'
+        - '%%translation:[gui.info.lore-biome]%'
+        - '%%translation:[gui.info.lore-ore]%'
       internal: H4sIAAAAAAAAAE2PT0+DMByGf5qYIPFjeCUplDJ28GBkyUpW0K2DtTf+dHZQ5rKBjn0uP6AcPb55nufw2gA2PG3awZj389f+YJQF97SG533oeZgUoRMUIXb8kHhOOat8J0Cej8rSdXGhbLCn6KTO/UFdHsHq1bUfzupiA8CdBQ9ZYQYFv2qMkdxpVO9iU400mDbfIJPS5jSjx2ws32hAu4kvX4PVOP/nkr7IiRE41vL4MZRdhlZ4bdRy7Vbd9ltGlCT5grCmHdlNNoxXOM0zLRrdJbwaE17rNBI/yW2BUq51En1iFi1I0rSI5QKJThrGW5flW1/cpJGcXsUmnu936GV6AH9vPz7lHAEAAA==

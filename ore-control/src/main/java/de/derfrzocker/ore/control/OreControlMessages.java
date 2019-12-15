@@ -1,61 +1,364 @@
 package de.derfrzocker.ore.control;
 
+import de.derfrzocker.spigot.utils.command.HelpConfig;
 import de.derfrzocker.spigot.utils.message.MessageKey;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.apache.commons.lang.Validate;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class OreControlMessages {
+public class OreControlMessages implements HelpConfig {
 
-    //general command messages
-    public final static MessageKey PLAYER_ONLY_COMMAND = new MessageKey(OreControl.getInstance(), "command.player_only_command");
+    @NotNull
+    private final MessageKey worldConfigNotFound;
+    @NotNull
+    private final MessageKey worldConfigAlreadyExists;
+    @NotNull
+    private final MessageKey oreNotFound;
+    @NotNull
+    private final MessageKey settingNotFound;
+    @NotNull
+    private final MessageKey biomeNotFound;
+    @NotNull
+    private final MessageKey oreNotValid;
+    @NotNull
+    private final MessageKey settingNotValid;
+    @NotNull
+    private final MessageKey numberNotValid;
+    @NotNull
+    private final MessageKey numberNotSafe;
+    @NotNull
+    private final MessageKey numberNotSafeWarning;
 
-    //reload command
-    public final static MessageKey RELOAD_BEGIN = new MessageKey(OreControl.getInstance(), "command.reload.begin");
-    public final static MessageKey RELOAD_END = new MessageKey(OreControl.getInstance(), "command.reload.end");
+    // gui
+    @NotNull
+    private final MessageKey guiCopySuccess;
+    @NotNull
+    private final MessageKey guiResetSuccess;
+    @NotNull
+    private final MessageKey guiAnvilTitle;
 
-    //set command
-    public final static MessageKey SET_NOT_ENOUGH_ARGS = new MessageKey(OreControl.getInstance(), "command.set.not_enough_args");
-    public final static MessageKey SET_CONFIG_NOT_FOUND = new MessageKey(OreControl.getInstance(), "command.set.config_not_found");
-    public final static MessageKey SET_NO_NUMBER = new MessageKey(OreControl.getInstance(), "command.set.no_number");
-    public final static MessageKey SET_ORE_NOT_FOUND = new MessageKey(OreControl.getInstance(), "command.set.ore_not_found");
-    public final static MessageKey SET_SUCCESS = new MessageKey(OreControl.getInstance(), "command.set.success");
-    public final static MessageKey SET_SETTING_NOT_FOUND = new MessageKey(OreControl.getInstance(), "command.set.setting_not_found");
-    public final static MessageKey SET_SETTING_NOT_VALID = new MessageKey(OreControl.getInstance(), "command.set.setting_not_valid");
-    public final static MessageKey SET_NOT_SAFE = new MessageKey(OreControl.getInstance(), "command.set.not_safe");
-    public final static MessageKey SET_NOT_SAFE_WARNING = new MessageKey(OreControl.getInstance(), "command.set.not_safe_warning");
+    //command messages
+    @NotNull
+    private final MessageKey commandPlayerOnly;
 
-    //setbiome command
-    public final static MessageKey SET_BIOME_NOT_ENOUGH_ARGS = new MessageKey(OreControl.getInstance(), "command.set.biome.not_enough_args");
-    public final static MessageKey SET_BIOME_NOT_FOUND = new MessageKey(OreControl.getInstance(), "command.set.biome.biome_not_found");
-    public final static MessageKey SET_BIOME_ORE_NOT_VALID = new MessageKey(OreControl.getInstance(), "command.set.biome.ore_not_valid");
+    // set value messages
+    @NotNull
+    private final MessageKey commandSetValueUsage;
+    @NotNull
+    private final MessageKey commandSetValueDescription;
+    @NotNull
+    private final MessageKey commandSetValueNotEnoughArgs;
+    @NotNull
+    private final MessageKey commandSetValueSuccess;
 
-    //help command
-    public final static MessageKey HELP_HEADER = new MessageKey(OreControl.getInstance(), "command.help.header");
-    public final static MessageKey HELP_FOOTER = new MessageKey(OreControl.getInstance(), "command.help.footer");
-    public final static MessageKey HELP_SEPARATOR = new MessageKey(OreControl.getInstance(), "command.help.separator");
-    public final static MessageKey HELP_SET_COMMAND = new MessageKey(OreControl.getInstance(), "command.help.set.command");
-    public final static MessageKey HELP_SET_DESCRIPTION = new MessageKey(OreControl.getInstance(), "command.help.set.description");
-    public final static MessageKey HELP_SET_BIOME_COMMAND = new MessageKey(OreControl.getInstance(), "command.help.set.biome.command");
-    public final static MessageKey HELP_SET_BIOME_DESCRIPTION = new MessageKey(OreControl.getInstance(), "command.help.set.biome.description");
-    public final static MessageKey HELP_RELOAD_COMMAND = new MessageKey(OreControl.getInstance(), "command.help.reload.command");
-    public final static MessageKey HELP_RELOAD_DESCRIPTION = new MessageKey(OreControl.getInstance(), "command.help.reload.description");
-    public final static MessageKey HELP_CREATE_COMMAND = new MessageKey(OreControl.getInstance(), "command.help.create.command");
-    public final static MessageKey HELP_CREATE_DESCRIPTION = new MessageKey(OreControl.getInstance(), "command.help.create.description");
-    public final static MessageKey HELP_COMMAND = new MessageKey(OreControl.getInstance(), "command.help.help.command");
-    public final static MessageKey HELP_DESCRIPTION = new MessageKey(OreControl.getInstance(), "command.help.help.description");
+    //set biome messages
+    @NotNull
+    private final MessageKey commandSetBiomeUsage;
+    @NotNull
+    private final MessageKey commandSetBiomeDescription;
+    @NotNull
+    private final MessageKey commandSetBiomeNotEnoughArgs;
+    @NotNull
+    private final MessageKey commandSetBiomeSuccess;
 
-    //create command
-    public final static MessageKey CREATE_NOT_ENOUGH_ARGS = new MessageKey(OreControl.getInstance(), "command.create.not_enough_args");
-    public final static MessageKey CREATE_NAME_ALREADY_EXIST = new MessageKey(OreControl.getInstance(), "command.create.name_already_exist");
-    public final static MessageKey CREATE_SUCCESS = new MessageKey(OreControl.getInstance(), "command.create.success");
+    //create messages
+    @NotNull
+    private final MessageKey commandCreateUsage;
+    @NotNull
+    private final MessageKey commandCreateDescription;
+    @NotNull
+    private final MessageKey commandCreateNotEnoughArgs;
+    @NotNull
+    private final MessageKey commandCreateSuccess;
 
-    //anvil gui
-    public final static MessageKey ANVIL_NAME_ALREADY_EXISTS = new MessageKey(OreControl.getInstance(), "gui.anvil.name_already_exist");
-    public final static MessageKey ANVIL_TITLE = new MessageKey(OreControl.getInstance(), "gui.anvil.title");
+    // reload messages
+    @NotNull
+    private final MessageKey commandReloadUsage;
+    @NotNull
+    private final MessageKey commandReloadDescription;
+    @NotNull
+    private final MessageKey commandReloadBegin;
+    @NotNull
+    private final MessageKey commandReloadEnd;
 
-    //copy / reset
-    public final static MessageKey COPY_VALUE_SUCCESS = new MessageKey(OreControl.getInstance(), "gui.copy_value_success");
-    public final static MessageKey RESET_VALUE_SUCCESS = new MessageKey(OreControl.getInstance(), "gui.reset_value_success");
+    // help format
+    @NotNull
+    private final MessageKey commandHelpSeparatorFormat;
+    @NotNull
+    private final MessageKey commandHelpHeaderFormat;
+    @NotNull
+    private final MessageKey commandHelpFooterFormat;
+    @NotNull
+    private final MessageKey commandHelpPermissionFormat;
+    @NotNull
+    private final MessageKey commandHelpUsageFormat;
+    @NotNull
+    private final MessageKey commandHelpDescriptionFormat;
+    @NotNull
+    private final MessageKey commandHelpShortFormat;
+
+    // help messages
+    @NotNull
+    private final MessageKey commandHelpUsage;
+    @NotNull
+    private final MessageKey commandHelpDescription;
+
+    public OreControlMessages(@NotNull final JavaPlugin javaPlugin) {
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+
+        worldConfigNotFound = new MessageKey(javaPlugin, "world-config.not-found");
+        worldConfigAlreadyExists = new MessageKey(javaPlugin, "world-config.already-exists");
+        oreNotFound = new MessageKey(javaPlugin, "ore.not-found");
+        settingNotFound = new MessageKey(javaPlugin, "setting.not-found");
+        biomeNotFound = new MessageKey(javaPlugin, "biome.not-found");
+        oreNotValid = new MessageKey(javaPlugin, "ore.not-valid");
+        settingNotValid = new MessageKey(javaPlugin, "setting.not-valid");
+        numberNotValid = new MessageKey(javaPlugin, "number.not-valid");
+        numberNotSafe = new MessageKey(javaPlugin, "number.not-safe");
+        numberNotSafeWarning = new MessageKey(javaPlugin, "number.not-safe-warning");
+        guiCopySuccess = new MessageKey(javaPlugin, "gui.copy.success");
+        guiResetSuccess = new MessageKey(javaPlugin, "gui.reset.success");
+        guiAnvilTitle = new MessageKey(javaPlugin, "gui.anvil.title");
+        commandPlayerOnly = new MessageKey(javaPlugin, "command.player-only");
+        commandSetValueUsage = new MessageKey(javaPlugin, "command.set.value.usage");
+        commandSetValueDescription = new MessageKey(javaPlugin, "command.set.value.description");
+        commandSetValueNotEnoughArgs = new MessageKey(javaPlugin, "command.set.value.not-enough-args");
+        commandSetValueSuccess = new MessageKey(javaPlugin, "command.set.value.success");
+        commandSetBiomeUsage = new MessageKey(javaPlugin, "command.set.biome.usage");
+        commandSetBiomeDescription = new MessageKey(javaPlugin, "command.set.biome.description");
+        commandSetBiomeNotEnoughArgs = new MessageKey(javaPlugin, "command.set.biome.not-enough-args");
+        commandSetBiomeSuccess = new MessageKey(javaPlugin, "command.set.biome.success");
+        commandCreateUsage = new MessageKey(javaPlugin, "command.create.usage");
+        commandCreateDescription = new MessageKey(javaPlugin, "command.create.description");
+        commandCreateNotEnoughArgs = new MessageKey(javaPlugin, "command.create.not-enough-args");
+        commandCreateSuccess = new MessageKey(javaPlugin, "command.create.success");
+        commandReloadUsage = new MessageKey(javaPlugin, "command.reload.usage");
+        commandReloadDescription = new MessageKey(javaPlugin, "command.reload.description");
+        commandReloadBegin = new MessageKey(javaPlugin, "command.reload.begin");
+        commandReloadEnd = new MessageKey(javaPlugin, "command.reload.end");
+        commandHelpSeparatorFormat = new MessageKey(javaPlugin, "command.help.separator-format");
+        commandHelpHeaderFormat = new MessageKey(javaPlugin, "command.help.header-format");
+        commandHelpFooterFormat = new MessageKey(javaPlugin, "command.help.footer-format");
+        commandHelpPermissionFormat = new MessageKey(javaPlugin, "command.help.permission-format");
+        commandHelpUsageFormat = new MessageKey(javaPlugin, "command.help.usage-format");
+        commandHelpDescriptionFormat = new MessageKey(javaPlugin, "command.help.description-format");
+        commandHelpShortFormat = new MessageKey(javaPlugin, "command.help.short-format");
+        commandHelpUsage = new MessageKey(javaPlugin, "command.help.usage");
+        commandHelpDescription = new MessageKey(javaPlugin, "command.help.description");
+    }
+
+    @NotNull
+    public MessageKey getWorldConfigNotFoundMessage() {
+        return worldConfigNotFound;
+    }
+
+    @NotNull
+    public MessageKey getWorldConfigAlreadyExistsMessage() {
+        return worldConfigAlreadyExists;
+    }
+
+    @NotNull
+    public MessageKey getOreNotFoundMessage() {
+        return oreNotFound;
+    }
+
+    @NotNull
+    public MessageKey getSettingNotFoundMessage() {
+        return settingNotFound;
+    }
+
+    @NotNull
+    public MessageKey getBiomeNotFoundMessage() {
+        return biomeNotFound;
+    }
+
+    @NotNull
+    public MessageKey getOreNotValidMessage() {
+        return oreNotValid;
+    }
+
+    @NotNull
+    public MessageKey getSettingNotValidMessage() {
+        return settingNotValid;
+    }
+
+    @NotNull
+    public MessageKey getNumberNotValidMessage() {
+        return numberNotValid;
+    }
+
+    @NotNull
+    public MessageKey getNumberNotSafeMessage() {
+        return numberNotSafe;
+    }
+
+    @NotNull
+    public MessageKey getNumberNotSafeWarningMessage() {
+        return numberNotSafeWarning;
+    }
+
+
+    //gui
+    @NotNull
+    public MessageKey getGuiCopySuccessMessage() {
+        return guiCopySuccess;
+    }
+
+    @NotNull
+    public MessageKey getGuiResetSuccessMessage() {
+        return guiResetSuccess;
+    }
+
+    @NotNull
+    public MessageKey getGuiAnvilTitleMessage() {
+        return guiAnvilTitle;
+    }
+
+
+    // command messages
+    @NotNull
+    public MessageKey getCommandPlayerOnlyMessage() {
+        return commandPlayerOnly;
+    }
+
+
+    // set value messages
+    @NotNull
+    public MessageKey getCommandSetValueUsageMessage() {
+        return commandSetValueUsage;
+    }
+
+    @NotNull
+    public MessageKey getCommandSetValueDescriptionMessage() {
+        return commandSetValueDescription;
+    }
+
+    @NotNull
+    public MessageKey getCommandSetValueNotEnoughArgsMessage() {
+        return commandSetValueNotEnoughArgs;
+    }
+
+    @NotNull
+    public MessageKey getCommandSetValueSuccessMessage() {
+        return commandSetValueSuccess;
+    }
+
+
+    // set biome messages
+    @NotNull
+    public MessageKey getCommandSetBiomeUsageMessage() {
+        return commandSetBiomeUsage;
+    }
+
+    @NotNull
+    public MessageKey getCommandSetBiomeDescriptionMessage() {
+        return commandSetBiomeDescription;
+    }
+
+    @NotNull
+    public MessageKey getCommandSetBiomeNotEnoughArgsMessage() {
+        return commandSetBiomeNotEnoughArgs;
+    }
+
+    @NotNull
+    public MessageKey getCommandSetBiomeSuccessMessage() {
+        return commandSetBiomeSuccess;
+    }
+
+    // create messages
+    @NotNull
+    public MessageKey getCommandCreateUsageMessage() {
+        return commandCreateUsage;
+    }
+
+    @NotNull
+    public MessageKey getCommandCreateDescriptionMessage() {
+        return commandCreateDescription;
+    }
+
+    @NotNull
+    public MessageKey getCommandCreateNotEnoughArgsMessage() {
+        return commandCreateNotEnoughArgs;
+    }
+
+    @NotNull
+    public MessageKey getCommandCreateSuccessMessage() {
+        return commandCreateSuccess;
+    }
+
+    // reload messages
+    @NotNull
+    public MessageKey getCommandReloadUsageMessage() {
+        return commandReloadUsage;
+    }
+
+    @NotNull
+    public MessageKey getCommandReloadDescriptionMessage() {
+        return commandReloadDescription;
+    }
+
+    @NotNull
+    public MessageKey getCommandReloadBeginMessage() {
+        return commandReloadBegin;
+    }
+
+    @NotNull
+    public MessageKey getCommandReloadEndMessage() {
+        return commandReloadEnd;
+    }
+
+    // help format
+    @NotNull
+    @Override
+    public MessageKey getSeparatorMessageFormat() {
+        return commandHelpSeparatorFormat;
+    }
+
+    @NotNull
+    @Override
+    public MessageKey getHeaderMessageFormat() {
+        return commandHelpHeaderFormat;
+    }
+
+    @NotNull
+    @Override
+    public MessageKey getFooterMessageFormat() {
+        return commandHelpFooterFormat;
+    }
+
+    @NotNull
+    @Override
+    public MessageKey getPermissionMessageFormat() {
+        return commandHelpPermissionFormat;
+    }
+
+    @NotNull
+    @Override
+    public MessageKey getUsageMessageFormat() {
+        return commandHelpUsageFormat;
+    }
+
+    @NotNull
+    @Override
+    public MessageKey getDescriptionMessageFormat() {
+        return commandHelpDescriptionFormat;
+    }
+
+    @NotNull
+    @Override
+    public MessageKey getShortHelpMessageFormat() {
+        return commandHelpShortFormat;
+    }
+
+    // help messages
+    @NotNull
+    public MessageKey getCommandHelpUsageMessage() {
+        return commandHelpUsage;
+    }
+
+    @NotNull
+    public MessageKey getCommandHelpDescriptionMessage() {
+        return commandHelpDescription;
+    }
 
 }

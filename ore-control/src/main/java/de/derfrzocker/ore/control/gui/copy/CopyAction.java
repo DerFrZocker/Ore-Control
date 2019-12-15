@@ -6,31 +6,33 @@ import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import org.bukkit.entity.HumanEntity;
+import org.jetbrains.annotations.NotNull;
 
 public interface CopyAction {
 
+    @NotNull
     WorldOreConfig getWorldOreConfigSource();
 
-    void setWorldOreConfigTarget(WorldOreConfig worldOreConfig);
+    void setWorldOreConfigTarget(@NotNull WorldOreConfig worldOreConfig);
 
-    void setBiomeTarget(Biome biome);
+    void setBiomeTarget(@NotNull Biome biome);
 
-    void setSettingTarget(Setting setting);
+    void setSettingTarget(@NotNull Setting setting);
 
     void setChooseBiome(boolean bool);
 
-    void setOreTarget(Ore ore);
+    void setOreTarget(@NotNull Ore ore);
 
-    void next(HumanEntity humanEntity, InventoryGui inventoryGui);
+    void next(@NotNull HumanEntity humanEntity, @NotNull InventoryGui inventoryGui);
 
     boolean isFilterWorldOreConfig();
 
-    boolean shouldSet(Biome biome);
+    boolean shouldSet(@NotNull Biome biome);
 
-    boolean shouldSet(Ore ore);
+    boolean shouldSet(@NotNull Ore ore);
 
-    boolean shouldSet(Ore ore, Biome biome);
+    boolean shouldSet(@NotNull Ore ore, @NotNull Biome biome);
 
-    boolean shouldSet(Setting setting);
+    boolean shouldSet(@NotNull Setting setting);
 
 }

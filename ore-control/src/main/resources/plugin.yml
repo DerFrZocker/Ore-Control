@@ -38,11 +38,17 @@ permissions:
     children:
       ore.control: true
       ore.control.gui: true
-  ore.control.set.biome:
-    description: "Gives access to the subcommand 'setbiome' and to set biome values via gui"
+  ore.control.set.value:
+    description: "Gives access to the subcommand 'set value' and to set normal values via gui"
     default: op
     children:
-      ore.control: true
+      ore.control.set: true
+      ore.control.gui: true
+  ore.control.set.biome:
+    description: "Gives access to the subcommand 'set biome' and to set biome values via gui"
+    default: op
+    children:
+      ore.control.set: true
       ore.control.gui: true
   ore.control.reload:
     description: "Gives access to the subcommand 'reload'"

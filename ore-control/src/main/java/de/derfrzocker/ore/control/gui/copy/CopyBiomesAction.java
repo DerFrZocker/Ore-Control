@@ -1,42 +1,57 @@
 package de.derfrzocker.ore.control.gui.copy;
 
-import de.derfrzocker.ore.control.OreControl;
-import de.derfrzocker.ore.control.OreControlMessages;
-import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.Setting;
+import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
+import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.apache.commons.lang.Validate;
 import org.bukkit.entity.HumanEntity;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
-
-@RequiredArgsConstructor
-@Getter
-@Setter
 public class CopyBiomesAction implements CopyAction {
 
-    private final boolean filterWorldOreConfig = true;
-
+    @NotNull
+    private final OreControlValues oreControlValues;
+    @NotNull
     private final WorldOreConfig worldOreConfigSource;
-
+    @NotNull
     private final Biome[] biomes;
+    private WorldOreConfig worldOreConfigTarget;
 
-    private WorldOreConfig worldOreConfigTarget = null;
+    public CopyBiomesAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @NotNull final Biome[] biomes) {
+        Validate.notNull(oreControlValues, "OreControlValues can not be null");
+        Validate.notNull(worldOreConfigSource, "WorldOreConfig can not be null");
+        Validate.notNull(biomes, "Biomes can not be null");
 
-    @NonNull
-    private final Supplier<OreControlService> serviceSupplier;
+        this.oreControlValues = oreControlValues;
+        this.worldOreConfigSource = worldOreConfigSource;
+        this.biomes = biomes;
+    }
+
+    @NotNull
+    @Override
+    public WorldOreConfig getWorldOreConfigSource() {
+        return worldOreConfigSource;
+    }
 
     @Override
-    public void setBiomeTarget(final @NonNull Biome biome) {
+    public void setWorldOreConfigTarget(@NotNull final WorldOreConfig worldOreConfig) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+
+        this.worldOreConfigTarget = worldOreConfig;
+    }
+
+    @Override
+    public void setBiomeTarget(@NotNull final Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setSettingTarget(final @NonNull Setting setting) {
+    public void setSettingTarget(@NotNull final Setting setting) {
         throw new UnsupportedOperationException();
     }
 
@@ -46,20 +61,20 @@ public class CopyBiomesAction implements CopyAction {
     }
 
     @Override
-    public void setOreTarget(final @NonNull Ore ore) {
+    public void setOreTarget(@NotNull final Ore ore) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void next(final @NonNull HumanEntity humanEntity, final @NonNull InventoryGui inventoryGui) {
-        if (OreControl.getInstance().getConfigValues().verifyCopyAction()) {
-            new VerifyGui(OreControl.getInstance(), clickEvent -> {
+    public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
+        if (oreControlValues.getConfigValues().verifyCopyAction()) {
+            new VerifyGui(oreControlValues.getJavaPlugin(), clickEvent -> {
                 for (Biome biome : biomes)
                     OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, biome, biome);
 
-                serviceSupplier.get().saveWorldOreConfig(worldOreConfigTarget);
+                oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);
-                OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
+                oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
             }, clickEvent1 -> inventoryGui.openSync(humanEntity)).openSync(humanEntity);
 
             return;
@@ -68,28 +83,33 @@ public class CopyBiomesAction implements CopyAction {
         for (Biome biome : biomes)
             OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, biome, biome);
 
-        serviceSupplier.get().saveWorldOreConfig(worldOreConfigSource);
+        oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
         inventoryGui.closeSync(humanEntity);
-        OreControlMessages.COPY_VALUE_SUCCESS.sendMessage(humanEntity);
+        oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
     }
 
     @Override
-    public boolean shouldSet(final @NonNull Biome biome) {
+    public boolean isFilterWorldOreConfig() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldSet(@NotNull final Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final @NonNull Ore ore) {
+    public boolean shouldSet(@NotNull final Ore ore) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final @NonNull Ore ore, final @NonNull Biome biome) {
+    public boolean shouldSet(@NotNull final Ore ore, @NotNull final Biome biome) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean shouldSet(final @NonNull Setting setting) {
+    public boolean shouldSet(@NotNull final Setting setting) {
         throw new UnsupportedOperationException();
     }
 

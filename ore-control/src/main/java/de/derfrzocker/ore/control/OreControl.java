@@ -2,17 +2,17 @@ package de.derfrzocker.ore.control;
 
 import de.derfrzocker.ore.control.api.NMSService;
 import de.derfrzocker.ore.control.api.OreControlService;
-import de.derfrzocker.ore.control.command.*;
+import de.derfrzocker.ore.control.command.OreControlCommand;
 import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
+import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.function.Supplier;
@@ -38,18 +39,16 @@ public class OreControl extends JavaPlugin implements Listener {
 
     @Getter
     @Setter
-    @NonNull
-    private static OreControl instance; // A static instance of this Plugin, that we can easy access it from any Location
+    private static OreControl instance;
 
     @Getter
     private ConfigValues configValues; // The Config values of this plugin
-
     @Getter
     private Settings settings; // The Settings of this Plugin, other than the ConfigValues, this Values should not be modified
-
     private NMSService nmsService = null; // The NMSService, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
-
-    private final OreControlCommand oreControlCommand = new OreControlCommand(); // The OreControlCommand handler
+    private OreControlCommand oreControlCommand; // The OreControlCommand handler
+    private OreControlMessages oreControlMessages;
+    private Permissions permissions;
 
     @Override
     public void onLoad() {
@@ -80,6 +79,9 @@ public class OreControl extends JavaPlugin implements Listener {
         if (nmsService == null)
             return;
 
+        oreControlMessages = new OreControlMessages(this);
+        permissions = new Permissions(this);
+
         final WorldOreConfigYamlDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"));
 
         // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
@@ -93,21 +95,21 @@ public class OreControl extends JavaPlugin implements Listener {
         worldOreConfigYamlDao.init();
 
         // check all files, that can be have other values (not other not new one), so we can replace them
-        checkFile("data/biome_groups.yml");
-        checkFile("data/biome_gui.yml");
-        checkFile("data/boolean_gui.yml");
-        checkFile("data/config_gui.yml");
-        checkFile("data/language_gui.yml");
-        checkFile("data/ore_gui.yml");
-        checkFile("data/ore_settings_gui.yml");
+        checkFile("data/gui/biome-groups.yml");
+        checkFile("data/gui/biome-gui.yml");
+        checkFile("data/gui/boolean-gui.yml");
+        checkFile("data/gui/config-gui.yml");
+        checkFile("data/gui/language-gui.yml");
+        checkFile("data/gui/ore-gui.yml");
+        checkFile("data/gui/ore-settings-gui.yml");
         checkFile("data/settings.yml");
-        checkFile("data/settings_gui.yml");
-        checkFile("data/verify_gui.yml");
-        checkFile("data/world_config_gui.yml");
-        checkFile("data/world_gui.yml");
+        checkFile("data/gui/settings-gui.yml");
+        checkFile("data/gui/verify-gui.yml");
+        checkFile("data/gui/world-config-gui.yml");
+        checkFile("data/gui/world-gui.yml");
 
         if (Version.getCurrent() == Version.v1_14_R1) {
-            checkFile("data/biome_gui_v1.14.yml");
+            checkFile("data/gui/biome-gui_v1.14.yml");
         }
 
         // load the Settings
@@ -136,22 +138,10 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
-        // register the command handler to Bukkit
-        getCommand("orecontrol").setExecutor(oreControlCommand);
-
-        // register all subcommand's to the command handler
-        oreControlCommand.registerExecutor(new SetCommand(OreControlServiceSupplier.INSTANCE), "set");
-        oreControlCommand.registerExecutor(new ReloadCommand(), "reload");
-        oreControlCommand.registerExecutor(new SetBiomeCommand(OreControlServiceSupplier.INSTANCE), "setbiome");
-        oreControlCommand.registerExecutor(new CreateCommand(OreControlServiceSupplier.INSTANCE), "create");
-        oreControlCommand.registerExecutor(new GuiCommand(OreControlServiceSupplier.INSTANCE), "");
-
-        final HelpCommand helpCommand = new HelpCommand();
-        oreControlCommand.registerExecutor(helpCommand, null);
-        oreControlCommand.registerExecutor(helpCommand, "help");
+        getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(new OreControlValues(OreControlServiceSupplier.INSTANCE, this, configValues, oreControlMessages, permissions)));
     }
 
-    private void checkFile(final @NonNull String name) {
+    private void checkFile(@NotNull final String name) {
         final File file = new File(getDataFolder(), name);
 
         if (!file.exists())
@@ -173,8 +163,8 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     @EventHandler //TODO maybe extra class
-    public void onWorldLoad(final @NonNull WorldLoadEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(OreControl.getInstance(), () ->
+    public void onWorldLoad(@NotNull final WorldLoadEvent event) {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () ->
                 OreControlServiceSupplier.INSTANCE.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
                     if (value.isTemplate()) {
                         value.setTemplate(false);

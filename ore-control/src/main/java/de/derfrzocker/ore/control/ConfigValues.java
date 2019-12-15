@@ -30,7 +30,7 @@ public class ConfigValues implements ReloadAble {
     }
 
     public boolean isSafeMode() {
-        return yaml.getBoolean("safe_mode", true);
+        return yaml.getBoolean("safe-mode", true);
     }
 
     public Language getLanguage() {
@@ -38,15 +38,15 @@ public class ConfigValues implements ReloadAble {
     }
 
     public boolean isTranslateTabCompilation() {
-        return yaml.getBoolean("translate_tab_compilation", true);
+        return yaml.getBoolean("translate-tab-compilation", true);
     }
 
     public boolean verifyCopyAction() {
-        return yaml.getBoolean("verify.copy_action", true);
+        return yaml.getBoolean("verify.copy-action", true);
     }
 
     public boolean verifyResetAction() {
-        return yaml.getBoolean("verify.reset_action", true);
+        return yaml.getBoolean("verify.reset-action", true);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ConfigValues implements ReloadAble {
         }
 
         public void setSafeMode(final boolean bool) {
-            yaml.set("safe_mode", bool);
+            yaml.set("safe-mode", bool);
 
             try {
                 yaml.save(file);
@@ -78,7 +78,7 @@ public class ConfigValues implements ReloadAble {
         }
 
         public void setTranslateTabCompilation(final boolean bool) {
-            yaml.set("translate_tab_compilation", bool);
+            yaml.set("translate-tab-compilation", bool);
 
             try {
                 yaml.save(file);
@@ -88,7 +88,7 @@ public class ConfigValues implements ReloadAble {
         }
 
         public void setVerifyCopyAction(final boolean bool) {
-            yaml.set("verify.copy_action", bool);
+            yaml.set("verify.copy-action", bool);
 
             try {
                 yaml.save(file);
@@ -98,7 +98,7 @@ public class ConfigValues implements ReloadAble {
         }
 
         public void setVerifyResetAction(final boolean bool) {
-            yaml.set("verify.reset_action", bool);
+            yaml.set("verify.reset-action", bool);
 
             try {
                 yaml.save(file);
@@ -117,19 +117,19 @@ public class ConfigValues implements ReloadAble {
         }
 
         public boolean defaultSafeMode() {
-            return yaml.getDefaultSection().getBoolean("safe_mode", true);
+            return yaml.getDefaultSection().getBoolean("safe-mode", true);
         }
 
         public boolean defaultTranslateTabCompilation() {
-            return yaml.getDefaultSection().getBoolean("translate_tab_compilation", true);
+            return yaml.getDefaultSection().getBoolean("translate-tab-compilation", true);
         }
 
         public boolean defaultVerifyCopyAction() {
-            return yaml.getDefaultSection().getBoolean("verify.copy_action", true);
+            return yaml.getDefaultSection().getBoolean("verify.copy-action", true);
         }
 
         public boolean defaultVerifyResetAction() {
-            return yaml.getDefaultSection().getBoolean("verify.reset_action", true);
+            return yaml.getDefaultSection().getBoolean("verify.reset-action", true);
         }
 
     }

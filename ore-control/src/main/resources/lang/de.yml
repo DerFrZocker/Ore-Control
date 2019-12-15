@@ -1,84 +1,87 @@
 command:
 
-  player_only_command: Dieser Befehl ist nur für Spieler!
+  player-only: 'Dieser Befehl ist nur für Spieler!'
   set:
-    not_enough_args:
-      - '&4Falsche Anzahl an Argumenten!'
-      - '&cbenutze &f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f>'
-      - '                                <&9Anzahl&f(&9%&f)>'
-    config_not_found: '&4Die Config &f''&9%config_name%&f''&4 existiert nicht!'
-    no_number: '&f''&9%value%&f'' &4ist keine Zahl!'
-    setting_not_found: '&4Die Einstellung &f''&9%setting%&f'' &4existiert nicht!'
-    setting_not_valid:
-      - '&4Die Einstellung &f''&9%setting%&f'' &4ist nicht für das'
-      - '&4Erz &f''&9%ore%&f''&4 bestimmt!'
-    not_safe:
-      - '&4Die Nummer &f''&9%value%&f'' &4ist nicht sicher!'
-      - '&4Wenn du sie trozdem setzen möchtes,'
-      - '&4setze in der config den Wert &f''&9safe_mode&f'' &4auf &f''&9false&f'''
-      - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
-    not_safe_warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
-    ore_not_found:
-      - '&4Das Erz &f''&9%ore%&f'' &4existiert nicht!, '
-      - '&cbenutze &f''&9diamond&f'', ''&9coal&f'', ''&9lapis&f'', ''&9iron&f'', ''&9gold&f'',
-      ''&9gold_badlands&f'''
-      - '&coder &f''&9redstone&f'''
-    success: '&aDer Wert wurde erfolgreich gesetzt!'
+    value:
+      usage: '&f/&9orecontrol set value &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f> <&9Anzahl&f(&9%&f)>'
+      description: 'Setze ein Wert, für eine Welt'
+      not-enough-args:
+        - "&4Falsche Anzahl an Argumenten!"
+        - "&cbenutze  %%translation:[command.set.value.usage]%"
+      success: '&aDer Wert wurde erfolgreich gesetzt!'
+
     biome:
-      not_enough_args:
+      usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f> <&9Welt&f> <&9Anzahl&f(&9%&f)>'
+      description: 'Setze einen Wert, für ein bestimmtes Biome'
+      not-enough-args:
         - '&4Falsche Anzahl an Argumenten!'
-        - '&cbenutze &f/&9orecontrol setbiome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f>'
-        - '                                       <&9Welt&f> <&9Anzahl&f(&9%&f)>'
-      biome_not_found: '&4Das Biome &f''&9%biome%&f'' &4existiert nicht!'
-      ore_not_valid:
-        - '&4Das Erz &f''&9%ore%&f'' &4kann nicht in das'
-        - '&4Biom &f''&9%biome%&f''&4gesetzt werden!'
+        - "&cbenutze  %%translation:[command.set.biome.usage]%"
+      success: '&aDer Wert wurde erfolgreich gesetzt!'
   create:
-    not_enough_args:
+    usage: '&f/&9orecontrol create &f<&9name&f>'
+    description: 'Erstelle eine Vorlage, in der du Werte setzen kannst bevor du eine Welt erstellst'
+    not-enough-args:
       - "&4Falsche Anzahl an Argumenten!"
-      - "&cbenutze &f/&9orecontrol create &f<&9name&f>"
-    name_already_exist: "&4Cie Config &f'&9%config_name%&f' &4existiert bereits!"
-    success: "&aDie Vorlage &f'&9%config_name%&f' &awurde erfolgreich erstellt!"
+      - "&cbenutze %%translation:[command.create.usage]%"
+    success: "&aDie Vorlage &f'&9%world-config%&f' &awurde erfolgreich erstellt!"
   reload:
+    usage: '&f/&9orecontrol reload'
+    description: 'Reloaded die Nachrichten, Config und Gui Einstellungen'
     begin: '&aBeginne mit dem Reloaden!'
     end: '&aReloaden Fertig!'
 
   help:
-    header: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
-    footer: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
-    separator: '  '
-    set:
-      command: '&f/&9orecontrol set &f<&9Erz&f> <&9Einstellung&f> <&9Welt&f> <&9Anzahl&f(&9%&f)>'
-      description:
-        - '   -> &9Berechtigung&f: ore.control.set'
-        - '   -> &9Beschreibung&f: Setze einen Wert, für ein Welt'
-      biome:
-        command:
-          - '&f/&9orecontrol setbiome &f<&9Biome&f> <&9Erz&f> <&9Einstellung&f>'
-          - '                            <&9Welt&f> <&9Anzahl&f(&9%&f)>'
-        description:
-          - '   -> &9Berechtigung&f: ore.control.set.biome'
-          - '   -> &9Beschreibung&f: Setze einen Wert, für ein bestimmtes Biome'
-    create:
-      command: "&f/&9orecontrol create &f<&9name&f>"
-      description:
-        - "   -> &9Berechtigung&f: ore.control.template.create"
-        - "   -> &9Beschreibung&f: Erstelle eine Vorlage, in der du Werte setzen kannst bevor du eine Welt erstellst"
-    reload:
-      command: '&f/&9orecontrol reload'
-      description:
-        - '   -> &9Berechtigung&f: ore.control.reload'
-        - '   -> &9Beschreibung&f: Reloaded die Nachrichten, Config'
-        - '                         und Gui Einstellungen'
-    help:
-      command: '&f/&9orecontrol help &f(<&9subbefehl&f>)'
-      description:
-        - '   -> &9Berechtigung&f: Irgend eine Befehl Berechtigung'
-        - '   -> &9Beschreibung&f: Zeigt dir alle Befehle an und wenn ein '
-        - '                         SubBefehl angegeben ist, werden genauere'
-        - '                         Details zu diesem Befehl angezeigt'
+    seperator-format: '  '
+    header-format: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
+    footer-format: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
+    permissins-format: "-> &9Berechtigung&f: %permission%"
+    usage-format: "&9Benutzung&f: %usage%"
+    short-format: "&9%command%&f: %description%"
+    usage: '&f/&9orecontrol help &f(<&9subbefehl&f>)'
+    description: 'Zeigt dir alle Befehle an und wenn ein SubBefehl angegeben ist, werden genauere Details zu diesem Befehl angezeigt'
+
+world-config:
+  not-found: "&4Die Config &f'&9%world-config%&f'&4 existiert nicht!"
+  already-exists: "&4Cie Config &f'&9%world-config%&f' &4existiert bereits!"
+ore:
+  not-found:
+    - "&4Das Erz &f'&9%ore%&f' &4existiert nicht!, "
+    - "&cbenutze &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f'"
+    - "&coder &f'&9redstone&f'"
+  not-valid:
+    - "&4Das Erz &f'&9%ore%&f' &4kann nicht in das"
+    - "&4Biom &f'&9%biome%&f'&4gesetzt werden!"
+  DIAMOND: "Diamant"
+  COAL: "Kohle"
+  GOLD: "Gold"
+  GOLD_BADLANDS: "Ödland Gold"
+  LAPIS: "Lapis"
+  IRON: "Eisen"
+  REDSTONE: "Redstone"
+  EMERALD: "Smaragd"
+  DIRT: "Erde"
+  GRAVEL: "Kies"
+  GRANITE: "Granit"
+  DIORITE: "Diorit"
+  ANDESITE: "Andesit"
+
+setting:
+  not-found: "&4Die Einstellung &f'&9%setting%&f' &4existiert nicht!"
+  not-valid:
+    - "&4Die Einstellung &f'&9%setting%&f' &4ist nicht für das"
+    - "&4Erz &f'&9%ore%&f'&4 bestimmt!"
+  VEIN_SIZE: "Adergröße"
+  VEINS_PER_CHUNK: "Adern pro Chunk"
+  HEIGHT_RANGE: "Höhenbereich"
+  HEIGHT_CENTER: "Höhe Mitte"
+  MINIMUM_ORES_PER_CHUNK: "Minimale Erze pro Chunk"
+  ORES_PER_CHUNK_RANGE: "Erze pro Chunk Bereich"
+  MINIMUM_HEIGHT: "Mindesthöhe"
+  HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
+  VEINS_PER_BIOME: "Adern pro Biome"
 
 biome:
+  not-found: "&4Das Biome &f'&9%biome%&f' &4existiert nicht!"
   OCEAN: "Meer"
   PLAINS: "Flachland"
   DESERT: "Wüste"
@@ -150,49 +153,32 @@ biome:
   HILLS: "Hügels"
   SNOWY: "Verschneite"
 
-ore:
-  DIAMOND: "Diamant"
-  COAL: "Kohle"
-  GOLD: "Gold"
-  GOLD_BADLANDS: "Ödland Gold"
-  LAPIS: "Lapis"
-  IRON: "Eisen"
-  REDSTONE: "Redstone"
-  EMERALD: "Smaragd"
-  DIRT: "Erde"
-  GRAVEL: "Kies"
-  GRANITE: "Granit"
-  DIORITE: "Diorit"
-  ANDESITE: "Andesit"
+number:
+  not-valid: '&f''&9%value%&f'' &4ist keine Zahl!'
+  not-safe:
+    - '&4Die Nummer &f''&9%value%&f'' &4ist nicht sicher!'
+    - '&4Wenn du sie trozdem setzen möchtes,'
+    - '&4setze in der config den Wert &f''&9safe-mode&f'' &4auf &f''&9false&f'''
+    - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
+  not-safe-warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
 
-setting:
-  VEIN_SIZE: "Adergröße"
-  VEINS_PER_CHUNK: "Adern pro Chunk"
-  HEIGHT_RANGE: "Höhenbereich"
-  HEIGHT_CENTER: "Höhe Mitte"
-  MINIMUM_ORES_PER_CHUNK: "Minimale Erze pro Chunk"
-  ORES_PER_CHUNK_RANGE: "Erze pro Chunk Bereich"
-  MINIMUM_HEIGHT: "Mindesthöhe"
-  HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
-  VEINS_PER_BIOME: "Adern pro Biome"
 
 gui:
-  copy_value_success: "&aDie Werte wurden erfolgreich kopiert!"
-  reset_value_success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
+  copy-success: "&aDie Werte wurden erfolgreich kopiert!"
+  reset-success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
   anvil:
-    name_already_exist: "Name existiert bereits!"
     title: "Schreibe einen Namen!"
-  previous_page: "&rVorherige Seite"
-  next_page: "&rNächste Seite"
+  previous-page: "&rVorherige Seite"
+  next-page: "&rNächste Seite"
   back: "&rGehe einen Schritt zurück"
   info:
     name: "Info"
-    lore_world: "Welt: %world%"
-    lore_biome: "Biome: %%translation:[biome.%biome%]%"
-    lore_ore: "Erz: %%translation:[ore.%ore%]%"
-    lore_setting: "Einstellung: %%translation:[setting.%setting%]%"
-    lore_current: "Aktuell: %amount%"
-    lore_default: "Standart: %value%"
+    lore-world: "Welt: %world%"
+    lore-biome: "Biome: %%translation:[biome.%biome%]%"
+    lore-ore: "Erz: %%translation:[ore.%ore%]%"
+    lore-setting: "Einstellung: %%translation:[setting.%setting%]%"
+    lore-current: "Aktuell: %amount%"
+    lore-default: "Standart: %value%"
   world:
     name: "Wähle eine Welt!"
     template:
@@ -209,14 +195,14 @@ gui:
   biome:
     name: "Wähle ein Biom!"
     biome: "Biome"
-    biome_group: "Biome Gruppen"
+    biome-group: "Biome Gruppen"
     reset: "Setze alle Biome Werte auf Standart einstellungen zurück!"
     copy: "Kopiere alle Biome Eintellugen zu einer anderen Welt oder Vorlage!"
   ore:
     name: "Wähle ein Erz!"
     reset: "Setze alle Erz Werte auf Standart einstellungen zurück!"
     copy: "Kopiere alle Erz Eintellugen zu einer anderen Welt oder Vorlage!"
-  ore_settings:
+  ore-settings:
     name: "Wähle eine Einstellung!"
     activate: "§aAktiviere die Erzgenerierung!"
     deactivate: "§cDeaktiviere die Erzgeneration!"
@@ -235,17 +221,17 @@ gui:
     language:
       name: "Ändere die Sprache!"
       description: "Ändere die Sprache von diesem Plugin, du kannst auch neue Sprachen einreichen. Einfach die messages.yml im Ore-Control Ordner übersetzen und an mich senden."
-    safe_mode:
+    safe-mode:
       name:  "Aktiviere / Deaktiviere den Sicherheitsmodus!"
       description: "Wähle ob dich das Plugin hindern soll, wenn du einen nicht sicheren Wert setzen willst"
-    translate_tab_compilation:
+    translate-tab-compilation:
       name: "Aktiviere / Deaktiviere Tab Übersetzung!"
       description: "Wähle ob du Biom / Erz / Einstellungs namen in deiner gewählten Sprache in den Befehlen nutzen kannst"
     verify:
-      copy_action:
+      copy-action:
         name: "Aktiviere / Deaktiviere bestädigung für Kopier Aktionen!"
         description: "Wähle ob to Kopier Aktionen Bestätigen must oder nicht"
-      reset_action:
+      reset-action:
         name: "Aktiviere / Deaktiviere bestädigung für Reset Aktionen!"
         description: "Wähle ob to Reset Aktionen Bestätigen must oder nicht"
   language:

@@ -1,79 +1,67 @@
 package de.derfrzocker.ore.control.gui.config;
 
-import de.derfrzocker.ore.control.OreControl;
+import de.derfrzocker.ore.control.gui.settings.LanguageGuiSettings;
+import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
-import de.derfrzocker.spigot.utils.gui.BasicSettings;
 import de.derfrzocker.spigot.utils.gui.InventoryUtil;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import lombok.AccessLevel;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 
 public class LanguageGui extends BasicGui {
 
-    LanguageGui() {
-        super(OreControl.getInstance(), LanguageGuiSettings.getInstance());
+    private static LanguageGuiSettings languageGuiSettings;
+
+    @NotNull
+    private final OreControlValues oreControlValues;
+
+    LanguageGui(@NotNull final OreControlValues oreControlValues) {
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
+
+        this.oreControlValues = oreControlValues;
+
+        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
         final Language[] languages = Language.values();
 
-        for (int i = 0; i < languages.length; i++)
-            addItem(InventoryUtil.calculateSlot(i, LanguageGuiSettings.getInstance().getLanguageGap()), MessageUtil.replaceItemStack(OreControl.getInstance(), LanguageGuiSettings.getInstance().getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
+        addDecorations();
 
-        addItem(LanguageGuiSettings.getInstance().getInfoSlot(), MessageUtil.replaceItemStack(OreControl.getInstance(), LanguageGuiSettings.getInstance().getInfoItemStack(),
-                new MessageValue("amount", OreControl.getInstance().getConfigValues().getLanguage().getNames()[0]),
-                new MessageValue("value", OreControl.getInstance().getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
+        for (int i = 0; i < languages.length; i++)
+            addItem(InventoryUtil.calculateSlot(i, languageGuiSettings.getLanguageGap()), MessageUtil.replaceItemStack(javaPlugin, languageGuiSettings.getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
+
+        addItem(languageGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, languageGuiSettings.getInfoItemStack(),
+                new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
+                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ));
     }
 
-    private static final class LanguageGuiSettings extends BasicSettings {
+    private static LanguageGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+        if (languageGuiSettings == null)
+            languageGuiSettings = new LanguageGuiSettings(javaPlugin, "data/gui/language-gui.yml", true);
 
-        private static LanguageGuiSettings instance = null;
-
-        private static LanguageGuiSettings getInstance() {
-            if (instance == null)
-                instance = new LanguageGuiSettings();
-
-            return instance;
-        }
-
-        private LanguageGuiSettings() {
-            super(OreControl.getInstance(), "data/language_gui.yml");
-        }
-
-        private ItemStack getLanguageItemStack(final @NonNull Language language) {
-            return getYaml().getItemStack("language." + language);
-        }
-
-        private int getLanguageGap() {
-            return getYaml().getInt("inventory.language_gap");
-        }
-
-        private ItemStack getInfoItemStack() {
-            return getYaml().getItemStack("info.item_stack").clone();
-        }
-
-        private int getInfoSlot() {
-            return getYaml().getInt("info.slot");
-        }
-
+        return languageGuiSettings;
     }
 
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     private final class LanguageConsumer implements Consumer<InventoryClickEvent> {
 
+        @NotNull
         private final Language language;
 
-        @Override
-        public void accept(final @NonNull InventoryClickEvent event) {
-            OreControl.getInstance().getConfigValues().SET.setLanguage(language);
-            new ConfigGui().openSync(event.getWhoClicked());
+        private LanguageConsumer(@NotNull final Language language) {
+            this.language = language;
         }
+
+        @Override
+        public void accept(@NotNull final InventoryClickEvent event) {
+            oreControlValues.getConfigValues().SET.setLanguage(language);
+            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+        }
+
     }
 
 }

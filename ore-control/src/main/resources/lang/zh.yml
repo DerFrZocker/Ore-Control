@@ -1,72 +1,83 @@
 command:
-  player_only_command: "此命令仅供玩家使用！"
+
+  player-only: "此命令仅供玩家使用！"
   set:
-    not_enough_args:
-      - "&4错误的指令！"
-      - "&c使用 &f/&9orecontrol &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
-    config_not_found: "&4配置文件&f'&9%config_name%&f'&4不存在！"
-    no_number: "&f'&9%value%&f' &4这不是一个有效的数字！"
-    setting_not_found: "&4该设置 &f'&9%setting%&f' &4未能生效！"
-    setting_not_valid: "&4该矿石设置 &f'&9%setting%&f' &4未能生效！ &f'&9%ore%&f'&4!"
-    not_safe:
-      - "&4这个数字&f'&9%value%&f' &4不合适！"
-      - "&4如果您想使用，"
-      - "&4请将配置中的&f'&9safe_mode&f' &4设置为&f'&9false&f'"
-      - "&4然后&f'&9/重启该插件（/orecontrol reload）&f'"
-    not_safe_warning: "&e警告: 这个数字 &f'&9%value%&f' &不合适！"
-    ore_not_found:
-      - "&4这个矿石&f'&9%ore%&f' &4不存在！, "
-      - "&c请使用 &f'&9钻石矿&f', '&9煤矿&f', '&9青金石矿&f', '&9铁矿&f', '&9金矿&f', '&9黏土山金矿&f' &c或者"
-      - "&f'&9红石&f'"
-    success: "&a该数值已成功更新！"
-    biome:
-      not_enough_args:
+    value:
+      usage: "&f/&9orecontrol set value &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
+      description: "设置矿石类型和矿石生成参数"
+      not-enough-args:
         - "&4错误的指令！"
-        - "&c请使用&f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
-        - "                                 <&9world&f> <&9amount&f(&9%&f)>"
-      biome_not_found: "&4该生物群系&f'&9%biome%&f' &4不存在！"
-      ore_not_valid: "&4此生物群系矿石设置为生效&f'&9%ore%&f' &4&f'&9%biome%&f'&4!"
+        - "&c使用  %%translation:[command.set.value.usage]%"
+      success: "&a该数值已成功更新！"
+
+    biome:
+      usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>'
+      description: 'Setze einen Wert, für ein bestimmtes Biome'
+      not-enough-args:
+        - "&4错误的指令！"
+        - "&c使用  %%translation:[command.set.biome.usage]%"
+      success: "&a该数值已成功更新！"
   create:
-    not_enough_args:
+    usage: '&f/&9orecontrol create &f<&9name&f>'
+    description: "创建一个矿物生成模板。您可以在生成新世界前设置"
+    not-enough-args:
       - "&4错误的指令！"
-      - "&请使用指令 &f/&9orecontrol create &f<&9name&f>"
-    name_already_exist: "&4该配置&f'&9%config_name%&f' &4已存在"
-    success: "&a该模板&f'&9%config_name%&f' &a创建成功！"
+      - "&c使用 %%translation:[command.create.usage]%"
+    success: "&a该模板&f'&9%world-config%&f' &a创建成功！"
   reload:
+    usage: '&f/&9orecontrol reload'
+    description: "重新加载插件配置"
     begin: "&c请重新加载该插件"
     end: "&a已重新加载该插件"
+
   help:
-    header: "~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~"
-    footer: "~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~"
-    separator: "  "
-    set:
-      command: "&f/&9orecontrol set &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>"
-      description:
-        - "   -> &9permission&f: ore.control.set"
-        - "   -> &9description&f: 设置矿石类型和矿石生成参数"
-      biome:
-        command:
-          - "&f/&9orecontrol setbiome &f<&9biome&f> <&9ore&f> <&9setting&f>"
-          - "                            <&9world&f> <&9amount&f(&9%&f)>"
-        description:
-          - "   -> &9permission&f: ore.control.set.biome"
-          - "   -> &9description&f: 设置特定生物群系的矿石生成参数"
-    create:
-      command: "&f/&9orecontrol create &f<&9name&f>"
-      description:
-        - "   -> &9permission&f: ore.control.template.create"
-        - "   -> &9description&f: 创建一个矿物生成模板。您可以在生成新世界前设置"
-    reload:
-      command: "&f/&9orecontrol reload"
-      description:
-        - "   -> &9permission&f: ore.control.reload"
-        - "   -> &9description&f: 重新加载插件配置"
-    help:
-      command: "&f/&9orecontrol help &f(<&9subcommand&f>)"
-      description:
-        - "   -> &9permission&f: 所有命令权限"
-        - "   -> &9description&f: 显示所有的命令。如果指定一个命令，则显示更多的详细信息"
+    seperator-format: '  '
+    header-format: "~~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~~"
+    footer-format: "~~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~~"
+    permissins-format: "-> &9permission&f: %permission%"
+    usage-format: "&9usage&f: %usage%"
+    short-format: "&9%command%&f: %description%"
+    usage: '&f/&9orecontrol help &f(<&9subcommand&f>)'
+    description: "显示所有的命令。如果指定一个命令，则显示更多的详细信息"
+
+world-config:
+  not-found: "&4配置文件&f'&9%world-config%&f'&4不存在！"
+  already-exists: "&4该配置&f'&9%world-config%&f' &4已存在"
+ore:
+  not-found:
+    - "&4这个矿石&f'&9%ore%&f' &4不存在！, "
+    - "&c请使用 &f'&9钻石矿&f', '&9煤矿&f', '&9青金石矿&f', '&9铁矿&f', '&9金矿&f', '&9黏土山金矿&f' &c或者"
+    - "&f'&9红石&f'"
+  not-valid: "&4此生物群系矿石设置为生效&f'&9%ore%&f' &4&f'&9%biome%&f'&4!"
+  DIAMOND: "&r钻石矿"
+  COAL: "&r煤矿"
+  GOLD: "&r金矿"
+  GOLD_BADLANDS: "&r黏土山群系生成的金矿"
+  LAPIS: "&r青金石矿"
+  IRON: "&r铁矿"
+  REDSTONE: "&r红石矿"
+  EMERALD: "&r绿宝石矿"
+  DIRT: "&r泥土"
+  GRAVEL: "&r砂砾"
+  GRANITE: "&r花岗岩"
+  DIORITE: "&r闪长岩"
+  ANDESITE: "&r安山岩"
+
+setting:
+  not-found: "&4该设置 &f'&9%setting%&f' &4未能生效！"
+  not-valid: "&4该矿石设置 &f'&9%setting%&f' &4未能生效！ &f'&9%ore%&f'&4!"
+  VEIN_SIZE: "&r单个矿脉的最大矿物块数量"
+  VEINS_PER_CHUNK: "&r每个区块的矿脉数量"
+  HEIGHT_RANGE: "&r最高生成高度"
+  HEIGHT_CENTER: "&r集中生成高度"
+  MINIMUM_ORES_PER_CHUNK: "&r最小的单区块尝试生成次数"
+  ORES_PER_CHUNK_RANGE: "&r矿石生成规模"
+  MINIMUM_HEIGHT: "&r最低生成高度"
+  HEIGHT_SUBTRACT_VALUE: "&r生成高度减去值（未知功能，推荐不要设置）"
+  VEINS_PER_BIOME: "&r每个生物群系的静脉"
+
 biome:
+  not-found: "&4该生物群系&f'&9%biome%&f' &4不存在！"
   MODIFIED_GRAVELLY_MOUNTAINS: "破碎砂砾高山"
   OCEAN: "海洋"
   PLAINS: "平原"
@@ -133,59 +144,45 @@ biome:
   ERODED_BADLANDS: "风蚀恶地"
   MODIFIED_WOODED_BADLANDS_PLATEAU: "破碎恶地繁茂高原"
   MODIFIED_BADLANDS_PLATEAU: "破碎恶地高原"
-  BAMBOO_JUNGLE: "竹林（1.14）"
-  BAMBOO_JUNGLE_HILLS: "竹林丘陵（1.14）"
+  BAMBOO_JUNGLE: "竹林"
+  BAMBOO_JUNGLE_HILLS: "竹林丘陵"
   HILLS: "丘陵"
   SNOWY: "积雪"
 
-ore:
-  DIAMOND: "&r钻石矿"
-  COAL: "&r煤矿"
-  GOLD: "&r金矿"
-  GOLD_BADLANDS: "&r黏土山群系生成的金矿"
-  LAPIS: "&r青金石矿"
-  IRON: "&r铁矿"
-  REDSTONE: "&r红石矿"
-  EMERALD: "&r绿宝石矿"
-  DIRT: "&r泥土"
-  GRAVEL: "&r砂砾"
-  GRANITE: "&r花岗岩"
-  DIORITE: "&r闪长岩"
-  ANDESITE: "&r安山岩"
-setting:
-  VEIN_SIZE: "&r单个矿脉的最大矿物块数量"
-  VEINS_PER_CHUNK: "&r每个区块的矿脉数量"
-  HEIGHT_RANGE: "&r最高生成高度"
-  HEIGHT_CENTER: "&r集中生成高度"
-  MINIMUM_ORES_PER_CHUNK: "&r最小的单区块尝试生成次数"
-  ORES_PER_CHUNK_RANGE: "&r矿石生成规模"
-  MINIMUM_HEIGHT: "&r最低生成高度"
-  HEIGHT_SUBTRACT_VALUE: "&r生成高度减去值（未知功能，推荐不要设置）"
-  VEINS_PER_BIOME: "&r每个生物群系的静脉"
+number:
+  not-valid: "&f'&9%value%&f' &4这不是一个有效的数字！"
+  not-safe:
+    - "&4这个数字&f'&9%value%&f' &4不合适！"
+    - "&4如果您想使用，"
+    - "&4请将配置中的&f'&9safe-mode&f' &4设置为&f'&9false&f'"
+    - "&4然后&f'&9/重启该插件（/orecontrol reload）&f'"
+  not-safe-warning: "&e警告: 这个数字 &f'&9%value%&f' &不合适！"
+
+
 gui:
-  copy_value_success: "&a复制成功！"
-  reset_value_success: "&a已重置"
+  copy_success: "&a复制成功！"
+  reset_success: "&a已重置"
   anvil:
-    name_already_exist: "该名称已存在！"
+    name-already-exist: "该名称已存在！"
     title: "请输入名称!"
-  previous_page: "&r上一页"
-  next_page: "&r下一页'"
+  previous-page: "&r上一页"
+  next-page: "&r下一页'"
   back: "&r返回"
   info:
     name: "信息"
-    lore_world: "世界: %world%"
-    lore_biome: "生物群系: %%translation:[biome.%biome%]%"
-    lore_ore: "矿石: %%translation:[ore.%ore%]%"
-    lore_setting: "生成设置: %%translation:[setting.%setting%]%"
-    lore_current: "当前: %amount%"
-    lore_default: "默认: %value%"
+    lore-world: "世界: %world%"
+    lore-biome: "生物群系: %%translation:[biome.%biome%]%"
+    lore-ore: "矿石: %%translation:[ore.%ore%]%"
+    lore-setting: "生成设置: %%translation:[setting.%setting%]%"
+    lore-current: "当前: %amount%"
+    lore-default: "默认: %value%"
   world:
     name: "&r选择一个世界！"
     template:
       create: "&r创建一个新的矿物生成矿物生成模板"
     config:
       edit: "&r更改设置"
-  world_config:
+  world-config:
     name: "&r选择一个类型！"
     biome: "§b设置生物群系矿物生成"
     ore: "§b设置世界矿物生成"
@@ -195,14 +192,14 @@ gui:
   biome:
     name: "&r选择一个生物群系！"
     biome: "个生物群系"
-    biome_group: "个生物群系组"
+    biome-group: "个生物群系组"
     reset: "&r将所有生物群系设置重置为默认值！"
     copy: "&r将所有生物群系矿物生成设置复制到其他世界或矿物生成模板"
   ore:
     name: "&r选择一种矿石！"
     reset: "&r将所有矿石生成设置设置重置为默认值！"
     copy: "&r将所有矿石生成设置复制到其他世界或矿物生成模板！"
-  ore_settings:
+  ore-settings:
     name: "&r选择一种设置！"
     activate: "§a启用矿石生成！"
     deactivate: "§c停用矿石生成！"
@@ -221,17 +218,17 @@ gui:
     language:
       name: "&r更改语言设置！"
       description: "更改此插件的语言。如果你愿意的话，您可以提交新语言，只需翻译ore-control文件夹中的messages.yml，然后提交给寄给插件作者"
-    safe_mode:
+    safe-mode:
       name: "启用/停用安全模式！"
       description: "如果设置了不合适的值，请选择插件是否应警告您"
-    translate_tab_compilation:
+    translate-tab-compilation:
       name: "启用/停用标签转换！"
       description: "选择是否在命令中输入biomes/ores/settings语言"
     verify:
-      copy_action:
+      copy-action:
         name: "启用/停用复制操作的验证！"
         description: "&r选择是否必须验证复制操作"
-      reset_action:
+      reset-action:
         name: "启用/停用重置操作验证！"
         description: "&r选择是否必须验证重置操作"
   language:
