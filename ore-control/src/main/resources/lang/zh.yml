@@ -160,8 +160,8 @@ number:
 
 
 gui:
-  copy_success: "&a复制成功！"
-  reset_success: "&a已重置"
+  copy-success: "&a复制成功！"
+  reset-success: "&a已重置"
   anvil:
     name-already-exist: "该名称已存在！"
     title: "请输入名称!"

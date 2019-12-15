@@ -181,7 +181,7 @@ gui:
       create: "Create a new Template!"
     config:
       edit: "Change the config settings!"
-  world_config:
+  world-config:
     name: "Choose a Type!"
     biome: "§bSet a value for a specific §dbiome§b!"
     ore: "§bSet a value for the whole §dworld§b!"
@@ -191,14 +191,14 @@ gui:
   biome:
     name: "Choose a Biome!"
     biome: "Biomes"
-    biome_group: "Biome Groups"
+    biome-group: "Biome Groups"
     reset: "Reset all Biome settings to the default values!"
     copy: "Copy all Biome settings to an other World or Template!"
   ore:
     name: "Choose an Ore!"
     reset: "Reset all Ore settings to the default values!"
     copy: "Copy all Ore settings to an other World or Template!"
-  ore_settings:
+  ore-settings:
     name: "Choose a Setting!"
     activate: "§aActivate the Ore Generation!"
     deactivate: "§cDeactivate the Ore Generation!"

@@ -185,7 +185,7 @@ gui:
       create: "Erstelle eine neue Vorlage!"
     config:
       edit: "Ändere Config Einstellungen!"
-  world_config:
+  world-config:
     name: "Wähle einen Typ!"
     biome: "§bLege eine Wert für ein bestimmtes §dBiom§b fest!"
     ore: "§bLege einen Wert für die ganze §dWelt§b fest!"
