@@ -105,7 +105,7 @@ public class BiomeGui extends PageGui<Biome> {
     private static void checkSettings(@NotNull final JavaPlugin javaPlugin) {
         if (biomeGuiSettings == null) {
             biomeGuiSettings = new BiomeGuiSettings(javaPlugin, "data/gui/biome-gui.yml", true);
-            if (Version.getCurrent().isNewerOrSameVersion(Version.v1_14_R1))
+            if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent()))
                 biomeGuiSettings.addValues("data/gui/biome-gui_v1.14.yml", true);
         }
     }

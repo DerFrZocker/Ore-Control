@@ -602,10 +602,10 @@ biomes:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       display-name: '§c%%translation:[biome.SNOWY]%'
-biome_group:
+biome-group:
   slot: 8
   biome:
-    item_stack:
+    item-stack:
       ==: org.bukkit.inventory.ItemStack
       v: 1631
       type: STONE_BUTTON
@@ -614,7 +614,7 @@ biome_group:
         meta-type: UNSPECIFIC
         display-name: '§c%%translation:[gui.biome.biome]%'
   group:
-    item_stack:
+    item-stack:
       ==: org.bukkit.inventory.ItemStack
       v: 1631
       type: STONE_BUTTON
