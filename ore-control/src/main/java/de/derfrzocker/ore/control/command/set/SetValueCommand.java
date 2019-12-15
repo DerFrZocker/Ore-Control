@@ -125,8 +125,8 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
         final List<String> list = new ArrayList<>();
         final boolean translated = oreControlValues.getConfigValues().isTranslateTabCompilation();
 
-        if (args.length == 2) {
-            final String oreName = args[1].toUpperCase();
+        if (args.length == 1) {
+            final String oreName = args[0].toUpperCase();
 
             if (translated) {
                 OreControlUtil.getTranslatedOres().values().stream().filter(value -> value.startsWith(oreName)).map(String::toLowerCase).forEach(list::add);
@@ -137,13 +137,13 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 3) {
-            final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated);
+        if (args.length == 2) {
+            final Optional<Ore> ore = OreControlUtil.getOre(args[0], translated);
 
             if (!ore.isPresent())
                 return list;
 
-            final String settingName = args[2].toUpperCase();
+            final String settingName = args[1].toUpperCase();
 
             if (translated) {
                 OreControlUtil.getTranslatedSettings(ore.get().getSettings()).values().stream().filter(value -> value.startsWith(settingName)).map(String::toLowerCase).forEach(list::add);
@@ -155,16 +155,16 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 4) {
-            final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated);
+        if (args.length == 3) {
+            final Optional<Ore> ore = OreControlUtil.getOre(args[0], translated);
 
             if (!ore.isPresent())
                 return list;
 
-            if (!OreControlUtil.getSetting(args[2], translated, ore.get().getSettings()).isPresent())
+            if (!OreControlUtil.getSetting(args[1], translated, ore.get().getSettings()).isPresent())
                 return list;
 
-            final String configName = args[3].toLowerCase();
+            final String configName = args[2].toLowerCase();
 
             Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(configName)).forEach(list::add);
             oreControlValues.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
@@ -172,20 +172,20 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 5) {
-            final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated);
+        if (args.length == 4) {
+            final Optional<Ore> ore = OreControlUtil.getOre(args[0], translated);
 
             if (!ore.isPresent())
                 return list;
 
-            final Optional<Setting> setting = OreControlUtil.getSetting(args[2], translated, ore.get().getSettings());
+            final Optional<Setting> setting = OreControlUtil.getSetting(args[1], translated, ore.get().getSettings());
 
             if (!setting.isPresent())
                 return list;
 
-            final World world = Bukkit.getWorld(args[3]);
+            final World world = Bukkit.getWorld(args[2]);
 
-            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[3]);
+            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[2]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;

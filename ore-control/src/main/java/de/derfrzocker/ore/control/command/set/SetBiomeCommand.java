@@ -137,8 +137,8 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         final List<String> list = new ArrayList<>();
         final boolean translated = oreControlValues.getConfigValues().isTranslateTabCompilation();
 
-        if (args.length == 2) {
-            final String biomeName = args[1].toUpperCase();
+        if (args.length == 1) {
+            final String biomeName = args[0].toUpperCase();
 
             if (translated) {
                 OreControlUtil.getTranslatedBiomes().values().stream().filter(value -> value.startsWith(biomeName)).map(String::toLowerCase).forEach(list::add);
@@ -149,13 +149,13 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 3) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[1], translated);
+        if (args.length == 2) {
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
             if (!biome.isPresent())
                 return list;
 
-            final String oreName = args[2].toUpperCase();
+            final String oreName = args[1].toUpperCase();
 
             if (translated) {
                 OreControlUtil.getTranslatedOres(biome.get().getOres()).values().stream().filter(value -> value.startsWith(oreName)).map(String::toLowerCase).forEach(list::add);
@@ -166,18 +166,18 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 4) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[1], translated);
+        if (args.length == 3) {
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
             if (!biome.isPresent())
                 return list;
 
-            final Optional<Ore> ore = OreControlUtil.getOre(args[2], translated, biome.get().getOres());
+            final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated, biome.get().getOres());
 
             if (!ore.isPresent())
                 return list;
 
-            final String settingName = args[3].toUpperCase();
+            final String settingName = args[2].toUpperCase();
 
             if (translated) {
                 OreControlUtil.getTranslatedSettings(ore.get().getSettings()).values().stream().filter(value -> value.startsWith(settingName)).map(String::toLowerCase).forEach(list::add);
@@ -189,21 +189,21 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 5) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[1], translated);
+        if (args.length == 4) {
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
             if (!biome.isPresent())
                 return list;
 
-            final Optional<Ore> ore = OreControlUtil.getOre(args[2], translated, biome.get().getOres());
+            final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated, biome.get().getOres());
 
             if (!ore.isPresent())
                 return list;
 
-            if (!OreControlUtil.getSetting(args[3], translated, ore.get().getSettings()).isPresent())
+            if (!OreControlUtil.getSetting(args[2], translated, ore.get().getSettings()).isPresent())
                 return list;
 
-            final String worldName = args[4].toLowerCase();
+            final String worldName = args[3].toLowerCase();
 
             Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().startsWith(worldName)).forEach(list::add);
             oreControlValues.getService().getAllWorldOreConfigs().stream().filter(value -> !list.contains(value.getName())).map(WorldOreConfig::getName).forEach(list::add);
@@ -211,25 +211,25 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             return list;
         }
 
-        if (args.length == 6) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[1], translated);
+        if (args.length == 5) {
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
             if (!biome.isPresent())
                 return list;
 
-            final Optional<Ore> ore = OreControlUtil.getOre(args[2], translated, biome.get().getOres());
+            final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated, biome.get().getOres());
 
             if (!ore.isPresent())
                 return list;
 
-            final Optional<Setting> setting = OreControlUtil.getSetting(args[3], translated, ore.get().getSettings());
+            final Optional<Setting> setting = OreControlUtil.getSetting(args[2], translated, ore.get().getSettings());
 
             if (!setting.isPresent())
                 return list;
 
-            final World world = Bukkit.getWorld(args[4]);
+            final World world = Bukkit.getWorld(args[3]);
 
-            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[4]);
+            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[3]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;
