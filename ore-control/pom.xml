@@ -34,6 +34,7 @@
             <groupId>com.github.WesJD</groupId>
             <artifactId>AnvilGUI</artifactId>
             <version>fac77153ae</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
