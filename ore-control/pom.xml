@@ -31,8 +31,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.WesJD</groupId>
-            <artifactId>AnvilGUI</artifactId>
+            <groupId>com.github.WesJD.AnvilGUI</groupId>
+            <artifactId>anvilgui</artifactId>
             <version>fac77153ae</version>
             <scope>compile</scope>
         </dependency>
@@ -105,6 +105,10 @@
                         </relocation>
                         <relocation>
                             <pattern>de.derfrzocker.spigot.utils</pattern>
+                            <shadedPattern>de.derfrzocker.ore.control.utils</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.wesjd</pattern>
                             <shadedPattern>de.derfrzocker.ore.control.utils</shadedPattern>
                         </relocation>
                     </relocations>
