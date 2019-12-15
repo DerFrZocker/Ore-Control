@@ -46,7 +46,7 @@ public class SettingsGui extends BasicGui {
     private int current = 0;
 
     SettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
-        super(oreControlValues.getJavaPlugin(), settingsGuiSettings);
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
@@ -83,7 +83,7 @@ public class SettingsGui extends BasicGui {
     }
 
     SettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final Ore ore, @NotNull final Setting setting, @NotNull final BiomeGuiSettings biomeGuiSettings) {
-        super(oreControlValues.getJavaPlugin(), settingsGuiSettings);
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
