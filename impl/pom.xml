@@ -15,6 +15,7 @@
         <module>v1_13_R1</module>
         <module>v1_13_R2</module>
         <module>yaml</module>
+        <module>v1_15_R1</module>
     </modules>
 
     <artifactId>ore-control-impl</artifactId>
