@@ -87,18 +87,24 @@ public class WorldGui extends PageGui<String> {
     private void handleCreateTemplate(@NotNull final InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player) {
             try {
-                Bukkit.getScheduler().callSyncMethod(getPlugin(), () -> new AnvilGUI(getPlugin(), (Player) event.getWhoClicked(), oreControlValues.getOreControlMessages().getGuiAnvilTitleMessage().getMessage(), (player, value) -> {
-                    final OreControlService service = oreControlValues.getService();
+                Bukkit.getScheduler().callSyncMethod(getPlugin(), () ->
+                        new AnvilGUI.Builder()
+                                .plugin(getPlugin())
+                                .onComplete((player, value) -> {
+                                    final OreControlService service = oreControlValues.getService();
 
-                    if (Bukkit.getWorld(value) != null || service.getWorldOreConfig(value).isPresent())
-                        return MessageUtil.replacePlaceHolder(getPlugin(), oreControlValues.getOreControlMessages().getWorldConfigAlreadyExistsMessage().getMessage(), new MessageValue("world-config", value));
+                                    if (Bukkit.getWorld(value) != null || service.getWorldOreConfig(value).isPresent())
+                                        return AnvilGUI.Response.text(MessageUtil.replacePlaceHolder(getPlugin(), oreControlValues.getOreControlMessages().getWorldConfigAlreadyExistsMessage().getMessage(), new MessageValue("world-config", value)));
 
-                    service.createWorldOreConfigTemplate(value);
+                                    service.createWorldOreConfigTemplate(value);
 
-                    new WorldGui(oreControlValues, player).openSync(event.getWhoClicked());
+                                    new WorldGui(oreControlValues, player).openSync(event.getWhoClicked());
 
-                    return "";
-                })).get();
+                                    return AnvilGUI.Response.text("");
+                                })
+                                .text(oreControlValues.getOreControlMessages().getGuiAnvilTitleMessage().getMessage())
+                                .open((Player) event.getWhoClicked()))
+                        .get();
             } catch (final InterruptedException | ExecutionException e) {
                 throw new RuntimeException("Unexpected Error while create Template", e);
             }
