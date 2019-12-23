@@ -72,7 +72,7 @@ public class SettingsGuiSettings extends BasicSettings {
         getSection().getConfigurationSection("items").
                 getKeys(false).stream().
                 map(value -> getSection().getConfigurationSection("items." + value)).
-                map(value -> new SettingsGuiSettings.ItemStackValues(value.getInt("slot", 0), value.getInt("value", 0), value.getItemStack("item-stack").clone())).
+                map(value -> new SettingsGuiSettings.ItemStackValues(value.getInt("slot", 0), value.getDouble("value", 0), value.getItemStack("item-stack").clone())).
                 forEach(set::add);
         return set;
     }
@@ -116,11 +116,11 @@ public class SettingsGuiSettings extends BasicSettings {
 
     public static final class ItemStackValues {
         private final int slot;
-        private final int value;
+        private final double value;
         @NotNull
         private final ItemStack itemStack;
 
-        private ItemStackValues(final int slot, final int value, @NotNull final ItemStack itemStack) {
+        private ItemStackValues(final int slot, final double value, @NotNull final ItemStack itemStack) {
             this.slot = slot;
             this.value = value;
             this.itemStack = itemStack;
@@ -130,7 +130,7 @@ public class SettingsGuiSettings extends BasicSettings {
             return slot;
         }
 
-        public int getValue() {
+        public double getValue() {
             return value;
         }
 

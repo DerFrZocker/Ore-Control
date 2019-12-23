@@ -119,31 +119,31 @@ public class OreControlUtilTest {
 
         for (Ore ore : Ore.values())
             for (Setting setting : ore.getSettings())
-                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig), (int) settings.getDefaultSettings(ore).getValue(setting).get());
+                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig), (double) settings.getDefaultSettings(ore).getValue(setting).get());
     }
 
     @Test
     public void GetAmount_When_SettingValueExist_Expect_ReturnTheExistingOne() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
 
         // Go through all Ores and Settings and add a random number to the Setting
         for (Ore ore : Ore.values()) {
             final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
             for (Setting setting : ore.getSettings()) {
-                final int amount = random.nextInt();
+                final double amount = random.nextDouble();
                 list.add(amount);
                 oreSettings.setValue(setting, amount);
             }
             worldOreConfig.setOreSettings(oreSettings);
         }
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
 
         // Go through all Ores and Settings again and check if the return value the right one
         for (Ore ore : Ore.values())
             for (Setting setting : ore.getSettings())
-                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig), (int) iterator.next());
+                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig), (double) iterator.next());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class OreControlUtilTest {
             worldOreConfig.setOreSettings(new OreSettingsYamlImpl(ore));
 
         for (Ore ore : Ore.values())
-            assertEquals(OreControlUtil.getAmount(ore, ore.getSettings()[1], worldOreConfig), (int) settings.getDefaultSettings(ore).getValue(ore.getSettings()[1]).get());
+            assertEquals(OreControlUtil.getAmount(ore, ore.getSettings()[1], worldOreConfig), (double) settings.getDefaultSettings(ore).getValue(ore.getSettings()[1]).get());
 
     }
 
@@ -191,14 +191,14 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) settings.getDefaultSettings(ore).getValue(setting).get());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) settings.getDefaultSettings(ore).getValue(setting).get());
 
     }
 
     @Test
     public void GetBiomeAmount_When_SettingValueExist_Expect_ReturnTheExistingOne() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
 
         // Go through all Biomes, Ores and Settings and add a random number to the Setting
         for (Biome biome : Biome.values()) {
@@ -206,7 +206,7 @@ public class OreControlUtilTest {
             for (Ore ore : biome.getOres()) {
                 final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
                 for (Setting setting : ore.getSettings()) {
-                    final int amount = random.nextInt();
+                    final double amount = random.nextDouble();
                     list.add(amount);
                     oreSettings.setValue(setting, amount);
                 }
@@ -215,13 +215,13 @@ public class OreControlUtilTest {
             worldOreConfig.setBiomeOreSettings(biomeOreSetting);
         }
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
 
         // Go through all Biomes, Ores and Settings again and check if the return value the right one
         for (Biome biome : Biome.values()) {
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) iterator.next());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) iterator.next());
         }
     }
 
@@ -265,7 +265,7 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values()) {
             final Ore ore = biome.getOres()[0];
             final Setting setting = ore.getSettings()[0];
-            assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) settings.getDefaultSettings(ore).getValue(setting).get());
+            assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) settings.getDefaultSettings(ore).getValue(setting).get());
         }
     }
 
@@ -283,30 +283,30 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values()) {
             final Ore ore = biome.getOres()[0];
             final Setting setting = ore.getSettings()[0];
-            assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) settings.getDefaultSettings(ore).getValue(setting).get());
+            assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) settings.getDefaultSettings(ore).getValue(setting).get());
         }
     }
 
     @Test
     public void GetBiomeAmount_When_BiomeOreSettingDontExistsButNormalOreSetting_Expect_ReturnNormalOreSettingValue() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> integers = new LinkedList<>();
+        final List<Double> Doubles = new LinkedList<>();
 
         for (Ore ore : Biome.PLAINS.getOres()) {
             final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
             worldOreConfig.setOreSettings(oreSettings);
             for (Setting setting : ore.getSettings()) {
-                final int value = random.nextInt();
-                integers.add(value);
+                final double value = random.nextDouble();
+                Doubles.add(value);
                 oreSettings.setValue(setting, value);
             }
         }
 
-        final Iterator<Integer> iterator = integers.iterator();
+        final Iterator<Double> iterator = Doubles.iterator();
 
         for (Ore ore : Biome.PLAINS.getOres())
             for (Setting setting : ore.getSettings())
-                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, Biome.PLAINS), (int) iterator.next());
+                assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, Biome.PLAINS), (double) iterator.next());
 
     }
 
@@ -320,7 +320,7 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
 
     }
 
@@ -337,7 +337,7 @@ public class OreControlUtilTest {
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
 
     }
 
@@ -357,20 +357,20 @@ public class OreControlUtilTest {
             final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
             worldOreConfig.setOreSettings(oreSettings);
             for (Setting setting : ore.getSettings())
-                oreSettings.setValue(setting, random.nextInt());
+                oreSettings.setValue(setting, random.nextDouble());
 
         }
 
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres())
                 for (Setting setting : ore.getSettings())
-                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (int) worldOreConfig.getOreSettings(ore).get().getValue(setting).get());
+                    assertEquals(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome), (double) worldOreConfig.getOreSettings(ore).get().getValue(setting).get());
 
     }
 
     //Test OreControlUtil#getAmount(Ore, Setting, WorldOreConfig, Biome) end
 
-    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, int) begin
+    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, double) begin
 
     @Test
     public void SetAmount_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
@@ -382,12 +382,12 @@ public class OreControlUtilTest {
     @Test
     public void SetAmount_When_TheOreSettingDontExist_Expect_CreateNewOreSettingAndSetValue() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
 
         assertTrue(worldOreConfig.getOreSettings().isEmpty());
 
         for (Ore ore : Ore.values()) {
-            final int value = random.nextInt();
+            final double value = random.nextDouble();
             OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, value);
             list.add(value);
         }
@@ -395,23 +395,23 @@ public class OreControlUtilTest {
         assertFalse(worldOreConfig.getOreSettings().isEmpty());
         assertEquals(worldOreConfig.getOreSettings().size(), Ore.values().length);
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
 
         for (Ore ore : Ore.values()) {
             final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
             assertTrue(oreSettings.isPresent());
 
-            final Optional<Integer> integer = oreSettings.get().getValue(ore.getSettings()[0]);
-            assertTrue(integer.isPresent());
+            final Optional<Double> Double = oreSettings.get().getValue(ore.getSettings()[0]);
+            assertTrue(Double.isPresent());
 
-            assertEquals(integer.get(), iterator.next());
+            assertEquals(Double.get(), iterator.next());
         }
     }
 
     @Test
     public void SetAmount_When_OreSettingsExistsButValueNot_Expect_AddValueToTheOreSettings() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
         final List<OreSettings> oreSettingsList = new LinkedList<>();
 
         for (Ore ore : Ore.values()) {
@@ -422,13 +422,13 @@ public class OreControlUtilTest {
 
         for (Ore ore : Ore.values())
             for (Setting setting : ore.getSettings()) {
-                final int amount = random.nextInt();
+                final double amount = random.nextDouble();
                 list.add(amount);
                 OreControlUtil.setAmount(ore, setting, worldOreConfig, amount);
             }
 
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
         final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
 
         for (Ore ore : Ore.values()) {
@@ -437,10 +437,10 @@ public class OreControlUtilTest {
             assertSame(oreSettings.get(), oreSettingsIterator.next());
 
             for (Setting setting : ore.getSettings()) {
-                final Optional<Integer> integer = oreSettings.get().getValue(setting);
-                assertTrue(integer.isPresent());
+                final Optional<Double> Double = oreSettings.get().getValue(setting);
+                assertTrue(Double.isPresent());
 
-                assertEquals(integer.get(), iterator.next());
+                assertEquals(Double.get(), iterator.next());
             }
         }
     }
@@ -448,26 +448,26 @@ public class OreControlUtilTest {
     @Test
     public void SetAmount_When_OreSettingAndValueExists_Expect_ReplaceOldOneWithNewOne() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
         final List<OreSettings> oreSettingsList = new LinkedList<>();
 
         for (Ore ore : Ore.values()) {
             final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
             for (Setting setting : ore.getSettings())
-                oreSettings.setValue(setting, random.nextInt());
+                oreSettings.setValue(setting, random.nextDouble());
             worldOreConfig.setOreSettings(oreSettings);
             oreSettingsList.add(oreSettings);
         }
 
         for (Ore ore : Ore.values())
             for (Setting setting : ore.getSettings()) {
-                final int amount = random.nextInt();
+                final double amount = random.nextDouble();
                 list.add(amount);
                 OreControlUtil.setAmount(ore, setting, worldOreConfig, amount);
             }
 
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
         final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
 
         for (Ore ore : Ore.values()) {
@@ -476,10 +476,10 @@ public class OreControlUtilTest {
             assertSame(oreSettings.get(), oreSettingsIterator.next());
 
             for (Setting setting : ore.getSettings()) {
-                final Optional<Integer> integer = oreSettings.get().getValue(setting);
-                assertTrue(integer.isPresent());
+                final Optional<Double> Double = oreSettings.get().getValue(setting);
+                assertTrue(Double.isPresent());
 
-                assertEquals(integer.get(), iterator.next());
+                assertEquals(Double.get(), iterator.next());
             }
         }
     }
@@ -499,9 +499,9 @@ public class OreControlUtilTest {
 
     }
 
-    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, int) end
+    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, double) end
 
-    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, int, Biome) begin
+    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, double, Biome) begin
 
     @Test
     public void SetBiomeAmount_When_OneArgumentIsNull_Expect_ThrowNullPointerException() {
@@ -514,13 +514,13 @@ public class OreControlUtilTest {
     @Test
     public void SetBiomeAmount_When_TheOreSettingAndBiomeOreSettingDontExist_Expect_CreateNewSettingsAndSetValue() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
 
         assertTrue(worldOreConfig.getBiomeOreSettings().isEmpty());
 
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres()) {
-                final int value = random.nextInt();
+                final double value = random.nextDouble();
                 OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, value, biome);
                 list.add(value);
             }
@@ -528,7 +528,7 @@ public class OreControlUtilTest {
         assertFalse(worldOreConfig.getBiomeOreSettings().isEmpty());
         assertEquals(worldOreConfig.getBiomeOreSettings().size(), Biome.values().length);
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
 
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres()) {
@@ -538,17 +538,17 @@ public class OreControlUtilTest {
                 final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
                 assertTrue(oreSettings.isPresent());
 
-                final Optional<Integer> integer = oreSettings.get().getValue(ore.getSettings()[0]);
-                assertTrue(integer.isPresent());
+                final Optional<Double> Double = oreSettings.get().getValue(ore.getSettings()[0]);
+                assertTrue(Double.isPresent());
 
-                assertEquals(integer.get(), iterator.next());
+                assertEquals(Double.get(), iterator.next());
             }
     }
 
     @Test
-    public void SetBiomeAmount_When_TheOreSettingDontExistButTheBiomeOreSetting_Expect_CreateNewOreSettingInTheExistingBiomeOreSettingAndSetValue() {
+    public void SetBiomeAmount_When_TheOreSettingDontExistButTheBiomeOreSetting_Expect_CreateNewOreSettingdoubleheExistingBiomeOreSettingAndSetValue() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
         final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
 
         assertTrue(worldOreConfig.getBiomeOreSettings().isEmpty());
@@ -564,12 +564,12 @@ public class OreControlUtilTest {
 
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres()) {
-                final int amount = random.nextInt();
+                final double amount = random.nextDouble();
                 list.add(amount);
                 OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, amount, biome);
             }
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
         final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
 
         for (Biome biome : Biome.values()) {
@@ -581,125 +581,18 @@ public class OreControlUtilTest {
                 final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
                 assertTrue(oreSettings.isPresent());
 
-                final Optional<Integer> integer = oreSettings.get().getValue(ore.getSettings()[0]);
-                assertTrue(integer.isPresent());
+                final Optional<Double> Double = oreSettings.get().getValue(ore.getSettings()[0]);
+                assertTrue(Double.isPresent());
 
-                assertEquals(integer.get(), iterator.next());
+                assertEquals(Double.get(), iterator.next());
             }
         }
     }
 
     @Test
-    public void SetBiomeAmount_When_TheOreSettingsAndTheBiomeOreSettingsExists_Expect_SetValueToTheSameOreSettingInTheSameBiomeSetting() {
+    public void SetBiomeAmount_When_TheOreSettingsAndTheBiomeOreSettingsExists_Expect_SetValueToTheSameOreSettingdoubleheSameBiomeSetting() {
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
-        final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
-        final List<OreSettings> oreSettingsList = new LinkedList<>();
-
-        assertTrue(worldOreConfig.getBiomeOreSettings().isEmpty());
-
-        for (Biome biome : Biome.values()) {
-            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
-            biomeOreSettingsList.add(biomeOreSettings);
-            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
-
-            for (Ore ore : biome.getOres()) {
-                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
-                oreSettingsList.add(oreSettings);
-                biomeOreSettings.setOreSettings(oreSettings);
-            }
-        }
-
-        assertFalse(worldOreConfig.getBiomeOreSettings().isEmpty());
-        assertEquals(worldOreConfig.getBiomeOreSettings().size(), Biome.values().length);
-
-        for (Biome biome : Biome.values())
-            for (Ore ore : biome.getOres()) {
-                final int amount = random.nextInt();
-                OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, amount, biome);
-                list.add(amount);
-            }
-
-        final Iterator<Integer> iterator = list.iterator();
-        final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
-        final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
-
-        for (Biome biome : Biome.values()) {
-            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
-            assertTrue(biomeOreSettings.isPresent());
-            assertSame(biomeOreSettings.get(), biomeOreSettingsIterator.next());
-
-            for (Ore ore : biome.getOres()) {
-                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
-                assertTrue(oreSettings.isPresent());
-                assertSame(oreSettings.get(), oreSettingsIterator.next());
-
-                final Optional<Integer> integer = oreSettings.get().getValue(ore.getSettings()[0]);
-                assertTrue(integer.isPresent());
-
-                assertEquals(integer.get(), iterator.next());
-            }
-        }
-    }
-
-    @Test
-    public void SetBiomeAmount_When_TheOreSettingsTheBiomeOreSettingsAndTheValueExists_Expect_ReplaceValueToTheSameOreSettingInTheSameBiomeSetting() {
-        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
-        final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
-        final List<OreSettings> oreSettingsList = new LinkedList<>();
-
-        assertTrue(worldOreConfig.getBiomeOreSettings().isEmpty());
-
-        for (Biome biome : Biome.values()) {
-            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
-            biomeOreSettingsList.add(biomeOreSettings);
-            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
-
-            for (Ore ore : biome.getOres()) {
-                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
-                oreSettingsList.add(oreSettings);
-                biomeOreSettings.setOreSettings(oreSettings);
-                oreSettings.setValue(ore.getSettings()[0], random.nextInt());
-            }
-        }
-
-        assertFalse(worldOreConfig.getBiomeOreSettings().isEmpty());
-        assertEquals(worldOreConfig.getBiomeOreSettings().size(), Biome.values().length);
-
-        for (Biome biome : Biome.values())
-            for (Ore ore : biome.getOres()) {
-                final int amount = random.nextInt();
-                OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, amount, biome);
-                list.add(amount);
-            }
-
-        final Iterator<Integer> iterator = list.iterator();
-        final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
-        final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
-
-        for (Biome biome : Biome.values()) {
-            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
-            assertTrue(biomeOreSettings.isPresent());
-            assertSame(biomeOreSettings.get(), biomeOreSettingsIterator.next());
-
-            for (Ore ore : biome.getOres()) {
-                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
-                assertTrue(oreSettings.isPresent());
-                assertSame(oreSettings.get(), oreSettingsIterator.next());
-
-                final Optional<Integer> integer = oreSettings.get().getValue(ore.getSettings()[0]);
-                assertTrue(integer.isPresent());
-
-                assertEquals(integer.get(), iterator.next());
-            }
-        }
-    }
-
-    @Test
-    public void SetBiomeAmount_When_TheOreSettingsTheBiomeOreSettingsExistButTheValueNot_Expect_SetANewValueToTheSameOreSettingInTheSameBiomeSetting() {
-        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
-        final List<Integer> list = new LinkedList<>();
+        final List<Double> list = new LinkedList<>();
         final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
         final List<OreSettings> oreSettingsList = new LinkedList<>();
 
@@ -722,12 +615,12 @@ public class OreControlUtilTest {
 
         for (Biome biome : Biome.values())
             for (Ore ore : biome.getOres()) {
-                final int amount = random.nextInt();
+                final double amount = random.nextDouble();
                 OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, amount, biome);
                 list.add(amount);
             }
 
-        final Iterator<Integer> iterator = list.iterator();
+        final Iterator<Double> iterator = list.iterator();
         final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
         final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
 
@@ -741,10 +634,117 @@ public class OreControlUtilTest {
                 assertTrue(oreSettings.isPresent());
                 assertSame(oreSettings.get(), oreSettingsIterator.next());
 
-                final Optional<Integer> integer = oreSettings.get().getValue(ore.getSettings()[0]);
-                assertTrue(integer.isPresent());
+                final Optional<Double> Double = oreSettings.get().getValue(ore.getSettings()[0]);
+                assertTrue(Double.isPresent());
 
-                assertEquals(integer.get(), iterator.next());
+                assertEquals(Double.get(), iterator.next());
+            }
+        }
+    }
+
+    @Test
+    public void SetBiomeAmount_When_TheOreSettingsTheBiomeOreSettingsAndTheValueExists_Expect_ReplaceValueToTheSameOreSettingdoubleheSameBiomeSetting() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Double> list = new LinkedList<>();
+        final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
+        final List<OreSettings> oreSettingsList = new LinkedList<>();
+
+        assertTrue(worldOreConfig.getBiomeOreSettings().isEmpty());
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            biomeOreSettingsList.add(biomeOreSettings);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+
+            for (Ore ore : biome.getOres()) {
+                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+                oreSettingsList.add(oreSettings);
+                biomeOreSettings.setOreSettings(oreSettings);
+                oreSettings.setValue(ore.getSettings()[0], random.nextDouble());
+            }
+        }
+
+        assertFalse(worldOreConfig.getBiomeOreSettings().isEmpty());
+        assertEquals(worldOreConfig.getBiomeOreSettings().size(), Biome.values().length);
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                final double amount = random.nextDouble();
+                OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, amount, biome);
+                list.add(amount);
+            }
+
+        final Iterator<Double> iterator = list.iterator();
+        final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
+        final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
+
+        for (Biome biome : Biome.values()) {
+            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+            assertTrue(biomeOreSettings.isPresent());
+            assertSame(biomeOreSettings.get(), biomeOreSettingsIterator.next());
+
+            for (Ore ore : biome.getOres()) {
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+                assertTrue(oreSettings.isPresent());
+                assertSame(oreSettings.get(), oreSettingsIterator.next());
+
+                final Optional<Double> Double = oreSettings.get().getValue(ore.getSettings()[0]);
+                assertTrue(Double.isPresent());
+
+                assertEquals(Double.get(), iterator.next());
+            }
+        }
+    }
+
+    @Test
+    public void SetBiomeAmount_When_TheOreSettingsTheBiomeOreSettingsExistButTheValueNot_Expect_SetANewValueToTheSameOreSettingdoubleheSameBiomeSetting() {
+        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl("dummy", false);
+        final List<Double> list = new LinkedList<>();
+        final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
+        final List<OreSettings> oreSettingsList = new LinkedList<>();
+
+        assertTrue(worldOreConfig.getBiomeOreSettings().isEmpty());
+
+        for (Biome biome : Biome.values()) {
+            final BiomeOreSettings biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            biomeOreSettingsList.add(biomeOreSettings);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+
+            for (Ore ore : biome.getOres()) {
+                final OreSettings oreSettings = new OreSettingsYamlImpl(ore);
+                oreSettingsList.add(oreSettings);
+                biomeOreSettings.setOreSettings(oreSettings);
+            }
+        }
+
+        assertFalse(worldOreConfig.getBiomeOreSettings().isEmpty());
+        assertEquals(worldOreConfig.getBiomeOreSettings().size(), Biome.values().length);
+
+        for (Biome biome : Biome.values())
+            for (Ore ore : biome.getOres()) {
+                final double amount = random.nextDouble();
+                OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, amount, biome);
+                list.add(amount);
+            }
+
+        final Iterator<Double> iterator = list.iterator();
+        final Iterator<BiomeOreSettings> biomeOreSettingsIterator = biomeOreSettingsList.iterator();
+        final Iterator<OreSettings> oreSettingsIterator = oreSettingsList.iterator();
+
+        for (Biome biome : Biome.values()) {
+            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+            assertTrue(biomeOreSettings.isPresent());
+            assertSame(biomeOreSettings.get(), biomeOreSettingsIterator.next());
+
+            for (Ore ore : biome.getOres()) {
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+                assertTrue(oreSettings.isPresent());
+                assertSame(oreSettings.get(), oreSettingsIterator.next());
+
+                final Optional<Double> Double = oreSettings.get().getValue(ore.getSettings()[0]);
+                assertTrue(Double.isPresent());
+
+                assertEquals(Double.get(), iterator.next());
             }
         }
     }
@@ -759,7 +759,7 @@ public class OreControlUtilTest {
             ores.removeAll(Sets.newHashSet(biome.getOres()));
 
             for (Ore ore : ores)
-                assertThrows(IllegalArgumentException.class, () -> OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, random.nextInt(), biome));
+                assertThrows(IllegalArgumentException.class, () -> OreControlUtil.setAmount(ore, ore.getSettings()[0], worldOreConfig, random.nextDouble(), biome));
         }
     }
 
@@ -774,12 +774,12 @@ public class OreControlUtilTest {
                 settings.removeAll(Sets.newHashSet(ore.getSettings()));
 
                 for (Setting setting : settings)
-                    assertThrows(IllegalArgumentException.class, () -> OreControlUtil.setAmount(ore, setting, worldOreConfig, random.nextInt(), biome));
+                    assertThrows(IllegalArgumentException.class, () -> OreControlUtil.setAmount(ore, setting, worldOreConfig, random.nextDouble(), biome));
             }
         }
     }
 
-    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, int, Biome) end
+    //Test OreControlUtil#setAmount(Ore, Setting, WorldOreConfig, double, Biome) end
 
     //Test OreControlUtil#getDefault(Ore, Setting) begin
 
@@ -793,7 +793,7 @@ public class OreControlUtilTest {
     public void GetDefault_When_OreHaveTheSetting_Expect_ReturnDefaultValue() {
         for (Ore ore : Ore.values())
             for (Setting setting : ore.getSettings())
-                assertEquals(OreControlUtil.getDefault(ore, setting), (int) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
+                assertEquals(OreControlUtil.getDefault(ore, setting), (double) OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).get());
     }
 
     @Test
@@ -810,7 +810,7 @@ public class OreControlUtilTest {
 
     //Test OreControlUtil#getDefault(Ore, Setting) end
 
-    //Test OreControlUtil#isUnSafe(Setting, int) begin
+    //Test OreControlUtil#isUnSafe(Setting, double) begin
 
     @Test
     public void IsUnSafe_When_SettingIsNull_Expect_ThrowNullPointerException() {
@@ -819,20 +819,20 @@ public class OreControlUtilTest {
 
     @Test
     public void IsUnsafe_When_ValueIsHigherOrSameThenMinimumValue_Expect_ReturnFalse() {
-        for (int i = 0; i < 10000; i++)
+        for (double i = 0; i < 10000; i++)
             for (Setting setting : Setting.values()) {
-                assertFalse(OreControlUtil.isUnSafe(setting, setting.getMinimumValue() + random.nextInt(100000)));
+                assertFalse(OreControlUtil.isUnSafe(setting, setting.getMinimumValue() + random.nextDouble() * 100000));
             }
     }
 
     @Test
     public void IsUnsafe_When_ValueIsLowerThenMinimumValue_Expect_ReturnTrue() {
-        for (int i = 0; i < 10000; i++)
+        for (double i = 0; i < 10000; i++)
             for (Setting setting : Setting.values())
-                assertTrue(OreControlUtil.isUnSafe(setting, setting.getMinimumValue() - random.nextInt(100000)));
+                assertTrue(OreControlUtil.isUnSafe(setting, setting.getMinimumValue() - random.nextDouble() * 100000));
     }
 
-    //Test OreControlUtil#isUnSafe(Setting, int) end
+    //Test OreControlUtil#isUnSafe(Setting, double) end
 
     //Test OreControlUtil#isOre(String) begin
 

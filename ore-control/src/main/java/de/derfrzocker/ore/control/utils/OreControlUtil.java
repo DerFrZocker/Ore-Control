@@ -61,7 +61,7 @@ public class OreControlUtil {
      * @throws NullPointerException     if Ore, Setting or WorldOreConfig is null
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
-    public static int getAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config) {
+    public static double getAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config) {
         valid(ore, setting);
 
         return config.getOreSettings(ore).map(oreSettings -> oreSettings.getValue(setting).orElseGet(() -> getDefault(ore, setting))).orElseGet(() -> getDefault(ore, setting));
@@ -89,7 +89,7 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
-    public static int getAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final @NonNull Biome biome) {
+    public static double getAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final @NonNull Biome biome) {
         valid(ore, setting);
         valid(biome, ore);
 
@@ -114,7 +114,7 @@ public class OreControlUtil {
      * @throws NullPointerException     if Ore, Setting or WorldOreConfig is null
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
-    public static void setAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final int value) {
+    public static void setAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final double value) {
         valid(ore, setting);
 
         config.getOreSettings(ore).orElseGet(() -> {
@@ -141,7 +141,7 @@ public class OreControlUtil {
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
-    public static void setAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final int value, final @NonNull Biome biome) {
+    public static void setAmount(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig config, final double value, final @NonNull Biome biome) {
         valid(ore, setting);
         valid(biome, ore);
 
@@ -167,7 +167,7 @@ public class OreControlUtil {
      * @throws NullPointerException     if Ore, Setting or WorldOreConfig is null
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
-    public static int getDefault(final @NonNull Ore ore, final @NonNull Setting setting) {
+    public static double getDefault(final @NonNull Ore ore, final @NonNull Setting setting) {
         valid(ore, setting);
 
         return OreControl.getInstance().getSettings().getDefaultSettings(ore).getValue(setting).orElseThrow(() -> new IllegalArgumentException("The ore '" + ore + "' don't have the setting '" + setting + "'!"));
@@ -181,7 +181,7 @@ public class OreControlUtil {
      * @param value   that get checked
      * @return true for unsafe false for safe
      */
-    public static boolean isUnSafe(final @NonNull Setting setting, final int value) {
+    public static boolean isUnSafe(final @NonNull Setting setting, final double value) {
         return setting.getMinimumValue() > value;
     }
 

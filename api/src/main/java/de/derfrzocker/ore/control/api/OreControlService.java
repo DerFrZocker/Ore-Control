@@ -47,7 +47,7 @@ public interface OreControlService {
 
     Set<WorldOreConfig> getAllWorldOreConfigs();
 
-    int getValue(Ore ore, Setting setting, WorldOreConfig worldOreConfig, Biome biome);
+    double getValue(Ore ore, Setting setting, WorldOreConfig worldOreConfig, Biome biome);
 
     boolean isActivated(Ore ore, WorldOreConfig worldOreConfig, Biome biome);
 

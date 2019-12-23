@@ -28,9 +28,11 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
+import de.derfrzocker.spigot.utils.NumberUtil;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.util.NumberConversions;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -47,7 +49,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     private static final String STATUS_KEY = "status";
 
     @Getter
-    private final Map<Setting, Integer> settings = new ConcurrentHashMap<>();
+    private final Map<Setting, Double> settings = new ConcurrentHashMap<>();
 
     @NonNull
     @Getter
@@ -57,18 +59,18 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     @Setter
     private boolean activated = true;
 
-    public OreSettingsYamlImpl(final @NonNull Ore ore, final @NonNull Map<Setting, Integer> settings) {
+    public OreSettingsYamlImpl(final @NonNull Ore ore, final @NonNull Map<Setting, Double> settings) {
         this.ore = ore;
         this.settings.putAll(settings);
     }
 
     @Override
-    public Optional<Integer> getValue(final @NonNull Setting setting) {
+    public Optional<Double> getValue(final @NonNull Setting setting) {
         return Optional.ofNullable(settings.get(setting));
     }
 
     @Override
-    public void setValue(final @NonNull Setting setting, final int value) {
+    public void setValue(final @NonNull Setting setting, final double value) {
         settings.put(setting, value);
     }
 
@@ -94,11 +96,11 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     }
 
     public static OreSettingsYamlImpl deserialize(final @NonNull Map<String, Object> map) {
-        final Map<Setting, Integer> settings = new LinkedHashMap<>();
+        final Map<Setting, Double> settings = new LinkedHashMap<>();
         final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 
         map.entrySet().stream().filter(entry -> service.isSetting(entry.getKey())).
-                forEach(entry -> settings.put(Setting.valueOf(entry.getKey().toUpperCase()), (Integer) entry.getValue()));
+                forEach(entry -> settings.put(Setting.valueOf(entry.getKey().toUpperCase()), NumberConversions.toDouble(entry.getValue())));
 
         final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(Ore.valueOf(((String) map.get(ORE_KEY)).toUpperCase()), settings);
 

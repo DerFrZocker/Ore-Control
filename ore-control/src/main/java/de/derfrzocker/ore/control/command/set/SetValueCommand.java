@@ -124,7 +124,7 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
                 return;
             }
 
-            final int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
+            final double value2 = percents ? (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (double) value;
 
             if (OreControlUtil.isUnSafe(setting, value2)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {

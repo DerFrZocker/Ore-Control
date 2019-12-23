@@ -28,6 +28,7 @@ import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
+import de.derfrzocker.spigot.utils.NumberUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -73,18 +74,19 @@ public class NMSServiceImpl implements NMSService {
             if (!OreControlUtil.isActivated(ore, worldOreConfig, biome))
                 return true;
 
-            final int veinsPerBiome = OreControlUtil.getAmount(ore, Setting.VEINS_PER_BIOME, worldOreConfig, biome);
+            final double veinsPerBiome = OreControlUtil.getAmount(ore, Setting.VEINS_PER_BIOME, worldOreConfig, biome);
             final int veinsPerChunk;
 
-            if (veinsPerBiome > 0)
+            if (veinsPerBiome > 0) {
                 veinsPerChunk = calculateVeinsPerChunk(world, biome, chunkCoordIntPair, veinsPerBiome);
-            else {
+            } else {
                 if (ore == Ore.EMERALD) {
-                    final int minimumOresPerChunk = service.getValue(Ore.EMERALD, Setting.MINIMUM_ORES_PER_CHUNK, worldOreConfig, biome);
-                    final int oresPerChunkRange = service.getValue(Ore.EMERALD, Setting.ORES_PER_CHUNK_RANGE, worldOreConfig, biome);
-                    veinsPerChunk = minimumOresPerChunk + random.nextInt(oresPerChunkRange);
+                    final int minimumOresPerChunk = NumberUtil.getInt(service.getValue(Ore.EMERALD, Setting.MINIMUM_ORES_PER_CHUNK, worldOreConfig, biome), random);
+                    final int oresPerChunkRange = NumberUtil.getInt(service.getValue(Ore.EMERALD, Setting.ORES_PER_CHUNK_RANGE, worldOreConfig, biome), random);
+
+                    veinsPerChunk = minimumOresPerChunk + oresPerChunkRange == 0 ? 0 : random.nextInt(oresPerChunkRange);
                 } else
-                    veinsPerChunk = OreControlUtil.getAmount(ore, Setting.VEINS_PER_CHUNK, worldOreConfig, biome);
+                    veinsPerChunk = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.VEINS_PER_CHUNK, worldOreConfig, biome), random);
             }
 
             if (veinsPerChunk == 0)
@@ -95,12 +97,24 @@ public class NMSServiceImpl implements NMSService {
 
             final Object configuration;
 
-            if (ore == Ore.LAPIS)
-                configuration = nMSUtil.createHeightAverageConfiguration(veinsPerChunk, OreControlUtil.getAmount(ore, Setting.HEIGHT_CENTER, worldOreConfig, biome), OreControlUtil.getAmount(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome));
-            else
-                configuration = nMSUtil.createCountConfiguration(veinsPerChunk, OreControlUtil.getAmount(ore, Setting.MINIMUM_HEIGHT, worldOreConfig, biome), OreControlUtil.getAmount(ore, Setting.HEIGHT_SUBTRACT_VALUE, worldOreConfig, biome), OreControlUtil.getAmount(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome));
+            if (ore == Ore.LAPIS) {
+                final int heightCenter = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_CENTER, worldOreConfig, biome), random);
+                final int heightRange = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
+                configuration = nMSUtil.createHeightAverageConfiguration(veinsPerChunk, heightCenter, heightRange == 0 ? 1 : heightRange);
+            } else {
+                final int minimumHeight = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.MINIMUM_HEIGHT, worldOreConfig, biome), random);
+                final int heightSubtractValue = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_SUBTRACT_VALUE, worldOreConfig, biome), random);
+                final int heightRange = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
 
-            final Object featureConfiguration = nMSUtil.createFeatureConfiguration(defaultFeatureConfiguration, OreControlUtil.getAmount(ore, Setting.VEIN_SIZE, worldOreConfig, biome));
+                configuration = nMSUtil.createCountConfiguration(veinsPerChunk, minimumHeight, heightSubtractValue, heightRange == 0 ? 1 : heightRange);
+            }
+
+            final int veinSize = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.VEIN_SIZE, worldOreConfig, biome), random);
+
+            if (veinSize == 0)
+                return true;
+
+            final Object featureConfiguration = nMSUtil.createFeatureConfiguration(defaultFeatureConfiguration, veinSize);
 
             return passFunction.apply(configuration, featureConfiguration);
 
@@ -117,18 +131,19 @@ public class NMSServiceImpl implements NMSService {
         }
     }
 
-    private int calculateVeinsPerChunk(final @NonNull World world, final @NonNull Biome biome, final @NonNull ChunkCoordIntPair chunkCoordIntPair, final int veinsPerBiome) {
+    private int calculateVeinsPerChunk(final @NonNull World world, final @NonNull Biome biome, final @NonNull ChunkCoordIntPair chunkCoordIntPair, final double veinsPerBiome) {
         final Set<ChunkCoordIntPair> chunkCoordIntPairs = getChunkCoordIntPairs(world, biome, chunkCoordIntPair);
         final ChunkCoordIntPair[] coordIntPairs = chunkCoordIntPairs.toArray(new ChunkCoordIntPair[0]);
 
         final Random random = getRandom(world.getSeed(), coordIntPairs[0]);
+        final int veinsPerBiomeInt = NumberUtil.getInt(veinsPerBiome, random);
 
         int veinsAmount = 0;
 
         if (coordIntPairs.length == 1) {
-            return veinsPerBiome;
+            return veinsPerBiomeInt;
         } else {
-            for (int i = 0; i < veinsPerBiome; i++) {
+            for (int i = 0; i < veinsPerBiomeInt; i++) {
                 final int randomInt = random.nextInt((coordIntPairs.length - 1));
                 final ChunkCoordIntPair coordIntPair = coordIntPairs[randomInt];
                 if (coordIntPair.equals(chunkCoordIntPair))
@@ -200,8 +215,11 @@ public class NMSServiceImpl implements NMSService {
 
     private boolean handleEmeraldGeneration(final WorldOreConfig worldOreConfig, final Biome biome, final ChunkCoordIntPair chunkCoordIntPair, final Random random, final int veinsPerChunk, final @NonNull BiFunction<Location, Integer, Boolean> generateFunction, final OreControlService service) {
 
-        final int heightRange = service.getValue(Ore.EMERALD, Setting.HEIGHT_RANGE, worldOreConfig, biome);
-        final int minimumHeight = service.getValue(Ore.EMERALD, Setting.MINIMUM_HEIGHT, worldOreConfig, biome);
+        int heightRange = NumberUtil.getInt(service.getValue(Ore.EMERALD, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
+        final int minimumHeight = NumberUtil.getInt(service.getValue(Ore.EMERALD, Setting.MINIMUM_HEIGHT, worldOreConfig, biome), random);
+
+        if (heightRange == 0)
+            heightRange = 1;
 
         final Location location = new Location(null, chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
 

@@ -91,7 +91,7 @@ public class OreControlServiceImpl implements OreControlService {
     }
 
     @Override
-    public int getValue(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig worldOreConfig, final @NonNull Biome biome) {
+    public double getValue(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig worldOreConfig, final @NonNull Biome biome) {
         return OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
     }
 

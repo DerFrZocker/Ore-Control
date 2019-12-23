@@ -47,6 +47,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 public class SettingsGui extends BasicGui {
@@ -67,7 +68,7 @@ public class SettingsGui extends BasicGui {
     private final Setting setting;
     private final int oreSlot;
 
-    private int current = 0;
+    private double current = 0;
 
     SettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
@@ -190,17 +191,17 @@ public class SettingsGui extends BasicGui {
 
     private final class SettingConsumer implements Consumer<InventoryClickEvent> {
 
-        private final int value;
+        private final double value;
 
-        private SettingConsumer(final int value) {
+        private SettingConsumer(final double value) {
             this.value = value;
         }
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
-            int current = biome == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
+            double current = biome == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
 
-            int newValue = current + value;
+            double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
             if (OreControlUtil.isUnSafe(setting, newValue)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
@@ -224,15 +225,15 @@ public class SettingsGui extends BasicGui {
 
     private final class SettingBiomeGroupConsumer implements Consumer<InventoryClickEvent> {
 
-        private final int value;
+        private final double value;
 
-        private SettingBiomeGroupConsumer(int value) {
+        private SettingBiomeGroupConsumer(double value) {
             this.value = value;
         }
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
-            int newValue = current + value;
+            double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
             if (OreControlUtil.isUnSafe(setting, newValue)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {

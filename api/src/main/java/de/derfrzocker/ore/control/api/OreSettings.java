@@ -48,7 +48,7 @@ public interface OreSettings extends Cloneable {
      * or an empty Optional if the OreSetting not contain the given Setting.
      * @throws NullPointerException if setting is null
      */
-    Optional<Integer> getValue(Setting setting);
+    Optional<Double> getValue(Setting setting);
 
     /**
      * This adds the given Setting with the given value to this OreSettings.
@@ -59,12 +59,12 @@ public interface OreSettings extends Cloneable {
      * @param value   for the given Setting
      * @throws NullPointerException if setting is null
      */
-    void setValue(Setting setting, int value);
+    void setValue(Setting setting, double value);
 
     /**
      * @return the  Map with all Settings and values  that this  OreSettings have.
      */
-    Map<Setting, Integer> getSettings();
+    Map<Setting, Double> getSettings();
 
     /**
      * Return if this Ore should be generated or not.
