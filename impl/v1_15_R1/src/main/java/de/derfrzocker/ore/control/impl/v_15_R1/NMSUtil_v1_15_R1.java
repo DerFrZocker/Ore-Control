@@ -59,7 +59,7 @@ public class NMSUtil_v1_15_R1 implements NMSUtil {
     @Override
     public Object createFeatureConfiguration(final @NonNull Object defaultFeatureConfiguration, final @NonNull int veinsSize) {
         final WorldGenFeatureConfigured<WorldGenFeatureOreConfiguration, WorldGenMinable> worldGenFeatureConfigured = (WorldGenFeatureConfigured<WorldGenFeatureOreConfiguration, WorldGenMinable>) defaultFeatureConfiguration;
-        final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.Target.NATURAL_STONE, (worldGenFeatureConfigured.c).c, veinsSize);
+        final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = new WorldGenFeatureOreConfiguration(worldGenFeatureConfigured.c.a, worldGenFeatureConfigured.c.c, veinsSize);
 
         return new WorldGenFeatureConfigured<>(worldGenFeatureConfigured.b, worldGenFeatureOreConfiguration);
     }
@@ -96,6 +96,8 @@ public class NMSUtil_v1_15_R1 implements NMSUtil {
             return Ore.DIORITE;
         if (object == Blocks.ANDESITE)
             return Ore.ANDESITE;
+        if (object == Blocks.NETHER_QUARTZ_ORE)
+            return Ore.NETHER_QUARTZ;
 
         return null;
     }

@@ -602,6 +602,14 @@ biomes:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       display-name: '§c%%translation:[biome.SNOWY]%'
+  NETHER:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1631
+    type: NETHERRACK
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§c%%translation:[biome.NETHER]%'
 biome-group:
   slot: 8
   biome:

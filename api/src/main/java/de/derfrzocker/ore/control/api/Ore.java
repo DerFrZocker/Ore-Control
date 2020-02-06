@@ -44,7 +44,8 @@ public enum Ore {
     GRAVEL(Material.GRAVEL),
     GRANITE(Material.GRANITE),
     DIORITE(Material.DIORITE),
-    ANDESITE(Material.ANDESITE);
+    ANDESITE(Material.ANDESITE),
+    NETHER_QUARTZ(Material.NETHER_QUARTZ_ORE);
 
     private final Material material;
 

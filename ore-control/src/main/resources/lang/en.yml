@@ -62,6 +62,7 @@ ore:
   GRANITE: "Granite"
   DIORITE: "Diorite"
   ANDESITE: "Andesite"
+  NETHER_QUARTZ: "Nether Quartz"
 
 setting:
   not-found: "&4The setting &f'&9%setting%&f' &4does not exist!"
@@ -148,6 +149,7 @@ biome:
   BAMBOO_JUNGLE_HILLS: "Bamboo Jungle Hills"
   HILLS: "Hills"
   SNOWY: "Snowy"
+  NETHER: "Nether"
 
 number:
   not-valid: "&f'&9%value%&f' &4is not a valid number!"

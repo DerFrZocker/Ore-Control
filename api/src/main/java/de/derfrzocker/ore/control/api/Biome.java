@@ -102,7 +102,8 @@ public enum Biome {
     MODIFIED_WOODED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
     MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
     BAMBOO_JUNGLE(Version.v1_14_R1),
-    BAMBOO_JUNGLE_HILLS(Version.v1_14_R1);
+    BAMBOO_JUNGLE_HILLS(Version.v1_14_R1),
+    NETHER;
 
     private Ore ore = null;
 
@@ -119,6 +120,10 @@ public enum Biome {
 
     public Ore[] getOres() {
         final List<Ore> ores = new ArrayList<>(Arrays.asList(Ore.values()));
+
+        if (this == NETHER) {
+            return new Ore[]{Ore.NETHER_QUARTZ};
+        }
 
         if (ore == null) {
             ores.remove(Ore.GOLD_BADLANDS);

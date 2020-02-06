@@ -62,6 +62,7 @@ ore:
   GRANITE: "&r花岗岩"
   DIORITE: "&r闪长岩"
   ANDESITE: "&r安山岩"
+  NETHER_QUARTZ: "Nether Quartz"
 
 setting:
   not-found: "&4该设置 &f'&9%setting%&f' &4未能生效！"
@@ -148,6 +149,7 @@ biome:
   BAMBOO_JUNGLE_HILLS: "竹林丘陵"
   HILLS: "丘陵"
   SNOWY: "积雪"
+  NETHER: "Nether"
 
 number:
   not-valid: "&f'&9%value%&f' &4这不是一个有效的数字！"

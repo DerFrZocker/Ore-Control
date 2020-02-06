@@ -70,6 +70,11 @@ class NMSReplacer_v1_15_R1 {
 
         for (final WorldGenFeatureConfigured<?, ?> composite : list)
             replace(composite, biome);
+
+        final List<WorldGenFeatureConfigured<?, ?>> decorations = map.get(WorldGenStage.Decoration.UNDERGROUND_DECORATION);
+
+        for (final WorldGenFeatureConfigured<?, ?> composite : decorations)
+            replaceDecorations(composite, biome);
     }
 
     @SuppressWarnings("unchecked")
@@ -107,6 +112,39 @@ class NMSReplacer_v1_15_R1 {
             return;
 
         replaceNormal(composite, biome);
+    }
+
+    private void replaceDecorations(WorldGenFeatureConfigured<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (replaceNetherQuarz(composite, biome))
+            return;
+    }
+
+    private boolean replaceNetherQuarz(WorldGenFeatureConfigured<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+            return false;
+
+        final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
+
+        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight))
+            return false;
+
+        if (!(worldGenFeatureDecoratorConfiguration.a.c instanceof WorldGenFeatureOreConfiguration)) {
+            return false;
+        }
+
+        final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = (WorldGenFeatureOreConfiguration) worldGenFeatureDecoratorConfiguration.a.c;
+
+        if (worldGenFeatureOreConfiguration.c.getBlock() != Blocks.NETHER_QUARTZ_ORE) {
+            return false;
+        }
+
+        {
+            final Field field = getField(WorldGenDecoratorConfigured.class, "a");
+            field.setAccessible(true);
+            field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorNetherHeightNormalOverrider_v1_15_R1(getDynamicFunction(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
+        }
+
+        return true;
     }
 
     private boolean replaceBadlandsGold(final @NonNull WorldGenFeatureConfigured<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {

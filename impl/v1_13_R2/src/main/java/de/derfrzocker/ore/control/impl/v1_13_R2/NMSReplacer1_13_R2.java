@@ -68,6 +68,11 @@ class NMSReplacer1_13_R2 {
 
         for (final WorldGenFeatureComposite<?, ?> composite : list)
             replace(composite, biome);
+
+        final List<WorldGenFeatureComposite<?, ?>> decorations = map.get(WorldGenStage.Decoration.UNDERGROUND_DECORATION);
+
+        for (final WorldGenFeatureComposite<?, ?> composite : decorations)
+            replaceDecorations(composite, biome);
     }
 
     @SuppressWarnings("unchecked")
@@ -105,6 +110,34 @@ class NMSReplacer1_13_R2 {
             return;
 
         replaceNormal(composite, biome);
+    }
+
+    private void replaceDecorations(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (replaceNetherQuarz(composite, biome))
+            return;
+    }
+
+    private boolean replaceNetherQuarz(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
+
+        {
+            final Field field = getField(WorldGenFeatureComposite.class, "b");
+            field.setAccessible(true);
+            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
+                return false;
+
+            final WorldGenFeatureOreConfiguration configuration = (WorldGenFeatureOreConfiguration) field.get(composite);
+
+            if (configuration.d.getBlock() != Blocks.NETHER_QUARTZ_ORE)
+                return false;
+        }
+
+        {
+            final Field field = getField(WorldGenFeatureComposite.class, "c");
+            field.setAccessible(true);
+            field.set(composite, new WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R2(biome, serviceSupplier));
+        }
+
+        return true;
     }
 
     private boolean replaceBadlandsGold(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {

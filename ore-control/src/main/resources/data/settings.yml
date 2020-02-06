@@ -115,5 +115,14 @@ defaults:
     height_range: 80
     height_subtract_value: 0
     veins_per_biome: 0
+  nether_quartz:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: NETHER_QUARTZ
+    vein_size: 14
+    veins_per_chunk: 16
+    minimum_height: 10
+    height_range: 128
+    height_subtract_value: 20
+    veins_per_biome: 0
 
 version: 4
