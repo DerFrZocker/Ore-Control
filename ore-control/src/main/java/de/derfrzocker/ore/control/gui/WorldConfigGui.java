@@ -82,7 +82,7 @@ public class WorldConfigGui extends BasicGui {
         if (permissions.getValueCopyPermission().hasPermission(permissible))
             addItem(worldConfigGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getCopyValueItemStack()), event -> new WorldGui(oreControlValues, new CopyWorldOreConfigAction(oreControlValues, worldOreConfig)).openSync(event.getWhoClicked()));
 
-        if (permissions.getTemplateDeletePermission().hasPermission(permissible) && worldOreConfig.isTemplate())
+        if (permissions.getTemplateDeletePermission().hasPermission(permissible))
             addItem(worldConfigGuiSettings.getTemplateDeleteSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getTemplateDeleteItemStack()), this::handleDeleteTemplate);
 
         addItem(worldConfigGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBackItemStack()), event -> new WorldGui(oreControlValues, event.getWhoClicked()).openSync(event.getWhoClicked()));
