@@ -28,7 +28,6 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.OreSettings;
 import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.spigot.utils.NumberUtil;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
