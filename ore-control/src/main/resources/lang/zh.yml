@@ -63,6 +63,7 @@ ore:
   DIORITE: "&r闪长岩"
   ANDESITE: "&r安山岩"
   NETHER_QUARTZ: "Nether Quartz"
+  INFESTED_STONE: "Infested Stone"
 
 setting:
   not-found: "&4该设置 &f'&9%setting%&f' &4未能生效！"

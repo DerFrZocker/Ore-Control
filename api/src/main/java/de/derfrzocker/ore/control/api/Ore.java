@@ -45,7 +45,26 @@ public enum Ore {
     GRANITE(Material.GRANITE),
     DIORITE(Material.DIORITE),
     ANDESITE(Material.ANDESITE),
-    NETHER_QUARTZ(Material.NETHER_QUARTZ_ORE);
+    NETHER_QUARTZ(Material.NETHER_QUARTZ_ORE),
+    INFESTED_STONE(Material.INFESTED_STONE);
+
+    final static Ore[] DEFAULT_OVERWORLD_ORES = new Ore[]{
+            Ore.ANDESITE,
+            Ore.COAL,
+            Ore.DIAMOND,
+            Ore.DIORITE,
+            Ore.DIRT,
+            Ore.GOLD,
+            Ore.GRANITE,
+            Ore.GRAVEL,
+            Ore.IRON,
+            Ore.LAPIS,
+            Ore.REDSTONE
+    };
+
+    final static Ore[] DEFAULT_NETHER_ORES = new Ore[]{
+            Ore.NETHER_QUARTZ
+    };
 
     private final Material material;
 

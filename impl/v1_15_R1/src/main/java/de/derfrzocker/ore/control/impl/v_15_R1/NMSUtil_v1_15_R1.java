@@ -29,20 +29,25 @@ import de.derfrzocker.ore.control.api.NMSUtil;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_15_R1.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
-@RequiredArgsConstructor
 public class NMSUtil_v1_15_R1 implements NMSUtil {
 
-    @NonNull
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
+
+    public NMSUtil_v1_15_R1(@NotNull final Supplier<OreControlService> serviceSupplier) {
+        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+    }
 
     @Override
     public void replaceNMS() {
@@ -50,14 +55,14 @@ public class NMSUtil_v1_15_R1 implements NMSUtil {
     }
 
     @Override
-    public Biome getBiome(final @NonNull World world, final @NonNull ChunkCoordIntPair chunkCoordIntPair) {
+    public Biome getBiome(@NotNull final World world, @NotNull final ChunkCoordIntPair chunkCoordIntPair) {
         final BiomeBase biomeBase = ((CraftWorld) world).getHandle().getChunkProvider().getChunkGenerator().getWorldChunkManager().getBiome(chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
 
         return Biome.valueOf(IRegistry.BIOME.getKey(biomeBase).getKey().toUpperCase());
     }
 
     @Override
-    public Object createFeatureConfiguration(final @NonNull Object defaultFeatureConfiguration, final @NonNull int veinsSize) {
+    public Object createFeatureConfiguration(@NotNull final Object defaultFeatureConfiguration, final int veinsSize) {
         final WorldGenFeatureConfigured<WorldGenFeatureOreConfiguration, WorldGenMinable> worldGenFeatureConfigured = (WorldGenFeatureConfigured<WorldGenFeatureOreConfiguration, WorldGenMinable>) defaultFeatureConfiguration;
         final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = new WorldGenFeatureOreConfiguration(worldGenFeatureConfigured.c.a, worldGenFeatureConfigured.c.c, veinsSize);
 
@@ -75,7 +80,7 @@ public class NMSUtil_v1_15_R1 implements NMSUtil {
     }
 
     @Override
-    public Ore getOre(final @NonNull Object object) {
+    public Ore getOre(@NotNull final Object object) {
         if (object == Blocks.DIAMOND_ORE)
             return Ore.DIAMOND;
         if (object == Blocks.COAL_ORE)
@@ -98,6 +103,8 @@ public class NMSUtil_v1_15_R1 implements NMSUtil {
             return Ore.ANDESITE;
         if (object == Blocks.NETHER_QUARTZ_ORE)
             return Ore.NETHER_QUARTZ;
+        if (object == Blocks.INFESTED_STONE)
+            return Ore.INFESTED_STONE;
 
         return null;
     }

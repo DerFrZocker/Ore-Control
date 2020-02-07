@@ -32,17 +32,24 @@ import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R1.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
-@RequiredArgsConstructor
 public class NMSUtil_v1_13_R1 implements NMSUtil {
 
-    @NonNull
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
+
+    public NMSUtil_v1_13_R1(@NotNull final Supplier<OreControlService> serviceSupplier) {
+        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+    }
 
     @Override
     public void replaceNMS() {
@@ -50,14 +57,14 @@ public class NMSUtil_v1_13_R1 implements NMSUtil {
     }
 
     @Override
-    public Biome getBiome(final @NonNull World world, final @NonNull ChunkCoordIntPair chunkCoordIntPair) {
+    public Biome getBiome(@NotNull final World world, @NotNull final ChunkCoordIntPair chunkCoordIntPair) {
         final BiomeBase biomeBase = ((CraftWorld) world).getHandle().getChunkProvider().getChunkGenerator().getWorldChunkManager().getBiome(new BlockPosition(chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4), null);
 
         return Biome.valueOf(BiomeBase.REGISTRY_ID.b(biomeBase).getKey().toUpperCase());
     }
 
     @Override
-    public Object createFeatureConfiguration(final @NonNull Object defaultFeatureConfiguration, final int veinsSize) {
+    public Object createFeatureConfiguration(@NotNull final Object defaultFeatureConfiguration, final int veinsSize) {
         final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = (WorldGenFeatureOreConfiguration) defaultFeatureConfiguration;
         return new WorldGenFeatureOreConfiguration(worldGenFeatureOreConfiguration.b, worldGenFeatureOreConfiguration.d, veinsSize);
     }
@@ -73,7 +80,7 @@ public class NMSUtil_v1_13_R1 implements NMSUtil {
     }
 
     @Override
-    public Ore getOre(final @NonNull Object object) {
+    public Ore getOre(@NotNull final Object object) {
         if (object == Blocks.DIAMOND_ORE)
             return Ore.DIAMOND;
         if (object == Blocks.COAL_ORE)
@@ -96,6 +103,8 @@ public class NMSUtil_v1_13_R1 implements NMSUtil {
             return Ore.ANDESITE;
         if (object == Blocks.NETHER_QUARTZ_ORE)
             return Ore.NETHER_QUARTZ;
+        if (object == Blocks.INFESTED_STONE)
+            return Ore.INFESTED_STONE;
 
         return null;
     }

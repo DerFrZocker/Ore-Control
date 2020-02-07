@@ -124,5 +124,14 @@ defaults:
     height_range: 128
     height_subtract_value: 20
     veins_per_biome: 0
+  infested_stone:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: INFESTED_STONE
+    vein_size: 9
+    veins_per_chunk: 7
+    minimum_height: 0
+    height_range: 64
+    height_subtract_value: 0
+    veins_per_biome: 0
 
 version: 4

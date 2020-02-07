@@ -65,6 +65,7 @@ ore:
   DIORITE: "Diorit"
   ANDESITE: "Andesit"
   NETHER_QUARTZ: "Nether Quartz"
+  INFESTED_STONE: "Befallener Stein"
 
 setting:
   not-found: "&4Die Einstellung &f'&9%setting%&f' &4existiert nicht!"

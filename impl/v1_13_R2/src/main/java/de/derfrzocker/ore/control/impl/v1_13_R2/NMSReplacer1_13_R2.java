@@ -26,10 +26,9 @@ package de.derfrzocker.ore.control.impl.v1_13_R2;
 
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlService;
-import lombok.AccessLevel;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R2.*;
+import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -37,11 +36,16 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 class NMSReplacer1_13_R2 {
 
-    @NonNull
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
+
+    NMSReplacer1_13_R2(@NotNull final Supplier<OreControlService> serviceSupplier) {
+        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+    }
 
     void replaceNMS() {
         for (final Field field : Biomes.class.getFields()) {
@@ -53,7 +57,7 @@ class NMSReplacer1_13_R2 {
         }
     }
 
-    private void replaceBase(final @NonNull BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceBase(@NotNull final BiomeBase base) throws NoSuchFieldException, IllegalAccessException {
         final Biome biome;
 
         try {
@@ -76,7 +80,7 @@ class NMSReplacer1_13_R2 {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> get(final @NonNull BiomeBase base)
+    private Map<WorldGenStage.Decoration, List<WorldGenFeatureComposite<?, ?>>> get(@NotNull final BiomeBase base)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassCastException {
 
         final Field field = getField(BiomeBase.class, "aW");
@@ -86,7 +90,7 @@ class NMSReplacer1_13_R2 {
     }
 
     @SuppressWarnings("rawtypes")
-    private Field getField(final @NonNull Class clazz, final @NonNull String fieldName) throws NoSuchFieldException {
+    private Field getField(@NotNull final Class clazz, @NotNull final String fieldName) throws NoSuchFieldException {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (final NoSuchFieldException e) {
@@ -99,7 +103,7 @@ class NMSReplacer1_13_R2 {
         }
     }
 
-    private void replace(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replace(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
         if (replaceBadlandsGold(composite, biome))
             return;
 
@@ -112,12 +116,15 @@ class NMSReplacer1_13_R2 {
         replaceNormal(composite, biome);
     }
 
-    private void replaceDecorations(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (replaceNetherQuarz(composite, biome))
+    private void replaceDecorations(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (replace(composite, biome, Blocks.NETHER_QUARTZ_ORE))
+            return;
+
+        if (replace(composite, biome, Blocks.INFESTED_STONE))
             return;
     }
 
-    private boolean replaceNetherQuarz(WorldGenFeatureComposite<?, ?> composite, Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replace(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome, @NotNull final Block block) throws NoSuchFieldException, IllegalAccessException {
 
         {
             final Field field = getField(WorldGenFeatureComposite.class, "b");
@@ -127,7 +134,7 @@ class NMSReplacer1_13_R2 {
 
             final WorldGenFeatureOreConfiguration configuration = (WorldGenFeatureOreConfiguration) field.get(composite);
 
-            if (configuration.d.getBlock() != Blocks.NETHER_QUARTZ_ORE)
+            if (configuration.d.getBlock() != block)
                 return false;
         }
 
@@ -140,7 +147,7 @@ class NMSReplacer1_13_R2 {
         return true;
     }
 
-    private boolean replaceBadlandsGold(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceBadlandsGold(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
         final Object object;
 
         {
@@ -175,7 +182,7 @@ class NMSReplacer1_13_R2 {
         return true;
     }
 
-    private boolean replaceEmerald(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceEmerald(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
         final Object object;
 
         {
@@ -196,7 +203,7 @@ class NMSReplacer1_13_R2 {
         return true;
     }
 
-    private boolean replaceLapis(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private boolean replaceLapis(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
         final Object object;
 
         {
@@ -217,7 +224,7 @@ class NMSReplacer1_13_R2 {
         return true;
     }
 
-    private void replaceNormal(final @NonNull WorldGenFeatureComposite<?, ?> composite, final @NonNull Biome biome) throws NoSuchFieldException, IllegalAccessException {
+    private void replaceNormal(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
         {
             final Field field = getField(WorldGenFeatureComposite.class, "b");
             field.setAccessible(true);
