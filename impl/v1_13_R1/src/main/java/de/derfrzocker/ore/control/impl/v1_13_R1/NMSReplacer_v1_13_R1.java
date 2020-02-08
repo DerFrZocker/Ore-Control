@@ -122,6 +122,9 @@ class NMSReplacer_v1_13_R1 {
 
         if (replace(composite, biome, Blocks.INFESTED_STONE))
             return;
+
+        if (replaceMagma(composite, biome))
+            return;
     }
 
     private boolean replace(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome, @NotNull final Block block) throws NoSuchFieldException, IllegalAccessException {
@@ -142,6 +145,28 @@ class NMSReplacer_v1_13_R1 {
             final Field field = getField(WorldGenFeatureComposite.class, "c");
             field.setAccessible(true);
             field.set(composite, new WorldGenDecoratorNetherHeightNormalOverrider_v1_13_R1(biome, serviceSupplier));
+        }
+
+        return true;
+    }
+
+    private boolean replaceMagma(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        {
+            final Field field = getField(WorldGenFeatureComposite.class, "b");
+            field.setAccessible(true);
+            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
+                return false;
+
+            final WorldGenFeatureOreConfiguration configuration = (WorldGenFeatureOreConfiguration) field.get(composite);
+
+            if (configuration.d.getBlock() != Blocks.MAGMA_BLOCK)
+                return false;
+        }
+
+        {
+            final Field field = getField(WorldGenFeatureComposite.class, "c");
+            field.setAccessible(true);
+            field.set(composite, new WorldGenDecoratorNetherMagmaOverrider_v1_13_R1(biome, serviceSupplier));
         }
 
         return true;

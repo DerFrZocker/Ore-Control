@@ -64,6 +64,7 @@ ore:
   ANDESITE: "&r安山岩"
   NETHER_QUARTZ: "Nether Quartz"
   INFESTED_STONE: "Infested Stone"
+  MAGMA: "Magma"
 
 setting:
   not-found: "&4该设置 &f'&9%setting%&f' &4未能生效！"
@@ -77,6 +78,8 @@ setting:
   MINIMUM_HEIGHT: "&r最低生成高度"
   HEIGHT_SUBTRACT_VALUE: "&r生成高度减去值（未知功能，推荐不要设置）"
   VEINS_PER_BIOME: "&r每个生物群系的静脉"
+  SEA_LEVEL_DIVIDER: "Sea Level Divider"
+  SEA_LEVEL_ADDER: "Sea Level Adder"
 
 biome:
   not-found: "&4该生物群系&f'&9%biome%&f' &4不存在！"

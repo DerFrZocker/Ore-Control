@@ -64,6 +64,7 @@ ore:
   ANDESITE: "Andesite"
   NETHER_QUARTZ: "Nether Quartz"
   INFESTED_STONE: "Infested Stone"
+  MAGMA: "Magma"
 
 setting:
   not-found: "&4The setting &f'&9%setting%&f' &4does not exist!"
@@ -77,6 +78,8 @@ setting:
   MINIMUM_HEIGHT: "Minimum Height"
   HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
   VEINS_PER_BIOME: "Veins Per Biome"
+  SEA_LEVEL_DIVIDER: "Sea Level Divider"
+  SEA_LEVEL_ADDER: "Sea Level Adder"
 
 biome:
   not-found: "&4The biome &f'&9%biome%&f' &4does not exist!"

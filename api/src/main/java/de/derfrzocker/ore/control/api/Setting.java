@@ -34,7 +34,9 @@ public enum Setting {
     ORES_PER_CHUNK_RANGE(0),
     MINIMUM_HEIGHT(0),
     HEIGHT_SUBTRACT_VALUE(0),
-    VEINS_PER_BIOME(0);
+    VEINS_PER_BIOME(0),
+    SEA_LEVEL_DIVIDER(0),
+    SEA_LEVEL_ADDER(Integer.MIN_VALUE);
 
     final static Setting[] DEFAULT_ORE_SETTINGS = new Setting[]{
             VEIN_SIZE
@@ -60,6 +62,14 @@ public enum Setting {
             ORES_PER_CHUNK_RANGE,
             HEIGHT_RANGE,
             MINIMUM_HEIGHT,
+            VEINS_PER_BIOME
+    };
+
+    final static Setting[] DEFAULT_MAGMA_SETTINGS = new Setting[]{
+            VEINS_PER_CHUNK,
+            HEIGHT_RANGE,
+            SEA_LEVEL_DIVIDER,
+            SEA_LEVEL_ADDER,
             VEINS_PER_BIOME
     };
 

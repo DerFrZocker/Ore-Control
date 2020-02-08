@@ -95,6 +95,9 @@ public class NMSServiceImpl implements NMSService {
             if (ore == Ore.EMERALD)
                 return handleEmeraldGeneration(worldOreConfig, biome, chunkCoordIntPair, random, veinsPerChunk, generateFunction, service);
 
+            if (ore == Ore.MAGMA)
+                return handleMagmaGeneration(worldOreConfig, biome, chunkCoordIntPair, random, veinsPerChunk, generateFunction, service);
+
             final Object configuration;
 
             if (ore == Ore.LAPIS) {
@@ -123,7 +126,7 @@ public class NMSServiceImpl implements NMSService {
                     ", Worldname: " + worldOreConfig.getName() +
                     ", Ore: " + ore +
                     ", Biome: " + biome);
-
+            e.printStackTrace(); //TODO
             for (final Setting setting : ore.getSettings())
                 errorMessage.append(", ").append(setting).append(": ").append(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome));
 
@@ -224,10 +227,41 @@ public class NMSServiceImpl implements NMSService {
         final Location location = new Location(null, chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
 
         for (int i = 0; i < veinsPerChunk; ++i) {
-            final int var7 = random.nextInt(16);
-            final int var8 = random.nextInt(heightRange) + minimumHeight;
-            final int var9 = random.nextInt(16);
-            generateFunction.apply(location.clone().add(var7, var8, var9), -1);
+            final int x = random.nextInt(16);
+            final int y = random.nextInt(heightRange) + minimumHeight;
+            final int z = random.nextInt(16);
+            generateFunction.apply(location.clone().add(x, y, z), -1);
+        }
+
+        return true;
+    }
+
+    private boolean handleMagmaGeneration(final WorldOreConfig worldOreConfig, final Biome biome, final ChunkCoordIntPair chunkCoordIntPair, final Random random, final int veinsPerChunk, final @NonNull BiFunction<Location, Integer, Boolean> generateFunction, final OreControlService service) {
+
+        final int veinSize = NumberUtil.getInt(OreControlUtil.getAmount(Ore.MAGMA, Setting.VEIN_SIZE, worldOreConfig, biome), random);
+
+        if (veinSize == 0)
+            return true;
+
+        int heightRange = NumberUtil.getInt(service.getValue(Ore.MAGMA, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
+        int seaLevelDivider = NumberUtil.getInt(service.getValue(Ore.MAGMA, Setting.SEA_LEVEL_DIVIDER, worldOreConfig, biome), random);
+        final int seaLevelAdder = NumberUtil.getInt(service.getValue(Ore.MAGMA, Setting.SEA_LEVEL_ADDER, worldOreConfig, biome), random);
+
+        if (heightRange == 0)
+            heightRange = 1;
+
+        if (seaLevelDivider == 0)
+            seaLevelDivider = 1;
+
+        final Location location = new Location(null, chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
+
+        final int seaLevel = 63 / seaLevelDivider + seaLevelAdder;
+
+        for (int i = 0; i < veinsPerChunk; ++i) {
+            final int x = random.nextInt(16);
+            final int y = seaLevel + random.nextInt(heightRange);
+            final int z = random.nextInt(16);
+            generateFunction.apply(location.clone().add(x, y, z), veinSize);
         }
 
         return true;

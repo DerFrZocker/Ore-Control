@@ -133,5 +133,14 @@ defaults:
     height_range: 64
     height_subtract_value: 0
     veins_per_biome: 0
+  magma:
+    ==: de.derfrzocker.ore.control.impl.OreSettingsYamlImpl
+    ore: MAGMA
+    vein_size: 33
+    veins_per_chunk: 4
+    height_range: 10
+    sea_level_divider: 2
+    sea_level_adder: -4
+    veins_per_biome: 0
 
 version: 4

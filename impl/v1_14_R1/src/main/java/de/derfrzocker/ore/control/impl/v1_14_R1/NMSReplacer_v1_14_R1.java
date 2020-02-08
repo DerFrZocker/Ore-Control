@@ -124,6 +124,9 @@ class NMSReplacer_v1_14_R1 {
 
         if (replace(composite, biome, Blocks.INFESTED_STONE))
             return;
+
+        if (replaceMagma(composite, biome))
+            return;
     }
 
     private boolean replace(@NotNull final WorldGenFeatureConfigured<?> composite, @NotNull final Biome biome, @NotNull final Block block) throws NoSuchFieldException, IllegalAccessException {
@@ -149,6 +152,34 @@ class NMSReplacer_v1_14_R1 {
             final Field field = getField(WorldGenDecoratorConfigured.class, "a");
             field.setAccessible(true);
             field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorNetherHeightNormalOverrider_v1_14_R1(getDynamicFunction(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
+        }
+
+        return true;
+    }
+
+    private boolean replaceMagma(@NotNull final WorldGenFeatureConfigured<?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (!(composite.b instanceof WorldGenFeatureCompositeConfiguration))
+            return false;
+
+        final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.b;
+
+        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherMagma))
+            return false;
+
+        if (!(worldGenFeatureDecoratorConfiguration.a.b instanceof WorldGenFeatureOreConfiguration)) {
+            return false;
+        }
+
+        final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = (WorldGenFeatureOreConfiguration) worldGenFeatureDecoratorConfiguration.a.b;
+
+        if (worldGenFeatureOreConfiguration.c.getBlock() != Blocks.MAGMA_BLOCK) {
+            return false;
+        }
+
+        {
+            final Field field = getField(WorldGenDecoratorConfigured.class, "a");
+            field.setAccessible(true);
+            field.set(worldGenFeatureDecoratorConfiguration.b, new WorldGenDecoratorNetherMagmaOverrider_v1_14_R1(getDynamicFunction3(worldGenFeatureDecoratorConfiguration.b.a), biome, serviceSupplier));
         }
 
         return true;
@@ -257,6 +288,13 @@ class NMSReplacer_v1_14_R1 {
         final Field field = getField(WorldGenDecorator.class, "M");
         field.setAccessible(true);
         return (Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration>) field.get(worldGenDecorator);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Function<Dynamic<?>, ? extends WorldGenDecoratorFrequencyConfiguration> getDynamicFunction3(@NotNull final WorldGenDecorator<?> worldGenDecorator) throws IllegalAccessException, NoSuchFieldException {
+        final Field field = getField(WorldGenDecorator.class, "M");
+        field.setAccessible(true);
+        return (Function<Dynamic<?>, ? extends WorldGenDecoratorFrequencyConfiguration>) field.get(worldGenDecorator);
     }
 
 }

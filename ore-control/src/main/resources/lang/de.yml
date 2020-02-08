@@ -66,6 +66,7 @@ ore:
   ANDESITE: "Andesit"
   NETHER_QUARTZ: "Nether Quartz"
   INFESTED_STONE: "Befallener Stein"
+  MAGMA: "Magma"
 
 setting:
   not-found: "&4Die Einstellung &f'&9%setting%&f' &4existiert nicht!"
@@ -81,6 +82,8 @@ setting:
   MINIMUM_HEIGHT: "Mindesthöhe"
   HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
   VEINS_PER_BIOME: "Adern pro Biome"
+  SEA_LEVEL_DIVIDER: "Meeresspiegelteiler"
+  SEA_LEVEL_ADDER: "Meeresspiegeladdierer"
 
 biome:
   not-found: "&4Das Biome &f'&9%biome%&f' &4existiert nicht!"
