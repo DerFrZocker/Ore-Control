@@ -24,6 +24,7 @@
             <artifactId>spigot</artifactId>
             <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
