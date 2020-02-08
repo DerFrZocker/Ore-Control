@@ -24,58 +24,72 @@
 
 package de.derfrzocker.ore.control.api;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
-@Getter
 public enum Ore {
 
-    DIAMOND(Material.DIAMOND_ORE),
-    COAL(Material.COAL_ORE),
-    GOLD(Material.GOLD_ORE),
-    GOLD_BADLANDS(Material.GOLD_ORE),
-    LAPIS(Material.LAPIS_ORE),
-    IRON(Material.IRON_ORE),
-    REDSTONE(Material.REDSTONE_ORE),
-    EMERALD(Material.EMERALD_ORE),
-    DIRT(Material.DIRT),
-    GRAVEL(Material.GRAVEL),
-    GRANITE(Material.GRANITE),
-    DIORITE(Material.DIORITE),
-    ANDESITE(Material.ANDESITE),
-    NETHER_QUARTZ(Material.NETHER_QUARTZ_ORE),
-    INFESTED_STONE(Material.INFESTED_STONE);
+    DIAMOND(Material.DIAMOND_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    COAL(Material.COAL_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    GOLD(Material.GOLD_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    GOLD_BADLANDS(Material.GOLD_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    LAPIS(Material.LAPIS_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_DEPTH_AVERAGE_SETTINGS),
+    IRON(Material.IRON_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    REDSTONE(Material.REDSTONE_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    EMERALD(Material.EMERALD_ORE, Setting.DEFAULT_EMERALD_ORE_SETTINGS),
+    DIRT(Material.DIRT, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    GRAVEL(Material.GRAVEL, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    GRANITE(Material.GRANITE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    DIORITE(Material.DIORITE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    ANDESITE(Material.ANDESITE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    NETHER_QUARTZ(Material.NETHER_QUARTZ_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    INFESTED_STONE(Material.INFESTED_STONE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS);
 
     final static Ore[] DEFAULT_OVERWORLD_ORES = new Ore[]{
-            Ore.ANDESITE,
-            Ore.COAL,
-            Ore.DIAMOND,
-            Ore.DIORITE,
-            Ore.DIRT,
-            Ore.GOLD,
-            Ore.GRANITE,
-            Ore.GRAVEL,
-            Ore.IRON,
-            Ore.LAPIS,
-            Ore.REDSTONE
+            ANDESITE,
+            COAL,
+            DIAMOND,
+            DIORITE,
+            DIRT,
+            GOLD,
+            GRANITE,
+            GRAVEL,
+            IRON,
+            LAPIS,
+            REDSTONE
     };
 
     final static Ore[] DEFAULT_NETHER_ORES = new Ore[]{
-            Ore.NETHER_QUARTZ
+            NETHER_QUARTZ
     };
 
+    @NotNull
     private final Material material;
 
+    @NotNull
+    private final Setting[] settings;
+
+    Ore(@NotNull final Material material, @NotNull final Setting[] settings, @NotNull final Setting... settings1) {
+        this.material = material;
+
+        final int firstLength = settings.length;
+        final int secondLength = settings1.length;
+        final Setting[] result = new Setting[firstLength + secondLength];
+
+        System.arraycopy(settings, 0, result, 0, firstLength);
+        System.arraycopy(settings1, 0, result, firstLength, secondLength);
+
+        this.settings = result;
+    }
+
+    @NotNull
     public Setting[] getSettings() {
-        if (this == LAPIS)
-            return new Setting[]{Setting.VEIN_SIZE, Setting.VEINS_PER_CHUNK, Setting.HEIGHT_RANGE, Setting.HEIGHT_CENTER, Setting.VEINS_PER_BIOME};
+        return settings.clone();
+    }
 
-        if (this == EMERALD)
-            return new Setting[]{Setting.MINIMUM_ORES_PER_CHUNK, Setting.ORES_PER_CHUNK_RANGE, Setting.HEIGHT_RANGE, Setting.MINIMUM_HEIGHT, Setting.VEINS_PER_BIOME};
-
-        return new Setting[]{Setting.VEIN_SIZE, Setting.VEINS_PER_CHUNK, Setting.MINIMUM_HEIGHT, Setting.HEIGHT_RANGE, Setting.HEIGHT_SUBTRACT_VALUE, Setting.VEINS_PER_BIOME};
+    @NotNull
+    public Material getMaterial() {
+        return material;
     }
 
 }

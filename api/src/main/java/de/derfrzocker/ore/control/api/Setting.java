@@ -24,10 +24,6 @@
 
 package de.derfrzocker.ore.control.api;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public enum Setting {
 
     VEIN_SIZE(0),
@@ -40,7 +36,41 @@ public enum Setting {
     HEIGHT_SUBTRACT_VALUE(0),
     VEINS_PER_BIOME(0);
 
-    @Getter
+    final static Setting[] DEFAULT_ORE_SETTINGS = new Setting[]{
+            VEIN_SIZE
+    };
+
+    final static Setting[] DEFAULT_COUNT_RANGE_SETTINGS = new Setting[]{
+            VEINS_PER_CHUNK,
+            HEIGHT_RANGE,
+            MINIMUM_HEIGHT,
+            HEIGHT_SUBTRACT_VALUE,
+            VEINS_PER_BIOME
+    };
+
+    final static Setting[] DEFAULT_COUNT_DEPTH_AVERAGE_SETTINGS = new Setting[]{
+            VEINS_PER_CHUNK,
+            HEIGHT_RANGE,
+            HEIGHT_CENTER,
+            VEINS_PER_BIOME
+    };
+
+    final static Setting[] DEFAULT_EMERALD_ORE_SETTINGS = new Setting[]{
+            MINIMUM_ORES_PER_CHUNK,
+            ORES_PER_CHUNK_RANGE,
+            HEIGHT_RANGE,
+            MINIMUM_HEIGHT,
+            VEINS_PER_BIOME
+    };
+
     private final int minimumValue;
+
+    Setting(final int minimumValue) {
+        this.minimumValue = minimumValue;
+    }
+
+    public int getMinimumValue() {
+        return minimumValue;
+    }
 
 }
