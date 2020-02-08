@@ -60,7 +60,7 @@ public class BiomeGui extends PageGui<Biome> {
     private final CopyAction copyAction;
 
     BiomeGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
@@ -82,8 +82,8 @@ public class BiomeGui extends PageGui<Biome> {
             biomes.add(biome);
         }
 
-        init(biomes.toArray(new Biome[0]), Biome[]::new, biomeGuiSettings, this::getItemStack, this::handleNormalClick);
         addDecorations();
+        init(biomes.toArray(new Biome[0]), Biome[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
         addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
@@ -97,7 +97,7 @@ public class BiomeGui extends PageGui<Biome> {
     }
 
     public BiomeGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull CopyAction copyAction) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
@@ -120,18 +120,20 @@ public class BiomeGui extends PageGui<Biome> {
                 biomes.add(biome);
         }
 
-        init(biomes.toArray(new Biome[0]), Biome[]::new, biomeGuiSettings, this::getItemStack, this::handleCopyAction);
         addDecorations();
+        init(biomes.toArray(new Biome[0]), Biome[]::new, this::getItemStack, this::handleCopyAction);
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
     }
 
-    private static void checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static BiomeGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
         if (biomeGuiSettings == null) {
             biomeGuiSettings = new BiomeGuiSettings(javaPlugin, "data/gui/biome-gui.yml", true);
             if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent()))
                 biomeGuiSettings.addValues("data/gui/biome-gui_v1.14.yml", true);
         }
+
+        return biomeGuiSettings;
     }
 
     private ItemStack getItemStack(@NotNull final Biome biome) {

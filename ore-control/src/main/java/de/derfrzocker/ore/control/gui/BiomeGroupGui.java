@@ -57,7 +57,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     private final BiomeGuiSettings biomeGuiSettings;
 
     BiomeGroupGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull final BiomeGuiSettings biomeGuiSettings) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getJavaPlugin(), biomeGuiSettings);
 
         Validate.notNull(permissible, "Permissible can not be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
@@ -69,8 +69,8 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
 
-        init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, biomeGuiSettings, this::getItemStack, this::handleNormalClick);
         addDecorations();
+        init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
         addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));

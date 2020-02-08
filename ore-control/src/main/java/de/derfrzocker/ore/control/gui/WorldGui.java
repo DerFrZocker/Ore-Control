@@ -60,7 +60,7 @@ public class WorldGui extends PageGui<String> {
     private Map<String, WorldOreConfig> worldOreConfigs = new HashMap<>();
 
     public WorldGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
 
@@ -71,8 +71,8 @@ public class WorldGui extends PageGui<String> {
 
         final Permissions permissions = oreControlValues.getPermissions();
 
-        init(getStrings(), String[]::new, worldGuiSettings, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName)).openSync(event.getWhoClicked()));
         addDecorations();
+        init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName)).openSync(event.getWhoClicked()));
 
         if (permissions.getTemplateCreatePermission().hasPermission(permissible))
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
@@ -84,7 +84,7 @@ public class WorldGui extends PageGui<String> {
     }
 
     WorldGui(@NotNull final OreControlValues oreControlValues, @NotNull final CopyAction copyAction) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
         Validate.notNull(copyAction, "CopyAction can not be null");
 
         checkSettings(oreControlValues.getJavaPlugin());
@@ -92,13 +92,15 @@ public class WorldGui extends PageGui<String> {
         this.oreControlValues = oreControlValues;
         this.copyAction = copyAction;
 
-        init(getStrings(), String[]::new, worldGuiSettings, this::getItemStack, this::handleCopyAction);
         addDecorations();
+        init(getStrings(), String[]::new, this::getItemStack, this::handleCopyAction);
     }
 
-    private static void checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static WorldGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
         if (worldGuiSettings == null)
             worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/gui/world-gui.yml", true);
+
+        return worldGuiSettings;
     }
 
     private ItemStack getItemStack(@NotNull final String value) {

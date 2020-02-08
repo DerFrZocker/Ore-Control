@@ -57,7 +57,7 @@
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>spigot-utils</artifactId>
-            <version>dev-40-SNAPSHOT</version>
+            <version>dev-43-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
