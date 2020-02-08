@@ -33,6 +33,7 @@ import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.ReloadAble;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -72,6 +73,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         addDecorations();
         init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
 
+        addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
         addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
         addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
     }
@@ -82,6 +84,10 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
     private void handleNormalClick(@NotNull final BiomeGroup biomeGroup, @NotNull final InventoryClickEvent event) {
         new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGroup, biomeGuiSettings).openSync(event.getWhoClicked());
+    }
+
+    private MessageValue[] getMessagesValues() {
+        return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
     }
 
     private static class BiomeGroups implements ReloadAble {
