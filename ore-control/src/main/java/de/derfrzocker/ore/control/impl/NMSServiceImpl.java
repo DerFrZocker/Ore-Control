@@ -126,11 +126,19 @@ public class NMSServiceImpl implements NMSService {
                     ", Worldname: " + worldOreConfig.getName() +
                     ", Ore: " + ore +
                     ", Biome: " + biome);
-            e.printStackTrace(); //TODO
-            for (final Setting setting : ore.getSettings())
-                errorMessage.append(", ").append(setting).append(": ").append(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome));
 
-            throw new RuntimeException(errorMessage.toString(), e);
+            try {
+                for (final Setting setting : ore.getSettings())
+                    errorMessage.append(", ").append(setting).append(": ").append(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome));
+            } catch (final Exception e1) {
+                e1.printStackTrace();
+            }
+
+            final RuntimeException runtimeException = new RuntimeException(errorMessage.toString(), e);
+
+            runtimeException.printStackTrace();
+
+            throw runtimeException;
         }
     }
 
