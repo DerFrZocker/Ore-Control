@@ -35,7 +35,7 @@ import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.OreSettingsGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
-import de.derfrzocker.spigot.utils.gui.BasicGui;
+import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -54,7 +54,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class OreSettingsGui extends BasicGui {
+public class OreSettingsGui extends PageGui<Setting> {
 
     private static OreSettingsGuiSettings oreSettingsGuiSettings;
 
@@ -97,8 +97,9 @@ public class OreSettingsGui extends BasicGui {
         final Permissions permissions = oreControlValues.getPermissions();
         final Setting[] settings = ore.getSettings();
 
-        for (int i = 0; i < settings.length; i++)
-            addItem(i + oreSettingsGuiSettings.getSettingStartSlot(), getSettingItemStack(settings[i]), new SettingConsumer(settings[i]));
+        init(settings, Setting[]::new, this::getSettingItemStack, (setting, event) -> {
+            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biome, ore, setting).openSync(event.getWhoClicked());
+        });
 
         addItem(oreSettingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, oreSettingsGuiSettings.getBackItemStack()),
                 event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biome).openSync(event.getWhoClicked()));
@@ -141,8 +142,11 @@ public class OreSettingsGui extends BasicGui {
 
         final Setting[] settings = settingSet.toArray(new Setting[0]);
 
-        for (int i = 0; i < settings.length; i++)
-            addItem(i + oreSettingsGuiSettings.getSettingStartSlot(), getSettingItemStack(settings[i]), new SettingCopyConsumer(settings[i]));
+        init(settings, Setting[]::new, this::getSettingItemStack, (setting, event) -> {
+            copyAction.setSettingTarget(setting);
+
+            copyAction.next(event.getWhoClicked(), OreSettingsGui.this);
+        });
 
         addItem(oreSettingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biome == null ? oreSettingsGuiSettings.getInfoItemStack() : oreSettingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
     }
@@ -170,8 +174,9 @@ public class OreSettingsGui extends BasicGui {
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
         final Setting[] settings = ore.getSettings();
 
-        for (int i = 0; i < settings.length; i++)
-            addItem(i + oreSettingsGuiSettings.getSettingStartSlot(), getSettingItemStack(settings[i]), new SettingBiomeGroupConsumer(settings[i], biomeGuiSettings));
+        init(settings, Setting[]::new, this::getSettingItemStack, (setting, event) -> {
+            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGroup, ore, setting, biomeGuiSettings).openSync(event.getWhoClicked());
+        });
 
         addItem(oreSettingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, oreSettingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
 

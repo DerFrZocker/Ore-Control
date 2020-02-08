@@ -25,7 +25,7 @@
 package de.derfrzocker.ore.control.gui.settings;
 
 import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.spigot.utils.gui.BasicSettings;
+import de.derfrzocker.spigot.utils.gui.PageSettings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class OreSettingsGuiSettings extends BasicSettings {
+public class OreSettingsGuiSettings extends PageSettings {
 
     public OreSettingsGuiSettings(@NotNull JavaPlugin plugin, @NotNull String file) {
         super(plugin, file);
@@ -45,10 +45,6 @@ public class OreSettingsGuiSettings extends BasicSettings {
 
     public OreSettingsGuiSettings(@NotNull JavaPlugin plugin, @NotNull Supplier<ConfigurationSection> configurationSectionSupplier) {
         super(plugin, configurationSectionSupplier);
-    }
-
-    public int getSettingStartSlot() {
-        return getSection().getInt("setting-start-slot");
     }
 
     @NotNull
