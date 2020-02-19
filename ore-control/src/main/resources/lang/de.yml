@@ -170,8 +170,10 @@ number:
 
 
 gui:
-  copy-success: "&aDie Werte wurden erfolgreich kopiert!"
-  reset-success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
+  copy:
+    success: "&aDie Werte wurden erfolgreich kopiert!"
+  reset:
+    success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
   anvil:
     title: "Schreibe einen Namen!"
   previous-page: "&rVorherige Seite"

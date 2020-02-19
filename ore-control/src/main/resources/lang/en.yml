@@ -166,8 +166,10 @@ number:
 
 
 gui:
-  copy-success: "&aCopy the values with Success!"
-  reset-success: "&aReset the values with Success!"
+  copy:
+    success: "&aCopy the values with Success!"
+  reset:
+    success: "&aReset the values with Success!"
   anvil:
     title: "Type a name!"
   previous-page: "&rPrevious page"
