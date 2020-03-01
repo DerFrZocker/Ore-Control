@@ -69,8 +69,14 @@ public enum Setting {
             VEINS_PER_CHUNK,
             HEIGHT_RANGE,
             SEA_LEVEL_DIVIDER,
-            SEA_LEVEL_ADDER,
-            VEINS_PER_BIOME
+            SEA_LEVEL_ADDER
+    };
+
+    final static Setting[] NETHER_COUNT_RANGE_SETTINGS = new Setting[]{
+            VEINS_PER_CHUNK,
+            HEIGHT_RANGE,
+            MINIMUM_HEIGHT,
+            HEIGHT_SUBTRACT_VALUE
     };
 
     private final int minimumValue;

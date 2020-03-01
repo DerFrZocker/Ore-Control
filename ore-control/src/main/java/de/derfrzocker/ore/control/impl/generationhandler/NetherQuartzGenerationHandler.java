@@ -37,12 +37,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class MagmaGenerationHandler implements GenerationHandler {
+public class NetherQuartzGenerationHandler implements GenerationHandler {
 
     @NotNull
     private final NMSUtil nmsUtil;
 
-    public MagmaGenerationHandler(@NotNull final NMSUtil nmsUtil) {
+    public NetherQuartzGenerationHandler(@NotNull final NMSUtil nmsUtil) {
         Validate.notNull(nmsUtil, "NMSUtil can not be null");
 
         this.nmsUtil = nmsUtil;
@@ -55,33 +55,22 @@ public class MagmaGenerationHandler implements GenerationHandler {
         if (veinsPerChunk == 0)
             return true;
 
+        final Object configuration;
+
+        final int minimumHeight = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.MINIMUM_HEIGHT, worldOreConfig, biome), random);
+        final int heightSubtractValue = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_SUBTRACT_VALUE, worldOreConfig, biome), random);
+        final int heightRange = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
+
+        configuration = nmsUtil.createCountConfiguration(veinsPerChunk, minimumHeight, heightSubtractValue, heightRange == 0 ? 1 : heightRange);
+
         final int veinSize = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.VEIN_SIZE, worldOreConfig, biome), random);
 
         if (veinSize == 0)
             return true;
 
-        int heightRange = NumberUtil.getInt(service.getValue(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
-        int seaLevelDivider = NumberUtil.getInt(service.getValue(ore, Setting.SEA_LEVEL_DIVIDER, worldOreConfig, biome), random);
-        final int seaLevelAdder = NumberUtil.getInt(service.getValue(ore, Setting.SEA_LEVEL_ADDER, worldOreConfig, biome), random);
+        final Object featureConfiguration = nmsUtil.createFeatureConfiguration(defaultFeatureConfiguration, veinSize);
 
-        if (heightRange == 0)
-            heightRange = 1;
-
-        if (seaLevelDivider == 0)
-            seaLevelDivider = 1;
-
-        final Location location = new Location(null, chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
-
-        final int seaLevel = 63 / seaLevelDivider + seaLevelAdder;
-
-        for (int i = 0; i < veinsPerChunk; ++i) {
-            final int x = random.nextInt(16);
-            final int y = seaLevel + random.nextInt(heightRange);
-            final int z = random.nextInt(16);
-            generateFunction.apply(location.clone().add(x, y, z), veinSize);
-        }
-
-        return true;
+        return passFunction.apply(configuration, featureConfiguration);
     }
 
 }
