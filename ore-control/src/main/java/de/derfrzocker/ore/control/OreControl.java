@@ -26,9 +26,11 @@ package de.derfrzocker.ore.control;
 
 import de.derfrzocker.ore.control.api.NMSService;
 import de.derfrzocker.ore.control.api.OreControlService;
+import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.command.OreControlCommand;
 import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
+import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao_Old;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
@@ -111,7 +113,7 @@ public class OreControl extends JavaPlugin implements Listener {
         oreControlMessages = new OreControlMessages(this);
         permissions = new Permissions(this);
 
-        final WorldOreConfigYamlDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world_ore_configs.yml"));
+        final WorldOreConfigDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world-ore-configs"));
 
         // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
         Bukkit.getServicesManager().register(OreControlService.class,
@@ -119,9 +121,6 @@ public class OreControl extends JavaPlugin implements Listener {
                         nmsService,
                         worldOreConfigYamlDao),
                 this, ServicePriority.Normal);
-
-        // we init the WorldOreConfigYamlDao later, since it need the Service, to load the WorldOreConfig's correctly
-        worldOreConfigYamlDao.init();
 
         // check all files, that can be have other values (not other not new one), so we can replace them
         checkFile("data/gui/biome-groups.yml");
@@ -143,6 +142,8 @@ public class OreControl extends JavaPlugin implements Listener {
 
         // load the Settings
         settings = new Settings(Config.getConfig(this, "data/settings.yml"));
+
+        checkOldStorageType();
 
         // start the Metric of this Plugin (https://bstats.org/plugin/bukkit/Ore-Control)
         setUpMetric();
@@ -202,6 +203,34 @@ public class OreControl extends JavaPlugin implements Listener {
                 })
         );
     }
+
+    @Deprecated
+    private void checkOldStorageType() {
+        final File file = new File(getDataFolder(), "data/world_ore_configs.yml");
+
+        if (!file.exists())
+            return;
+
+        if (file.isDirectory()) {
+            getLogger().info("WTF?? why??");
+            return;
+        }
+
+        getLogger().info("Found old storage type, convert to new one");
+
+        final WorldOreConfigYamlDao_Old worldConfigYamlDao = new WorldOreConfigYamlDao_Old(file);
+        worldConfigYamlDao.init();
+
+        final OreControlService service = OreControlServiceSupplier.INSTANCE.get();
+
+        worldConfigYamlDao.getAll().forEach(service::saveWorldOreConfig);
+
+        if (!file.delete())
+            throw new RuntimeException("Can not delete File " + file);
+
+        getLogger().info("Finish converting old storage format to new one");
+    }
+
 
     private static final class OreControlServiceSupplier implements Supplier<OreControlService> {
 

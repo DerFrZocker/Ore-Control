@@ -25,117 +25,96 @@
 package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.*;
-import lombok.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@SerializableAs("OreControl#WorldOreConfig")
 public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldOreConfig {
 
     @Deprecated
     private static final String WORLD_KEY = "world";
     private static final String NAME_KEY = "name";
     private static final String TEMPLATE_KEY = "template";
+    private static final String ORE_SETTINGS_KEY = "ore-settings";
+    private static final String BIOME_ORE_SETTINGS_KEY = "biome-ore-settings";
 
-    @Getter
-    private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
-
-    @Getter
-    private final Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
-
-    @Getter
-    @NonNull
+    @NotNull
+    private final Map<Ore, OreSettings> oreSettings = new LinkedHashMap<>();
+    @NotNull
+    private final Map<Biome, BiomeOreSettings> biomeOreSettings = new LinkedHashMap<>();
+    @NotNull
     private final String name;
-
-    @Getter
-    @Setter
     private boolean template;
 
-    public WorldOreConfigYamlImpl(final @NonNull String name, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings) {
+    public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template) {
+        Validate.notNull(name, "Name can not be null");
+
         this.name = name;
         this.template = template;
+    }
+
+    public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template, @NotNull final Map<Ore, OreSettings> oreSettings) {
+        this(name, template);
+        Validate.notNull(oreSettings, "OreSettings map can not be null");
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
-    public WorldOreConfigYamlImpl(final @NonNull String name, final boolean template, final @NonNull Map<Ore, OreSettings> oreSettings, final @NonNull Map<Biome, BiomeOreSettings> biomeOreSettings) {
+    public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template, @NotNull final Map<Ore, OreSettings> oreSettings, @NotNull final Map<Biome, BiomeOreSettings> biomeOreSettings) {
         this(name, template, oreSettings);
+        Validate.notNull(biomeOreSettings, "BiomeOreSettings map can not be null");
 
         biomeOreSettings.forEach((key, value) -> this.biomeOreSettings.put(key, value.clone()));
     }
 
-    @Override
-    public Optional<OreSettings> getOreSettings(final @NonNull Ore ore) {
-        return Optional.ofNullable(oreSettings.get(ore));
-    }
+    @NotNull
+    public static WorldOreConfigYamlImpl deserialize(@NotNull final Map<String, Object> map) {
+        Validate.notNull(map, "Map can not be null");
 
-    @Override
-    public void setOreSettings(final @NonNull OreSettings oreSettings) {
-        this.oreSettings.put(oreSettings.getOre(), oreSettings);
-    }
+        final Map<Ore, OreSettings> oreSettings = new LinkedHashMap<>();
+        final Map<Biome, BiomeOreSettings> biomeOreSettings = new LinkedHashMap<>();
 
-    @Override
-    public Optional<BiomeOreSettings> getBiomeOreSettings(final @NonNull Biome biome) {
-        return Optional.ofNullable(this.biomeOreSettings.get(biome));
-    }
+        // if no ore settings key is present we have
+        // a) no ore settings in this world ore config
+        // b) the old storage type
+        if (map.containsKey(ORE_SETTINGS_KEY)) {
+            // new storage type
+            final List<OreSettings> list = (List<OreSettings>) map.get(ORE_SETTINGS_KEY);
 
-    @Override
-    public void setBiomeOreSettings(final @NonNull BiomeOreSettings biomeOreSettings) {
-        this.biomeOreSettings.put(biomeOreSettings.getBiome(), biomeOreSettings);
-    }
+            list.forEach(oreSettings1 -> oreSettings.put(oreSettings1.getOre(), oreSettings1));
+        } else {
+            // old storage type
+            final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 
-    @Override
-    public WorldOreConfig clone(@NonNull String name) {
-        return new WorldOreConfigYamlImpl(name, template, oreSettings, biomeOreSettings);
-    }
+            Validate.notNull(service, "OreControlService can not be null");
 
-    @Override
-    public Map<String, Object> serialize() {
-        final Map<String, Object> map = new LinkedHashMap<>();
+            map.entrySet().stream().filter(entry -> service.isOre(entry.getKey())).
+                    forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
+        }
 
-        map.put(NAME_KEY, getName());
+        // if no biome ore settings key is present we have
+        // a) no biome ore settings in this world ore config
+        // b) the old storage type
+        if (map.containsKey(BIOME_ORE_SETTINGS_KEY)) {
+            // new storage type
+            final List<BiomeOreSettings> list = (List<BiomeOreSettings>) map.get(BIOME_ORE_SETTINGS_KEY);
 
-        if (template)
-            map.put(TEMPLATE_KEY, true);
+            list.forEach(biomeOreSettings1 -> biomeOreSettings.put(biomeOreSettings1.getBiome(), biomeOreSettings1));
+        } else {
+            // old storage type
+            final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 
-        getOreSettings().entrySet().stream().filter(entry -> !entry.getValue().getSettings().isEmpty() || !entry.getValue().isActivated()).
-                map(entry -> {
-                    if (entry.getValue() instanceof ConfigurationSerializable)
-                        return entry.getValue();
-                    final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(entry.getKey(), entry.getValue().getSettings());
-                    oreSettingsYaml.setActivated(entry.getValue().isActivated());
-                    return oreSettingsYaml;
-                }).forEach(value -> map.put(value.getOre().toString(), value));
+            Validate.notNull(service, "OreControlService can not be null");
 
-        getBiomeOreSettings().entrySet().stream().
-                filter(entry -> entry.getValue().getOreSettings().entrySet().stream().
-                        anyMatch(entry2 -> !entry2.getValue().getSettings().isEmpty() || !entry2.getValue().isActivated())).
-                map(entry -> {
-                    if (entry.getValue() instanceof ConfigurationSerializable)
-                        return entry.getValue();
-                    return new BiomeOreSettingsYamlImpl(entry.getKey(), entry.getValue().getOreSettings());
-                }).forEach(value -> map.put(value.getBiome().toString(), value));
-
-        return map;
-    }
-
-    public static WorldOreConfigYamlImpl deserialize(final @NonNull Map<String, Object> map) {
-        final Map<Ore, OreSettings> oreSettings = new HashMap<>();
-        final Map<Biome, BiomeOreSettings> biomeOreSettings = new HashMap<>();
-        final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
-
-        map.entrySet().stream().filter(entry -> service.isOre(entry.getKey())).
-                forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
-
-        map.entrySet().stream().filter(entry -> service.isBiome(entry.getKey())).
-                forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
+            map.entrySet().stream().filter(entry -> service.isBiome(entry.getKey())).
+                    forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
+        }
 
         final String name;
 
@@ -145,6 +124,146 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
             name = (String) map.get(NAME_KEY);
 
         return new WorldOreConfigYamlImpl(name, (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
+    }
+
+    @NotNull
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @NotNull
+    @Override
+    public Optional<OreSettings> getOreSettings(@NotNull final Ore ore) {
+        Validate.notNull(ore, "Ore can not be null");
+
+        return Optional.ofNullable(this.oreSettings.get(ore));
+    }
+
+    @NotNull
+    @Override
+    public Map<Ore, OreSettings> getOreSettings() {
+        return this.oreSettings;
+    }
+
+    @Override
+    public void setOreSettings(@NotNull final OreSettings oreSettings) {
+        Validate.notNull(oreSettings, "OreSettings can not be null");
+
+        this.oreSettings.put(oreSettings.getOre(), oreSettings);
+    }
+
+    @NotNull
+    @Override
+    public Optional<BiomeOreSettings> getBiomeOreSettings(@NotNull final Biome biome) {
+        Validate.notNull(biome, "Biome can not be null");
+
+        return Optional.ofNullable(getBiomeOreSettings().get(biome));
+    }
+
+    @NotNull
+    @Override
+    public Map<Biome, BiomeOreSettings> getBiomeOreSettings() {
+        return this.biomeOreSettings;
+    }
+
+    @Override
+    public void setBiomeOreSettings(@NotNull final BiomeOreSettings biomeOreSettings) {
+        Validate.notNull(biomeOreSettings, "BiomeOreSettings can not be null");
+
+        getBiomeOreSettings().put(biomeOreSettings.getBiome(), biomeOreSettings);
+    }
+
+    @Override
+    public boolean isTemplate() {
+        return this.template;
+    }
+
+    @Override
+    public void setTemplate(boolean status) {
+        this.template = status;
+    }
+
+    @NotNull
+    @Override
+    public WorldOreConfig clone(@NotNull final String name) {
+        Validate.notNull(name, "Name can not be null");
+
+        return new WorldOreConfigYamlImpl(name, isTemplate(), getOreSettings(), getBiomeOreSettings());
+    }
+
+    @Override
+    public boolean equals(@Nullable final Object object) {
+        if (this == object)
+            return true;
+        if (object == null || getClass() != object.getClass())
+            return false;
+
+        final WorldOreConfigYamlImpl that = (WorldOreConfigYamlImpl) object;
+
+        return isTemplate() == that.isTemplate() &&
+                getOreSettings().equals(that.getOreSettings()) &&
+                getBiomeOreSettings().equals(that.getBiomeOreSettings()) &&
+                getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    @NotNull
+    @Override
+    public Map<String, Object> serialize() {
+        final Map<String, Object> serialize = new LinkedHashMap<>();
+
+        serialize.put(NAME_KEY, getName());
+
+        if (isTemplate())
+            serialize.put(TEMPLATE_KEY, true);
+
+        final Map<Ore, OreSettings> oreSettingsMap = getOreSettings();
+        if (!oreSettingsMap.isEmpty()) {
+            final List<OreSettings> oreSettingsList = new LinkedList<>();
+
+            oreSettingsMap.values().forEach(oreSettings -> {
+                if (!oreSettings.getSettings().isEmpty() || !oreSettings.isActivated()) {
+                    if (oreSettings instanceof ConfigurationSerializable) {
+                        oreSettingsList.add(oreSettings);
+                    } else {
+                        final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(oreSettings.getOre(), oreSettings.getSettings());
+                        oreSettingsYaml.setActivated(oreSettings.isActivated());
+                        oreSettingsList.add(oreSettingsYaml);
+                    }
+                }
+            });
+
+            serialize.put(ORE_SETTINGS_KEY, oreSettingsList);
+        }
+
+        final Map<Biome, BiomeOreSettings> biomeOreSettingsMap = getBiomeOreSettings();
+        if (!biomeOreSettingsMap.isEmpty()) {
+            final List<BiomeOreSettings> biomeOreSettingsList = new LinkedList<>();
+
+            biomeOreSettingsMap.values().forEach(biomeOreSettings -> {
+                if (biomeOreSettings.getOreSettings().isEmpty()) {
+                    return;
+                }
+
+                if (biomeOreSettings.getOreSettings().values().stream().
+                        anyMatch(oreSettings -> !oreSettings.getSettings().isEmpty() || !oreSettings.isActivated())) {
+                    if (biomeOreSettings instanceof ConfigurationSerializable) {
+                        biomeOreSettingsList.add(biomeOreSettings);
+                    } else {
+                        biomeOreSettingsList.add(new BiomeOreSettingsYamlImpl(biomeOreSettings.getBiome(), biomeOreSettings.getOreSettings()));
+                    }
+                }
+            });
+
+            serialize.put(BIOME_ORE_SETTINGS_KEY, biomeOreSettingsList);
+        }
+
+        return serialize;
     }
 
 }

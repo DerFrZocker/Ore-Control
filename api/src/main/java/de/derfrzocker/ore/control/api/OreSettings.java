@@ -24,6 +24,8 @@
 
 package de.derfrzocker.ore.control.api;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,6 +38,7 @@ public interface OreSettings extends Cloneable {
     /**
      * @return the Ore
      */
+    @NotNull
     Ore getOre();
 
     /**
@@ -46,9 +49,10 @@ public interface OreSettings extends Cloneable {
      * @param setting which must be non-null
      * @return an Optional that hold the value of the given Setting,
      * or an empty Optional if the OreSetting not contain the given Setting.
-     * @throws NullPointerException if setting is null
+     * @throws IllegalArgumentException if setting is null
      */
-    Optional<Double> getValue(Setting setting);
+    @NotNull
+    Optional<Double> getValue(@NotNull Setting setting);
 
     /**
      * This adds the given Setting with the given value to this OreSettings.
@@ -57,13 +61,14 @@ public interface OreSettings extends Cloneable {
      *
      * @param setting which must be non-null
      * @param value   for the given Setting
-     * @throws NullPointerException if setting is null
+     * @throws IllegalArgumentException if setting is null
      */
-    void setValue(Setting setting, double value);
+    void setValue(@NotNull Setting setting, double value);
 
     /**
-     * @return the  Map with all Settings and values  that this  OreSettings have.
+     * @return the Map with all Settings and values that this OreSettings have.
      */
+    @NotNull
     Map<Setting, Double> getSettings();
 
     /**
@@ -86,6 +91,7 @@ public interface OreSettings extends Cloneable {
      *
      * @return a new OreSettings
      */
+    @NotNull
     OreSettings clone();
 
 }

@@ -24,19 +24,58 @@
 
 package de.derfrzocker.ore.control.api;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The BiomeOreSettings class holds the different OreSettings for a specific biome,
+ * that are needed for the Ore Generation.
+ */
 public interface BiomeOreSettings extends Cloneable {
 
+    /**
+     * @return the biome
+     */
+    @NotNull
     Biome getBiome();
 
-    Optional<OreSettings> getOreSettings(Ore ore);
+    /**
+     * If this BiomeOreSettings contains the OreSettings of the given Ore,
+     * it returns an Optional that contains the OreSettings,
+     * otherwise it return an empty Optional
+     *
+     * @param ore which must be non-null
+     * @return an Optional that hold the OreSettings of the given Ore,
+     * or an empty Optional if the BiomeOreSettings not contain the given Ore.
+     * @throws IllegalArgumentException if ore is null
+     */
+    @NotNull
+    Optional<OreSettings> getOreSettings(@NotNull Ore ore);
 
-    void setOreSettings(OreSettings oreSettings);
-
+    /**
+     * @return the Map with all OreSettings this BiomeOreSetting have.
+     */
+    @NotNull
     Map<Ore, OreSettings> getOreSettings();
 
+    /**
+     * Adds the given OreSetting to this BiomeOreSettings
+     * If a OreSettings for the ore already exits in this BiomeOreSetting,
+     * the given one will override the old one
+     *
+     * @param oreSettings to add
+     * @throws IllegalArgumentException if oreSettings is null
+     */
+    void setOreSettings(@NotNull OreSettings oreSettings);
+
+    /**
+     * Clones all OreSettings of this BiomeOreSettings to a new one.
+     *
+     * @return a new BiomeOreSettings
+     */
+    @NotNull
     BiomeOreSettings clone();
 
 }

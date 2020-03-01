@@ -25,6 +25,7 @@
 package de.derfrzocker.ore.control.api;
 
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
@@ -58,6 +59,7 @@ public interface WorldOreConfig {
      *
      * @return the name of the config
      */
+    @NotNull
     String getName();
 
     /**
@@ -68,9 +70,16 @@ public interface WorldOreConfig {
      * @param ore which must be non-null
      * @return an Optional describing the OreSetting of the given Ore,
      * or an empty Optional if the config not contain the given Ore.
-     * @throws NullPointerException if ore is null
+     * @throws IllegalArgumentException if ore is null
      */
-    Optional<OreSettings> getOreSettings(Ore ore);
+    @NotNull
+    Optional<OreSettings> getOreSettings(@NotNull Ore ore);
+
+    /**
+     * @return the  Map with all  OreSettings that this  WorldOreConfig have.
+     */
+    @NotNull
+    Map<Ore, OreSettings> getOreSettings();
 
     /**
      * This adds the given OreSetting to this WorldOreConfig.
@@ -78,14 +87,9 @@ public interface WorldOreConfig {
      * than it replaced the old OreSetting with given OreSetting.
      *
      * @param oreSettings which must be non-null
-     * @throws NullPointerException if ore is null
+     * @throws IllegalArgumentException if ore is null
      */
-    void setOreSettings(OreSettings oreSettings);
-
-    /**
-     * @return the  Map with all  OreSettings that this  WorldOreConfig have.
-     */
-    Map<Ore, OreSettings> getOreSettings();
+    void setOreSettings(@NotNull OreSettings oreSettings);
 
     /**
      * If this config contains the  BiomeOreSettings of the given  Biome,
@@ -95,9 +99,16 @@ public interface WorldOreConfig {
      * @param biome which must be non- null
      * @return an  Optional describing the BiomeOreSettings of the given  Biome,
      * or an empty  Optional if the config not contain the given  Biome.
-     * @throws NullPointerException if biome is  null
+     * @throws IllegalArgumentException if biome is  null
      */
-    Optional<BiomeOreSettings> getBiomeOreSettings(Biome biome);
+    @NotNull
+    Optional<BiomeOreSettings> getBiomeOreSettings(@NotNull Biome biome);
+
+    /**
+     * @return the  Map with all  BiomeOreSettings that this  WorldOreConfig have.
+     */
+    @NotNull
+    Map<Biome, BiomeOreSettings> getBiomeOreSettings();
 
     /**
      * This adds the given  BiomeOreSettings to this  WorldOreConfig.
@@ -105,14 +116,9 @@ public interface WorldOreConfig {
      * than it replaced the old  BiomeOreSettings with given  BiomeOreSettings.
      *
      * @param biomeOreSettings which must be non- null
-     * @throws NullPointerException if biomeOreSettings is  null
+     * @throws IllegalArgumentException if biomeOreSettings is  null
      */
-    void setBiomeOreSettings(BiomeOreSettings biomeOreSettings);
-
-    /**
-     * @return the  Map with all  BiomeOreSettings that this  WorldOreConfig have.
-     */
-    Map<Biome, BiomeOreSettings> getBiomeOreSettings();
+    void setBiomeOreSettings(@NotNull BiomeOreSettings biomeOreSettings);
 
     /**
      * @return true if this  WorldOreConfig is a Template
@@ -139,8 +145,9 @@ public interface WorldOreConfig {
      *
      * @param name the Name of the new  WorldOreConfig
      * @return a new  WorldOreConfig with the given name.
-     * @throws NullPointerException if name is  null
+     * @throws IllegalArgumentException if name is  null
      */
-    WorldOreConfig clone(String name);
+    @NotNull
+    WorldOreConfig clone(@NotNull String name);
 
 }

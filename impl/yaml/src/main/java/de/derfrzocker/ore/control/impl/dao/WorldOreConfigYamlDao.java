@@ -26,36 +26,100 @@ package de.derfrzocker.ore.control.impl.dao;
 
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
-import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
-import de.derfrzocker.spigot.utils.dao.yaml.BasicYamlDao;
-import lombok.NonNull;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import de.derfrzocker.spigot.utils.ReloadAble;
+import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Optional;
+import java.util.*;
 
-public class WorldOreConfigYamlDao extends BasicYamlDao<String, WorldOreConfig> implements WorldOreConfigDao {
+public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
 
-    public WorldOreConfigYamlDao(final @NonNull File file) {
-        super(file);
+    private final Map<String, LazyWorldOreConfigCache> lazyWorldOreConfigCacheMap = new HashMap<>();
+    @NotNull
+    private final File directory;
+
+    public WorldOreConfigYamlDao(@NotNull final File directory) {
+        Validate.notNull(directory, "Directory can not be null");
+        if (directory.exists())
+            Validate.isTrue(directory.isDirectory(), "Directory is not a directory?");
+
+        this.directory = directory;
+
+        RELOAD_ABLES.add(this);
     }
 
     @Override
-    public Optional<WorldOreConfig> get(final @NonNull String name) {
-        return getFromStringKey(name);
+    public Optional<WorldOreConfig> get(@NotNull final String key) {
+        Validate.notNull(key, "Key can not be null");
+        Validate.notEmpty(key, "Key can not be empty");
+
+        final LazyWorldOreConfigCache lazyWorldOreConfigCache = lazyWorldOreConfigCacheMap.get(key);
+
+        if (lazyWorldOreConfigCache != null)
+            return Optional.of(lazyWorldOreConfigCache.getWorldOreConfig());
+
+        final File file = new File(directory, key + ".yml");
+
+        if (!file.exists() || !file.isFile())
+            return Optional.empty();
+
+        final LazyWorldOreConfigCache lazyWorldConfigCache1 = new LazyWorldOreConfigCache(file);
+
+        lazyWorldOreConfigCacheMap.put(key, lazyWorldConfigCache1);
+
+        return Optional.of(lazyWorldConfigCache1.getWorldOreConfig());
     }
 
     @Override
-    public void remove(final @NonNull WorldOreConfig config) {
-        saveFromStringKey(config.getName(), null);
+    public void remove(@NotNull final WorldOreConfig value) {
+        Validate.notNull(value, "WorldOreConfig can not be null");
+
+        lazyWorldOreConfigCacheMap.remove(value.getName());
+        new File(directory, value.getName() + ".yml").delete();
     }
 
     @Override
-    public void save(@NonNull WorldOreConfig config) {
-        if (!(config instanceof ConfigurationSerializable))
-            config = new WorldOreConfigYamlImpl(config.getName(), config.isTemplate(), config.getOreSettings(), config.getBiomeOreSettings());
+    public void save(@NotNull final WorldOreConfig value) {
+        Validate.notNull(value, "WorldOreConfig can not be null");
 
-        saveFromStringKey(config.getName(), config);
+        LazyWorldOreConfigCache lazyWorldOreConfigCache = lazyWorldOreConfigCacheMap.get(value.getName());
+
+        if (lazyWorldOreConfigCache == null) {
+            lazyWorldOreConfigCache = new LazyWorldOreConfigCache(new File(directory, value.getName() + ".yml"));
+            lazyWorldOreConfigCacheMap.put(value.getName(), lazyWorldOreConfigCache);
+        }
+
+        lazyWorldOreConfigCache.setWorldConfig(value);
+        lazyWorldOreConfigCache.save();
     }
 
+    @Override
+    public Set<WorldOreConfig> getAll() {
+        final Set<WorldOreConfig> worldConfigs = new LinkedHashSet<>();
+
+        lazyWorldOreConfigCacheMap.forEach((name, lazyWorldConfigCache) -> worldConfigs.add(lazyWorldConfigCache.getWorldOreConfig()));
+
+        return worldConfigs;
+    }
+
+    @Override
+    public void reload() {
+        lazyWorldOreConfigCacheMap.clear();
+
+        final File[] files = directory.listFiles();
+
+        if (files == null)
+            return;
+
+        for (final File file : files) {
+            if (!file.isFile())
+                continue;
+
+            if (!file.getName().endsWith(".yml"))
+                continue;
+
+            lazyWorldOreConfigCacheMap.put(file.getName().substring(0, file.getName().length() - 4), new LazyWorldOreConfigCache(file));
+        }
+    }
 }

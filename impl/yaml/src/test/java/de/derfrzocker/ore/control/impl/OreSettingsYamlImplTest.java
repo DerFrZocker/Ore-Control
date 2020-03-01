@@ -36,11 +36,11 @@ public class OreSettingsYamlImplTest {
 
     //Test OreSettingsYamlImpl Constructor begin
     @Test
-    public void When_OreSettingsIsInitialedWithANullValue_Expect_ThrowNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(null));
-        assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(null, new HashMap<>()));
-        assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(Ore.EMERALD, null));
-        assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(null, null));
+    public void When_OreSettingsIsInitialedWithANullValue_Expect_ThrowIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new OreSettingsYamlImpl(null));
+        assertThrows(IllegalArgumentException.class, () -> new OreSettingsYamlImpl(null, new HashMap<>()));
+        assertThrows(IllegalArgumentException.class, () -> new OreSettingsYamlImpl(Ore.EMERALD, null));
+        assertThrows(IllegalArgumentException.class, () -> new OreSettingsYamlImpl(null, null));
     }
 
     //Test OreSettingsYamlImpl#getOre() begin
@@ -72,8 +72,8 @@ public class OreSettingsYamlImplTest {
     //Test OreSettingsYamlImpl#getValue(Setting) begin
 
     @Test
-    public void GetValue_When_SettingIsNull_Expect_ThrowNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new OreSettingsYamlImpl(Ore.EMERALD).getValue(null));
+    public void GetValue_When_SettingIsNull_Expect_ThrowIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new OreSettingsYamlImpl(Ore.EMERALD).getValue(null));
     }
 
     @Test
