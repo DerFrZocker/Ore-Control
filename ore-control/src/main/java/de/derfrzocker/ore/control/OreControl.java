@@ -24,13 +24,19 @@
 
 package de.derfrzocker.ore.control;
 
+import de.derfrzocker.ore.control.api.GenerationHandler;
 import de.derfrzocker.ore.control.api.NMSService;
+import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.command.OreControlCommand;
 import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao_Old;
+import de.derfrzocker.ore.control.impl.generationhandler.EmeraldGenerationHandler;
+import de.derfrzocker.ore.control.impl.generationhandler.LapisGenerationHandler;
+import de.derfrzocker.ore.control.impl.generationhandler.MagmaGenerationHandler;
+import de.derfrzocker.ore.control.impl.generationhandler.NormalOreGenerationHandler;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
@@ -94,6 +100,25 @@ public class OreControl extends JavaPlugin implements Listener {
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsService == null)
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
+
+        // register GenerationHandlers
+        final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());
+        nmsService.registerGenerationHandler(Ore.DIAMOND, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.COAL, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.GOLD, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.GOLD_BADLANDS, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.IRON, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.REDSTONE, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.DIRT, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.GRAVEL, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.GRANITE, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.DIORITE, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.ANDESITE, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.NETHER_QUARTZ, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.INFESTED_STONE, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.EMERALD, new EmeraldGenerationHandler(nmsService.getNMSUtil()));
+        nmsService.registerGenerationHandler(Ore.LAPIS, new LapisGenerationHandler(nmsService.getNMSUtil()));
+        nmsService.registerGenerationHandler(Ore.MAGMA, new MagmaGenerationHandler(nmsService.getNMSUtil()));
 
         // load the config values of this plugin
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));

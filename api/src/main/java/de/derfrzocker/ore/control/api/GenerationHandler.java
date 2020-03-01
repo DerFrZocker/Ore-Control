@@ -25,6 +25,7 @@
 package de.derfrzocker.ore.control.api;
 
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
+import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -33,34 +34,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public interface NMSService {
-
-    /**
-     * Hooks into Minecraft generation system
-     */
-    void replaceNMS();
-
-    /**
-     * @return the NMSUtil to use
-     */
-    @NotNull
-    NMSUtil getNMSUtil();
-
-    /**
-     * Register the given generationHandler to this NMSService
-     * If a generationHandler for the given Ore is already registered,
-     * it will override the old one with the new one
-     *
-     * @param ore               to register
-     * @param generationHandler to register
-     * @throws IllegalArgumentException if ore or generationHandler is null
-     */
-    void registerGenerationHandler(@NotNull Ore ore, @NotNull GenerationHandler generationHandler);
+public interface GenerationHandler {
 
     /**
      * Handles generation for the feature
      *
      * @param world                       to use
+     * @param worldOreConfig              to use
+     * @param oreControlService           to use
      * @param biome                       to use
      * @param ore                         to use
      * @param chunkCoordIntPair           to use
@@ -71,8 +52,9 @@ public interface NMSService {
      * @param random                      to use
      * @return true if generation is success other wise false
      */
-    boolean generate(@NotNull World world, @NotNull Biome biome, @NotNull Ore ore, @NotNull ChunkCoordIntPair chunkCoordIntPair,
+    boolean generate(@NotNull World world, @NotNull WorldOreConfig worldOreConfig, @NotNull OreControlService oreControlService, @NotNull Biome biome, @NotNull Ore ore, @NotNull ChunkCoordIntPair chunkCoordIntPair,
                      @NotNull Object defaultConfiguration, @NotNull Object defaultFeatureConfiguration,
-                     @Nullable BiFunction<Location, Integer, Boolean> generateFunction, @NotNull BiFunction<Object, Object, Boolean> passFunction, @NotNull Random random);
+                     @Nullable BiFunction<Location, Integer, Boolean> generateFunction, @NotNull BiFunction<Object, Object, Boolean> passFunction, @NonNull Random random);
+
 
 }
