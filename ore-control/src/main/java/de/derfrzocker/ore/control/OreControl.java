@@ -41,7 +41,6 @@ import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
 import lombok.Setter;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -204,10 +203,32 @@ public class OreControl extends JavaPlugin implements Listener {
 
     private void setUpMetric() {
         // create a new Metrics
-        final Metrics metrics = new Metrics(this);
+        new OreControlMetrics(this, OreControlServiceSupplier.INSTANCE) {
+            @Override
+            protected String getLanguage() {
+                return configValues.getLanguage().getNames()[0];
+            }
 
-        // add a simple Pie with the current Language that the user use
-        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfigValues().getLanguage().getNames()[0]));
+            @Override
+            protected String getUseSafeMode() {
+                return String.valueOf(configValues.isSafeMode());
+            }
+
+            @Override
+            protected String getUseTranslateTabCompilation() {
+                return String.valueOf(configValues.isTranslateTabCompilation());
+            }
+
+            @Override
+            protected String getUseVerifyCopyAction() {
+                return String.valueOf(configValues.verifyCopyAction());
+            }
+
+            @Override
+            protected String getUseVerifyResetAction() {
+                return String.valueOf(configValues.verifyResetAction());
+            }
+        };
     }
 
     private void registerCommands() {

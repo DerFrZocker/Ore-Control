@@ -13,6 +13,7 @@
         <module>impl</module>
         <module>ore-control</module>
         <module>ore-control-lite</module>
+        <module>metrics</module>
     </modules>
 
     <packaging>pom</packaging>

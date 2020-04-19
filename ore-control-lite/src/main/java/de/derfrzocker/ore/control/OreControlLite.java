@@ -32,7 +32,6 @@ import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao_Old;
 import de.derfrzocker.ore.control.impl.generationhandler.*;
 import de.derfrzocker.ore.control.impl.v_15_R1.NMSUtil_v1_15_R1;
 import de.derfrzocker.spigot.utils.Config;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -137,10 +136,32 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
     private void setUpMetric() {
         // create a new Metrics
-        final Metrics metrics = new Metrics(this);
+        new OreControlMetrics(this, OreControlServiceSupplier.INSTANCE) {
+            @Override
+            protected String getLanguage() {
+                return "N/A";
+            }
 
-        // add a simple Pie with the current Language that the user use
-        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> "N/A"));
+            @Override
+            protected String getUseSafeMode() {
+                return "N/A";
+            }
+
+            @Override
+            protected String getUseTranslateTabCompilation() {
+                return "N/A";
+            }
+
+            @Override
+            protected String getUseVerifyCopyAction() {
+                return "N/A";
+            }
+
+            @Override
+            protected String getUseVerifyResetAction() {
+                return "N/A";
+            }
+        };
     }
 
     private void checkFile(@NotNull final String name) {
