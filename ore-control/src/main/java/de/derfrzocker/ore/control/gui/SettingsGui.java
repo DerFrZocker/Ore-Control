@@ -26,15 +26,13 @@ package de.derfrzocker.ore.control.gui;
 
 import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.Permissions;
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.gui.copy.CopySettingAction;
 import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.SettingsGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.ore.control.utils.ResetUtil;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -148,7 +146,7 @@ public class SettingsGui extends BasicGui {
                 new MessageValue("biome", biome == null ? biomeGroup == null ? "" : biomeGroup.getName() : biome.toString()),
                 new MessageValue("ore", ore.toString()),
                 new MessageValue("setting", setting.toString()),
-                new MessageValue("amount", String.valueOf(biome == null ? biomeGroup == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : firstUpdate ? "N/A" : current : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome)))
+                new MessageValue("amount", String.valueOf(biome == null ? biomeGroup == null ? oreControlValues.getService().getValue(worldOreConfig, ore, setting) : firstUpdate ? "N/A" : current : oreControlValues.getService().getValue(worldOreConfig, biome, ore, setting)))
         };
     }
 
@@ -170,9 +168,9 @@ public class SettingsGui extends BasicGui {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
             new VerifyGui(getPlugin(), clickEvent -> {
                 if (biome != null)
-                    OreControlUtil.reset(worldOreConfig, ore, biome, setting);
+                    ResetUtil.reset(worldOreConfig, ore, biome, setting);
                 else
-                    OreControlUtil.reset(worldOreConfig, ore, setting);
+                    ResetUtil.reset(worldOreConfig, ore, setting);
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
@@ -181,9 +179,9 @@ public class SettingsGui extends BasicGui {
             return;
         }
         if (biome != null)
-            OreControlUtil.reset(worldOreConfig, ore, biome, setting);
+            ResetUtil.reset(worldOreConfig, ore, biome, setting);
         else
-            OreControlUtil.reset(worldOreConfig, ore, setting);
+            ResetUtil.reset(worldOreConfig, ore, setting);
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
@@ -199,7 +197,8 @@ public class SettingsGui extends BasicGui {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
-            double current = biome == null ? OreControlUtil.getAmount(ore, setting, worldOreConfig) : OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
+            final OreControlService service = oreControlValues.getService();
+            double current = biome == null ? service.getValue(worldOreConfig, ore, setting) : service.getValue(worldOreConfig, biome, ore, setting);
 
             double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
@@ -212,11 +211,11 @@ public class SettingsGui extends BasicGui {
             }
 
             if (biome == null)
-                OreControlUtil.setAmount(ore, setting, worldOreConfig, newValue);
+                service.setValue(worldOreConfig, ore, setting, newValue);
             else
-                OreControlUtil.setAmount(ore, setting, worldOreConfig, newValue, biome);
+                service.setValue(worldOreConfig, biome, ore, setting, newValue);
 
-            oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
+            service.saveWorldOreConfig(worldOreConfig);
 
             updateItemStack();
         }
@@ -233,6 +232,7 @@ public class SettingsGui extends BasicGui {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
+            final OreControlService service = oreControlValues.getService();
             double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
             if (OreControlUtil.isUnSafe(setting, newValue)) {
@@ -245,9 +245,9 @@ public class SettingsGui extends BasicGui {
 
             current = newValue;
 
-            biomeGroup.getBiomes().stream().filter(biome -> Sets.newHashSet(biome.getOres()).contains(ore)).forEach(biome -> OreControlUtil.setAmount(ore, setting, worldOreConfig, current, biome));
+            biomeGroup.getBiomes().stream().filter(biome -> Sets.newHashSet(biome.getOres()).contains(ore)).forEach(biome -> service.setValue(worldOreConfig, biome, ore, setting, current));
 
-            oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
+            service.saveWorldOreConfig(worldOreConfig);
 
             updateBiomeGroupItemStack(false);
         }

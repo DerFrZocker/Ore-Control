@@ -28,7 +28,7 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
+import de.derfrzocker.ore.control.utils.CopyUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -89,7 +89,7 @@ public class CopyWorldOreConfigAction implements CopyAction {
     public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
             new VerifyGui(oreControlValues.getJavaPlugin(), clickEvent -> {
-                OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget);
+                CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget);
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);
                 oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
@@ -97,7 +97,7 @@ public class CopyWorldOreConfigAction implements CopyAction {
             return;
         }
 
-        OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget);
+        CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget);
         oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
         inventoryGui.closeSync(humanEntity);
         oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);

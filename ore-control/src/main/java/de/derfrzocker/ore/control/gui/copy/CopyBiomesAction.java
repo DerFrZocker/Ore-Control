@@ -28,7 +28,7 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
+import de.derfrzocker.ore.control.utils.CopyUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -94,7 +94,7 @@ public class CopyBiomesAction implements CopyAction {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
             new VerifyGui(oreControlValues.getJavaPlugin(), clickEvent -> {
                 for (Biome biome : biomes)
-                    OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, biome, biome);
+                    CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, biome, biome);
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);
@@ -105,7 +105,7 @@ public class CopyBiomesAction implements CopyAction {
         }
 
         for (Biome biome : biomes)
-            OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, biome, biome);
+            CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, biome, biome);
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
         inventoryGui.closeSync(humanEntity);

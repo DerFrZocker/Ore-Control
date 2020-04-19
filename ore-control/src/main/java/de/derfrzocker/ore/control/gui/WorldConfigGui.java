@@ -31,8 +31,8 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyWorldOreConfigAction;
 import de.derfrzocker.ore.control.gui.settings.WorldConfigGuiSettings;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.ore.control.utils.ResetUtil;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -159,7 +159,7 @@ public class WorldConfigGui extends BasicGui {
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
             new VerifyGui(getPlugin(), clickEvent -> {
-                OreControlUtil.reset(this.worldOreConfig);
+                ResetUtil.reset(this.worldOreConfig);
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
@@ -167,7 +167,7 @@ public class WorldConfigGui extends BasicGui {
             return;
         }
 
-        OreControlUtil.reset(worldOreConfig);
+        ResetUtil.reset(worldOreConfig);
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
     }

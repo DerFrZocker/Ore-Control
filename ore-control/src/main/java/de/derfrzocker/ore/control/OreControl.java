@@ -141,7 +141,7 @@ public class OreControl extends JavaPlugin implements Listener {
         Bukkit.getServicesManager().register(OreControlService.class,
                 new OreControlServiceImpl(
                         nmsService,
-                        worldOreConfigYamlDao),
+                        worldOreConfigYamlDao, ore -> settings.getDefaultSettings(ore)),
                 this, ServicePriority.Normal);
 
         // check all files, that can be have other values (not other not new one), so we can replace them

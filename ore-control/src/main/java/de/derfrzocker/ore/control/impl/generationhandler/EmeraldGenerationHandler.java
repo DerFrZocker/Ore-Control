@@ -26,7 +26,6 @@ package de.derfrzocker.ore.control.impl.generationhandler;
 
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.utils.GenerationUtil;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
@@ -50,14 +49,14 @@ public class EmeraldGenerationHandler implements GenerationHandler {
 
     @Override
     public boolean generate(@NotNull final World world, @NotNull final WorldOreConfig worldOreConfig, @NotNull final OreControlService service, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final ChunkCoordIntPair chunkCoordIntPair, @NotNull final Object defaultConfiguration, @NotNull final Object defaultFeatureConfiguration, @Nullable final BiFunction<Location, Integer, Boolean> generateFunction, @NotNull final BiFunction<Object, Object, Boolean> passFunction, @NotNull final Random random) {
-        final double veinsPerBiome = OreControlUtil.getAmount(ore, Setting.VEINS_PER_BIOME, worldOreConfig, biome);
+        final double veinsPerBiome = service.getValue(worldOreConfig, biome, ore, Setting.VEINS_PER_BIOME);
         final int veinsPerChunk;
 
         if (veinsPerBiome > 0) {
             veinsPerChunk = GenerationUtil.calculateVeinsPerChunk(nmsUtil, world, biome, chunkCoordIntPair, veinsPerBiome);
         } else {
-            final int minimumOresPerChunk = NumberUtil.getInt(service.getValue(ore, Setting.MINIMUM_ORES_PER_CHUNK, worldOreConfig, biome), random);
-            final int oresPerChunkRange = NumberUtil.getInt(service.getValue(ore, Setting.ORES_PER_CHUNK_RANGE, worldOreConfig, biome), random);
+            final int minimumOresPerChunk = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.MINIMUM_ORES_PER_CHUNK), random);
+            final int oresPerChunkRange = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.ORES_PER_CHUNK_RANGE), random);
 
             veinsPerChunk = minimumOresPerChunk + oresPerChunkRange == 0 ? 0 : random.nextInt(oresPerChunkRange);
         }
@@ -65,8 +64,8 @@ public class EmeraldGenerationHandler implements GenerationHandler {
         if (veinsPerChunk == 0)
             return true;
 
-        int heightRange = NumberUtil.getInt(service.getValue(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
-        final int minimumHeight = NumberUtil.getInt(service.getValue(ore, Setting.MINIMUM_HEIGHT, worldOreConfig, biome), random);
+        int heightRange = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_RANGE), random);
+        final int minimumHeight = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.MINIMUM_HEIGHT), random);
 
         if (heightRange == 0)
             heightRange = 1;

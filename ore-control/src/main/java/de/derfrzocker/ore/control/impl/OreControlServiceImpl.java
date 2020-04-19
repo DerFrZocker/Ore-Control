@@ -24,41 +24,64 @@
 
 package de.derfrzocker.ore.control.impl;
 
+import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import org.apache.commons.lang.Validate;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
-@RequiredArgsConstructor
-@ToString
 public class OreControlServiceImpl implements OreControlService {
 
-    @Getter
-    @NonNull
-    private final NMSService NMSService;
-
-    @NonNull
+    @NotNull
+    private final NMSService nmsService;
+    @NotNull
     private final WorldOreConfigDao dao;
+    @NotNull
+    private final Function<Ore, OreSettings> defaultOreSettingFunction;
 
-    @Override
-    public Optional<WorldOreConfig> getWorldOreConfig(final @NonNull World world) {
-        return dao.get(world.getName());
+    public OreControlServiceImpl(@NotNull final NMSService nmsService, @NotNull final WorldOreConfigDao dao, @NotNull final Function<Ore, OreSettings> defaultOreSettingFunction) {
+        Validate.notNull(nmsService, "NMSService can not be null");
+        Validate.notNull(dao, "WorldOreConfigDao can not be null");
+        Validate.notNull(defaultOreSettingFunction, "Default ore setting function can not be null");
+
+        this.nmsService = nmsService;
+        this.dao = dao;
+        this.defaultOreSettingFunction = defaultOreSettingFunction;
     }
 
+    @NotNull
     @Override
-    public Optional<WorldOreConfig> getWorldOreConfig(final @NonNull String name) {
-        return dao.get(name);
+    public NMSService getNMSService() {
+        return this.nmsService;
     }
 
+    @NotNull
     @Override
-    public WorldOreConfig createWorldOreConfig(final @NonNull World world) {
+    public Optional<WorldOreConfig> getWorldOreConfig(@NotNull final World world) {
+        Validate.notNull(world, "World can not be null");
+
+        return this.dao.get(world.getName());
+    }
+
+    @NotNull
+    @Override
+    public Optional<WorldOreConfig> getWorldOreConfig(@NotNull final String name) {
+        Validate.notNull(name, "Name can not be null");
+
+        return this.dao.get(name);
+    }
+
+    @NotNull
+    @Override
+    public WorldOreConfig createWorldOreConfig(@NotNull final World world) {
+        Validate.notNull(world, "World can not be null");
+
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(world.getName(), false);
 
         saveWorldOreConfig(worldOreConfig);
@@ -66,8 +89,13 @@ public class OreControlServiceImpl implements OreControlService {
         return worldOreConfig;
     }
 
+    @NotNull
     @Override
-    public WorldOreConfig createWorldOreConfigTemplate(final @NonNull String name) {
+    public WorldOreConfig createWorldOreConfigTemplate(@NotNull final String name) {
+        Validate.notNull(name, "Name can not be null");
+        Validate.notEmpty(name, "Name can not be empty");
+        Validate.notEmpty(name.trim(), "Name cannot consist of only spaces");
+
         final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(name, true);
 
         saveWorldOreConfig(worldOreConfig);
@@ -76,42 +104,274 @@ public class OreControlServiceImpl implements OreControlService {
     }
 
     @Override
-    public void saveWorldOreConfig(final @NonNull WorldOreConfig config) {
-        dao.save(config);
+    public void saveWorldOreConfig(@NotNull final WorldOreConfig config) {
+        Validate.notNull(config, "WorldOreConfig can not be null");
+
+        this.dao.save(config);
     }
 
     @Override
-    public void removeWorldOreConfig(final @NonNull WorldOreConfig config) {
-        dao.remove(config);
+    public void removeWorldOreConfig(@NotNull final WorldOreConfig config) {
+        Validate.notNull(config, "WorldOreConfig can not be null");
+
+        this.dao.remove(config);
     }
 
+    @NotNull
     @Override
     public Set<WorldOreConfig> getAllWorldOreConfigs() {
-        return dao.getAll();
+        return this.dao.getAll();
     }
 
     @Override
-    public double getValue(final @NonNull Ore ore, final @NonNull Setting setting, final @NonNull WorldOreConfig worldOreConfig, final @NonNull Biome biome) {
-        return OreControlUtil.getAmount(ore, setting, worldOreConfig, biome);
+    public double getDefaultValue(@NotNull final Ore ore, @NotNull final Setting setting) {
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(setting, "Setting can not be null");
+        Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
+
+        return getDefaultValue0(ore, setting);
     }
 
     @Override
-    public boolean isActivated(final @NonNull Ore ore, final @NonNull WorldOreConfig worldOreConfig, final @NonNull Biome biome) {
-        return OreControlUtil.isActivated(ore, worldOreConfig, biome);
+    public double getValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(setting, "Setting can not be null");
+        Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
+        Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
+
+        final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+
+        // Check first in BiomeOreSetting
+        if (biomeOreSettings.isPresent()) {
+            final Optional<OreSettings> oreSettingsOptional = biomeOreSettings.get().getOreSettings(ore);
+
+            //checking if OreSetting in BiomeOreSetting is present
+            if (oreSettingsOptional.isPresent()) {
+                final Optional<Double> valueOptional = oreSettingsOptional.get().getValue(setting);
+
+                if (valueOptional.isPresent()) {
+                    // value present, returning Biome specific value
+                    return valueOptional.get();
+                }
+            }
+        }
+
+        // Now checking for WorldOreConfig specific value
+        return getValue0(worldOreConfig, ore, setting);
     }
 
     @Override
-    public boolean isOre(final @NonNull String string) {
-        return OreControlUtil.isOre(string);
+    public double getValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(setting, "Setting can not be null");
+        Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
+
+        return getValue0(worldOreConfig, ore, setting);
     }
 
     @Override
-    public boolean isBiome(final @NonNull String string) {
-        return OreControlUtil.isBiome(string);
+    public void setValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting, final double value) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(setting, "Setting can not be null");
+        Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
+        Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
+
+        final Optional<BiomeOreSettings> biomeOreSettingsOptional = worldOreConfig.getBiomeOreSettings(biome);
+        final BiomeOreSettings biomeOreSettings;
+
+        if (biomeOreSettingsOptional.isPresent()) {
+            biomeOreSettings = biomeOreSettingsOptional.get();
+        } else {
+            biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+        }
+
+        final Optional<OreSettings> oreSettingsOptional = biomeOreSettings.getOreSettings(ore);
+        final OreSettings oreSettings;
+
+        if (oreSettingsOptional.isPresent()) {
+            oreSettings = oreSettingsOptional.get();
+        } else {
+            oreSettings = new OreSettingsYamlImpl(ore);
+            biomeOreSettings.setOreSettings(oreSettings);
+        }
+
+        oreSettings.setValue(setting, value);
     }
 
     @Override
-    public boolean isSetting(final @NonNull String string) {
-        return OreControlUtil.isSetting(string);
+    public void setValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting, final double value) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(setting, "Setting can not be null");
+        Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
+
+        final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
+        final OreSettings oreSettings;
+
+        if (oreSettingsOptional.isPresent()) {
+            oreSettings = oreSettingsOptional.get();
+        } else {
+            oreSettings = new OreSettingsYamlImpl(ore);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        oreSettings.setValue(setting, value);
     }
+
+    @Override
+    public boolean isActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore) {
+        final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+
+        if (biomeOreSettings.isPresent()) {
+            final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+
+            return oreSettings.map(OreSettings::isActivated).orElse(true);
+        }
+
+        final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
+
+        return oreSettings.map(OreSettings::isActivated).orElse(true);
+    }
+
+    @Override
+    public boolean isActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore) {
+        final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
+
+        return oreSettings.map(OreSettings::isActivated).orElse(true);
+    }
+
+    @Override
+    public void setActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, final boolean value) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
+
+        final Optional<BiomeOreSettings> biomeOreSettingsOptional = worldOreConfig.getBiomeOreSettings(biome);
+        final BiomeOreSettings biomeOreSettings;
+
+        if (biomeOreSettingsOptional.isPresent()) {
+            biomeOreSettings = biomeOreSettingsOptional.get();
+        } else {
+            biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            worldOreConfig.setBiomeOreSettings(biomeOreSettings);
+        }
+
+        final Optional<OreSettings> oreSettingsOptional = biomeOreSettings.getOreSettings(ore);
+        final OreSettings oreSettings;
+
+        if (oreSettingsOptional.isPresent()) {
+            oreSettings = oreSettingsOptional.get();
+        } else {
+            oreSettings = new OreSettingsYamlImpl(ore);
+            biomeOreSettings.setOreSettings(oreSettings);
+        }
+
+        oreSettings.setActivated(value);
+    }
+
+    @Override
+    public void setActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, final boolean value) {
+        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+
+        final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
+        final OreSettings oreSettings;
+
+        if (oreSettingsOptional.isPresent()) {
+            oreSettings = oreSettingsOptional.get();
+        } else {
+            oreSettings = new OreSettingsYamlImpl(ore);
+            worldOreConfig.setOreSettings(oreSettings);
+        }
+
+        oreSettings.setActivated(value);
+    }
+
+    @Override
+    public boolean isOre(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Ore.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean isBiome(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Biome.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isSetting(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Setting.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    @NotNull
+    private OreSettings getDefault(@NotNull final Ore ore) {
+        final OreSettings oreSettings = defaultOreSettingFunction.apply(ore);
+
+        Validate.notNull(oreSettings, "Default OreSettings for the ore '" + ore + "' is null, this should never happen");
+
+        return oreSettings;
+    }
+
+    public double getDefaultValue0(@NotNull final Ore ore, @NotNull final Setting setting) {
+        final OreSettings oreSettings = getDefault(ore);
+
+        final Optional<Double> value = oreSettings.getValue(setting);
+
+        if (value.isPresent()) {
+            return value.get();
+        }
+
+        //Something went wrong, this means there is now default value for the given Ore and Setting, this is probably a configuration problem for the default settings
+        throw new RuntimeException("The default OreSettings for the Ore '" + ore + "' dont contains a default value for the Setting '" + setting + "'");
+    }
+
+    public double getValue0(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) {
+        // Checking first for WorldOreConfig specific value
+        final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
+
+        //checking if OreSetting in WorldOreConfig is present
+        if (oreSettingsOptional.isPresent()) {
+            final Optional<Double> valueOptional = oreSettingsOptional.get().getValue(setting);
+
+            if (valueOptional.isPresent()) {
+                // value present, returning WorldOreConfig specific value
+                return valueOptional.get();
+            }
+        }
+
+        //Now checking for a default value
+        return getDefaultValue0(ore, setting);
+    }
+
 }

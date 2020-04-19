@@ -31,7 +31,7 @@ import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.BiomeGui;
 import de.derfrzocker.ore.control.gui.WorldConfigGui;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
+import de.derfrzocker.ore.control.utils.CopyUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -121,10 +121,10 @@ public class CopyOresAction implements CopyAction {
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     if (biomeSource == null)
                         for (Ore ore : oresSource)
-                            OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, ore);
+                            CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, ore);
                     else
                         for (Ore ore : oresSource)
-                            OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore);
+                            CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore);
 
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
@@ -142,12 +142,12 @@ public class CopyOresAction implements CopyAction {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
                     for (final Ore ore : oresSource)
                         if (oreSet.contains(ore))
-                            OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, ore, biomeTarget);
+                            CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, ore, biomeTarget);
                 } else {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
                     for (final Ore ore : oresSource)
                         if (oreSet.contains(ore))
-                            OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore, biomeTarget);
+                            CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore, biomeTarget);
                 }
 
                 status++;

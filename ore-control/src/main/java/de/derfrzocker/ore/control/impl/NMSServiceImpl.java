@@ -25,7 +25,6 @@
 package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.*;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
@@ -91,7 +90,7 @@ public class NMSServiceImpl implements NMSService {
             return passFunction.apply(defaultConfiguration, defaultFeatureConfiguration);
 
         try {
-            if (!OreControlUtil.isActivated(ore, worldOreConfig, biome))
+            if (!service.isActivated(worldOreConfig, biome, ore))
                 return true;
 
             final GenerationHandler generationHandler = generationHandlerMap.get(ore);
@@ -110,7 +109,7 @@ public class NMSServiceImpl implements NMSService {
 
             try {
                 for (final Setting setting : ore.getSettings())
-                    errorMessage.append(", ").append(setting).append(": ").append(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome));
+                    errorMessage.append(", ").append(setting).append(": ").append(service.getValue(worldOreConfig, biome, ore, setting));
             } catch (final Exception e1) {
                 e1.printStackTrace();
             }

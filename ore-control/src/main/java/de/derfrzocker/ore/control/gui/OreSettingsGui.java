@@ -25,16 +25,13 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.Permissions;
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.Setting;
-import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyOreAction;
 import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.OreSettingsGuiSettings;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.ore.control.utils.ResetUtil;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -89,7 +86,7 @@ public class OreSettingsGui extends PageGui<Setting> {
         this.ore = ore;
         this.copyAction = null;
         this.statusSlot = oreSettingsGuiSettings.getStatusSlot();
-        this.activated = biome == null ? OreControlUtil.isActivated(ore, worldOreConfig) : OreControlUtil.isActivated(ore, worldOreConfig, biome);
+        this.activated = biome == null ? oreControlValues.getService().isActivated(worldOreConfig, ore) : oreControlValues.getService().isActivated(worldOreConfig, biome, ore);
 
         addDecorations();
 
@@ -193,12 +190,13 @@ public class OreSettingsGui extends PageGui<Setting> {
     }
 
     private ItemStack getSettingItemStack(final @NonNull Setting setting) {
+        final OreControlService service = oreControlValues.getService();
         final ItemStack itemStack;
 
         if (biome == null)
-            itemStack = MessageUtil.replaceItemStack(getPlugin(), oreSettingsGuiSettings.getSettingsItemStack(setting), new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, worldOreConfig))));
+            itemStack = MessageUtil.replaceItemStack(getPlugin(), oreSettingsGuiSettings.getSettingsItemStack(setting), new MessageValue("amount", String.valueOf(service.getValue(worldOreConfig, ore, setting))));
         else
-            itemStack = MessageUtil.replaceItemStack(getPlugin(), oreSettingsGuiSettings.getSettingsItemStack(setting), new MessageValue("amount", String.valueOf(OreControlUtil.getAmount(ore, setting, worldOreConfig, biome))));
+            itemStack = MessageUtil.replaceItemStack(getPlugin(), oreSettingsGuiSettings.getSettingsItemStack(setting), new MessageValue("amount", String.valueOf(service.getValue(worldOreConfig, biome, ore, setting))));
 
         return itemStack;
     }
@@ -210,38 +208,44 @@ public class OreSettingsGui extends PageGui<Setting> {
     }
 
     private void handleStatusUpdate() {
+        final OreControlService service = oreControlValues.getService();
+
         activated = !activated;
 
         if (biome == null)
-            OreControlUtil.setActivated(ore, worldOreConfig, activated);
+            service.setActivated(worldOreConfig, ore, activated);
         else
-            OreControlUtil.setActivated(ore, worldOreConfig, activated, biome);
+            service.setActivated(worldOreConfig, biome, ore, activated);
 
         addItem(statusSlot, MessageUtil.replaceItemStack(getPlugin(), activated ? oreSettingsGuiSettings.getDeactivateItemStack() : oreSettingsGuiSettings.getActivateItemStack()));
 
-        oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
+        service.saveWorldOreConfig(worldOreConfig);
     }
 
     private void handleBiomeGroupStatusUpdate() {
+        final OreControlService service = oreControlValues.getService();
+
         activated = !activated;
 
-        biomeGroup.getBiomes().forEach(biome -> OreControlUtil.setActivated(ore, worldOreConfig, activated, biome));
+        biomeGroup.getBiomes().forEach(biome -> service.setActivated(worldOreConfig, biome, ore, activated));
 
         addItem(statusSlot, MessageUtil.replaceItemStack(getPlugin(), activated ? oreSettingsGuiSettings.getDeactivateItemStack() : oreSettingsGuiSettings.getActivateItemStack()));
 
-        oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
+        service.saveWorldOreConfig(worldOreConfig);
     }
 
     private void handleResetValues(final @NonNull InventoryClickEvent event) {
+        final OreControlService service = oreControlValues.getService();
+
         if (oreControlValues.getConfigValues().verifyResetAction()) {
             new VerifyGui(getPlugin(), clickEvent -> {
                 if (biome != null)
-                    OreControlUtil.reset(worldOreConfig, ore, biome);
+                    ResetUtil.reset(worldOreConfig, ore, biome);
                 else
-                    OreControlUtil.reset(worldOreConfig, ore);
+                    ResetUtil.reset(worldOreConfig, ore);
 
-                oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
-                activated = biome == null ? OreControlUtil.isActivated(ore, worldOreConfig) : OreControlUtil.isActivated(ore, worldOreConfig, biome);
+                service.saveWorldOreConfig(worldOreConfig);
+                activated = biome == null ? service.isActivated(worldOreConfig, ore) : service.isActivated(worldOreConfig, biome, ore);
                 addItem(statusSlot, MessageUtil.replaceItemStack(getPlugin(), activated ? oreSettingsGuiSettings.getDeactivateItemStack() : oreSettingsGuiSettings.getActivateItemStack()));
                 openSync(event.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
@@ -249,12 +253,12 @@ public class OreSettingsGui extends PageGui<Setting> {
             return;
         }
         if (biome != null)
-            OreControlUtil.reset(worldOreConfig, ore, biome);
+            ResetUtil.reset(worldOreConfig, ore, biome);
         else
-            OreControlUtil.reset(worldOreConfig, ore);
+            ResetUtil.reset(worldOreConfig, ore);
 
-        oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
-        activated = biome == null ? OreControlUtil.isActivated(ore, worldOreConfig) : OreControlUtil.isActivated(ore, worldOreConfig, biome);
+        service.saveWorldOreConfig(worldOreConfig);
+        activated = biome == null ? service.isActivated(worldOreConfig, ore) : service.isActivated(worldOreConfig, biome, ore);
         addItem(statusSlot, MessageUtil.replaceItemStack(getPlugin(), activated ? oreSettingsGuiSettings.getDeactivateItemStack() : oreSettingsGuiSettings.getActivateItemStack()));
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
     }

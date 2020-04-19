@@ -32,7 +32,7 @@ import de.derfrzocker.ore.control.gui.BiomeGui;
 import de.derfrzocker.ore.control.gui.OreGui;
 import de.derfrzocker.ore.control.gui.OreSettingsGui;
 import de.derfrzocker.ore.control.gui.WorldConfigGui;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
+import de.derfrzocker.ore.control.utils.CopyUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -154,14 +154,14 @@ public class CopySettingAction implements CopyAction {
         if (status == 3) {
             if (biomeSource == null)
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
-                    OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, settingSource, oreTarget, settingTarget);
+                    CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, settingSource, oreTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
                 });
             else
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
-                    OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, settingSource, oreTarget, settingTarget);
+                    CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, settingSource, oreTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
@@ -174,14 +174,14 @@ public class CopySettingAction implements CopyAction {
         if (status == 4) {
             if (biomeSource == null)
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
-                    OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, settingSource, oreTarget, biomeTarget, settingTarget);
+                    CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, settingSource, oreTarget, biomeTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
                 });
             else
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
-                    OreControlUtil.copy(worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, settingSource, oreTarget, biomeTarget, settingTarget);
+                    CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, settingSource, oreTarget, biomeTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);

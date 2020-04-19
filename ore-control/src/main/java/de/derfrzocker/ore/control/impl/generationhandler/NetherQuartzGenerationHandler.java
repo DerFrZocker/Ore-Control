@@ -25,7 +25,6 @@
 package de.derfrzocker.ore.control.impl.generationhandler;
 
 import de.derfrzocker.ore.control.api.*;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
@@ -50,20 +49,20 @@ public class NetherQuartzGenerationHandler implements GenerationHandler {
 
     @Override
     public boolean generate(@NotNull final World world, @NotNull final WorldOreConfig worldOreConfig, @NotNull final OreControlService service, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final ChunkCoordIntPair chunkCoordIntPair, @NotNull final Object defaultConfiguration, @NotNull final Object defaultFeatureConfiguration, @Nullable final BiFunction<Location, Integer, Boolean> generateFunction, @NotNull final BiFunction<Object, Object, Boolean> passFunction, @NotNull final Random random) {
-        final int veinsPerChunk = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.VEINS_PER_CHUNK, worldOreConfig, biome), random);
+        final int veinsPerChunk = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEINS_PER_CHUNK), random);
 
         if (veinsPerChunk == 0)
             return true;
 
         final Object configuration;
 
-        final int minimumHeight = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.MINIMUM_HEIGHT, worldOreConfig, biome), random);
-        final int heightSubtractValue = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_SUBTRACT_VALUE, worldOreConfig, biome), random);
-        final int heightRange = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.HEIGHT_RANGE, worldOreConfig, biome), random);
+        final int minimumHeight = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.MINIMUM_HEIGHT), random);
+        final int heightSubtractValue = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_SUBTRACT_VALUE), random);
+        final int heightRange = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_RANGE), random);
 
         configuration = nmsUtil.createCountConfiguration(veinsPerChunk, minimumHeight, heightSubtractValue, heightRange == 0 ? 1 : heightRange);
 
-        final int veinSize = NumberUtil.getInt(OreControlUtil.getAmount(ore, Setting.VEIN_SIZE, worldOreConfig, biome), random);
+        final int veinSize = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEIN_SIZE), random);
 
         if (veinSize == 0)
             return true;

@@ -124,7 +124,7 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
                 return;
             }
 
-            final double value2 = percents ? (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (double) value;
+            final double value2 = percents ? (service.getDefaultValue(ore, setting) * (value / 100)) : (double) value;
 
             if (OreControlUtil.isUnSafe(setting, value2)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
@@ -134,7 +134,7 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
                 messages.getNumberNotSafeWarningMessage().sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
             }
 
-            OreControlUtil.setAmount(ore, setting, worldOreConfig, value2);
+            service.setValue(worldOreConfig, ore, setting, value2);
 
             service.saveWorldOreConfig(worldOreConfig);
             messages.getCommandSetValueSuccessMessage().sendMessage(sender);
@@ -209,17 +209,18 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
 
             final World world = Bukkit.getWorld(args[2]);
 
-            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[2]);
+            final OreControlService service = oreControlValues.getService();
+            final Optional<WorldOreConfig> worldOreConfig = service.getWorldOreConfig(args[2]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;
 
             if (!worldOreConfig.isPresent()) {
-                list.add("current: " + OreControlUtil.getDefault(ore.get(), setting.get()));
+                list.add("current: " + service.getDefaultValue(ore.get(), setting.get()));
                 return list;
             }
 
-            list.add("current: " + OreControlUtil.getAmount(ore.get(), setting.get(), worldOreConfig.get()));
+            list.add("current: " + service.getValue(worldOreConfig.get(), ore.get(), setting.get()));
 
             return list;
         }

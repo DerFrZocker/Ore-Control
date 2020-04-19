@@ -136,7 +136,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
                 return;
             }
 
-            final int value2 = percents ? (int) (OreControlUtil.getDefault(ore, setting) * (value / 100)) : (int) value;
+            final int value2 = percents ? (int) (service.getDefaultValue(ore, setting) * (value / 100)) : (int) value;
 
             if (OreControlUtil.isUnSafe(setting, value2)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
@@ -146,7 +146,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
                 messages.getNumberNotSafeWarningMessage().sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
             }
 
-            OreControlUtil.setAmount(ore, setting, worldOreConfig, value2, biome);
+            service.setValue(worldOreConfig, biome, ore, setting, value2);
 
             service.saveWorldOreConfig(worldOreConfig);
             messages.getCommandSetBiomeSuccessMessage().sendMessage(sender);
@@ -253,17 +253,18 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
 
             final World world = Bukkit.getWorld(args[3]);
 
-            final Optional<WorldOreConfig> worldOreConfig = oreControlValues.getService().getWorldOreConfig(args[3]);
+            final OreControlService service = oreControlValues.getService();
+            final Optional<WorldOreConfig> worldOreConfig = service.getWorldOreConfig(args[3]);
 
             if (!worldOreConfig.isPresent() && world == null)
                 return list;
 
             if (!worldOreConfig.isPresent()) {
-                list.add("current: " + OreControlUtil.getDefault(ore.get(), setting.get()));
+                list.add("current: " + service.getDefaultValue(ore.get(), setting.get()));
                 return list;
             }
 
-            list.add("current: " + OreControlUtil.getAmount(ore.get(), setting.get(), worldOreConfig.get(), biome.get()));
+            list.add("current: " + service.getValue(worldOreConfig.get(), biome.get(), ore.get(), setting.get()));
 
             return list;
         }

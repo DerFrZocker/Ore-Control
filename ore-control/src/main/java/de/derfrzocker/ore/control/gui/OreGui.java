@@ -33,8 +33,8 @@ import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyOresAction;
 import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.OreGuiSettings;
-import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.ore.control.utils.ResetUtil;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -182,10 +182,10 @@ public class OreGui extends PageGui<Ore> {
             new VerifyGui(getPlugin(), clickEvent -> {
                 if (biome != null)
                     for (Ore ore : biome.getOres())
-                        OreControlUtil.reset(worldOreConfig, ore, biome);
+                        ResetUtil.reset(worldOreConfig, ore, biome);
                 else
                     for (Ore ore : Ore.values())
-                        OreControlUtil.reset(worldOreConfig, ore);
+                        ResetUtil.reset(worldOreConfig, ore);
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
@@ -195,10 +195,10 @@ public class OreGui extends PageGui<Ore> {
         }
         if (biome != null)
             for (final Ore ore : biome.getOres())
-                OreControlUtil.reset(worldOreConfig, ore, biome);
+                ResetUtil.reset(worldOreConfig, ore, biome);
         else
             for (final Ore ore : Ore.values())
-                OreControlUtil.reset(worldOreConfig, ore);
+                ResetUtil.reset(worldOreConfig, ore);
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
