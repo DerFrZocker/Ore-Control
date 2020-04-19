@@ -1,4 +1,4 @@
-name: ${project.name}
+name: ${parent.name}
 version: ${project.version}
 description: ${project.description}
 author: ${project.author}

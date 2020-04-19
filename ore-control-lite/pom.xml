@@ -10,16 +10,12 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>ore-control</artifactId>
+    <artifactId>ore-control-lite</artifactId>
 
     <repositories>
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -28,12 +24,6 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>1.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.WesJD.AnvilGUI</groupId>
-            <artifactId>anvilgui</artifactId>
-            <version>fac77153ae</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -50,25 +40,7 @@
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_13_R1</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_13_R2</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-impl-yaml</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_14_R1</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -113,10 +85,6 @@
                             <pattern>de.derfrzocker.spigot.utils</pattern>
                             <shadedPattern>de.derfrzocker.ore.control.utils</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>net.wesjd</pattern>
-                            <shadedPattern>de.derfrzocker.ore.control.utils</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
@@ -134,5 +102,6 @@
             </resource>
         </resources>
     </build>
+
 
 </project>

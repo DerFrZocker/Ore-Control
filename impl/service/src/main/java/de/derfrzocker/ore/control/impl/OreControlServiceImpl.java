@@ -34,26 +34,33 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
-public class OreControlServiceImpl implements OreControlService {
+public abstract class OreControlServiceImpl implements OreControlService {
 
     @NotNull
     private final NMSService nmsService;
     @NotNull
     private final WorldOreConfigDao dao;
-    @NotNull
-    private final Function<Ore, OreSettings> defaultOreSettingFunction;
 
-    public OreControlServiceImpl(@NotNull final NMSService nmsService, @NotNull final WorldOreConfigDao dao, @NotNull final Function<Ore, OreSettings> defaultOreSettingFunction) {
+    public OreControlServiceImpl(@NotNull final NMSService nmsService, @NotNull final WorldOreConfigDao dao) {
         Validate.notNull(nmsService, "NMSService can not be null");
         Validate.notNull(dao, "WorldOreConfigDao can not be null");
-        Validate.notNull(defaultOreSettingFunction, "Default ore setting function can not be null");
 
         this.nmsService = nmsService;
         this.dao = dao;
-        this.defaultOreSettingFunction = defaultOreSettingFunction;
     }
+
+    @NotNull
+    protected abstract OreSettings getDefaultOreSetting(@NotNull Ore ore);
+
+    @NotNull
+    protected abstract OreSettings getNewOreSetting(@NotNull Ore ore);
+
+    @NotNull
+    protected abstract WorldOreConfig getNewWorldOreConfig(@NotNull String name, boolean template);
+
+    @NotNull
+    protected abstract BiomeOreSettings getNewBiomeOreSettings(@NotNull Biome biome);
 
     @NotNull
     @Override
@@ -82,7 +89,7 @@ public class OreControlServiceImpl implements OreControlService {
     public WorldOreConfig createWorldOreConfig(@NotNull final World world) {
         Validate.notNull(world, "World can not be null");
 
-        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(world.getName(), false);
+        final WorldOreConfig worldOreConfig = getNewWorldOreConfig(world.getName(), false);
 
         saveWorldOreConfig(worldOreConfig);
 
@@ -96,7 +103,7 @@ public class OreControlServiceImpl implements OreControlService {
         Validate.notEmpty(name, "Name can not be empty");
         Validate.notEmpty(name.trim(), "Name cannot consist of only spaces");
 
-        final WorldOreConfig worldOreConfig = new WorldOreConfigYamlImpl(name, true);
+        final WorldOreConfig worldOreConfig = getNewWorldOreConfig(name, true);
 
         saveWorldOreConfig(worldOreConfig);
 
@@ -187,7 +194,7 @@ public class OreControlServiceImpl implements OreControlService {
         if (biomeOreSettingsOptional.isPresent()) {
             biomeOreSettings = biomeOreSettingsOptional.get();
         } else {
-            biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            biomeOreSettings = getNewBiomeOreSettings(biome);
             worldOreConfig.setBiomeOreSettings(biomeOreSettings);
         }
 
@@ -197,7 +204,7 @@ public class OreControlServiceImpl implements OreControlService {
         if (oreSettingsOptional.isPresent()) {
             oreSettings = oreSettingsOptional.get();
         } else {
-            oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings = getNewOreSetting(ore);
             biomeOreSettings.setOreSettings(oreSettings);
         }
 
@@ -217,7 +224,7 @@ public class OreControlServiceImpl implements OreControlService {
         if (oreSettingsOptional.isPresent()) {
             oreSettings = oreSettingsOptional.get();
         } else {
-            oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings = getNewOreSetting(ore);
             worldOreConfig.setOreSettings(oreSettings);
         }
 
@@ -259,7 +266,7 @@ public class OreControlServiceImpl implements OreControlService {
         if (biomeOreSettingsOptional.isPresent()) {
             biomeOreSettings = biomeOreSettingsOptional.get();
         } else {
-            biomeOreSettings = new BiomeOreSettingsYamlImpl(biome);
+            biomeOreSettings = getNewBiomeOreSettings(biome);
             worldOreConfig.setBiomeOreSettings(biomeOreSettings);
         }
 
@@ -269,7 +276,7 @@ public class OreControlServiceImpl implements OreControlService {
         if (oreSettingsOptional.isPresent()) {
             oreSettings = oreSettingsOptional.get();
         } else {
-            oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings = getNewOreSetting(ore);
             biomeOreSettings.setOreSettings(oreSettings);
         }
 
@@ -287,7 +294,7 @@ public class OreControlServiceImpl implements OreControlService {
         if (oreSettingsOptional.isPresent()) {
             oreSettings = oreSettingsOptional.get();
         } else {
-            oreSettings = new OreSettingsYamlImpl(ore);
+            oreSettings = getNewOreSetting(ore);
             worldOreConfig.setOreSettings(oreSettings);
         }
 
@@ -336,7 +343,7 @@ public class OreControlServiceImpl implements OreControlService {
 
     @NotNull
     private OreSettings getDefault(@NotNull final Ore ore) {
-        final OreSettings oreSettings = defaultOreSettingFunction.apply(ore);
+        final OreSettings oreSettings = getDefaultOreSetting(ore);
 
         Validate.notNull(oreSettings, "Default OreSettings for the ore '" + ore + "' is null, this should never happen");
 

@@ -12,11 +12,12 @@
         <module>api</module>
         <module>impl</module>
         <module>ore-control</module>
+        <module>ore-control-lite</module>
     </modules>
 
     <packaging>pom</packaging>
     <description>An ore control plugin</description>
-    <name>Ore-Control</name>
+    <name>ore-control</name>
 
     <properties>
         <revision>dev-SNAPSHOT</revision>

@@ -5,22 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>ore-control-parent</artifactId>
+        <artifactId>ore-control-impl</artifactId>
         <groupId>de.derfrzocker</groupId>
         <version>${revision}</version>
     </parent>
 
-    <modules>
-        <module>v1_14_R1</module>
-        <module>v1_13_R1</module>
-        <module>v1_13_R2</module>
-        <module>yaml</module>
-        <module>v1_15_R1</module>
-        <module>service</module>
-    </modules>
+    <artifactId>ore-control-impl-service</artifactId>
 
-    <artifactId>ore-control-impl</artifactId>
-    <packaging>pom</packaging>
-
+    <dependencies>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>ore-control-api</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>
