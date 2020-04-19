@@ -58,8 +58,15 @@ public abstract class OreControlMetrics {
             for (final WorldOreConfig worldOreConfig : serviceSupplier.get().getAllWorldOreConfigs()) {
                 for (final OreSettings oreSettings : worldOreConfig.getOreSettings().values()) {
                     final Map<String, Integer> settingsMap = result.computeIfAbsent(oreSettings.getOre().toString(), ore -> new LinkedHashMap<>());
+
+                    if (oreSettings.isActivated()) {
+                        settingsMap.put("ACTIVATED", settingsMap.getOrDefault("ACTIVATED", 0) + 1);
+                    } else {
+                        settingsMap.put("DEACTIVATED", settingsMap.getOrDefault("DEACTIVATED", 0) + 1);
+                    }
+
                     for (final Setting setting : oreSettings.getSettings().keySet()) {
-                        settingsMap.put(setting.toString(), settingsMap.getOrDefault(setting.toString(), 0));
+                        settingsMap.put(setting.toString(), settingsMap.getOrDefault(setting.toString(), 0) + 1);
                     }
                 }
             }
@@ -74,8 +81,15 @@ public abstract class OreControlMetrics {
                 for (final BiomeOreSettings biomeOreSettings : worldOreConfig.getBiomeOreSettings().values()) {
                     for (final OreSettings oreSettings : biomeOreSettings.getOreSettings().values()) {
                         final Map<String, Integer> settingsMap = result.computeIfAbsent(oreSettings.getOre().toString(), ore -> new LinkedHashMap<>());
+
+                        if (oreSettings.isActivated()) {
+                            settingsMap.put("ACTIVATED", settingsMap.getOrDefault("ACTIVATED", 0) + 1);
+                        } else {
+                            settingsMap.put("DEACTIVATED", settingsMap.getOrDefault("DEACTIVATED", 0) + 1);
+                        }
+
                         for (final Setting setting : oreSettings.getSettings().keySet()) {
-                            settingsMap.put(setting.toString(), settingsMap.getOrDefault(setting.toString(), 0));
+                            settingsMap.put(setting.toString(), settingsMap.getOrDefault(setting.toString(), 0) + 1);
                         }
                     }
                 }
@@ -91,7 +105,7 @@ public abstract class OreControlMetrics {
                 for (final BiomeOreSettings biomeOreSettings : worldOreConfig.getBiomeOreSettings().values()) {
                     final Map<String, Integer> oreSettingsMap = result.computeIfAbsent(biomeOreSettings.getBiome().toString(), biome -> new LinkedHashMap<>());
                     for (final Ore ore : biomeOreSettings.getOreSettings().keySet()) {
-                        oreSettingsMap.put(ore.toString(), oreSettingsMap.getOrDefault(ore.toString(), 0));
+                        oreSettingsMap.put(ore.toString(), oreSettingsMap.getOrDefault(ore.toString(), 0) + 1);
                     }
                 }
             }
