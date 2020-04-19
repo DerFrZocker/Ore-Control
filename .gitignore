@@ -3,6 +3,10 @@
 /api/target/
 /api/.flattened-pom.xml
 /api/ore-control-api.iml
+/impl/service/target/
+/impl/service/.flattened-pom.xml
+/impl/service/ore-control-impl-service.iml
+/impl/service/service.iml
 /impl/v1_13_R1/target/
 /impl/v1_13_R1/.flattened-pom.xml
 /impl/v1_13_R1/ore-control-impl-v1_13_R1.iml
@@ -18,9 +22,15 @@
 /impl/.flattened-pom.xml
 /impl/ore-control-impl.iml
 /logs/
+/metrics/target/
+/metrics/.flattened-pom.xml
+/metrics/metrics.iml
 /ore-control/target/
 /ore-control/.flattened-pom.xml
 /ore-control/ore-control.iml
+/ore-control-lite/target/
+/ore-control-lite/.flattened-pom.xml
+/ore-control-lite/ore-control-lite.iml
 /.flattened-pom.xml
 /ore-control-parent.iml
 
