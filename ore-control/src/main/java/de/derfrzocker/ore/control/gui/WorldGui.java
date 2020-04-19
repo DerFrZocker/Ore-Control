@@ -31,6 +31,7 @@ import de.derfrzocker.ore.control.gui.config.ConfigGui;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.settings.WorldGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -97,8 +98,13 @@ public class WorldGui extends PageGui<String> {
     }
 
     private static WorldGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (worldGuiSettings == null)
-            worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/gui/world-gui.yml", true);
+        if (worldGuiSettings == null) {
+            if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
+                worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/gui/world-gui_v1.13.yml", true);
+            } else {
+                worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/gui/world-gui.yml", true);
+            }
+        }
 
         return worldGuiSettings;
     }

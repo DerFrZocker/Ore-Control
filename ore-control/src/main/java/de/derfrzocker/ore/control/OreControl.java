@@ -166,20 +166,28 @@ public class OreControl extends JavaPlugin implements Listener {
 
         // check all files, that can be have other values (not other not new one), so we can replace them
         checkFile("data/gui/biome-groups.yml");
-        checkFile("data/gui/biome-gui.yml");
         checkFile("data/gui/boolean-gui.yml");
         checkFile("data/gui/config-gui.yml");
         checkFile("data/gui/language-gui.yml");
-        checkFile("data/gui/ore-gui.yml");
-        checkFile("data/gui/ore-settings-gui.yml");
         checkFile("data/settings.yml");
         checkFile("data/gui/settings-gui.yml");
         checkFile("data/gui/verify-gui.yml");
         checkFile("data/gui/world-config-gui.yml");
-        checkFile("data/gui/world-gui.yml");
 
         if (Version.getCurrent() == Version.v1_14_R1) {
             checkFile("data/gui/biome-gui_v1.14.yml");
+        }
+
+        if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
+            checkFile("data/gui/biome-gui_v1.13.yml");
+            checkFile("data/gui/ore-gui_v1.13.yml");
+            checkFile("data/gui/ore-settings-gui_v1.13.yml");
+            checkFile("data/gui/world-gui_v1.13.yml");
+        } else {
+            checkFile("data/gui/biome-gui.yml");
+            checkFile("data/gui/ore-gui.yml");
+            checkFile("data/gui/ore-settings-gui.yml");
+            checkFile("data/gui/world-gui.yml");
         }
 
         // load the Settings

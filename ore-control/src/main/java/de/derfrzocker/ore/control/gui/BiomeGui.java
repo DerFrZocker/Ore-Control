@@ -128,9 +128,13 @@ public class BiomeGui extends PageGui<Biome> {
 
     private static BiomeGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
         if (biomeGuiSettings == null) {
-            biomeGuiSettings = new BiomeGuiSettings(javaPlugin, "data/gui/biome-gui.yml", true);
-            if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent()))
-                biomeGuiSettings.addValues("data/gui/biome-gui_v1.14.yml", true);
+            if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
+                biomeGuiSettings = new BiomeGuiSettings(javaPlugin, "data/gui/biome-gui_v1.13.yml", true);
+            } else {
+                biomeGuiSettings = new BiomeGuiSettings(javaPlugin, "data/gui/biome-gui.yml", true);
+                if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent()))
+                    biomeGuiSettings.addValues("data/gui/biome-gui_v1.14.yml", true);
+            }
         }
 
         return biomeGuiSettings;

@@ -32,6 +32,7 @@ import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.OreSettingsGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.ore.control.utils.ResetUtil;
+import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -183,8 +184,13 @@ public class OreSettingsGui extends PageGui<Setting> {
     }
 
     private static OreSettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (oreSettingsGuiSettings == null)
-            oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, "data/gui/ore-settings-gui.yml", true);
+        if (oreSettingsGuiSettings == null) {
+            if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
+                oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, "data/gui/ore-settings-gui_v1.13.yml", true);
+            } else {
+                oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, "data/gui/ore-settings-gui.yml", true);
+            }
+        }
 
         return oreSettingsGuiSettings;
     }
