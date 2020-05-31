@@ -26,6 +26,7 @@ package de.derfrzocker.ore.control.api;
 
 import de.derfrzocker.spigot.utils.Version;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public enum Biome {
 
@@ -97,21 +98,38 @@ public enum Biome {
     MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
     BAMBOO_JUNGLE(Version.v1_14_R1),
     BAMBOO_JUNGLE_HILLS(Version.v1_14_R1),
-    NETHER(Ore.DEFAULT_NETHER_ORES, new Ore[0]);
+    NETHER(Version.v1_13_R1, Version.v1_15_R1, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER);
 
+    @NotNull
+    private final Version since;
+    @Nullable
+    private final Version until;
+    @NotNull
     private final Ore[] ores;
-
-    private Version since = Version.v1_13_R1;
+    @NotNull
+    private final Dimension dimension;
 
     Biome() {
-        this(Ore.DEFAULT_OVERWORLD_ORES, new Ore[0]);
+        this(Version.v1_13_R1, null, Ore.DEFAULT_OVERWORLD_ORES, Dimension.OVERWORLD);
     }
+
 
     Biome(@NotNull final Ore... ores) {
-        this(Ore.DEFAULT_OVERWORLD_ORES, ores);
+        this(Version.v1_13_R1, null, combineOres(Ore.DEFAULT_OVERWORLD_ORES, ores), Dimension.OVERWORLD);
     }
 
-    Biome(@NotNull final Ore[] ores, @NotNull final Ore... ores1) {
+    Biome(@NotNull final Version since) {
+        this(since, null, Ore.DEFAULT_OVERWORLD_ORES, Dimension.OVERWORLD);
+    }
+
+    Biome(@NotNull final Version since, @Nullable final Version until, @NotNull final Ore[] ores, @NotNull final Dimension dimension) {
+        this.since = since;
+        this.until = until;
+        this.ores = ores;
+        this.dimension = dimension;
+    }
+
+    private static Ore[] combineOres(@NotNull final Ore[] ores, @NotNull final Ore... ores1) {
         final int firstLength = ores.length;
         final int secondLength = ores1.length;
         final Ore[] result = new Ore[firstLength + secondLength];
@@ -119,22 +137,27 @@ public enum Biome {
         System.arraycopy(ores, 0, result, 0, firstLength);
         System.arraycopy(ores1, 0, result, firstLength, secondLength);
 
-        this.ores = result;
-    }
-
-    Biome(@NotNull final Version since) {
-        this(Ore.DEFAULT_OVERWORLD_ORES, new Ore[0]);
-        this.since = since;
+        return result;
     }
 
     @NotNull
     public Version getSince() {
-        return since;
+        return this.since;
+    }
+
+    @Nullable
+    public Version getUntil() {
+        return this.until;
     }
 
     @NotNull
     public Ore[] getOres() {
-        return ores.clone();
+        return this.ores.clone();
+    }
+
+    @NotNull
+    public Dimension getDimension() {
+        return this.dimension;
     }
 
 }

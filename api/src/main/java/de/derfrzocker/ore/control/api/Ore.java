@@ -24,27 +24,28 @@
 
 package de.derfrzocker.ore.control.api;
 
+import de.derfrzocker.spigot.utils.Version;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 public enum Ore {
 
-    DIAMOND(Material.DIAMOND_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    COAL(Material.COAL_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    GOLD(Material.GOLD_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    GOLD_BADLANDS(Material.GOLD_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    LAPIS(Material.LAPIS_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_DEPTH_AVERAGE_SETTINGS),
-    IRON(Material.IRON_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    REDSTONE(Material.REDSTONE_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
+    DIAMOND(Material.DIAMOND_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    COAL(Material.COAL_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    GOLD(Material.GOLD_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    GOLD_BADLANDS(Material.GOLD_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    LAPIS(Material.LAPIS_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_DEPTH_AVERAGE_SETTINGS)),
+    IRON(Material.IRON_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    REDSTONE(Material.REDSTONE_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
     EMERALD(Material.EMERALD_ORE, Setting.DEFAULT_EMERALD_ORE_SETTINGS),
-    DIRT(Material.DIRT, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    GRAVEL(Material.GRAVEL, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    GRANITE(Material.GRANITE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    DIORITE(Material.DIORITE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    ANDESITE(Material.ANDESITE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    NETHER_QUARTZ(Material.NETHER_QUARTZ_ORE, Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_RANGE_SETTINGS),
-    INFESTED_STONE(Material.INFESTED_STONE, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS),
-    MAGMA(Material.MAGMA_BLOCK, Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_MAGMA_SETTINGS);
+    DIRT(Material.DIRT, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    GRAVEL(Material.GRAVEL, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    GRANITE(Material.GRANITE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    DIORITE(Material.DIORITE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    ANDESITE(Material.ANDESITE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    NETHER_QUARTZ(Version.v1_13_R1, Material.NETHER_QUARTZ_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_RANGE_SETTINGS), Dimension.NETHER),
+    INFESTED_STONE(Material.INFESTED_STONE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
+    MAGMA(Version.v1_13_R1, Material.MAGMA_BLOCK, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_MAGMA_SETTINGS), Dimension.NETHER);
 
     final static Ore[] DEFAULT_OVERWORLD_ORES = new Ore[]{
             ANDESITE,
@@ -66,14 +67,26 @@ public enum Ore {
     };
 
     @NotNull
+    private final Version since;
+    @NotNull
     private final Material material;
-
     @NotNull
     private final Setting[] settings;
+    @NotNull
+    private final Dimension dimension;
 
-    Ore(@NotNull final Material material, @NotNull final Setting[] settings, @NotNull final Setting... settings1) {
+    Ore(@NotNull final Material material, @NotNull final Setting[] settings) {
+        this(Version.v1_13_R1, material, settings, Dimension.OVERWORLD);
+    }
+
+    Ore(@NotNull final Version since, @NotNull final Material material, @NotNull final Setting[] settings, @NotNull final Dimension dimension) {
+        this.since = since;
         this.material = material;
+        this.settings = settings;
+        this.dimension = dimension;
+    }
 
+    private static Setting[] combineSettings(@NotNull final Setting[] settings, @NotNull final Setting... settings1) {
         final int firstLength = settings.length;
         final int secondLength = settings1.length;
         final Setting[] result = new Setting[firstLength + secondLength];
@@ -81,17 +94,22 @@ public enum Ore {
         System.arraycopy(settings, 0, result, 0, firstLength);
         System.arraycopy(settings1, 0, result, firstLength, secondLength);
 
-        this.settings = result;
+        return result;
     }
 
     @NotNull
     public Setting[] getSettings() {
-        return settings.clone();
+        return this.settings.clone();
     }
 
     @NotNull
     public Material getMaterial() {
-        return material;
+        return this.material;
+    }
+
+    @NotNull
+    public Dimension getDimension() {
+        return this.dimension;
     }
 
 }

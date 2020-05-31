@@ -26,12 +26,14 @@ package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Ignore // TODO
 public class OreSettingsYamlImplTest {
 
     //Test OreSettingsYamlImpl Constructor begin

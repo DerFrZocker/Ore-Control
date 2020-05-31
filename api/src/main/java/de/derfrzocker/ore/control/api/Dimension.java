@@ -24,29 +24,8 @@
 
 package de.derfrzocker.ore.control.api;
 
-import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
+public enum Dimension {
 
-public interface NMSUtil {
-
-    void replaceNMS();
-
-    Biome getBiome(World world, ChunkCoordIntPair chunkCoordIntPair);
-
-    Object createFeatureConfiguration(Object defaultFeatureConfiguration, int veinsSize);
-
-    Object createCountConfiguration(int veinsPerChunk, int minimumHeight, int heightSubtractValue, int heightRange);
-
-    Object createHeightAverageConfiguration(int veinsPerChunk, int heightCenter, int heightRange);
-
-    Ore getOre(Object object);
-
-    /**
-     * @param world to check
-     * @return the dimension of the given world
-     */
-    @NotNull
-    Dimension getDimension(@NotNull World world);
+    OVERWORLD, NETHER, THE_END, CUSTOM;
 
 }

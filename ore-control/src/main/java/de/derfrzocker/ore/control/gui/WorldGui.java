@@ -24,7 +24,9 @@
 
 package de.derfrzocker.ore.control.gui;
 
+import com.google.common.collect.Sets;
 import de.derfrzocker.ore.control.Permissions;
+import de.derfrzocker.ore.control.api.Dimension;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.config.ConfigGui;
@@ -53,6 +55,7 @@ import java.util.concurrent.ExecutionException;
 public class WorldGui extends PageGui<String> {
 
     private static WorldGuiSettings worldGuiSettings;
+    private final static Set<Dimension> DIMENSIONS = Collections.unmodifiableSet(Sets.newHashSet(Dimension.OVERWORLD, Dimension.NETHER));
 
     @NotNull
     private final OreControlValues oreControlValues;
@@ -73,7 +76,7 @@ public class WorldGui extends PageGui<String> {
         final Permissions permissions = oreControlValues.getPermissions();
 
         addDecorations();
-        init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName)).openSync(event.getWhoClicked()));
+        init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName), getDimension(configName)).openSync(event.getWhoClicked()));
 
         if (permissions.getTemplateCreatePermission().hasPermission(permissible))
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
@@ -146,7 +149,7 @@ public class WorldGui extends PageGui<String> {
     private String[] getStrings() {
         final Set<String> configsSet = new LinkedHashSet<>();
 
-        Bukkit.getWorlds().stream().map(World::getName).forEach(configsSet::add);
+        Bukkit.getWorlds().stream().filter(world -> DIMENSIONS.contains(oreControlValues.getService().getNMSService().getNMSUtil().getDimension(world))).map(World::getName).forEach(configsSet::add);
         oreControlValues.getService().getAllWorldOreConfigs().forEach(value -> worldOreConfigs.put(value.getName(), value));
 
         worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
@@ -164,6 +167,7 @@ public class WorldGui extends PageGui<String> {
         copyAction.next(event.getWhoClicked(), this);
     }
 
+    @NotNull
     private WorldOreConfig getWorldOreConfig(@NotNull final String configName) {
         final OreControlService service = oreControlValues.getService();
 
@@ -181,6 +185,16 @@ public class WorldGui extends PageGui<String> {
         else worldOreConfig = optionalWorldOreConfig.get();
 
         return worldOreConfig;
+    }
+
+    @Nullable
+    private Dimension getDimension(String configName) {
+        final World world = Bukkit.getWorld(configName);
+
+        if (world == null)
+            return null;
+
+        return oreControlValues.getService().getNMSService().getNMSUtil().getDimension(world);
     }
 
 }

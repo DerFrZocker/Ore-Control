@@ -24,10 +24,7 @@
 
 package de.derfrzocker.ore.control.impl.v1_13_R2;
 
-import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.NMSUtil;
-import de.derfrzocker.ore.control.api.Ore;
-import de.derfrzocker.ore.control.api.OreControlService;
+import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import net.minecraft.server.v1_13_R2.*;
 import org.apache.commons.lang.Validate;
@@ -107,6 +104,25 @@ public class NMSUtil_v1_13_R2 implements NMSUtil {
             return Ore.MAGMA;
 
         return null;
+    }
+
+    @NotNull
+    @Override
+    public Dimension getDimension(@NotNull final World world) {
+        final WorldServer worldServer = ((CraftWorld) world).getHandle();
+        final DimensionManager dimensionManager = worldServer.worldProvider.getDimensionManager();
+
+        if (dimensionManager == DimensionManager.OVERWORLD) {
+            return Dimension.OVERWORLD;
+        }
+        if (dimensionManager == DimensionManager.NETHER) {
+            return Dimension.NETHER;
+        }
+        if (dimensionManager == DimensionManager.THE_END) {
+            return Dimension.THE_END;
+        }
+
+        return Dimension.CUSTOM;
     }
 
 }

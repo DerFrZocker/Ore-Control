@@ -61,6 +61,8 @@ public class OreSettingsGui extends PageGui<Setting> {
     @NotNull
     private final WorldOreConfig worldOreConfig;
     @Nullable
+    private final Dimension dimension;
+    @Nullable
     private final Biome biome;
     @Nullable
     private final BiomeGroupGui.BiomeGroup biomeGroup;
@@ -73,7 +75,7 @@ public class OreSettingsGui extends PageGui<Setting> {
     private final int statusSlot;
 
 
-    OreSettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Biome biome, @NotNull final Ore ore) {
+    OreSettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @Nullable final Biome biome, @NotNull final Ore ore) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
@@ -82,6 +84,7 @@ public class OreSettingsGui extends PageGui<Setting> {
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
+        this.dimension = dimension;
         this.biome = biome;
         this.biomeGroup = null;
         this.ore = ore;
@@ -96,11 +99,11 @@ public class OreSettingsGui extends PageGui<Setting> {
         final Setting[] settings = ore.getSettings();
 
         init(settings, Setting[]::new, this::getSettingItemStack, (setting, event) -> {
-            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biome, ore, setting).openSync(event.getWhoClicked());
+            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore, setting).openSync(event.getWhoClicked());
         });
 
         addItem(oreSettingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, oreSettingsGuiSettings.getBackItemStack()),
-                event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biome).openSync(event.getWhoClicked()));
+                event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome).openSync(event.getWhoClicked()));
 
         addItem(oreSettingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biome == null ? oreSettingsGuiSettings.getInfoItemStack() : oreSettingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
 
@@ -123,6 +126,7 @@ public class OreSettingsGui extends PageGui<Setting> {
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
+        this.dimension = null;
         this.biome = biome;
         this.biomeGroup = null;
         this.ore = ore;
@@ -149,7 +153,7 @@ public class OreSettingsGui extends PageGui<Setting> {
         addItem(oreSettingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biome == null ? oreSettingsGuiSettings.getInfoItemStack() : oreSettingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
     }
 
-    OreSettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final Ore ore, @NotNull final BiomeGuiSettings biomeGuiSettings) {
+    OreSettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final Ore ore, @NotNull final BiomeGuiSettings biomeGuiSettings) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
@@ -160,6 +164,7 @@ public class OreSettingsGui extends PageGui<Setting> {
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
+        this.dimension = dimension;
         this.biome = null;
         this.biomeGroup = biomeGroup;
         this.ore = ore;
@@ -173,14 +178,14 @@ public class OreSettingsGui extends PageGui<Setting> {
         final Setting[] settings = ore.getSettings();
 
         init(settings, Setting[]::new, this::getSettingItemStack, (setting, event) -> {
-            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGroup, ore, setting, biomeGuiSettings).openSync(event.getWhoClicked());
+            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, ore, setting, biomeGuiSettings).openSync(event.getWhoClicked());
         });
 
         addItem(oreSettingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, oreSettingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
 
         addItem(statusSlot, MessageUtil.replaceItemStack(javaPlugin, oreSettingsGuiSettings.getDeactivateItemStack()), event -> handleBiomeGroupStatusUpdate());
         addItem(oreSettingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, oreSettingsGuiSettings.getBackItemStack()),
-                event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGroup, biomeGuiSettings).openSync(event.getWhoClicked()));
+                event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, biomeGuiSettings).openSync(event.getWhoClicked()));
     }
 
     private static OreSettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
@@ -276,7 +281,7 @@ public class OreSettingsGui extends PageGui<Setting> {
 
         @Override
         public void accept(final @NonNull InventoryClickEvent event) {
-            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biome, ore, setting).openSync(event.getWhoClicked());
+            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore, setting).openSync(event.getWhoClicked());
         }
     }
 
@@ -312,7 +317,7 @@ public class OreSettingsGui extends PageGui<Setting> {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
-            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGroup, ore, setting, biomeGuiSettings).openSync(event.getWhoClicked());
+            new SettingsGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, ore, setting, biomeGuiSettings).openSync(event.getWhoClicked());
         }
 
     }

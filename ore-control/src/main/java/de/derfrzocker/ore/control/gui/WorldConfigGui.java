@@ -26,6 +26,7 @@ package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Dimension;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
@@ -55,7 +56,7 @@ public class WorldConfigGui extends BasicGui {
     @Nullable
     private final CopyAction copyAction;
 
-    WorldConfigGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig) {
+    WorldConfigGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
@@ -71,10 +72,10 @@ public class WorldConfigGui extends BasicGui {
         addDecorations();
 
         if (permissions.getSetValuePermission().hasPermission(permissible))
-            addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getOreItemStack()), event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, null).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getOreItemStack()), event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, null).openSync(event.getWhoClicked()));
 
         if (permissions.getSetBiomePermission().hasPermission(permissible))
-            addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
 
         if (permissions.getValueResetPermission().hasPermission(permissible))
             addItem(worldConfigGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getResetValueItemStack()), this::handleResetValues);

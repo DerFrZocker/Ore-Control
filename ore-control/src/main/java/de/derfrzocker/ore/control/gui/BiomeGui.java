@@ -26,6 +26,7 @@ package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Dimension;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.copy.CopyBiomesAction;
@@ -57,9 +58,11 @@ public class BiomeGui extends PageGui<Biome> {
     @NotNull
     private final WorldOreConfig worldOreConfig;
     @Nullable
+    private final Dimension dimension;
+    @Nullable
     private final CopyAction copyAction;
 
-    BiomeGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig) {
+    BiomeGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
         Validate.notNull(permissible, "Permissible can not be null");
@@ -69,6 +72,7 @@ public class BiomeGui extends PageGui<Biome> {
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
+        this.dimension = dimension;
         this.copyAction = null;
 
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
@@ -79,6 +83,14 @@ public class BiomeGui extends PageGui<Biome> {
             if (Version.getCurrent().isNewerVersion(biome.getSince()))
                 continue;
 
+            if (biome.getUntil() != null && Version.getCurrent().isOlderVersion(biome.getUntil())) {
+                continue;
+            }
+
+            if (dimension != null && biome.getDimension() != dimension) {
+                continue;
+            }
+
             biomes.add(biome);
         }
 
@@ -86,8 +98,11 @@ public class BiomeGui extends PageGui<Biome> {
         init(biomes.toArray(new Biome[0]), Biome[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
-        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
-        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeGroupItemStack()), event -> new BiomeGroupGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGuiSettings).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+
+        if (dimension == null || dimension == Dimension.OVERWORLD) { //TODO check biome groups for place able
+            addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeGroupItemStack()), event -> new BiomeGroupGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGuiSettings).openSync(event.getWhoClicked()));
+        }
 
         if (permissions.getValueResetPermission().hasPermission(permissible))
             addItem(biomeGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getResetValueItemStack()), this::handleResetValues);
@@ -107,6 +122,7 @@ public class BiomeGui extends PageGui<Biome> {
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
+        this.dimension = null;
         this.copyAction = copyAction;
 
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
@@ -115,6 +131,10 @@ public class BiomeGui extends PageGui<Biome> {
         for (final Biome biome : Biome.values()) {
             if (Version.getCurrent().isNewerVersion(biome.getSince()))
                 continue;
+
+            if (biome.getUntil() != null && Version.getCurrent().isOlderVersion(biome.getUntil())) {
+                continue;
+            }
 
             if (copyAction.shouldSet(biome))
                 biomes.add(biome);
@@ -145,7 +165,7 @@ public class BiomeGui extends PageGui<Biome> {
     }
 
     private void handleNormalClick(@NotNull final Biome biome, @NotNull final InventoryClickEvent event) {
-        new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biome).openSync(event.getWhoClicked());
+        new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome).openSync(event.getWhoClicked());
     }
 
     private void handleCopyAction(@NotNull final Biome biome, @NotNull final InventoryClickEvent event) {

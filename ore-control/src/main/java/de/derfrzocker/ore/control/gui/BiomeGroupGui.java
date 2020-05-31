@@ -25,6 +25,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Dimension;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
@@ -42,6 +43,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,10 +56,12 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     private final OreControlValues oreControlValues;
     @NotNull
     private final WorldOreConfig worldOreConfig;
+    @Nullable
+    private final Dimension dimension;
     @NotNull
     private final BiomeGuiSettings biomeGuiSettings;
 
-    BiomeGroupGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull final BiomeGuiSettings biomeGuiSettings) {
+    BiomeGroupGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @NotNull final BiomeGuiSettings biomeGuiSettings) {
         super(oreControlValues.getJavaPlugin(), biomeGuiSettings);
 
         Validate.notNull(permissible, "Permissible can not be null");
@@ -67,6 +71,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
         this.biomeGuiSettings = biomeGuiSettings;
+        this.dimension = dimension;
 
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
 
@@ -74,8 +79,8 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
-        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
-        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(@NotNull final BiomeGroup biomeGroup) {
@@ -83,7 +88,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     }
 
     private void handleNormalClick(@NotNull final BiomeGroup biomeGroup, @NotNull final InventoryClickEvent event) {
-        new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, biomeGroup, biomeGuiSettings).openSync(event.getWhoClicked());
+        new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, biomeGuiSettings).openSync(event.getWhoClicked());
     }
 
     private MessageValue[] getMessagesValues() {
