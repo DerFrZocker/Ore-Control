@@ -31,10 +31,11 @@ command:
     end: '&aReloaden Fertig!'
 
   help:
-    seperator-format: '  '
+    separator-format: '  '
     header-format: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
     footer-format: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
-    permissins-format: "-> &9Berechtigung&f: %permission%"
+    permission-format: "-> &9Berechtigung&f: %permission%"
+    description-format: "-> &9Beschreibung&f: %description%"
     usage-format: "&9Benutzung&f: %usage%"
     short-format: "&9%command%&f: %description%"
     usage: '&f/&9orecontrol help &f(<&9subbefehl&f>)'

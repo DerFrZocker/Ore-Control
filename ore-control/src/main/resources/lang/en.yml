@@ -12,7 +12,7 @@ command:
 
     biome:
       usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>'
-      description: 'Setze einen Wert, für ein bestimmtes Biome'
+      description: 'Set a specific value to an ore type in a specific biome and world'
       not-enough-args:
         - '&4Wrong amount of arguments!'
         - "&cuse  %%translation:[command.set.biome.usage]%"
@@ -31,10 +31,11 @@ command:
     end: '&aReload finish!'
 
   help:
-    seperator-format: '  '
+    separator-format: '  '
     header-format: "~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~"
     footer-format: "~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~"
-    permissins-format: "-> &9permission&f: %permission%"
+    permission-format: "-> &9permission&f: %permission%"
+    description-format: "-> &9description&f: %description%"
     usage-format: "&9usage&f: %usage%"
     short-format: "&9%command%&f: %description%"
     usage: '&f/&9orecontrol help &f(<&9subcommand&f>)'
