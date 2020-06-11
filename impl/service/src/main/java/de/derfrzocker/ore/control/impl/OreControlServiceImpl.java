@@ -350,7 +350,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
         return oreSettings;
     }
 
-    public double getDefaultValue0(@NotNull final Ore ore, @NotNull final Setting setting) {
+    private double getDefaultValue0(@NotNull final Ore ore, @NotNull final Setting setting) {
         final OreSettings oreSettings = getDefault(ore);
 
         final Optional<Double> value = oreSettings.getValue(setting);
@@ -363,7 +363,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
         throw new RuntimeException("The default OreSettings for the Ore '" + ore + "' dont contains a default value for the Setting '" + setting + "'");
     }
 
-    public double getValue0(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) {
+    private double getValue0(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) {
         // Checking first for WorldOreConfig specific value
         final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
 
