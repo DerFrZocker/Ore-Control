@@ -155,6 +155,11 @@ biome:
   HILLS: "丘陵"
   SNOWY: "积雪"
   NETHER: "Nether"
+  NETHER_WASTES: "Nether Wastes"
+  SOUL_SAND_VALLEY: "Soul Sand Valley"
+  CRIMSON_FOREST: "Crimson Forest"
+  WARPED_FOREST: "Warped Forest"
+  BASALT_DELTAS: "Basalt Deltas"
 
 number:
   not-valid: "&f'&9%value%&f' &4这不是一个有效的数字！"

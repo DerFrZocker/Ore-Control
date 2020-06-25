@@ -98,7 +98,12 @@ public enum Biome {
     MODIFIED_BADLANDS_PLATEAU(Ore.GOLD_BADLANDS),
     BAMBOO_JUNGLE(Version.v1_14_R1),
     BAMBOO_JUNGLE_HILLS(Version.v1_14_R1),
-    NETHER(Version.v1_13_R1, Version.v1_15_R1, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER);
+    NETHER(Version.v1_13_R1, Version.v1_15_R1, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER),
+    NETHER_WASTES(Version.v1_16_R1, null, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER),
+    SOUL_SAND_VALLEY(Version.v1_16_R1, null, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER),
+    CRIMSON_FOREST(Version.v1_16_R1, null, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER),
+    WARPED_FOREST(Version.v1_16_R1, null, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER),
+    BASALT_DELTAS(Version.v1_16_R1, null, Ore.DEFAULT_NETHER_ORES, Dimension.NETHER);
 
     @NotNull
     private final Version since;

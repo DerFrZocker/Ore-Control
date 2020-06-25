@@ -159,6 +159,11 @@ biome:
   HILLS: "Hügels"
   SNOWY: "Verschneite"
   NETHER: "Nether"
+  NETHER_WASTES: "Nether-Ödland"
+  SOUL_SAND_VALLEY: "Seelensandtal"
+  CRIMSON_FOREST: "Karmesinwald"
+  WARPED_FOREST: "Wirrwald"
+  BASALT_DELTAS: "Basaltdeltas"
 
 number:
   not-valid: '&f''&9%value%&f'' &4ist keine Zahl!'
