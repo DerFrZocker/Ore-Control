@@ -35,6 +35,7 @@ import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
 import de.derfrzocker.ore.control.impl.v_15_R1.NMSUtil_v1_15_R1;
+import de.derfrzocker.ore.control.impl.v_1_16_R1.NMSUtil_v1_16_R1;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
@@ -89,6 +90,8 @@ public class OreControl extends JavaPlugin implements Listener {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
         else if (Version.getCurrent() == Version.v1_15_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+        } else if (Version.getCurrent() == Version.v1_16_R1) {
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
         }
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsService == null)

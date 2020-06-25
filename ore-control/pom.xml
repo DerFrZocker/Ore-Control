@@ -39,7 +39,7 @@
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>spigot-utils</artifactId>
-            <version>dev-43-SNAPSHOT</version>
+            <version>dev-44-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -75,6 +75,12 @@
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-impl-v1_15_R1</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>ore-control-impl-v1_16_R1</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

@@ -30,7 +30,7 @@ import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao_Old;
 import de.derfrzocker.ore.control.impl.generationhandler.*;
-import de.derfrzocker.ore.control.impl.v_15_R1.NMSUtil_v1_15_R1;
+import de.derfrzocker.ore.control.impl.v_1_16_R1.NMSUtil_v1_16_R1;
 import de.derfrzocker.spigot.utils.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -59,7 +59,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
     @Override
     public void onLoad() {
-        nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
 
         // register GenerationHandlers
         final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());
