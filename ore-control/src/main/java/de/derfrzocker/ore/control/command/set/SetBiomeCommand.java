@@ -136,7 +136,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
                 return;
             }
 
-            final int value2 = percents ? (int) (service.getDefaultValue(ore, setting) * (value / 100)) : (int) value;
+            final int value2 = percents ? (int) (service.getDefaultValue(biome, ore, setting) * (value / 100)) : (int) value;
 
             if (OreControlUtil.isUnSafe(setting, value2)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
@@ -260,7 +260,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
                 return list;
 
             if (!worldOreConfig.isPresent()) {
-                list.add("current: " + service.getDefaultValue(ore.get(), setting.get()));
+                list.add("current: " + service.getDefaultValue(biome.get(), ore.get(), setting.get()));
                 return list;
             }
 
