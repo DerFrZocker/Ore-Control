@@ -252,7 +252,9 @@ public abstract class OreControlServiceImpl implements OreControlService {
         if (biomeOreSettings.isPresent()) {
             final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
 
-            return oreSettings.map(OreSettings::isActivated).orElse(true);
+            if (oreSettings.isPresent()) {
+                return oreSettings.get().isActivated();
+            }
         }
 
         final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
