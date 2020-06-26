@@ -25,6 +25,7 @@
 package de.derfrzocker.ore.control.impl.v_1_16_R1;
 
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import net.minecraft.server.v1_16_R1.*;
 import org.apache.commons.lang.Validate;
@@ -126,8 +127,15 @@ class NMSReplacer_v1_16_R1 {
         if (replace(composite, biome, Blocks.INFESTED_STONE))
             return;
 
+        if (replace(composite, biome, Blocks.ANCIENT_DEBRIS))
+            return;
+
         if (replaceMagma(composite, biome))
             return;
+
+        if (replaceAncientDebris2(composite, biome))
+            return;
+
     }
 
     private boolean replace(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome, @NotNull final Block block) throws NoSuchFieldException, IllegalAccessException {
@@ -153,6 +161,34 @@ class NMSReplacer_v1_16_R1 {
             final Field field = getField(WorldGenDecoratorConfigured.class, "b");
             field.setAccessible(true);
             field.set(worldGenFeatureDecoratorConfiguration.c, new WorldGenDecoratorNetherHeightNormalOverrider_v1_16_R1(WorldGenFeatureChanceDecoratorCountConfiguration.a, biome, serviceSupplier));
+        }
+
+        return true;
+    }
+
+    private boolean replaceAncientDebris2(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
+        if (!(composite.e instanceof WorldGenFeatureCompositeConfiguration))
+            return false;
+
+        final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.e;
+
+        if (!(worldGenFeatureDecoratorConfiguration.c.c instanceof WorldGenDecoratorHeightAverageConfiguration))
+            return false;
+
+        if (!(worldGenFeatureDecoratorConfiguration.b.e instanceof WorldGenFeatureOreConfiguration)) {
+            return false;
+        }
+
+        final WorldGenFeatureOreConfiguration worldGenFeatureOreConfiguration = (WorldGenFeatureOreConfiguration) worldGenFeatureDecoratorConfiguration.b.e;
+
+        if (worldGenFeatureOreConfiguration.d.getBlock() != Blocks.ANCIENT_DEBRIS) {
+            return false;
+        }
+
+        {
+            final Field field = getField(WorldGenDecoratorConfigured.class, "b");
+            field.setAccessible(true);
+            field.set(worldGenFeatureDecoratorConfiguration.c, new WorldGenDecoratorHeightAverageOverrider_v1_16_R1(WorldGenDecoratorHeightAverageConfiguration.a, biome, Ore.ANCIENT_DEBRIS_2, serviceSupplier));
         }
 
         return true;
@@ -248,7 +284,7 @@ class NMSReplacer_v1_16_R1 {
         {
             final Field field = getField(WorldGenDecoratorConfigured.class, "b");
             field.setAccessible(true);
-            field.set(worldGenFeatureDecoratorConfiguration.c, new WorldGenDecoratorHeightAverageOverrider_v1_16_R1(WorldGenDecoratorHeightAverageConfiguration.a, biome, serviceSupplier));
+            field.set(worldGenFeatureDecoratorConfiguration.c, new WorldGenDecoratorHeightAverageOverrider_v1_16_R1(WorldGenDecoratorHeightAverageConfiguration.a, biome, Ore.LAPIS, serviceSupplier));
         }
 
         return true;

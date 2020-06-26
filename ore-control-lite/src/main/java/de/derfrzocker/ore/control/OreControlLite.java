@@ -81,6 +81,8 @@ public class OreControlLite extends JavaPlugin implements Listener {
         nmsService.registerGenerationHandler(Ore.LAPIS, new LapisGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.MAGMA, new MagmaGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.NETHER_GOLD, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.ANCIENT_DEBRIS, normalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.ANCIENT_DEBRIS_2, new LapisGenerationHandler(nmsService.getNMSUtil()));
     }
 
     @Override

@@ -79,6 +79,12 @@ public enum Setting {
             HEIGHT_SUBTRACT_VALUE
     };
 
+    final static Setting[] NETHER_COUNT_DEPTH_AVERAGE_SETTINGS = new Setting[]{
+            VEINS_PER_CHUNK,
+            HEIGHT_RANGE,
+            HEIGHT_CENTER
+    };
+
     private final int minimumValue;
 
     Setting(final int minimumValue) {

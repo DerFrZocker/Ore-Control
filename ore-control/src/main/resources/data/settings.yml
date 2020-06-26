@@ -152,6 +152,23 @@ defaults:
         HEIGHT_RANGE: 128
         HEIGHT_SUBTRACT_VALUE: 20
         VEINS_PER_BIOME: 0
+    - ==: OreControl#OreSettings
+      ore: ANCIENT_DEBRIS
+      settings:
+        VEIN_SIZE: 2
+        VEINS_PER_CHUNK: 1
+        MINIMUM_HEIGHT: 8
+        HEIGHT_RANGE: 128
+        HEIGHT_SUBTRACT_VALUE: 16
+        VEINS_PER_BIOME: 0
+    - ==: OreControl#OreSettings
+      ore: ANCIENT_DEBRIS_2
+      settings:
+        VEIN_SIZE: 3
+        VEINS_PER_CHUNK: 1
+        HEIGHT_RANGE: 8
+        HEIGHT_CENTER: 16
+        VEINS_PER_BIOME: 0
   biome-ore-settings:
     - ==: OreControl#BiomeOreSettings
       biome: BASALT_DELTAS
@@ -166,4 +183,4 @@ defaults:
             HEIGHT_SUBTRACT_VALUE: 20
             VEINS_PER_BIOME: 0
 
-version: 5
+version: 6
