@@ -66,6 +66,9 @@ ore:
   NETHER_QUARTZ: "Nether Quartz"
   INFESTED_STONE: "Infested Stone"
   MAGMA: "Magma"
+  NETHER_GOLD: "Nether Gold"
+  ANCIENT_DEBRIS: "Ancient Debris"
+  ANCIENT_DEBRIS_2: "Ancient Debris 2"
 
 setting:
   not-found: "&4The setting &f'&9%setting%&f' &4does not exist!"
