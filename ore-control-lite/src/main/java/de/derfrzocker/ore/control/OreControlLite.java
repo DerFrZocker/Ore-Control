@@ -32,6 +32,7 @@ import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao_Old;
 import de.derfrzocker.ore.control.impl.generationhandler.*;
 import de.derfrzocker.ore.control.impl.v_1_16_R1.NMSUtil_v1_16_R1;
 import de.derfrzocker.spigot.utils.Config;
+import de.derfrzocker.spigot.utils.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -79,6 +80,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
         nmsService.registerGenerationHandler(Ore.EMERALD, new EmeraldGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.LAPIS, new LapisGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.MAGMA, new MagmaGenerationHandler(nmsService.getNMSUtil()));
+        nmsService.registerGenerationHandler(Ore.NETHER_GOLD, normalOreGenerationHandler);
     }
 
     @Override
@@ -94,6 +96,12 @@ public class OreControlLite extends JavaPlugin implements Listener {
                     @Override
                     protected OreSettings getDefaultOreSetting(@NotNull final Ore ore) {
                         return settings.getDefaultSettings(ore);
+                    }
+
+                    @NotNull
+                    @Override
+                    protected OreSettings getDefaultOreSetting(@NotNull Biome biome, @NotNull Ore ore) {
+                        return settings.getDefaultSettings(biome, ore);
                     }
 
                     @NotNull
@@ -119,7 +127,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
         checkFile("data/settings.yml");
 
         // load the Settings
-        settings = new Settings(Config.getConfig(this, "data/settings.yml"));
+        settings = new Settings(Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
 
         checkOldStorageType();
 

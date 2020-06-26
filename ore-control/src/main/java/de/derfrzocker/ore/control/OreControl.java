@@ -115,6 +115,7 @@ public class OreControl extends JavaPlugin implements Listener {
         nmsService.registerGenerationHandler(Ore.EMERALD, new EmeraldGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.LAPIS, new LapisGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.MAGMA, new MagmaGenerationHandler(nmsService.getNMSUtil()));
+        nmsService.registerGenerationHandler(Ore.NETHER_GOLD, normalOreGenerationHandler);
 
         // load the config values of this plugin
         configValues = new ConfigValues(new File(getDataFolder(), "config.yml"));
@@ -145,6 +146,12 @@ public class OreControl extends JavaPlugin implements Listener {
                     @Override
                     protected OreSettings getDefaultOreSetting(@NotNull final Ore ore) {
                         return settings.getDefaultSettings(ore);
+                    }
+
+                    @NotNull
+                    @Override
+                    protected OreSettings getDefaultOreSetting(@NotNull Biome biome, @NotNull Ore ore) {
+                        return settings.getDefaultSettings(biome, ore);
                     }
 
                     @NotNull
@@ -194,7 +201,7 @@ public class OreControl extends JavaPlugin implements Listener {
         }
 
         // load the Settings
-        settings = new Settings(Config.getConfig(this, "data/settings.yml"));
+        settings = new Settings(Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
 
         checkOldStorageType();
 

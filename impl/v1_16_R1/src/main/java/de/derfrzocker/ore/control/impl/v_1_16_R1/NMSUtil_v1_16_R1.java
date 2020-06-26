@@ -104,6 +104,8 @@ public class NMSUtil_v1_16_R1 implements NMSUtil {
             return Ore.INFESTED_STONE;
         if (object == Blocks.MAGMA_BLOCK)
             return Ore.MAGMA;
+        if (object == Blocks.NETHER_GOLD_ORE)
+            return Ore.NETHER_GOLD;
 
         return null;
     }

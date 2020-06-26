@@ -54,6 +54,9 @@ public abstract class OreControlServiceImpl implements OreControlService {
     protected abstract OreSettings getDefaultOreSetting(@NotNull Ore ore);
 
     @NotNull
+    protected abstract OreSettings getDefaultOreSetting(@NotNull Biome biome, @NotNull Ore ore);
+
+    @NotNull
     protected abstract OreSettings getNewOreSetting(@NotNull Ore ore);
 
     @NotNull
@@ -140,6 +143,17 @@ public abstract class OreControlServiceImpl implements OreControlService {
     }
 
     @Override
+    public double getDefaultValue(@NotNull Biome biome, @NotNull Ore ore, @NotNull Setting setting) {
+        Validate.notNull(ore, "Biome can not be null");
+        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(setting, "Setting can not be null");
+        Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
+        Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
+
+        return getDefaultValue0(biome, ore, setting);
+    }
+
+    @Override
     public double getValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
         Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
         Validate.notNull(biome, "Biome can not be null");
@@ -166,7 +180,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
         }
 
         // Now checking for WorldOreConfig specific value
-        return getValue0(worldOreConfig, ore, setting);
+        return getValue0(worldOreConfig, biome, ore, setting);
     }
 
     @Override
@@ -176,7 +190,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
         Validate.notNull(setting, "Setting can not be null");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
-        return getValue0(worldOreConfig, ore, setting);
+        return getValue0(worldOreConfig, null, ore, setting);
     }
 
     @Override
@@ -350,6 +364,15 @@ public abstract class OreControlServiceImpl implements OreControlService {
         return oreSettings;
     }
 
+    @NotNull
+    private OreSettings getDefault(@NotNull Biome biome, @NotNull final Ore ore) {
+        final OreSettings oreSettings = getDefaultOreSetting(biome, ore);
+
+        Validate.notNull(oreSettings, "Default OreSettings for the biome '" + biome + "' and the ore '" + ore + "' is null, this should never happen");
+
+        return oreSettings;
+    }
+
     private double getDefaultValue0(@NotNull final Ore ore, @NotNull final Setting setting) {
         final OreSettings oreSettings = getDefault(ore);
 
@@ -363,7 +386,20 @@ public abstract class OreControlServiceImpl implements OreControlService {
         throw new RuntimeException("The default OreSettings for the Ore '" + ore + "' dont contains a default value for the Setting '" + setting + "'");
     }
 
-    private double getValue0(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) {
+    private double getDefaultValue0(@NotNull Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
+        final OreSettings oreSettings = getDefault(biome, ore);
+
+        final Optional<Double> value = oreSettings.getValue(setting);
+
+        if (value.isPresent()) {
+            return value.get();
+        }
+
+        //Something went wrong, this means there is now default value for the given Ore and Setting, this is probably a configuration problem for the default settings
+        throw new RuntimeException("The default OreSettings for the Biome '" + biome + "' and the Ore '" + ore + "' dont contains a default value for the Setting '" + setting + "'");
+    }
+
+    private double getValue0(@NotNull final WorldOreConfig worldOreConfig, @Nullable Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
         // Checking first for WorldOreConfig specific value
         final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
 
@@ -375,6 +411,11 @@ public abstract class OreControlServiceImpl implements OreControlService {
                 // value present, returning WorldOreConfig specific value
                 return valueOptional.get();
             }
+        }
+
+        // If a Biome is present, check for biome specific default values
+        if (biome != null) {
+            return getDefaultValue0(biome, ore, setting);
         }
 
         //Now checking for a default value

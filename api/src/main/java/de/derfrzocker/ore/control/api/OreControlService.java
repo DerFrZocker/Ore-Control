@@ -129,6 +129,22 @@ public interface OreControlService {
     double getDefaultValue(@NotNull Ore ore, @NotNull Setting setting);
 
     /**
+     * Returns the default value for the given Biome, Ore and Setting.
+     * <p>
+     * If no default value for the given values is present, it will return
+     * the default value for only the Ore and Setting.
+     *
+     * @param biome   which must be non-null
+     * @param ore     which must be non-null
+     * @param setting which must be non-null
+     * @return the default value
+     * @throws IllegalArgumentException if ore or setting  is null
+     * @throws IllegalArgumentException if the Biome dont have the given Ore
+     * @throws IllegalArgumentException if the Ore dont have the given Setting
+     */
+    double getDefaultValue(@NotNull Biome biome, @NotNull Ore ore, @NotNull Setting setting);
+
+    /**
      * Returns the value for the given Setting from the given WorldOreConfig, Biome and Ore.
      * If the WorldOreConfig dont have the BiomeOreSettings of the given Biomes or the BiomeOreSettings dont have the
      * OreSettings for the Ore, it checks if the WorldOreConfig have the OreSettings

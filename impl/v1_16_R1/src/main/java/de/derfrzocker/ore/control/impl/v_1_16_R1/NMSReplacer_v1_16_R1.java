@@ -120,6 +120,9 @@ class NMSReplacer_v1_16_R1 {
         if (replace(composite, biome, Blocks.NETHER_QUARTZ_ORE))
             return;
 
+        if (replace(composite, biome, Blocks.NETHER_GOLD_ORE))
+            return;
+
         if (replace(composite, biome, Blocks.INFESTED_STONE))
             return;
 

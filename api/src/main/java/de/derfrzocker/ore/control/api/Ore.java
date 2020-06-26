@@ -45,7 +45,8 @@ public enum Ore {
     ANDESITE(Material.ANDESITE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
     NETHER_QUARTZ(Version.v1_13_R1, Material.NETHER_QUARTZ_ORE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_RANGE_SETTINGS), Dimension.NETHER),
     INFESTED_STONE(Material.INFESTED_STONE, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS)),
-    MAGMA(Version.v1_13_R1, Material.MAGMA_BLOCK, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_MAGMA_SETTINGS), Dimension.NETHER);
+    MAGMA(Version.v1_13_R1, Material.MAGMA_BLOCK, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_MAGMA_SETTINGS), Dimension.NETHER),
+    NETHER_GOLD(Version.v1_16_R1, "NETHER_GOLD_ORE", combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_RANGE_SETTINGS), Dimension.NETHER);
 
     final static Ore[] DEFAULT_OVERWORLD_ORES = new Ore[]{
             ANDESITE,
@@ -63,7 +64,8 @@ public enum Ore {
 
     final static Ore[] DEFAULT_NETHER_ORES = new Ore[]{
             NETHER_QUARTZ,
-            MAGMA
+            MAGMA,
+            NETHER_GOLD
     };
 
     @NotNull
@@ -86,6 +88,22 @@ public enum Ore {
         this.dimension = dimension;
     }
 
+    Ore(@NotNull final Version since, @NotNull final String material, @NotNull final Setting[] settings, @NotNull final Dimension dimension) {
+        this.since = since;
+
+        Material tempMaterial;
+
+        try {
+            tempMaterial = Material.valueOf(material);
+        } catch (IllegalArgumentException e) {
+            tempMaterial = Material.COAL;
+        }
+
+        this.material = tempMaterial;
+        this.settings = settings;
+        this.dimension = dimension;
+    }
+
     private static Setting[] combineSettings(@NotNull final Setting[] settings, @NotNull final Setting... settings1) {
         final int firstLength = settings.length;
         final int secondLength = settings1.length;
@@ -95,6 +113,11 @@ public enum Ore {
         System.arraycopy(settings1, 0, result, firstLength, secondLength);
 
         return result;
+    }
+
+    @NotNull
+    public Version getSince() {
+        return since;
     }
 
     @NotNull
