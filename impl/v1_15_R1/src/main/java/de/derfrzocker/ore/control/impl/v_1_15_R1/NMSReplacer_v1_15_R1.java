@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.derfrzocker.ore.control.impl.v_15_R1;
+package de.derfrzocker.ore.control.impl.v_1_15_R1;
 
 import com.mojang.datafixers.Dynamic;
 import de.derfrzocker.ore.control.api.Biome;
