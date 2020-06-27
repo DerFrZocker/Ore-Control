@@ -187,8 +187,12 @@ public class OreControl extends JavaPlugin implements Listener {
         checkFile("data/gui/verify-gui.yml");
         checkFile("data/gui/world-config-gui.yml");
 
-        if (Version.getCurrent() == Version.v1_14_R1) {
+        if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent())) {
             checkFile("data/gui/biome-gui_v1.14.yml");
+        }
+
+        if (Version.v1_16_R1.isNewerOrSameVersion(Version.getCurrent())) {
+            checkFile("data/gui/biome-gui_v1.16.yml");
         }
 
         if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
