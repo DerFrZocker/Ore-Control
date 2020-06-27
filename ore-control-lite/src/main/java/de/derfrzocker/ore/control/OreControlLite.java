@@ -64,6 +64,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
         // register GenerationHandlers
         final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());
+        final GenerationHandler netherNormalOreGenerationHandler = new NetherNormalOreGenerationHandler(nmsService.getNMSUtil());
         nmsService.registerGenerationHandler(Ore.DIAMOND, normalOreGenerationHandler);
         nmsService.registerGenerationHandler(Ore.COAL, normalOreGenerationHandler);
         nmsService.registerGenerationHandler(Ore.GOLD, normalOreGenerationHandler);
@@ -75,14 +76,14 @@ public class OreControlLite extends JavaPlugin implements Listener {
         nmsService.registerGenerationHandler(Ore.GRANITE, normalOreGenerationHandler);
         nmsService.registerGenerationHandler(Ore.DIORITE, normalOreGenerationHandler);
         nmsService.registerGenerationHandler(Ore.ANDESITE, normalOreGenerationHandler);
-        nmsService.registerGenerationHandler(Ore.NETHER_QUARTZ, new NetherQuartzGenerationHandler(nmsService.getNMSUtil()));
+        nmsService.registerGenerationHandler(Ore.NETHER_QUARTZ, netherNormalOreGenerationHandler);
         nmsService.registerGenerationHandler(Ore.INFESTED_STONE, normalOreGenerationHandler);
         nmsService.registerGenerationHandler(Ore.EMERALD, new EmeraldGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.LAPIS, new LapisGenerationHandler(nmsService.getNMSUtil()));
         nmsService.registerGenerationHandler(Ore.MAGMA, new MagmaGenerationHandler(nmsService.getNMSUtil()));
-        nmsService.registerGenerationHandler(Ore.NETHER_GOLD, normalOreGenerationHandler);
-        nmsService.registerGenerationHandler(Ore.ANCIENT_DEBRIS, normalOreGenerationHandler);
-        nmsService.registerGenerationHandler(Ore.ANCIENT_DEBRIS_2, new LapisGenerationHandler(nmsService.getNMSUtil()));
+        nmsService.registerGenerationHandler(Ore.NETHER_GOLD, netherNormalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.ANCIENT_DEBRIS, netherNormalOreGenerationHandler);
+        nmsService.registerGenerationHandler(Ore.ANCIENT_DEBRIS_2, new NetherAncientDebrisGenerationHandler(nmsService.getNMSUtil()));
     }
 
     @Override

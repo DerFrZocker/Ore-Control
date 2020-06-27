@@ -25,6 +25,7 @@
 package de.derfrzocker.ore.control.impl.generationhandler;
 
 import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.utils.GenerationUtil;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
@@ -36,12 +37,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class NetherQuartzGenerationHandler implements GenerationHandler {
-
+public class NetherAncientDebrisGenerationHandler implements GenerationHandler {
     @NotNull
     private final NMSUtil nmsUtil;
 
-    public NetherQuartzGenerationHandler(@NotNull final NMSUtil nmsUtil) {
+    public NetherAncientDebrisGenerationHandler(@NotNull final NMSUtil nmsUtil) {
         Validate.notNull(nmsUtil, "NMSUtil can not be null");
 
         this.nmsUtil = nmsUtil;
@@ -56,11 +56,9 @@ public class NetherQuartzGenerationHandler implements GenerationHandler {
 
         final Object configuration;
 
-        final int minimumHeight = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.MINIMUM_HEIGHT), random);
-        final int heightSubtractValue = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_SUBTRACT_VALUE), random);
+        final int heightCenter = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_CENTER), random);
         final int heightRange = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_RANGE), random);
-
-        configuration = nmsUtil.createCountConfiguration(veinsPerChunk, minimumHeight, heightSubtractValue, heightRange == 0 ? 1 : heightRange);
+        configuration = nmsUtil.createHeightAverageConfiguration(veinsPerChunk, heightCenter, heightRange == 0 ? 1 : heightRange);
 
         final int veinSize = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEIN_SIZE), random);
 
