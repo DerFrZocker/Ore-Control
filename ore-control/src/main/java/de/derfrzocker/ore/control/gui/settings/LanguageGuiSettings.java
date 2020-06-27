@@ -49,7 +49,13 @@ public class LanguageGuiSettings extends BasicSettings {
 
     @NotNull
     public ItemStack getLanguageItemStack(@NotNull final Language language) {
-        return getSection().getItemStack("language." + language).clone();
+        final ItemStack itemStack = getSection().getItemStack("language." + language);
+
+        if (itemStack == null) {
+            throw new IllegalArgumentException("There is no ItemStack for the language '" + language + "'");
+        }
+
+        return itemStack.clone();
     }
 
     public int getLanguageGap() {

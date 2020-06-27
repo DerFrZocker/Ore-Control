@@ -49,7 +49,13 @@ public class OreSettingsGuiSettings extends PageSettings {
 
     @NotNull
     public ItemStack getSettingsItemStack(@NotNull final Setting setting) {
-        return getSection().getItemStack("settings-item-stack." + setting.toString()).clone();
+        final ItemStack itemStack = getSection().getItemStack("settings-item-stack." + setting.toString());
+
+        if (itemStack == null) {
+            throw new IllegalArgumentException("There is no ItemStack for the settings-item-stack '" + setting.toString() + "'");
+        }
+
+        return itemStack.clone();
     }
 
     @NotNull

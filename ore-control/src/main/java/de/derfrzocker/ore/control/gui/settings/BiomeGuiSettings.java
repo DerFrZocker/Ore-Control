@@ -48,7 +48,13 @@ public class BiomeGuiSettings extends PageSettings {
 
     @NotNull
     public ItemStack getBiomeItemStack(@NotNull final String biome) {
-        return getSection().getItemStack("biomes." + biome).clone();
+        final ItemStack itemStack = getSection().getItemStack("biomes." + biome);
+
+        if (itemStack == null) {
+            throw new IllegalArgumentException("There is no ItemStack for the biome '" + biome + "'");
+        }
+
+        return itemStack.clone();
     }
 
     public int getBiomeGroupSwitchSlot() {
