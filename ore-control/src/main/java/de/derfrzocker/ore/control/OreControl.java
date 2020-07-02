@@ -83,15 +83,15 @@ public class OreControl extends JavaPlugin implements Listener {
         instance = this;
 
         if (Version.getCurrent() == Version.v1_13_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
         else if (Version.getCurrent() == Version.v1_13_R2)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
         else if (Version.getCurrent() == Version.v1_14_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
         else if (Version.getCurrent() == Version.v1_15_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
         } else if (Version.getCurrent() == Version.v1_16_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
         }
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsService == null)
@@ -208,7 +208,7 @@ public class OreControl extends JavaPlugin implements Listener {
         }
 
         // load the Settings
-        settings = new Settings(Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
+        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
 
         checkOldStorageType();
 

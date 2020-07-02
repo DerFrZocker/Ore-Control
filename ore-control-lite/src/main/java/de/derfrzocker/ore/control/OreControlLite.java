@@ -60,7 +60,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
     @Override
     public void onLoad() {
-        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE);
+        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
 
         // register GenerationHandlers
         final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());
@@ -130,7 +130,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
         checkFile("data/settings.yml");
 
         // load the Settings
-        settings = new Settings(Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
+        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
 
         checkOldStorageType();
 

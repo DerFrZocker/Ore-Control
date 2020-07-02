@@ -45,13 +45,17 @@ public class NMSServiceImpl implements NMSService {
     private final NMSUtil nMSUtil;
     @NotNull
     private final Supplier<OreControlService> serviceSupplier;
+    @NotNull
+    private final WorldOreConfig dummy;
 
-    public NMSServiceImpl(@NotNull final NMSUtil nMSUtil, @NotNull final Supplier<OreControlService> serviceSupplier) {
+    public NMSServiceImpl(@NotNull final NMSUtil nMSUtil, @NotNull final Supplier<OreControlService> serviceSupplier, @NotNull WorldOreConfig dummy) {
         Validate.notNull(nMSUtil, "NMSUtil can not be null");
         Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(dummy, "Dummy WorldOreConfig cannot be null");
 
         this.nMSUtil = nMSUtil;
         this.serviceSupplier = serviceSupplier;
+        this.dummy = dummy;
     }
 
     @NotNull
@@ -84,10 +88,7 @@ public class NMSServiceImpl implements NMSService {
             return passFunction.apply(defaultConfiguration, defaultFeatureConfiguration);
 
 
-        final WorldOreConfig worldOreConfig = service.getWorldOreConfig(world).orElse(null);
-
-        if (worldOreConfig == null)
-            return passFunction.apply(defaultConfiguration, defaultFeatureConfiguration);
+        final WorldOreConfig worldOreConfig = service.getWorldOreConfig(world).orElse(this.dummy);
 
         try {
             if (!service.isActivated(worldOreConfig, biome, ore))

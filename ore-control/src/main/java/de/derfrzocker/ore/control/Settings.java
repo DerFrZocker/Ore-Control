@@ -28,6 +28,7 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.BiomeOreSettings;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreSettings;
+import de.derfrzocker.spigot.utils.ReloadAble;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,81 +38,33 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-public class Settings {
+public class Settings implements ReloadAble {
 
     @NotNull
-    private final Map<Ore, OreSettings> oreSettings = new HashMap<>();
-
+    private Map<Ore, OreSettings> oreSettings = new HashMap<>();
     @NotNull
-    private final Map<Biome, BiomeOreSettingsStorage> biomeOreSettingsStorage = new HashMap<>();
+    private Map<Biome, BiomeOreSettingsStorage> biomeOreSettingsStorage = new HashMap<>();
+    @NotNull
+    private final Supplier<YamlConfiguration> yamlSupplier;
+    @NotNull
+    private final Version version;
+    @NotNull
+    private final Logger logger;
 
-    public Settings(@NotNull final YamlConfiguration yaml, @NotNull final Version version, @NotNull final Logger logger) {
-        Validate.notNull(yaml, "YamlConfiguration cannot be null");
+    public Settings(@NotNull final Supplier<YamlConfiguration> yamlSupplier, @NotNull final Version version, @NotNull final Logger logger) {
+        Validate.notNull(yamlSupplier, "YamlSupplier cannot be null");
         Validate.notNull(version, "Version cannot be null");
+        Validate.notNull(logger, "Logger cannot be null");
 
-        final List<?> oreSettings = yaml.getList("defaults.ore-settings");
+        this.yamlSupplier = yamlSupplier;
+        this.version = version;
+        this.logger = logger;
+        RELOAD_ABLES.add(this);
 
-        if (oreSettings == null) {
-            throw new IllegalArgumentException("The YamlConfiguration don't have a list under 'defaults.ore-settings'");
-        }
-
-        for (final Object oreSettingObject : oreSettings) {
-            if (!(oreSettingObject instanceof OreSettings)) {
-                throw new IllegalArgumentException("The object '" + oreSettingObject + "' is not an instance of OreSettings");
-            }
-
-            final OreSettings oreSetting = (OreSettings) oreSettingObject;
-            final Ore ore = oreSetting.getOre();
-
-            // ignoring ore-settings from ores which are not present in the version the server is running
-            if (version.isNewerVersion(ore.getSince())) {
-                continue;
-            }
-
-            final OreSettings otherOreSetting = this.oreSettings.put(ore, oreSetting);
-
-            if (otherOreSetting != null) {
-                logger.info("There are multiple OreSettings for the ore '" + ore + "' in the default Ore-Settings YamlConfiguration");
-                logger.info("Old OreSetting: " + otherOreSetting);
-                logger.info("New OreSetting: " + oreSetting);
-            }
-        }
-
-        final List<?> biomeOreSettings = yaml.getList("defaults.biome-ore-settings");
-
-        if (biomeOreSettings == null) {
-            throw new IllegalArgumentException("The YamlConfiguration don't have a list under 'defaults.biome-ore-settings'");
-        }
-
-        for (final Object biomeOreSettingsObject : biomeOreSettings) {
-            if (!(biomeOreSettingsObject instanceof BiomeOreSettings)) {
-                throw new IllegalArgumentException("The object '" + biomeOreSettings + "' is not an instance of BiomeOreSettings");
-            }
-
-            final BiomeOreSettings biomeOreSetting = (BiomeOreSettings) biomeOreSettingsObject;
-            final Biome biome = biomeOreSetting.getBiome();
-
-            // ignoring biome-ore-settings from biomes which are not present in the version the server is running
-            if (version.isNewerVersion(biome.getSince())) {
-                continue;
-            }
-
-            if (biome.getUntil() != null && version.isOlderVersion(biome.getUntil())) {
-                continue;
-            }
-
-            final BiomeOreSettingsStorage biomeOreSettingsStorage = new BiomeOreSettingsStorage(biomeOreSetting.getOreSettings());
-            final BiomeOreSettingsStorage otherBiomeOreSetting = this.biomeOreSettingsStorage.put(biome, biomeOreSettingsStorage);
-
-            if (otherBiomeOreSetting != null) {
-                logger.info("There are multiple BiomeOreSettings for the biome '" + biome + "' in the default Biome-Ore-Settings YamlConfiguration");
-                logger.info("Old BiomeOreSettings: " + otherBiomeOreSetting);
-                logger.info("New BiomeOreSettings: " + biomeOreSettingsStorage);
-            }
-        }
-
+        reload();
     }
 
     @NotNull
@@ -145,6 +98,77 @@ public class Settings {
         }
 
         return oreSettings;
+    }
+
+    @Override
+    public void reload() {
+        final YamlConfiguration yaml = yamlSupplier.get();
+        final List<?> oreSettings = yaml.getList("defaults.ore-settings");
+
+        final Map<Ore, OreSettings> oreSettingsMap = new HashMap<>();
+        final Map<Biome, BiomeOreSettingsStorage> biomeOreSettingsStorageMap = new HashMap<>();
+
+        if (oreSettings == null) {
+            throw new IllegalArgumentException("The YamlConfiguration don't have a list under 'defaults.ore-settings'");
+        }
+
+        for (final Object oreSettingObject : oreSettings) {
+            if (!(oreSettingObject instanceof OreSettings)) {
+                throw new IllegalArgumentException("The object '" + oreSettingObject + "' is not an instance of OreSettings");
+            }
+
+            final OreSettings oreSetting = (OreSettings) oreSettingObject;
+            final Ore ore = oreSetting.getOre();
+
+            // ignoring ore-settings from ores which are not present in the version the server is running
+            if (version.isNewerVersion(ore.getSince())) {
+                continue;
+            }
+
+            final OreSettings otherOreSetting = oreSettingsMap.put(ore, oreSetting);
+
+            if (otherOreSetting != null) {
+                logger.info("There are multiple OreSettings for the ore '" + ore + "' in the default Ore-Settings YamlConfiguration");
+                logger.info("Old OreSetting: " + otherOreSetting);
+                logger.info("New OreSetting: " + oreSetting);
+            }
+        }
+
+        final List<?> biomeOreSettings = yaml.getList("defaults.biome-ore-settings");
+
+        if (biomeOreSettings == null) {
+            throw new IllegalArgumentException("The YamlConfiguration don't have a list under 'defaults.biome-ore-settings'");
+        }
+
+        for (final Object biomeOreSettingsObject : biomeOreSettings) {
+            if (!(biomeOreSettingsObject instanceof BiomeOreSettings)) {
+                throw new IllegalArgumentException("The object '" + biomeOreSettings + "' is not an instance of BiomeOreSettings");
+            }
+
+            final BiomeOreSettings biomeOreSetting = (BiomeOreSettings) biomeOreSettingsObject;
+            final Biome biome = biomeOreSetting.getBiome();
+
+            // ignoring biome-ore-settings from biomes which are not present in the version the server is running
+            if (version.isNewerVersion(biome.getSince())) {
+                continue;
+            }
+
+            if (biome.getUntil() != null && version.isOlderVersion(biome.getUntil())) {
+                continue;
+            }
+
+            final BiomeOreSettingsStorage biomeOreSettingsStorage = new BiomeOreSettingsStorage(biomeOreSetting.getOreSettings());
+            final BiomeOreSettingsStorage otherBiomeOreSetting = biomeOreSettingsStorageMap.put(biome, biomeOreSettingsStorage);
+
+            if (otherBiomeOreSetting != null) {
+                logger.info("There are multiple BiomeOreSettings for the biome '" + biome + "' in the default Biome-Ore-Settings YamlConfiguration");
+                logger.info("Old BiomeOreSettings: " + otherBiomeOreSetting);
+                logger.info("New BiomeOreSettings: " + biomeOreSettingsStorage);
+            }
+        }
+
+        this.oreSettings = oreSettingsMap;
+        this.biomeOreSettingsStorage = biomeOreSettingsStorageMap;
     }
 
     private static final class BiomeOreSettingsStorage {
