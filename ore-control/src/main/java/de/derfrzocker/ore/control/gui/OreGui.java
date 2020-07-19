@@ -169,7 +169,7 @@ public class OreGui extends PageGui<Ore> {
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
         final Set<Ore> ores = new LinkedHashSet<>();
 
-        biomeGroup.getBiomes().stream().map(Biome::getOres).flatMap(Stream::of).distinct().filter(ore -> dimension != null && ore.getDimension() != dimension).filter(ore -> !Version.getCurrent().isNewerVersion(ore.getSince())).forEach(ores::add);
+        biomeGroup.getBiomes().stream().map(Biome::getOres).flatMap(Stream::of).distinct().filter(ore -> dimension == null || ore.getDimension() == dimension).filter(ore -> !Version.getCurrent().isNewerVersion(ore.getSince())).forEach(ores::add);
 
         final Ore[] oresArray = ores.toArray(new Ore[0]);
 
