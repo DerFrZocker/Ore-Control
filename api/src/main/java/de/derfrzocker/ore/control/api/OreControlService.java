@@ -66,6 +66,17 @@ public interface OreControlService {
     Optional<WorldOreConfig> getWorldOreConfig(@NotNull String name);
 
     /**
+     * The values in this WorldOreConfig are used when no other value is specific in a
+     * World specific WorldOreConfig
+     * <p>
+     * The name of the WorldOreConfig is "Default"
+     *
+     * @return the default WorldOreConfig
+     */
+    @NotNull
+    WorldOreConfig getDefaultWorldOreConfig();
+
+    /**
      * Creates a new WorldOreConfig for the given world.
      * The create WorldOreConfig gets automatically saved to disk,
      * this is done in the called Thread, it is not recommend to call this method from Minecraft's main Thread.
@@ -119,6 +130,8 @@ public interface OreControlService {
 
     /**
      * Returns the default value for the given Ore and Setting.
+     * <p>
+     * The default value is not the value from the default WorldOreConfig, but the value which Minecraft use
      *
      * @param ore     which must be non-null
      * @param setting which must be non-null
@@ -133,6 +146,8 @@ public interface OreControlService {
      * <p>
      * If no default value for the given values is present, it will return
      * the default value for only the Ore and Setting.
+     * <p>
+     * The default value is not the value of the Default WorldOreConfig, but the value which Minecraft use
      *
      * @param biome   which must be non-null
      * @param ore     which must be non-null
@@ -149,9 +164,10 @@ public interface OreControlService {
      * If the WorldOreConfig dont have the BiomeOreSettings of the given Biomes or the BiomeOreSettings dont have the
      * OreSettings for the Ore, it checks if the WorldOreConfig have the OreSettings
      * of the given Ore. If the WorldOreConfig have the OreSettings it checks if it also have the given Setting. If true it returns the value.
-     * otherwise it returns the default value.
+     * otherwise it while check in the default WorldOreConfig, if the default WorldOreConfig dont have a value too, than it will return the default value.
      * <p>
-     * This means the Priority is: "Biome specific settings" -> "Ore specific settings" -> "default settings"
+     * This means the Priority is: "Biome specific settings" -> "Ore specific settings"
+     * -> "Default WorldOreConfig Biome specific settings" -> "Default WorldOreConfig Ore specific settings" ->"default settings"
      * <p>
      * To see which Biome have which Ore see: {@link Biome#getOres()}
      * To see which Ore have which Setting see: {@link Ore#getSettings()}
@@ -170,7 +186,7 @@ public interface OreControlService {
     /**
      * Returns the value for the given Setting from the given WorldOreConfig and Ore.
      * If the WorldOreConfig dont have the OreSettings of the given Ore it returns the default value.
-     * If the OreSettings dont have the Setting, but the Ore have it, it returns the default value.
+     * If the OreSettings dont have the Setting, but the Ore have it, than it while check the default WorldOreConfig, if it dont have a value too, than it will return the default value
      * <p>
      * To see which Ore have which Setting see: {@link Ore#getSettings()}
      *
@@ -220,7 +236,8 @@ public interface OreControlService {
     /**
      * Checks if the given Ore is in the given Biome activated or not.
      * If the WorldOreConfig dont have the BiomeOreSettings or the BiomeOreSettings dont have the OreSettings,
-     * than it checks the normal OreSettings, if this Settings also not exists it returns true.
+     * than it checks the normal OreSettings, if this Settings also not exists, it while check the default WorldOreConfig for the OreSetting,
+     * if the default WorldOreConfig have no OreSetting too, than it returns true.
      *
      * @param worldOreConfig which must be non-null
      * @param biome          which must be non-null
@@ -233,7 +250,7 @@ public interface OreControlService {
 
     /**
      * Checks if the given Ore is activated or not.
-     * If the WorldOreConfig dont have the OreSettings it returns true.
+     * If the WorldOreConfig dont have the OreSettings and the default WorldOreConfig to, than it returns true.
      *
      * @param worldOreConfig which must be non-null
      * @param ore            which must be non-null

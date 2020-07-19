@@ -71,7 +71,7 @@ public class OreControl extends JavaPlugin implements Listener {
     private ConfigValues configValues; // The Config values of this plugin
     @Getter
     private Settings settings; // The Settings of this Plugin, other than the ConfigValues, this Values should not be modified
-    private NMSService nmsService = null; // The NMSService, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
+    private NMSServiceImpl nmsService = null; // The NMSService, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
     private OreControlCommand oreControlCommand; // The OreControlCommand handler
     private OreControlMessages oreControlMessages;
     private Permissions permissions;
@@ -84,16 +84,17 @@ public class OreControl extends JavaPlugin implements Listener {
         this.oreControlServiceSupplier = new OreControlServiceSupplier(this);
 
         if (Version.getCurrent() == Version.v1_13_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         else if (Version.getCurrent() == Version.v1_13_R2)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         else if (Version.getCurrent() == Version.v1_14_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         else if (Version.getCurrent() == Version.v1_15_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         } else if (Version.getCurrent() == Version.v1_16_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         }
+
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsService == null)
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));

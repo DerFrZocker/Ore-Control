@@ -89,6 +89,18 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @NotNull
     @Override
+    public WorldOreConfig getDefaultWorldOreConfig() {
+        final Optional<WorldOreConfig> worldOreConfigOptional = this.dao.get("Default");
+
+        if (worldOreConfigOptional.isPresent()) {
+            return worldOreConfigOptional.get();
+        }
+
+        return createWorldOreConfigTemplate("Default");
+    }
+
+    @NotNull
+    @Override
     public WorldOreConfig createWorldOreConfig(@NotNull final World world) {
         Validate.notNull(world, "World can not be null");
 
@@ -247,26 +259,69 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public boolean isActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore) {
-        final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+        {
+            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
 
-        if (biomeOreSettings.isPresent()) {
-            final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+            if (biomeOreSettings.isPresent()) {
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+
+                if (oreSettings.isPresent()) {
+                    return oreSettings.get().isActivated();
+                }
+            }
+
+            final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
 
             if (oreSettings.isPresent()) {
                 return oreSettings.get().isActivated();
             }
         }
 
-        final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
+        //checking in default WorldOreConfig
+        {
+            final WorldOreConfig defaultW = getDefaultWorldOreConfig();
+            final Optional<BiomeOreSettings> biomeOreSettings = defaultW.getBiomeOreSettings(biome);
 
-        return oreSettings.map(OreSettings::isActivated).orElse(true);
+            if (biomeOreSettings.isPresent()) {
+                final Optional<OreSettings> oreSettings = biomeOreSettings.get().getOreSettings(ore);
+
+                if (oreSettings.isPresent()) {
+                    return oreSettings.get().isActivated();
+                }
+            }
+
+            final Optional<OreSettings> oreSettings = defaultW.getOreSettings(ore);
+
+            if (oreSettings.isPresent()) {
+                return oreSettings.get().isActivated();
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean isActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore) {
-        final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
 
-        return oreSettings.map(OreSettings::isActivated).orElse(true);
+        {
+            final Optional<OreSettings> oreSettings = worldOreConfig.getOreSettings(ore);
+
+            if (oreSettings.isPresent()) {
+                return oreSettings.get().isActivated();
+            }
+        }
+
+        //checking in default WorldOreConfig
+        {
+            final WorldOreConfig defaultW = getDefaultWorldOreConfig();
+            final Optional<OreSettings> oreSettings = defaultW.getOreSettings(ore);
+
+            if (oreSettings.isPresent()) {
+                return oreSettings.get().isActivated();
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -402,6 +457,45 @@ public abstract class OreControlServiceImpl implements OreControlService {
     }
 
     private double getValue0(@NotNull final WorldOreConfig worldOreConfig, @Nullable Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
+        // Checking first for WorldOreConfig specific value
+        final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
+
+        //checking if OreSetting in WorldOreConfig is present
+        if (oreSettingsOptional.isPresent()) {
+            final Optional<Double> valueOptional = oreSettingsOptional.get().getValue(setting);
+
+            if (valueOptional.isPresent()) {
+                // value present, returning WorldOreConfig specific value
+                return valueOptional.get();
+            }
+        }
+
+        // checking in default WorldOreConfig
+        return getDefaultWorldOreConfigValue(biome, ore, setting);
+    }
+
+    private double getDefaultWorldOreConfigValue(@Nullable Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
+        final WorldOreConfig worldOreConfig = getDefaultWorldOreConfig();
+
+        if (biome != null) {
+            final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);
+
+            // Check first in BiomeOreSetting
+            if (biomeOreSettings.isPresent()) {
+                final Optional<OreSettings> oreSettingsOptional = biomeOreSettings.get().getOreSettings(ore);
+
+                //checking if OreSetting in BiomeOreSetting is present
+                if (oreSettingsOptional.isPresent()) {
+                    final Optional<Double> valueOptional = oreSettingsOptional.get().getValue(setting);
+
+                    if (valueOptional.isPresent()) {
+                        // value present, returning Biome specific value
+                        return valueOptional.get();
+                    }
+                }
+            }
+        }
+
         // Checking first for WorldOreConfig specific value
         final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
 

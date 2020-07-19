@@ -44,7 +44,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.function.Supplier;
 
 public class OreControlLite extends JavaPlugin implements Listener {
 
@@ -55,14 +54,14 @@ public class OreControlLite extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
     }
 
-    private NMSService nmsService = null;
+    private NMSServiceImpl nmsService = null;
     private Settings settings;
     private OreControlServiceSupplier oreControlServiceSupplier;
 
     @Override
     public void onLoad() {
         this.oreControlServiceSupplier = new OreControlServiceSupplier(this);
-        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
+        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
 
         // register GenerationHandlers
         final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());

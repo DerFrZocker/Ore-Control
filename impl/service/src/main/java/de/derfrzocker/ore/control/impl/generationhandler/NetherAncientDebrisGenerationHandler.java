@@ -25,7 +25,6 @@
 package de.derfrzocker.ore.control.impl.generationhandler;
 
 import de.derfrzocker.ore.control.api.*;
-import de.derfrzocker.ore.control.utils.GenerationUtil;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
