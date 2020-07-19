@@ -372,46 +372,6 @@ public abstract class OreControlServiceImpl implements OreControlService {
         oreSettings.setActivated(value);
     }
 
-    @Override
-    public boolean isOre(@Nullable final String string) {
-        if (string == null)
-            return false;
-
-        try {
-            Ore.valueOf(string.toUpperCase());
-            return true;
-        } catch (final IllegalArgumentException e) {
-            return false;
-        }
-
-    }
-
-    @Override
-    public boolean isBiome(@Nullable final String string) {
-        if (string == null)
-            return false;
-
-        try {
-            Biome.valueOf(string.toUpperCase());
-            return true;
-        } catch (final IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean isSetting(@Nullable final String string) {
-        if (string == null)
-            return false;
-
-        try {
-            Setting.valueOf(string.toUpperCase());
-            return true;
-        } catch (final IllegalArgumentException e) {
-            return false;
-        }
-    }
-
     @NotNull
     private OreSettings getDefault(@NotNull final Ore ore) {
         final OreSettings oreSettings = getDefaultOreSetting(ore);

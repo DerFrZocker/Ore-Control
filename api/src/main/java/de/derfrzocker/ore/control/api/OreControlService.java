@@ -26,7 +26,6 @@ package de.derfrzocker.ore.control.api;
 
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
@@ -282,35 +281,5 @@ public interface OreControlService {
      * @throws IllegalArgumentException if Ore or WorldOreConfig is null
      */
     void setActivated(@NotNull WorldOreConfig worldOreConfig, @NotNull Ore ore, boolean status);
-
-    /**
-     * Checks if the given String represent an Ore
-     * If the given String is null, the method return false
-     *
-     * @param string to check
-     * @return true if the given String represent an Ore, otherwise false
-     */
-    @Deprecated
-    boolean isOre(@Nullable String string);
-
-    /**
-     * Checks if the given String represent a Biome
-     * If the given String is null, the method return false
-     *
-     * @param string to check
-     * @return true if the given String represent a Biome, otherwise false
-     */
-    @Deprecated
-    boolean isBiome(@Nullable String string);
-
-    /**
-     * Checks if the given String represent a Setting
-     * If the given String is null, the method return false
-     *
-     * @param string to check
-     * @return true if the given String represent a Setting, otherwise false
-     */
-    @Deprecated
-    boolean isSetting(@Nullable String string);
 
 }

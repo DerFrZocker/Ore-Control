@@ -24,12 +24,15 @@
 
 package de.derfrzocker.ore.control.impl;
 
-import de.derfrzocker.ore.control.api.*;
+import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.BiomeOreSettings;
+import de.derfrzocker.ore.control.api.Ore;
+import de.derfrzocker.ore.control.api.OreSettings;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -72,16 +75,25 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
 
             list.forEach(oreSettings1 -> oreSettings.put(oreSettings1.getOre(), oreSettings1));
         } else {
-            final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
-
-            Validate.notNull(service, "OreControlService can not be null");
-
             // old storage type
-            map.entrySet().stream().filter(entry -> service.isOre(entry.getKey())).
+            map.entrySet().stream().filter(entry -> isOre(entry.getKey())).
                     forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
         }
 
         return new BiomeOreSettingsYamlImpl(Biome.valueOf(((String) map.get(BIOME_KEY)).toUpperCase()), oreSettings);
+    }
+
+    private static boolean isOre(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Ore.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
+
     }
 
     @NotNull

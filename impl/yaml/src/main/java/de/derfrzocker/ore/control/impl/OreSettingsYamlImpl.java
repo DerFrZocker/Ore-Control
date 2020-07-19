@@ -86,7 +86,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
 
             Validate.notNull(service, "OreControlService can not be null");
 
-            map.entrySet().stream().filter(entry -> service.isSetting(entry.getKey())).
+            map.entrySet().stream().filter(entry -> isSetting(entry.getKey())).
                     forEach(entry -> settings.put(Setting.valueOf(entry.getKey().toUpperCase()), NumberConversions.toDouble(entry.getValue())));
         }
 
@@ -96,6 +96,18 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
             oreSettingsYaml.setActivated((boolean) map.get(STATUS_KEY));
 
         return oreSettingsYaml;
+    }
+
+    private static boolean isSetting(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Setting.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @NotNull

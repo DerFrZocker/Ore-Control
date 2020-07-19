@@ -26,7 +26,6 @@ package de.derfrzocker.ore.control.impl;
 
 import de.derfrzocker.ore.control.api.*;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.NotNull;
@@ -90,11 +89,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
             list.forEach(oreSettings1 -> oreSettings.put(oreSettings1.getOre(), oreSettings1));
         } else {
             // old storage type
-            final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
-
-            Validate.notNull(service, "OreControlService can not be null");
-
-            map.entrySet().stream().filter(entry -> service.isOre(entry.getKey())).
+            map.entrySet().stream().filter(entry -> isOre(entry.getKey())).
                     forEach(entry -> oreSettings.put(Ore.valueOf(entry.getKey().toUpperCase()), (OreSettings) entry.getValue()));
         }
 
@@ -108,11 +103,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
             list.forEach(biomeOreSettings1 -> biomeOreSettings.put(biomeOreSettings1.getBiome(), biomeOreSettings1));
         } else {
             // old storage type
-            final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
-
-            Validate.notNull(service, "OreControlService can not be null");
-
-            map.entrySet().stream().filter(entry -> service.isBiome(entry.getKey())).
+            map.entrySet().stream().filter(entry -> isBiome(entry.getKey())).
                     forEach(entry -> biomeOreSettings.put(Biome.valueOf(entry.getKey().toUpperCase()), (BiomeOreSettings) entry.getValue()));
         }
 
@@ -124,6 +115,31 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
             name = (String) map.get(NAME_KEY);
 
         return new WorldOreConfigYamlImpl(name, (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
+    }
+
+    private static boolean isOre(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Ore.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
+
+    }
+
+    private static boolean isBiome(@Nullable final String string) {
+        if (string == null)
+            return false;
+
+        try {
+            Biome.valueOf(string.toUpperCase());
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @NotNull
