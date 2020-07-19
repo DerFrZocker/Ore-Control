@@ -57,10 +57,12 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
     private NMSService nmsService = null;
     private Settings settings;
+    private OreControlServiceSupplier oreControlServiceSupplier;
 
     @Override
     public void onLoad() {
-        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
+        this.oreControlServiceSupplier = new OreControlServiceSupplier(this);
+        nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
 
         // register GenerationHandlers
         final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());
@@ -88,6 +90,8 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        this.oreControlServiceSupplier.registerEvents();
+
         final WorldOreConfigDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world-ore-configs"));
 
         // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
@@ -147,7 +151,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
     private void setUpMetric() {
         // create a new Metrics
-        new OreControlMetrics(this, OreControlServiceSupplier.INSTANCE) {
+        new OreControlMetrics(this, this.oreControlServiceSupplier) {
             @Override
             protected String getLanguage() {
                 return "N/A";
@@ -199,10 +203,10 @@ public class OreControlLite extends JavaPlugin implements Listener {
     @EventHandler //TODO maybe extra class
     public void onWorldLoad(@NotNull final WorldLoadEvent event) {
         Bukkit.getScheduler().runTaskAsynchronously(this, () ->
-                OreControlServiceSupplier.INSTANCE.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
+                this.oreControlServiceSupplier.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
                     if (value.isTemplate()) {
                         value.setTemplate(false);
-                        OreControlServiceSupplier.INSTANCE.get().saveWorldOreConfig(value);
+                        this.oreControlServiceSupplier.get().saveWorldOreConfig(value);
                     }
                 })
         );
@@ -225,7 +229,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
         final WorldOreConfigYamlDao_Old worldConfigYamlDao = new WorldOreConfigYamlDao_Old(file);
         worldConfigYamlDao.init();
 
-        final OreControlService service = OreControlServiceSupplier.INSTANCE.get();
+        final OreControlService service = this.oreControlServiceSupplier.get();
 
         worldConfigYamlDao.getAll().forEach(service::saveWorldOreConfig);
 
@@ -233,27 +237,6 @@ public class OreControlLite extends JavaPlugin implements Listener {
             throw new RuntimeException("Can not delete File " + file);
 
         getLogger().info("Finish converting old storage format to new one");
-    }
-
-    private static final class OreControlServiceSupplier implements Supplier<OreControlService> {
-
-        private static final OreControlServiceSupplier INSTANCE = new OreControlServiceSupplier();
-
-        private OreControlService service;
-
-        @Override
-        public OreControlService get() {
-            final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
-
-            if (service == null && tempService == null)
-                throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
-
-            if (tempService != null && service != tempService)
-                service = tempService;
-
-            return service;
-        }
-
     }
 
 }

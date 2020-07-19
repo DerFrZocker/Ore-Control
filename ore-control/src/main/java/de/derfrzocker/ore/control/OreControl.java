@@ -53,9 +53,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.function.Supplier;
 
 public class OreControl extends JavaPlugin implements Listener {
+
+    @Getter
+    @Setter
+    private static OreControl instance;
 
     // register the ConfigurationSerializable's in a static block, that we can easy use them in Test cases
     static {
@@ -65,10 +68,6 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     @Getter
-    @Setter
-    private static OreControl instance;
-
-    @Getter
     private ConfigValues configValues; // The Config values of this plugin
     @Getter
     private Settings settings; // The Settings of this Plugin, other than the ConfigValues, this Values should not be modified
@@ -76,22 +75,24 @@ public class OreControl extends JavaPlugin implements Listener {
     private OreControlCommand oreControlCommand; // The OreControlCommand handler
     private OreControlMessages oreControlMessages;
     private Permissions permissions;
+    private OreControlServiceSupplier oreControlServiceSupplier;
 
     @Override
     public void onLoad() {
         // initial instance variable
         instance = this;
+        this.oreControlServiceSupplier = new OreControlServiceSupplier(this);
 
         if (Version.getCurrent() == Version.v1_13_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
         else if (Version.getCurrent() == Version.v1_13_R2)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
         else if (Version.getCurrent() == Version.v1_14_R1)
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
         else if (Version.getCurrent() == Version.v1_15_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
         } else if (Version.getCurrent() == Version.v1_16_R1) {
-            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(OreControlServiceSupplier.INSTANCE), OreControlServiceSupplier.INSTANCE, new WorldOreConfigYamlImpl("dummy", false));
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier, new WorldOreConfigYamlImpl("dummy", false));
         }
         // if no suitable version was found, throw an Exception and stop onLoad part
         if (nmsService == null)
@@ -137,6 +138,7 @@ public class OreControl extends JavaPlugin implements Listener {
 
         oreControlMessages = new OreControlMessages(this);
         permissions = new Permissions(this);
+        this.oreControlServiceSupplier.registerEvents();
 
         final WorldOreConfigDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world-ore-configs"));
 
@@ -228,7 +230,7 @@ public class OreControl extends JavaPlugin implements Listener {
 
     private void setUpMetric() {
         // create a new Metrics
-        new OreControlMetrics(this, OreControlServiceSupplier.INSTANCE) {
+        new OreControlMetrics(this, this.oreControlServiceSupplier) {
             @Override
             protected String getLanguage() {
                 return configValues.getLanguage().getNames()[0];
@@ -257,7 +259,7 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
-        getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(new OreControlValues(OreControlServiceSupplier.INSTANCE, this, configValues, oreControlMessages, permissions)));
+        getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions)));
     }
 
     private void checkFile(@NotNull final String name) {
@@ -284,10 +286,10 @@ public class OreControl extends JavaPlugin implements Listener {
     @EventHandler //TODO maybe extra class
     public void onWorldLoad(@NotNull final WorldLoadEvent event) {
         Bukkit.getScheduler().runTaskAsynchronously(this, () ->
-                OreControlServiceSupplier.INSTANCE.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
+                this.oreControlServiceSupplier.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
                     if (value.isTemplate()) {
                         value.setTemplate(false);
-                        OreControlServiceSupplier.INSTANCE.get().saveWorldOreConfig(value);
+                        this.oreControlServiceSupplier.get().saveWorldOreConfig(value);
                     }
                 })
         );
@@ -310,7 +312,7 @@ public class OreControl extends JavaPlugin implements Listener {
         final WorldOreConfigYamlDao_Old worldConfigYamlDao = new WorldOreConfigYamlDao_Old(file);
         worldConfigYamlDao.init();
 
-        final OreControlService service = OreControlServiceSupplier.INSTANCE.get();
+        final OreControlService service = this.oreControlServiceSupplier.get();
 
         worldConfigYamlDao.getAll().forEach(service::saveWorldOreConfig);
 
@@ -318,28 +320,6 @@ public class OreControl extends JavaPlugin implements Listener {
             throw new RuntimeException("Can not delete File " + file);
 
         getLogger().info("Finish converting old storage format to new one");
-    }
-
-
-    private static final class OreControlServiceSupplier implements Supplier<OreControlService> {
-
-        private static final OreControlServiceSupplier INSTANCE = new OreControlServiceSupplier();
-
-        private OreControlService service;
-
-        @Override
-        public OreControlService get() {
-            final OreControlService tempService = Bukkit.getServicesManager().load(OreControlService.class);
-
-            if (service == null && tempService == null)
-                throw new NullPointerException("The Bukkit Service has no OreControlService and no OreControlService is cached!");
-
-            if (tempService != null && service != tempService)
-                service = tempService;
-
-            return service;
-        }
-
     }
 
 }
