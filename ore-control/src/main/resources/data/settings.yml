@@ -182,5 +182,17 @@ defaults:
             HEIGHT_RANGE: 128
             HEIGHT_SUBTRACT_VALUE: 20
             VEINS_PER_BIOME: 0
+    - ==: OreControl#BiomeOreSettings
+      biome: BASALT_DELTAS
+      ore-settings:
+        - ==: OreControl#OreSettings
+          ore: NETHER_QUARTZ
+          settings:
+            VEIN_SIZE: 10
+            VEINS_PER_CHUNK: 32
+            MINIMUM_HEIGHT: 10
+            HEIGHT_RANGE: 128
+            HEIGHT_SUBTRACT_VALUE: 20
+            VEINS_PER_BIOME: 0
 
-version: 6
+version: 7
