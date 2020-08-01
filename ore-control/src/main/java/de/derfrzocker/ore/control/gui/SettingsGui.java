@@ -38,6 +38,7 @@ import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
@@ -197,6 +198,10 @@ public class SettingsGui extends BasicGui {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
+            if (event.getClick() != ClickType.LEFT) {
+                return;
+            }
+
             final OreControlService service = oreControlValues.getService();
             double current = biome == null ? service.getValue(worldOreConfig, ore, setting) : service.getValue(worldOreConfig, biome, ore, setting);
 
@@ -232,6 +237,10 @@ public class SettingsGui extends BasicGui {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
+            if (event.getClick() != ClickType.LEFT) {
+                return;
+            }
+
             final OreControlService service = oreControlValues.getService();
             double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
