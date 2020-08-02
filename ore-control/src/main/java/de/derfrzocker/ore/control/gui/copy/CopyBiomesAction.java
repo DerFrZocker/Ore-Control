@@ -47,9 +47,9 @@ public class CopyBiomesAction implements CopyAction {
     private WorldOreConfig worldOreConfigTarget;
 
     public CopyBiomesAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @NotNull final Biome[] biomes) {
-        Validate.notNull(oreControlValues, "OreControlValues can not be null");
-        Validate.notNull(worldOreConfigSource, "WorldOreConfig can not be null");
-        Validate.notNull(biomes, "Biomes can not be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
+        Validate.notNull(biomes, "Biomes cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfigSource = worldOreConfigSource;
@@ -64,7 +64,7 @@ public class CopyBiomesAction implements CopyAction {
 
     @Override
     public void setWorldOreConfigTarget(@NotNull final WorldOreConfig worldOreConfig) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         this.worldOreConfigTarget = worldOreConfig;
     }
@@ -93,8 +93,9 @@ public class CopyBiomesAction implements CopyAction {
     public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
             new VerifyGui(oreControlValues.getJavaPlugin(), clickEvent -> {
-                for (Biome biome : biomes)
+                for (Biome biome : biomes) {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, biome, biome);
+                }
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);
@@ -104,8 +105,9 @@ public class CopyBiomesAction implements CopyAction {
             return;
         }
 
-        for (Biome biome : biomes)
+        for (Biome biome : biomes) {
             CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, biome, biome);
+        }
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
         inventoryGui.closeSync(humanEntity);

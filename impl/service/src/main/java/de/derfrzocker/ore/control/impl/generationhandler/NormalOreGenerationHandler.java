@@ -43,7 +43,7 @@ public class NormalOreGenerationHandler implements GenerationHandler {
     private final NMSUtil nmsUtil;
 
     public NormalOreGenerationHandler(@NotNull final NMSUtil nmsUtil) {
-        Validate.notNull(nmsUtil, "NMSUtil can not be null");
+        Validate.notNull(nmsUtil, "NMSUtil cannot be null");
 
         this.nmsUtil = nmsUtil;
     }
@@ -59,8 +59,9 @@ public class NormalOreGenerationHandler implements GenerationHandler {
             veinsPerChunk = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEINS_PER_CHUNK), random);
         }
 
-        if (veinsPerChunk == 0)
+        if (veinsPerChunk == 0) {
             return true;
+        }
 
         final Object configuration;
 
@@ -72,8 +73,9 @@ public class NormalOreGenerationHandler implements GenerationHandler {
 
         final int veinSize = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEIN_SIZE), random);
 
-        if (veinSize == 0)
+        if (veinSize == 0) {
             return true;
+        }
 
         final Object featureConfiguration = nmsUtil.createFeatureConfiguration(defaultFeatureConfiguration, veinSize);
 

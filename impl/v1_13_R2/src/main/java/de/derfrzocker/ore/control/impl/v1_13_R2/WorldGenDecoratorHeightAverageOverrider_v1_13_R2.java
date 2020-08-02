@@ -28,22 +28,29 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R2.*;
+import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
-@RequiredArgsConstructor
 public class WorldGenDecoratorHeightAverageOverrider_v1_13_R2 extends WorldGenDecoratorHeightAverage {
 
-    @NonNull
+    @NotNull
     private final Biome biome;
 
-    @NonNull
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
+
+    public WorldGenDecoratorHeightAverageOverrider_v1_13_R2(@NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
+
+        this.biome = biome;
+        this.serviceSupplier = serviceSupplier;
+    }
 
     @Override
     public <C extends WorldGenFeatureConfiguration> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettings> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenDecoratorHeightAverageConfiguration worldGenDecoratorHeightAverageConfiguration, final WorldGenerator<C> worldGenerator, final C worldGenFeatureConfigured) {

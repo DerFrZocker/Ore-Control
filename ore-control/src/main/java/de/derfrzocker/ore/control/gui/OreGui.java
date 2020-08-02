@@ -68,8 +68,8 @@ public class OreGui extends PageGui<Ore> {
     OreGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @Nullable final Biome biome) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -103,20 +103,22 @@ public class OreGui extends PageGui<Ore> {
 
         addItem(oreGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biome == null ? oreGuiSettings.getInfoItemStack() : oreGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
 
-        if (permissions.getValueResetPermission().hasPermission(permissible))
+        if (permissions.getValueResetPermission().hasPermission(permissible)) {
             addItem(oreGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, oreGuiSettings.getResetValueItemStack()), this::handleResetValues);
+        }
 
-        if (permissions.getValueCopyPermission().hasPermission(permissible))
+        if (permissions.getValueCopyPermission().hasPermission(permissible)) {
             addItem(oreGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, oreGuiSettings.getCopyValueItemStack()), event -> new WorldGui(oreControlValues, new CopyOresAction(oreControlValues, worldOreConfig, biome, biome == null ? Ore.values() : biome.getOres())).openSync(event.getWhoClicked()));
+        }
 
     }
 
     public OreGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Biome biome, @NotNull final CopyAction copyAction) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(copyAction, "CopyAction can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(copyAction, "CopyAction cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -134,10 +136,12 @@ public class OreGui extends PageGui<Ore> {
             }
 
             if (biome == null) {
-                if (copyAction.shouldSet(ore))
+                if (copyAction.shouldSet(ore)) {
                     ores.add(ore);
-            } else if (copyAction.shouldSet(ore, biome))
+                }
+            } else if (copyAction.shouldSet(ore, biome)) {
                 ores.add(ore);
+            }
         }
 
         final Ore[] oresArray = ores.toArray(new Ore[0]);
@@ -154,10 +158,10 @@ public class OreGui extends PageGui<Ore> {
     OreGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final BiomeGuiSettings biomeGuiSettings) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(biomeGroup, "BiomeGroup can not be null");
-        Validate.notNull(biomeGuiSettings, "BiomeGuiSettings can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(biomeGroup, "BiomeGroup cannot be null");
+        Validate.notNull(biomeGuiSettings, "BiomeGuiSettings cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -203,12 +207,15 @@ public class OreGui extends PageGui<Ore> {
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
             new VerifyGui(getPlugin(), clickEvent -> {
-                if (biome != null)
-                    for (Ore ore : biome.getOres())
+                if (biome != null) {
+                    for (Ore ore : biome.getOres()) {
                         ResetUtil.reset(worldOreConfig, ore, biome);
-                else
-                    for (Ore ore : Ore.values())
+                    }
+                } else {
+                    for (Ore ore : Ore.values()) {
                         ResetUtil.reset(worldOreConfig, ore);
+                    }
+                }
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
@@ -216,12 +223,15 @@ public class OreGui extends PageGui<Ore> {
             }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
             return;
         }
-        if (biome != null)
-            for (final Ore ore : biome.getOres())
+        if (biome != null) {
+            for (final Ore ore : biome.getOres()) {
                 ResetUtil.reset(worldOreConfig, ore, biome);
-        else
-            for (final Ore ore : Ore.values())
+            }
+        } else {
+            for (final Ore ore : Ore.values()) {
                 ResetUtil.reset(worldOreConfig, ore);
+            }
+        }
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());

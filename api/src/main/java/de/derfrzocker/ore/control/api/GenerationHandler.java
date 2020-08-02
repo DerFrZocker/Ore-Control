@@ -25,7 +25,6 @@
 package de.derfrzocker.ore.control.api;
 
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +53,7 @@ public interface GenerationHandler {
      */
     boolean generate(@NotNull World world, @NotNull WorldOreConfig worldOreConfig, @NotNull OreControlService oreControlService, @NotNull Biome biome, @NotNull Ore ore, @NotNull ChunkCoordIntPair chunkCoordIntPair,
                      @NotNull Object defaultConfiguration, @NotNull Object defaultFeatureConfiguration,
-                     @Nullable BiFunction<Location, Integer, Boolean> generateFunction, @NotNull BiFunction<Object, Object, Boolean> passFunction, @NonNull Random random);
+                     @Nullable BiFunction<Location, Integer, Boolean> generateFunction, @NotNull BiFunction<Object, Object, Boolean> passFunction, @NotNull Random random);
 
 
 }

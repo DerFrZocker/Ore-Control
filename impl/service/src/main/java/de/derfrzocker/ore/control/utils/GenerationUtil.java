@@ -51,8 +51,9 @@ public class GenerationUtil {
             for (int i = 0; i < veinsPerBiomeInt; i++) {
                 final int randomInt = random.nextInt((coordIntPairs.length - 1));
                 final ChunkCoordIntPair coordIntPair = coordIntPairs[randomInt];
-                if (coordIntPair.equals(chunkCoordIntPair))
+                if (coordIntPair.equals(chunkCoordIntPair)) {
                     veinsAmount++;
+                }
             }
         }
 
@@ -96,8 +97,9 @@ public class GenerationUtil {
 
                 final Biome biomeToCheck = nmsUtil.getBiome(world, chunkCoordIntPairToCheck);
 
-                if (biomeToCheck == null)
+                if (biomeToCheck == null) {
                     throw new NullPointerException("BiomeBase for chunk position x: " + xToCheck + " and z: " + zToCheck + " is null, this should never happen!");
+                }
 
                 if (biome == biomeToCheck) {
                     chunkCoordIntPairs.add(chunkCoordIntPairToCheck);

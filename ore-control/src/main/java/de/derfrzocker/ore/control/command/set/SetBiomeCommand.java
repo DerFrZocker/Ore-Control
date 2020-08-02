@@ -50,7 +50,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
     private final OreControlValues oreControlValues;
 
     public SetBiomeCommand(@NotNull final OreControlValues oreControlValues) {
-        Validate.notNull(oreControlValues, "OreControlValues can't be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
 
         this.oreControlValues = oreControlValues;
     }
@@ -176,8 +176,9 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 2) {
             final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
-            if (!biome.isPresent())
+            if (!biome.isPresent()) {
                 return list;
+            }
 
             final String oreName = args[1].toUpperCase();
 
@@ -193,13 +194,15 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 3) {
             final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
-            if (!biome.isPresent())
+            if (!biome.isPresent()) {
                 return list;
+            }
 
             final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated, biome.get().getOres());
 
-            if (!ore.isPresent())
+            if (!ore.isPresent()) {
                 return list;
+            }
 
             final String settingName = args[2].toUpperCase();
 
@@ -216,16 +219,19 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 4) {
             final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
-            if (!biome.isPresent())
+            if (!biome.isPresent()) {
                 return list;
+            }
 
             final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated, biome.get().getOres());
 
-            if (!ore.isPresent())
+            if (!ore.isPresent()) {
                 return list;
+            }
 
-            if (!OreControlUtil.getSetting(args[2], translated, ore.get().getSettings()).isPresent())
+            if (!OreControlUtil.getSetting(args[2], translated, ore.get().getSettings()).isPresent()) {
                 return list;
+            }
 
             final String worldName = args[3].toLowerCase();
 
@@ -238,26 +244,30 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 5) {
             final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
 
-            if (!biome.isPresent())
+            if (!biome.isPresent()) {
                 return list;
+            }
 
             final Optional<Ore> ore = OreControlUtil.getOre(args[1], translated, biome.get().getOres());
 
-            if (!ore.isPresent())
+            if (!ore.isPresent()) {
                 return list;
+            }
 
             final Optional<Setting> setting = OreControlUtil.getSetting(args[2], translated, ore.get().getSettings());
 
-            if (!setting.isPresent())
+            if (!setting.isPresent()) {
                 return list;
+            }
 
             final World world = Bukkit.getWorld(args[3]);
 
             final OreControlService service = oreControlValues.getService();
             final Optional<WorldOreConfig> worldOreConfig = service.getWorldOreConfig(args[3]);
 
-            if (!worldOreConfig.isPresent() && world == null)
+            if (!worldOreConfig.isPresent() && world == null) {
                 return list;
+            }
 
             if (!worldOreConfig.isPresent()) {
                 list.add("current: " + service.getDefaultValue(biome.get(), ore.get(), setting.get()));

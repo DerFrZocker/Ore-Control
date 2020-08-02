@@ -42,7 +42,7 @@ public class EmeraldGenerationHandler implements GenerationHandler {
     private final NMSUtil nmsUtil;
 
     public EmeraldGenerationHandler(@NotNull final NMSUtil nmsUtil) {
-        Validate.notNull(nmsUtil, "NMSUtil can not be null");
+        Validate.notNull(nmsUtil, "NMSUtil cannot be null");
 
         this.nmsUtil = nmsUtil;
     }
@@ -61,14 +61,16 @@ public class EmeraldGenerationHandler implements GenerationHandler {
             veinsPerChunk = minimumOresPerChunk + oresPerChunkRange == 0 ? 0 : random.nextInt(oresPerChunkRange);
         }
 
-        if (veinsPerChunk == 0)
+        if (veinsPerChunk == 0) {
             return true;
+        }
 
         int heightRange = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_RANGE), random);
         final int minimumHeight = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.MINIMUM_HEIGHT), random);
 
-        if (heightRange == 0)
+        if (heightRange == 0) {
             heightRange = 1;
+        }
 
         final Location location = new Location(null, chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
 

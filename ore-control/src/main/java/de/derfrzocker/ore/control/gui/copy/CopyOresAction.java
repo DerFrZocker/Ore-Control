@@ -60,9 +60,9 @@ public class CopyOresAction implements CopyAction {
     private int status = 0;
 
     public CopyOresAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @Nullable final Biome biomeSource, @NotNull final Ore[] oresSource) {
-        Validate.notNull(oreControlValues, "OreControlValues can not be null");
-        Validate.notNull(worldOreConfigSource, "WorldOreConfig can not be null");
-        Validate.notNull(oresSource, "Ores can not be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
+        Validate.notNull(oresSource, "Ores cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfigSource = worldOreConfigSource;
@@ -78,14 +78,14 @@ public class CopyOresAction implements CopyAction {
 
     @Override
     public void setWorldOreConfigTarget(@NotNull final WorldOreConfig worldOreConfig) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         this.worldOreConfigTarget = worldOreConfig;
     }
 
     @Override
     public void setBiomeTarget(@NotNull final Biome biome) {
-        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
 
         this.biomeTarget = biome;
     }
@@ -119,12 +119,15 @@ public class CopyOresAction implements CopyAction {
                 new BiomeGui(oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
             } else {
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
-                    if (biomeSource == null)
-                        for (Ore ore : oresSource)
+                    if (biomeSource == null) {
+                        for (Ore ore : oresSource) {
                             CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, ore);
-                    else
-                        for (Ore ore : oresSource)
+                        }
+                    } else {
+                        for (Ore ore : oresSource) {
                             CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore);
+                        }
+                    }
 
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
@@ -140,14 +143,18 @@ public class CopyOresAction implements CopyAction {
             openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                 if (biomeSource == null) {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
-                    for (final Ore ore : oresSource)
-                        if (oreSet.contains(ore))
+                    for (final Ore ore : oresSource) {
+                        if (oreSet.contains(ore)) {
                             CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, ore, biomeTarget);
+                        }
+                    }
                 } else {
                     final Set<Ore> oreSet = Sets.newHashSet(biomeTarget.getOres());
-                    for (final Ore ore : oresSource)
-                        if (oreSet.contains(ore))
+                    for (final Ore ore : oresSource) {
+                        if (oreSet.contains(ore)) {
                             CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, ore, biomeSource, ore, biomeTarget);
+                        }
+                    }
                 }
 
                 status++;
@@ -166,11 +173,13 @@ public class CopyOresAction implements CopyAction {
 
     @Override
     public boolean shouldSet(@NotNull final Biome biome) {
-        if (biomeSource == null)
+        if (biomeSource == null) {
             return true;
+        }
 
-        if (worldOreConfigSource != worldOreConfigTarget && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName()))
+        if (worldOreConfigSource != worldOreConfigTarget && !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName())) {
             return true;
+        }
 
         return biomeSource != biome;
     }

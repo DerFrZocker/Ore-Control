@@ -72,10 +72,10 @@ public class SettingsGui extends BasicGui {
     SettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable Dimension dimension, @Nullable final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -99,20 +99,22 @@ public class SettingsGui extends BasicGui {
 
         updateItemStack();
 
-        if (permissions.getValueResetPermission().hasPermission(permissible))
+        if (permissions.getValueResetPermission().hasPermission(permissible)) {
             addItem(settingsGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getResetValueItemStack()), this::handleResetValues);
+        }
 
-        if (permissions.getValueCopyPermission().hasPermission(permissible))
+        if (permissions.getValueCopyPermission().hasPermission(permissible)) {
             addItem(settingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getCopyValueItemStack()), event -> new WorldGui(oreControlValues, new CopySettingAction(oreControlValues, worldOreConfig, biome, ore, setting)).openSync(event.getWhoClicked()));
+        }
     }
 
     SettingsGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable Dimension dimension, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final Ore ore, @NotNull final Setting setting, @NotNull final BiomeGuiSettings biomeGuiSettings) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -136,8 +138,9 @@ public class SettingsGui extends BasicGui {
     }
 
     private static SettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (settingsGuiSettings == null)
+        if (settingsGuiSettings == null) {
             settingsGuiSettings = new SettingsGuiSettings(javaPlugin, "data/gui/settings-gui.yml", true);
+        }
 
         return settingsGuiSettings;
     }
@@ -168,10 +171,11 @@ public class SettingsGui extends BasicGui {
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
             new VerifyGui(getPlugin(), clickEvent -> {
-                if (biome != null)
+                if (biome != null) {
                     ResetUtil.reset(worldOreConfig, ore, biome, setting);
-                else
+                } else {
                     ResetUtil.reset(worldOreConfig, ore, setting);
+                }
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
@@ -179,10 +183,11 @@ public class SettingsGui extends BasicGui {
             }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
             return;
         }
-        if (biome != null)
+        if (biome != null) {
             ResetUtil.reset(worldOreConfig, ore, biome, setting);
-        else
+        } else {
             ResetUtil.reset(worldOreConfig, ore, setting);
+        }
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
@@ -215,10 +220,11 @@ public class SettingsGui extends BasicGui {
                 oreControlValues.getOreControlMessages().getNumberNotSafeWarningMessage().sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
             }
 
-            if (biome == null)
+            if (biome == null) {
                 service.setValue(worldOreConfig, ore, setting, newValue);
-            else
+            } else {
                 service.setValue(worldOreConfig, biome, ore, setting, newValue);
+            }
 
             service.saveWorldOreConfig(worldOreConfig);
 

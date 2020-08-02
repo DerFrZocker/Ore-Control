@@ -53,7 +53,7 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
     private final OreControlValues oreControlValues;
 
     public SetValueCommand(@NotNull final OreControlValues oreControlValues) {
-        Validate.notNull(oreControlValues, "OreControlValues can't be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
 
         this.oreControlValues = oreControlValues;
     }
@@ -164,8 +164,9 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 2) {
             final Optional<Ore> ore = OreControlUtil.getOre(args[0], translated);
 
-            if (!ore.isPresent())
+            if (!ore.isPresent()) {
                 return list;
+            }
 
             final String settingName = args[1].toUpperCase();
 
@@ -182,8 +183,9 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 3) {
             final Optional<Ore> ore = OreControlUtil.getOre(args[0], translated);
 
-            if (!ore.isPresent())
+            if (!ore.isPresent()) {
                 return list;
+            }
 
             if (!OreControlUtil.getSetting(args[1], translated, ore.get().getSettings()).isPresent())
                 return list;
@@ -199,21 +201,24 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
         if (args.length == 4) {
             final Optional<Ore> ore = OreControlUtil.getOre(args[0], translated);
 
-            if (!ore.isPresent())
+            if (!ore.isPresent()) {
                 return list;
+            }
 
             final Optional<Setting> setting = OreControlUtil.getSetting(args[1], translated, ore.get().getSettings());
 
-            if (!setting.isPresent())
+            if (!setting.isPresent()) {
                 return list;
+            }
 
             final World world = Bukkit.getWorld(args[2]);
 
             final OreControlService service = oreControlValues.getService();
             final Optional<WorldOreConfig> worldOreConfig = service.getWorldOreConfig(args[2]);
 
-            if (!worldOreConfig.isPresent() && world == null)
+            if (!worldOreConfig.isPresent() && world == null) {
                 return list;
+            }
 
             if (!worldOreConfig.isPresent()) {
                 list.add("current: " + service.getDefaultValue(ore.get(), setting.get()));

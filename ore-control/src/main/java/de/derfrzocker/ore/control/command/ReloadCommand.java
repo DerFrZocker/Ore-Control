@@ -43,7 +43,7 @@ public class ReloadCommand implements TabExecutor {
     private final OreControlValues oreControlValues;
 
     public ReloadCommand(@NotNull final OreControlValues oreControlValues) {
-        Validate.notNull(oreControlValues, "OreControlValues can't be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
 
         this.oreControlValues = oreControlValues;
     }

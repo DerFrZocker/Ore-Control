@@ -29,8 +29,8 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import lombok.NonNull;
 import net.minecraft.server.v1_16_R1.*;
+import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -39,17 +39,22 @@ import java.util.function.Supplier;
 @SuppressWarnings("Duplicates")
 public class WorldGenDecoratorHeightAverageOverrider_v1_16_R1 extends WorldGenDecoratorHeightAverage {
 
-    @NonNull
+    @NotNull
     private final Biome biome;
 
     @NotNull
     private final Ore ore;
 
-    @NonNull
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    public WorldGenDecoratorHeightAverageOverrider_v1_16_R1(Codec<WorldGenDecoratorHeightAverageConfiguration> codec, final Biome biome, final Ore ore, final Supplier<OreControlService> serviceSupplier) {
+    public WorldGenDecoratorHeightAverageOverrider_v1_16_R1(Codec<WorldGenDecoratorHeightAverageConfiguration> codec, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Supplier<OreControlService> serviceSupplier) {
         super(codec);
+
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
+
         this.biome = biome;
         this.ore = ore;
         this.serviceSupplier = serviceSupplier;

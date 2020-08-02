@@ -55,8 +55,9 @@ public class LanguageGui extends BasicGui {
 
         addDecorations();
 
-        for (int i = 0; i < languages.length; i++)
+        for (int i = 0; i < languages.length; i++) {
             addItem(InventoryUtil.calculateSlot(i, languageGuiSettings.getLanguageGap()), MessageUtil.replaceItemStack(javaPlugin, languageGuiSettings.getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
+        }
 
         addItem(languageGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, languageGuiSettings.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
@@ -65,8 +66,9 @@ public class LanguageGui extends BasicGui {
     }
 
     private static LanguageGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (languageGuiSettings == null)
+        if (languageGuiSettings == null) {
             languageGuiSettings = new LanguageGuiSettings(javaPlugin, "data/gui/language-gui.yml", true);
+        }
 
         return languageGuiSettings;
     }

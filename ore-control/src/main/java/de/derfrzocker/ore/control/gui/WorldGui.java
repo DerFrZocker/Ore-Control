@@ -54,9 +54,8 @@ import java.util.concurrent.ExecutionException;
 
 public class WorldGui extends PageGui<String> {
 
-    private static WorldGuiSettings worldGuiSettings;
     private final static Set<Dimension> DIMENSIONS = Collections.unmodifiableSet(Sets.newHashSet(Dimension.OVERWORLD, Dimension.NETHER));
-
+    private static WorldGuiSettings worldGuiSettings;
     @NotNull
     private final OreControlValues oreControlValues;
     @Nullable
@@ -66,7 +65,7 @@ public class WorldGui extends PageGui<String> {
     public WorldGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
 
         checkSettings(oreControlValues.getJavaPlugin());
 
@@ -78,18 +77,20 @@ public class WorldGui extends PageGui<String> {
         addDecorations();
         init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName), getDimension(configName)).openSync(event.getWhoClicked()));
 
-        if (permissions.getTemplateCreatePermission().hasPermission(permissible))
+        if (permissions.getTemplateCreatePermission().hasPermission(permissible)) {
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
+        }
 
-        if (permissions.getConfigEditPermission().hasPermission(permissible))
+        if (permissions.getConfigEditPermission().hasPermission(permissible)) {
             addItem(worldGuiSettings.getEditConfigSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getEditConfigItemStack()), event -> new ConfigGui(oreControlValues).openSync(event.getWhoClicked()));
+        }
 
         worldOreConfigs = null;
     }
 
     WorldGui(@NotNull final OreControlValues oreControlValues, @NotNull final CopyAction copyAction) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
-        Validate.notNull(copyAction, "CopyAction can not be null");
+        Validate.notNull(copyAction, "CopyAction cannot be null");
 
         checkSettings(oreControlValues.getJavaPlugin());
 
@@ -113,10 +114,11 @@ public class WorldGui extends PageGui<String> {
     }
 
     private ItemStack getItemStack(@NotNull final String value) {
-        if (worldOreConfigs.containsKey(value) && worldOreConfigs.get(value).isTemplate())
+        if (worldOreConfigs.containsKey(value) && worldOreConfigs.get(value).isTemplate()) {
             return MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getTemplateItemStack(), new MessageValue("template", value));
-        else
+        } else {
             return MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getWorldItemStack(), new MessageValue("world", value));
+        }
     }
 
     private void handleCreateTemplate(@NotNull final InventoryClickEvent event) {
@@ -155,8 +157,9 @@ public class WorldGui extends PageGui<String> {
         worldOreConfigs.values().stream().filter(value -> !value.isTemplate()).map(WorldOreConfig::getName).forEach(configsSet::add);
         configsSet.addAll(worldOreConfigs.keySet());
 
-        if (copyAction != null && copyAction.isFilterWorldOreConfig())
+        if (copyAction != null && copyAction.isFilterWorldOreConfig()) {
             configsSet.remove(copyAction.getWorldOreConfigSource().getName());
+        }
 
         return configsSet.toArray(new String[0]);
     }
@@ -177,12 +180,15 @@ public class WorldGui extends PageGui<String> {
 
         final WorldOreConfig worldOreConfig;
 
-        if (!optionalWorldOreConfig.isPresent())
-            if (world != null)
+        if (!optionalWorldOreConfig.isPresent()) {
+            if (world != null) {
                 worldOreConfig = service.createWorldOreConfig(world);
-            else
+            } else {
                 worldOreConfig = service.createWorldOreConfigTemplate(configName);
-        else worldOreConfig = optionalWorldOreConfig.get();
+            }
+        } else {
+            worldOreConfig = optionalWorldOreConfig.get();
+        }
 
         return worldOreConfig;
     }
@@ -191,8 +197,9 @@ public class WorldGui extends PageGui<String> {
     private Dimension getDimension(String configName) {
         final World world = Bukkit.getWorld(configName);
 
-        if (world == null)
+        if (world == null) {
             return null;
+        }
 
         return oreControlValues.getService().getNMSService().getNMSUtil().getDimension(world);
     }

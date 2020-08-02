@@ -42,9 +42,9 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the WorldOreConfigs are the same or have the same name
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
         valid(from, to);
         ResetUtil.reset(to);
 
@@ -71,11 +71,11 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the given Ores dont have the same Settings
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Ore toOre) {//TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
         valid(fromOre, toOre);
         valid(from, to, fromOre, toOre);
         ResetUtil.reset(to, toOre);
@@ -100,12 +100,12 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the Biome destinations dont have the given Ore destinations
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Ore toOre, @NotNull final Biome toBiome) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
-        Validate.notNull(toBiome, "Target Biome can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
+        Validate.notNull(toBiome, "Target Biome cannot be null");
         valid(fromOre, toOre);
         valid(toBiome, toOre);
         ResetUtil.reset(to, toOre, toBiome);
@@ -129,12 +129,12 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the Biome source dont have the given Ore source
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Biome fromBiome, @NotNull final Ore toOre) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(fromBiome, "Source Biome can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(fromBiome, "Source Biome cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
         valid(fromBiome, fromOre);
         valid(fromOre, toOre);
         ResetUtil.reset(to, toOre);
@@ -162,13 +162,13 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the WorldOreConfig, Ore and Biome are the same
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Biome fromBiome, @NotNull final Ore toOre, @NotNull final Biome toBiome) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(fromBiome, "Source Biome can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
-        Validate.notNull(toBiome, "Target Biome can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(fromBiome, "Source Biome cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
+        Validate.notNull(toBiome, "Target Biome cannot be null");
         valid(fromOre, toOre);
         valid(fromBiome, fromOre);
         valid(toBiome, toOre);
@@ -193,11 +193,11 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the given WorldOreConfig and the given Biome are the same
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Biome fromBiome, @NotNull final Biome toBiome) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromBiome, "Source Biome can not be null");
-        Validate.notNull(toBiome, "Target Biome can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromBiome, "Source Biome cannot be null");
+        Validate.notNull(toBiome, "Target Biome cannot be null");
         valid(from, to, fromBiome, toBiome);
         ResetUtil.reset(to, toBiome);
 
@@ -231,13 +231,13 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the Ore destination dont have the given Setting destination
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Setting fromSetting, @NotNull final Ore toOre, @NotNull final Setting toSetting) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(fromSetting, "Source Setting can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
-        Validate.notNull(toSetting, "Target Setting can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(fromSetting, "Source Setting cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
+        Validate.notNull(toSetting, "Target Setting cannot be null");
         valid(from, to, fromOre, toOre, fromSetting, toSetting);
         valid(fromOre, fromSetting);
         valid(toOre, toSetting);
@@ -262,14 +262,14 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the Ore destination dont have the given Setting destination
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Biome fromBiome, @NotNull final Setting fromSetting, @NotNull final Ore toOre, @NotNull final Setting toSetting) { //TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(fromBiome, "Source Biome can not be null");
-        Validate.notNull(fromSetting, "Source Setting can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
-        Validate.notNull(toSetting, "Target Setting can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(fromBiome, "Source Biome cannot be null");
+        Validate.notNull(fromSetting, "Source Setting cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
+        Validate.notNull(toSetting, "Target Setting cannot be null");
         valid(fromBiome, fromOre);
         valid(fromOre, fromSetting);
         valid(toOre, toSetting);
@@ -294,14 +294,14 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the Biome destination dont have the given Ore destination
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Setting fromSetting, @NotNull final Ore toOre, @NotNull final Biome toBiome, @NotNull final Setting toSetting) {//TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(fromSetting, "Source Setting can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
-        Validate.notNull(toBiome, "Target Biome can not be null");
-        Validate.notNull(toSetting, "Target Setting can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(fromSetting, "Source Setting cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
+        Validate.notNull(toBiome, "Target Biome cannot be null");
+        Validate.notNull(toSetting, "Target Setting cannot be null");
         valid(fromOre, fromSetting);
         valid(toBiome, toOre);
         valid(toOre, toSetting);
@@ -328,15 +328,15 @@ public class CopyUtil {
      * @throws IllegalArgumentException if the Biome destination dont have the given Ore destination
      */
     public static void copy(@NotNull final OreControlService service, @NotNull final WorldOreConfig from, @NotNull final WorldOreConfig to, @NotNull final Ore fromOre, @NotNull final Biome fromBiome, @NotNull final Setting fromSetting, @NotNull final Ore toOre, @NotNull final Biome toBiome, @NotNull final Setting toSetting) {//TODO add test cases
-        Validate.notNull(service, "OreControlService can not be null");
-        Validate.notNull(from, "Source WorldOreConfig can not be null");
-        Validate.notNull(to, "Target WorldOreConfig can not be null");
-        Validate.notNull(fromOre, "Source Ore can not be null");
-        Validate.notNull(fromBiome, "Source Biome can not be null");
-        Validate.notNull(fromSetting, "Source Setting can not be null");
-        Validate.notNull(toOre, "Target Ore can not be null");
-        Validate.notNull(toBiome, "Target Biome can not be null");
-        Validate.notNull(toSetting, "Target Setting can not be null");
+        Validate.notNull(service, "OreControlService cannot be null");
+        Validate.notNull(from, "Source WorldOreConfig cannot be null");
+        Validate.notNull(to, "Target WorldOreConfig cannot be null");
+        Validate.notNull(fromOre, "Source Ore cannot be null");
+        Validate.notNull(fromBiome, "Source Biome cannot be null");
+        Validate.notNull(fromSetting, "Source Setting cannot be null");
+        Validate.notNull(toOre, "Target Ore cannot be null");
+        Validate.notNull(toBiome, "Target Biome cannot be null");
+        Validate.notNull(toSetting, "Target Setting cannot be null");
         valid(from, to, fromOre, toOre, fromBiome, toBiome, fromSetting, toSetting);
         valid(fromBiome, fromOre);
         valid(fromOre, fromSetting);
@@ -348,48 +348,57 @@ public class CopyUtil {
     }
 
     private static void valid(final Ore ore, final Setting setting) {
-        if (!Sets.newHashSet(ore.getSettings()).contains(setting))
+        if (!Sets.newHashSet(ore.getSettings()).contains(setting)) {
             throw new IllegalArgumentException("The Ore '" + ore + "' don't have the Setting '" + setting + "'!");
+        }
     }
 
     private static void valid(final Biome biome, final Ore ore) {
-        if (!Sets.newHashSet(biome.getOres()).contains(ore))
+        if (!Sets.newHashSet(biome.getOres()).contains(ore)) {
             throw new IllegalArgumentException("The Biome '" + biome + "' don't have the Ore '" + ore + "'!");
+        }
     }
 
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1) {
-        if (worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName()))
+        if (worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) {
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + ") are the same!");
+        }
     }
 
     private static void valid(final Ore ore, final Ore ore1) {
-        if (!Arrays.equals(ore.getSettings(), ore1.getSettings()))
+        if (!Arrays.equals(ore.getSettings(), ore1.getSettings())) {
             throw new IllegalArgumentException("The given Ore's ('" + ore + "' '" + ore1 + "') have not the same Settings!");
+        }
     }
 
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1) {
-        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1)
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1) {
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + ") and the given Ores (" + ore + ") are the same!");
+        }
     }
 
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Biome biome, final Biome biome1) {
-        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1)
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1) {
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + ") and the given Biomes (" + biome + ") are the same!");
+        }
     }
 
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Biome biome, final Biome biome1) {
-        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && biome == biome1)
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && biome == biome1) {
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + ") and the given Biomes (" + biome + ") are the same!");
+        }
     }
 
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Setting setting, final Setting setting1) {
-        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && setting == setting1)
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && setting == setting1) {
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + ") and the given Settings (" + setting + ") are the same!");
+        }
     }
 
     private static void valid(final WorldOreConfig worldOreConfig, final WorldOreConfig worldOreConfig1, final Ore ore, final Ore ore1, final Biome biome, final Biome biome1, final Setting setting, final Setting setting1) {
-        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1 && setting == setting1)
+        if ((worldOreConfig == worldOreConfig1 || worldOreConfig.getName().equals(worldOreConfig1.getName())) && ore == ore1 && biome == biome1 && setting == setting1) {
             throw new IllegalArgumentException("The given WorldOreConfig (" + worldOreConfig.getName() + "), the given Ores (" + ore + "), the given Biomes (" + biome + ") and the given Settings (" + setting + ") are the same!");
+        }
     }
 
 }

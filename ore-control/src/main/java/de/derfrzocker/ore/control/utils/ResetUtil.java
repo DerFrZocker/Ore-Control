@@ -41,7 +41,7 @@ public class ResetUtil {
      * @throws IllegalArgumentException if WorldOreConfig is null
      */
     public static void reset(@NotNull final WorldOreConfig worldOreConfig) { //TODO add test cases
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         worldOreConfig.getBiomeOreSettings().forEach(((biome, biomeOreSettings) -> biomeOreSettings.getOreSettings().forEach(((ore, oreSettings) -> {
             oreSettings.getSettings().clear();
@@ -62,8 +62,8 @@ public class ResetUtil {
      * @throws IllegalArgumentException if WorldOreConfig or Ore is null
      */
     public static void reset(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore) { //TODO add test cases
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
 
         worldOreConfig.getOreSettings(ore).ifPresent(oreSettings -> {
             oreSettings.getSettings().clear();
@@ -81,9 +81,9 @@ public class ResetUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static void reset(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) { //TODO add test cases
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         valid(ore, setting);
 
@@ -98,8 +98,8 @@ public class ResetUtil {
      * @throws IllegalArgumentException if WorldOreConfig or Biome is null
      */
     public static void reset(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome) { //TODO add test cases
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(biome, "Biome cannot be null");
 
         worldOreConfig.getBiomeOreSettings(biome).ifPresent(biomeOreSettings -> biomeOreSettings.getOreSettings().forEach((ore, oreSettings) -> {
             oreSettings.getSettings().clear();
@@ -117,9 +117,9 @@ public class ResetUtil {
      * @throws IllegalArgumentException if the Biome dont have the given Ore
      */
     public static void reset(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Biome biome) {//TODO add test cases
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(biome, "Biome cannot be null");
         valid(biome, ore);
 
         worldOreConfig.getBiomeOreSettings(biome).flatMap(biomeOreSettings -> biomeOreSettings.getOreSettings(ore)).ifPresent(oreSettings -> {
@@ -140,10 +140,10 @@ public class ResetUtil {
      * @throws IllegalArgumentException if the Ore dont have the given Setting
      */
     public static void reset(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Biome biome, @NotNull final Setting setting) {//TODO add test cases
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         valid(biome, ore);
         valid(ore, setting);
@@ -152,13 +152,15 @@ public class ResetUtil {
     }
 
     private static void valid(final Ore ore, final Setting setting) {
-        if (!Sets.newHashSet(ore.getSettings()).contains(setting))
+        if (!Sets.newHashSet(ore.getSettings()).contains(setting)) {
             throw new IllegalArgumentException("The Ore '" + ore + "' don't have the Setting '" + setting + "'!");
+        }
     }
 
     private static void valid(final Biome biome, final Ore ore) {
-        if (!Sets.newHashSet(biome.getOres()).contains(ore))
+        if (!Sets.newHashSet(biome.getOres()).contains(ore)) {
             throw new IllegalArgumentException("The Biome '" + biome + "' don't have the Ore '" + ore + "'!");
+        }
     }
 
 }

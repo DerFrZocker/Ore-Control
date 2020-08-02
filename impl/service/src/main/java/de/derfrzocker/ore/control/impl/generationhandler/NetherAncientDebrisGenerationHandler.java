@@ -41,7 +41,7 @@ public class NetherAncientDebrisGenerationHandler implements GenerationHandler {
     private final NMSUtil nmsUtil;
 
     public NetherAncientDebrisGenerationHandler(@NotNull final NMSUtil nmsUtil) {
-        Validate.notNull(nmsUtil, "NMSUtil can not be null");
+        Validate.notNull(nmsUtil, "NMSUtil cannot be null");
 
         this.nmsUtil = nmsUtil;
     }
@@ -50,8 +50,9 @@ public class NetherAncientDebrisGenerationHandler implements GenerationHandler {
     public boolean generate(@NotNull final World world, @NotNull final WorldOreConfig worldOreConfig, @NotNull final OreControlService service, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final ChunkCoordIntPair chunkCoordIntPair, @NotNull final Object defaultConfiguration, @NotNull final Object defaultFeatureConfiguration, @Nullable final BiFunction<Location, Integer, Boolean> generateFunction, @NotNull final BiFunction<Object, Object, Boolean> passFunction, @NotNull final Random random) {
         final int veinsPerChunk = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEINS_PER_CHUNK), random);
 
-        if (veinsPerChunk == 0)
+        if (veinsPerChunk == 0) {
             return true;
+        }
 
         final Object configuration;
 
@@ -61,8 +62,9 @@ public class NetherAncientDebrisGenerationHandler implements GenerationHandler {
 
         final int veinSize = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEIN_SIZE), random);
 
-        if (veinSize == 0)
+        if (veinSize == 0) {
             return true;
+        }
 
         final Object featureConfiguration = nmsUtil.createFeatureConfiguration(defaultFeatureConfiguration, veinSize);
 

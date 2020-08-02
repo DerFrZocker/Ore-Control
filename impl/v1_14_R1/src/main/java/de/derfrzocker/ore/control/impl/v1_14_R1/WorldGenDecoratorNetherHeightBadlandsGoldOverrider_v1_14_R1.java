@@ -29,8 +29,9 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import lombok.NonNull;
 import net.minecraft.server.v1_14_R1.*;
+import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -39,14 +40,18 @@ import java.util.function.Supplier;
 @SuppressWarnings("Duplicates")
 public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_14_R1 extends WorldGenDecoratorNetherHeight {
 
-    @NonNull
+    @NotNull
     private final Biome biome;
 
-    @NonNull
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    public WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_14_R1(final Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration> dynamicFunction, final Biome biome, final Supplier<OreControlService> serviceSupplier) {
+    public WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_14_R1(final Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration> dynamicFunction, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
         super(dynamicFunction);
+
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
+
         this.biome = biome;
         this.serviceSupplier = serviceSupplier;
     }

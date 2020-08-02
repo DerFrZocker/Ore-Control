@@ -42,7 +42,7 @@ class NMSReplacer1_13_R2 {
     private final Supplier<OreControlService> serviceSupplier;
 
     NMSReplacer1_13_R2(@NotNull final Supplier<OreControlService> serviceSupplier) {
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.serviceSupplier = serviceSupplier;
     }
@@ -70,13 +70,15 @@ class NMSReplacer1_13_R2 {
 
         final List<WorldGenFeatureComposite<?, ?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
 
-        for (final WorldGenFeatureComposite<?, ?> composite : list)
+        for (final WorldGenFeatureComposite<?, ?> composite : list) {
             replace(composite, biome);
+        }
 
         final List<WorldGenFeatureComposite<?, ?>> decorations = map.get(WorldGenStage.Decoration.UNDERGROUND_DECORATION);
 
-        for (final WorldGenFeatureComposite<?, ?> composite : decorations)
+        for (final WorldGenFeatureComposite<?, ?> composite : decorations) {
             replaceDecorations(composite, biome);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -104,27 +106,33 @@ class NMSReplacer1_13_R2 {
     }
 
     private void replace(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (replaceBadlandsGold(composite, biome))
+        if (replaceBadlandsGold(composite, biome)) {
             return;
+        }
 
-        if (replaceEmerald(composite, biome))
+        if (replaceEmerald(composite, biome)) {
             return;
+        }
 
-        if (replaceLapis(composite, biome))
+        if (replaceLapis(composite, biome)) {
             return;
+        }
 
         replaceNormal(composite, biome);
     }
 
     private void replaceDecorations(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (replace(composite, biome, Blocks.NETHER_QUARTZ_ORE))
+        if (replace(composite, biome, Blocks.NETHER_QUARTZ_ORE)) {
             return;
+        }
 
-        if (replace(composite, biome, Blocks.INFESTED_STONE))
+        if (replace(composite, biome, Blocks.INFESTED_STONE)) {
             return;
+        }
 
-        if (replaceMagma(composite, biome))
+        if (replaceMagma(composite, biome)) {
             return;
+        }
     }
 
     private boolean replace(@NotNull final WorldGenFeatureComposite<?, ?> composite, @NotNull final Biome biome, @NotNull final Block block) throws NoSuchFieldException, IllegalAccessException {
@@ -132,13 +140,15 @@ class NMSReplacer1_13_R2 {
         {
             final Field field = getField(WorldGenFeatureComposite.class, "b");
             field.setAccessible(true);
-            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
+            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration)) {
                 return false;
+            }
 
             final WorldGenFeatureOreConfiguration configuration = (WorldGenFeatureOreConfiguration) field.get(composite);
 
-            if (configuration.d.getBlock() != block)
+            if (configuration.d.getBlock() != block) {
                 return false;
+            }
         }
 
         {
@@ -154,13 +164,15 @@ class NMSReplacer1_13_R2 {
         {
             final Field field = getField(WorldGenFeatureComposite.class, "b");
             field.setAccessible(true);
-            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
+            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration)) {
                 return false;
+            }
 
             final WorldGenFeatureOreConfiguration configuration = (WorldGenFeatureOreConfiguration) field.get(composite);
 
-            if (configuration.d.getBlock() != Blocks.MAGMA_BLOCK)
+            if (configuration.d.getBlock() != Blocks.MAGMA_BLOCK) {
                 return false;
+            }
         }
 
         {
@@ -181,22 +193,27 @@ class NMSReplacer1_13_R2 {
             object = field.get(composite);
         }
 
-        if (!(object instanceof WorldGenFeatureChanceDecoratorCountConfiguration))
+        if (!(object instanceof WorldGenFeatureChanceDecoratorCountConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureChanceDecoratorCountConfiguration configuration = (WorldGenFeatureChanceDecoratorCountConfiguration) object;
 
-        if (configuration.a != 20)
+        if (configuration.a != 20) {
             return false;
+        }
 
-        if (configuration.b != 32)
+        if (configuration.b != 32) {
             return false;
+        }
 
-        if (configuration.c != 32)
+        if (configuration.c != 32) {
             return false;
+        }
 
-        if (configuration.d != 80)
+        if (configuration.d != 80) {
             return false;
+        }
 
         {
             final Field field = getField(WorldGenFeatureComposite.class, "c");
@@ -216,8 +233,9 @@ class NMSReplacer1_13_R2 {
             object = field.get(composite);
         }
 
-        if (!(object instanceof WorldGenFeatureDecoratorEmptyConfiguration))
+        if (!(object instanceof WorldGenFeatureDecoratorEmptyConfiguration)) {
             return false;
+        }
 
         {
             final Field field = getField(WorldGenFeatureComposite.class, "c");
@@ -237,8 +255,9 @@ class NMSReplacer1_13_R2 {
             object = field.get(composite);
         }
 
-        if (!(object instanceof WorldGenDecoratorHeightAverageConfiguration))
+        if (!(object instanceof WorldGenDecoratorHeightAverageConfiguration)) {
             return false;
+        }
 
         {
             final Field field = getField(WorldGenFeatureComposite.class, "c");
@@ -253,8 +272,9 @@ class NMSReplacer1_13_R2 {
         {
             final Field field = getField(WorldGenFeatureComposite.class, "b");
             field.setAccessible(true);
-            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration))
+            if (!(field.get(composite) instanceof WorldGenFeatureOreConfiguration)) {
                 return;
+            }
         }
 
         {

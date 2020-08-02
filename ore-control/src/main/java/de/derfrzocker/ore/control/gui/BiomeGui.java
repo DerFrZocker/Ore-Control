@@ -65,8 +65,8 @@ public class BiomeGui extends PageGui<Biome> {
     BiomeGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         checkSettings(oreControlValues.getJavaPlugin());
 
@@ -80,8 +80,9 @@ public class BiomeGui extends PageGui<Biome> {
         final Set<Biome> biomes = new LinkedHashSet<>();
 
         for (final Biome biome : Biome.values()) {
-            if (Version.getCurrent().isNewerVersion(biome.getSince()))
+            if (Version.getCurrent().isNewerVersion(biome.getSince())) {
                 continue;
+            }
 
             if (biome.getUntil() != null && Version.getCurrent().isOlderVersion(biome.getUntil())) {
                 continue;
@@ -104,19 +105,21 @@ public class BiomeGui extends PageGui<Biome> {
             addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeGroupItemStack()), event -> new BiomeGroupGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGuiSettings).openSync(event.getWhoClicked()));
         }
 
-        if (permissions.getValueResetPermission().hasPermission(permissible))
+        if (permissions.getValueResetPermission().hasPermission(permissible)) {
             addItem(biomeGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getResetValueItemStack()), this::handleResetValues);
+        }
 
-        if (permissions.getValueCopyPermission().hasPermission(permissible))
+        if (permissions.getValueCopyPermission().hasPermission(permissible)) {
             addItem(biomeGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getCopyValueItemStack()), event -> new WorldGui(oreControlValues, new CopyBiomesAction(oreControlValues, worldOreConfig, Biome.values())).openSync(event.getWhoClicked()));
+        }
     }
 
     public BiomeGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull CopyAction copyAction) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(copyAction, "CopyAction can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(copyAction, "CopyAction cannot be null");
 
         checkSettings(oreControlValues.getJavaPlugin());
 
@@ -129,15 +132,17 @@ public class BiomeGui extends PageGui<Biome> {
         final Set<Biome> biomes = new LinkedHashSet<>();
 
         for (final Biome biome : Biome.values()) {
-            if (Version.getCurrent().isNewerVersion(biome.getSince()))
+            if (Version.getCurrent().isNewerVersion(biome.getSince())) {
                 continue;
+            }
 
             if (biome.getUntil() != null && Version.getCurrent().isOlderVersion(biome.getUntil())) {
                 continue;
             }
 
-            if (copyAction.shouldSet(biome))
+            if (copyAction.shouldSet(biome)) {
                 biomes.add(biome);
+            }
         }
 
         addDecorations();
@@ -180,8 +185,9 @@ public class BiomeGui extends PageGui<Biome> {
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
             new VerifyGui(getPlugin(), clickEvent -> {
-                for (Biome biome : Biome.values())
+                for (Biome biome : Biome.values()) {
                     ResetUtil.reset(this.worldOreConfig, biome);
+                }
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
@@ -190,8 +196,9 @@ public class BiomeGui extends PageGui<Biome> {
             return;
         }
 
-        for (final Biome biome : Biome.values())
+        for (final Biome biome : Biome.values()) {
             ResetUtil.reset(this.worldOreConfig, biome);
+        }
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());

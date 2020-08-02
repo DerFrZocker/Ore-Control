@@ -41,7 +41,7 @@ public class NMSUtil_v1_13_R2 implements NMSUtil {
     private final Supplier<OreControlService> serviceSupplier;
 
     public NMSUtil_v1_13_R2(@NotNull final Supplier<OreControlService> serviceSupplier) {
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.serviceSupplier = serviceSupplier;
     }
@@ -76,32 +76,45 @@ public class NMSUtil_v1_13_R2 implements NMSUtil {
 
     @Override
     public Ore getOre(@NotNull final Object object) {
-        if (object == Blocks.DIAMOND_ORE)
+        if (object == Blocks.DIAMOND_ORE) {
             return Ore.DIAMOND;
-        if (object == Blocks.COAL_ORE)
+        }
+        if (object == Blocks.COAL_ORE) {
             return Ore.COAL;
-        if (object == Blocks.IRON_ORE)
+        }
+        if (object == Blocks.IRON_ORE) {
             return Ore.IRON;
-        if (object == Blocks.REDSTONE_ORE)
+        }
+        if (object == Blocks.REDSTONE_ORE) {
             return Ore.REDSTONE;
-        if (object == Blocks.GOLD_ORE)
+        }
+        if (object == Blocks.GOLD_ORE) {
             return Ore.GOLD;
-        if (object == Blocks.DIRT)
+        }
+        if (object == Blocks.DIRT) {
             return Ore.DIRT;
-        if (object == Blocks.GRAVEL)
+        }
+        if (object == Blocks.GRAVEL) {
             return Ore.GRAVEL;
-        if (object == Blocks.GRANITE)
+        }
+        if (object == Blocks.GRANITE) {
             return Ore.GRANITE;
-        if (object == Blocks.DIORITE)
+        }
+        if (object == Blocks.DIORITE) {
             return Ore.DIORITE;
-        if (object == Blocks.ANDESITE)
+        }
+        if (object == Blocks.ANDESITE) {
             return Ore.ANDESITE;
-        if (object == Blocks.NETHER_QUARTZ_ORE)
+        }
+        if (object == Blocks.NETHER_QUARTZ_ORE) {
             return Ore.NETHER_QUARTZ;
-        if (object == Blocks.INFESTED_STONE)
+        }
+        if (object == Blocks.INFESTED_STONE) {
             return Ore.INFESTED_STONE;
-        if (object == Blocks.MAGMA_BLOCK)
+        }
+        if (object == Blocks.MAGMA_BLOCK) {
             return Ore.MAGMA;
+        }
 
         return null;
     }

@@ -40,9 +40,10 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
     private final File directory;
 
     public WorldOreConfigYamlDao(@NotNull final File directory) {
-        Validate.notNull(directory, "Directory can not be null");
-        if (directory.exists())
+        Validate.notNull(directory, "Directory cannot be null");
+        if (directory.exists()) {
             Validate.isTrue(directory.isDirectory(), "Directory is not a directory?");
+        }
 
         this.directory = directory;
 
@@ -51,18 +52,20 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
 
     @Override
     public Optional<WorldOreConfig> get(@NotNull final String key) {
-        Validate.notNull(key, "Key can not be null");
-        Validate.notEmpty(key, "Key can not be empty");
+        Validate.notNull(key, "Key cannot be null");
+        Validate.notEmpty(key, "Key cannot be empty");
 
         final LazyWorldOreConfigCache lazyWorldOreConfigCache = lazyWorldOreConfigCacheMap.get(key);
 
-        if (lazyWorldOreConfigCache != null)
+        if (lazyWorldOreConfigCache != null) {
             return Optional.of(lazyWorldOreConfigCache.getWorldOreConfig());
+        }
 
         final File file = new File(directory, key + ".yml");
 
-        if (!file.exists() || !file.isFile())
+        if (!file.exists() || !file.isFile()) {
             return Optional.empty();
+        }
 
         final LazyWorldOreConfigCache lazyWorldConfigCache1 = new LazyWorldOreConfigCache(file);
 
@@ -73,7 +76,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
 
     @Override
     public void remove(@NotNull final WorldOreConfig value) {
-        Validate.notNull(value, "WorldOreConfig can not be null");
+        Validate.notNull(value, "WorldOreConfig cannot be null");
 
         lazyWorldOreConfigCacheMap.remove(value.getName());
         new File(directory, value.getName() + ".yml").delete();
@@ -81,7 +84,7 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
 
     @Override
     public void save(@NotNull final WorldOreConfig value) {
-        Validate.notNull(value, "WorldOreConfig can not be null");
+        Validate.notNull(value, "WorldOreConfig cannot be null");
 
         LazyWorldOreConfigCache lazyWorldOreConfigCache = lazyWorldOreConfigCacheMap.get(value.getName());
 
@@ -113,11 +116,13 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
             return;
 
         for (final File file : files) {
-            if (!file.isFile())
+            if (!file.isFile()) {
                 continue;
+            }
 
-            if (!file.getName().endsWith(".yml"))
+            if (!file.getName().endsWith(".yml")) {
                 continue;
+            }
 
             lazyWorldOreConfigCacheMap.put(file.getName().substring(0, file.getName().length() - 4), new LazyWorldOreConfigCache(file));
         }

@@ -44,7 +44,7 @@ class NMSReplacer_v1_15_R1 {
     private final Supplier<OreControlService> serviceSupplier;
 
     NMSReplacer_v1_15_R1(@NotNull final Supplier<OreControlService> serviceSupplier) {
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.serviceSupplier = serviceSupplier;
     }
@@ -72,13 +72,15 @@ class NMSReplacer_v1_15_R1 {
 
         final List<WorldGenFeatureConfigured<?, ?>> list = map.get(WorldGenStage.Decoration.UNDERGROUND_ORES);
 
-        for (final WorldGenFeatureConfigured<?, ?> composite : list)
+        for (final WorldGenFeatureConfigured<?, ?> composite : list) {
             replace(composite, biome);
+        }
 
         final List<WorldGenFeatureConfigured<?, ?>> decorations = map.get(WorldGenStage.Decoration.UNDERGROUND_DECORATION);
 
-        for (final WorldGenFeatureConfigured<?, ?> composite : decorations)
+        for (final WorldGenFeatureConfigured<?, ?> composite : decorations) {
             replaceDecorations(composite, biome);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -106,37 +108,44 @@ class NMSReplacer_v1_15_R1 {
     }
 
     private void replace(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (replaceBadlandsGold(composite, biome))
+        if (replaceBadlandsGold(composite, biome)) {
             return;
+        }
 
-        if (replaceEmerald(composite, biome))
+        if (replaceEmerald(composite, biome)) {
             return;
+        }
 
-        if (replaceLapis(composite, biome))
+        if (replaceLapis(composite, biome)) {
             return;
+        }
 
         replaceNormal(composite, biome);
     }
 
     private void replaceDecorations(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (replace(composite, biome, Blocks.NETHER_QUARTZ_ORE))
+        if (replace(composite, biome, Blocks.NETHER_QUARTZ_ORE)) {
             return;
+        }
 
-        if (replace(composite, biome, Blocks.INFESTED_STONE))
+        if (replace(composite, biome, Blocks.INFESTED_STONE)) {
             return;
+        }
 
         if (replaceMagma(composite, biome))
             return;
     }
 
     private boolean replace(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome, @NotNull final Block block) throws NoSuchFieldException, IllegalAccessException {
-        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
 
-        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight))
+        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight)) {
             return false;
+        }
 
         if (!(worldGenFeatureDecoratorConfiguration.a.c instanceof WorldGenFeatureOreConfiguration)) {
             return false;
@@ -158,13 +167,15 @@ class NMSReplacer_v1_15_R1 {
     }
 
     private boolean replaceMagma(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
 
-        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherMagma))
+        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherMagma)) {
             return false;
+        }
 
         if (!(worldGenFeatureDecoratorConfiguration.a.c instanceof WorldGenFeatureOreConfiguration)) {
             return false;
@@ -186,27 +197,33 @@ class NMSReplacer_v1_15_R1 {
     }
 
     private boolean replaceBadlandsGold(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
 
-        if (!(worldGenFeatureDecoratorConfiguration.b.b instanceof WorldGenFeatureChanceDecoratorCountConfiguration))
+        if (!(worldGenFeatureDecoratorConfiguration.b.b instanceof WorldGenFeatureChanceDecoratorCountConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureChanceDecoratorCountConfiguration configuration = (WorldGenFeatureChanceDecoratorCountConfiguration) worldGenFeatureDecoratorConfiguration.b.b;
 
-        if (configuration.a != 20)
+        if (configuration.a != 20) {
             return false;
+        }
 
-        if (configuration.b != 32)
+        if (configuration.b != 32) {
             return false;
+        }
 
-        if (configuration.c != 32)
+        if (configuration.c != 32) {
             return false;
+        }
 
-        if (configuration.d != 80)
+        if (configuration.d != 80) {
             return false;
+        }
 
         {
             final Field field = getField(WorldGenDecoratorConfigured.class, "a");
@@ -218,13 +235,15 @@ class NMSReplacer_v1_15_R1 {
     }
 
     private boolean replaceEmerald(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
 
-        if (!(worldGenFeatureDecoratorConfiguration.b.b instanceof WorldGenFeatureEmptyConfiguration2))
+        if (!(worldGenFeatureDecoratorConfiguration.b.b instanceof WorldGenFeatureEmptyConfiguration2)) {
             return false;
+        }
 
         {
             final Field field = getField(WorldGenDecoratorConfigured.class, "a");
@@ -236,13 +255,15 @@ class NMSReplacer_v1_15_R1 {
     }
 
     private boolean replaceLapis(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration)) {
             return false;
+        }
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
 
-        if (!(worldGenFeatureDecoratorConfiguration.b.b instanceof WorldGenDecoratorHeightAverageConfiguration))
+        if (!(worldGenFeatureDecoratorConfiguration.b.b instanceof WorldGenDecoratorHeightAverageConfiguration)) {
             return false;
+        }
 
         {
             final Field field = getField(WorldGenDecoratorConfigured.class, "a");
@@ -254,13 +275,15 @@ class NMSReplacer_v1_15_R1 {
     }
 
     private void replaceNormal(@NotNull final WorldGenFeatureConfigured<?, ?> composite, @NotNull final Biome biome) throws NoSuchFieldException, IllegalAccessException {
-        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration))
+        if (!(composite.c instanceof WorldGenFeatureCompositeConfiguration)) {
             return;
+        }
 
         final WorldGenFeatureCompositeConfiguration worldGenFeatureDecoratorConfiguration = (WorldGenFeatureCompositeConfiguration) composite.c;
 
-        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight))
+        if (!(worldGenFeatureDecoratorConfiguration.b.a instanceof WorldGenDecoratorNetherHeight)) {
             return;
+        }
 
         {
             final Field field = getField(WorldGenDecoratorConfigured.class, "a");

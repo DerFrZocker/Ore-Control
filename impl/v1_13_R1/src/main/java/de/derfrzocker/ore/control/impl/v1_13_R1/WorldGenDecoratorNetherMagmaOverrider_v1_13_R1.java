@@ -44,8 +44,8 @@ public class WorldGenDecoratorNetherMagmaOverrider_v1_13_R1 extends WorldGenDeco
     private final Supplier<OreControlService> serviceSupplier;
 
     public WorldGenDecoratorNetherMagmaOverrider_v1_13_R1(@NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.biome = biome;
         this.serviceSupplier = serviceSupplier;

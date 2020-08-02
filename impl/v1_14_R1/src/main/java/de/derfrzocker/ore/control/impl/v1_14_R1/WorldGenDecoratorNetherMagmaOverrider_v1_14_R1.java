@@ -48,8 +48,8 @@ public class WorldGenDecoratorNetherMagmaOverrider_v1_14_R1 extends WorldGenDeco
     public WorldGenDecoratorNetherMagmaOverrider_v1_14_R1(final Function<Dynamic<?>, ? extends WorldGenDecoratorFrequencyConfiguration> dynamicFunction, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
         super(dynamicFunction);
 
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.biome = biome;
         this.serviceSupplier = serviceSupplier;

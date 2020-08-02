@@ -48,11 +48,11 @@ public class OreControlValues {
     private final Permissions permissions;
 
     public OreControlValues(@NotNull final Supplier<OreControlService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final ConfigValues configValues, @NotNull final OreControlMessages oreControlMessages, @NotNull final Permissions permissions) {
-        Validate.notNull(serviceSupplier, "Service supplier can not be null");
-        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
-        Validate.notNull(configValues, "ConfigValues can not be null");
-        Validate.notNull(oreControlMessages, "OreControlMessages can not be null");
-        Validate.notNull(permissions, "Permissions can not be null");
+        Validate.notNull(serviceSupplier, "Service supplier cannot be null");
+        Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
+        Validate.notNull(configValues, "ConfigValues cannot be null");
+        Validate.notNull(oreControlMessages, "OreControlMessages cannot be null");
+        Validate.notNull(permissions, "Permissions cannot be null");
 
         this.serviceSupplier = serviceSupplier;
         this.javaPlugin = javaPlugin;

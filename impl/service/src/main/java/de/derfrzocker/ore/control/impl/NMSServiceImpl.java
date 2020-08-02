@@ -47,8 +47,8 @@ public class NMSServiceImpl implements NMSService {
     private final Supplier<OreControlService> serviceSupplier;
 
     public NMSServiceImpl(@NotNull final NMSUtil nMSUtil, @NotNull final Supplier<OreControlService> serviceSupplier) {
-        Validate.notNull(nMSUtil, "NMSUtil can not be null");
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(nMSUtil, "NMSUtil cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.nMSUtil = nMSUtil;
         this.serviceSupplier = serviceSupplier;
@@ -62,8 +62,8 @@ public class NMSServiceImpl implements NMSService {
 
     @Override
     public void registerGenerationHandler(@NotNull final Ore ore, @NotNull final GenerationHandler generationHandler) {
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(generationHandler, "GenerationHandler can not be null");
+        Validate.notNull(ore, "Ore can notbe null");
+        Validate.notNull(generationHandler, "GenerationHandler cannot be null");
 
         this.generationHandlerMap.put(ore, generationHandler);
     }
@@ -80,9 +80,9 @@ public class NMSServiceImpl implements NMSService {
 
         final OreControlService service = serviceSupplier.get();
 
-        if (ore == null)
+        if (ore == null) {
             return passFunction.apply(defaultConfiguration, defaultFeatureConfiguration);
-
+        }
 
         WorldOreConfig worldOreConfig = service.getWorldOreConfig(world).orElse(null);
 
@@ -91,8 +91,9 @@ public class NMSServiceImpl implements NMSService {
         }
 
         try {
-            if (!service.isActivated(worldOreConfig, biome, ore))
+            if (!service.isActivated(worldOreConfig, biome, ore)) {
                 return true;
+            }
 
             final GenerationHandler generationHandler = generationHandlerMap.get(ore);
 
@@ -109,8 +110,9 @@ public class NMSServiceImpl implements NMSService {
                     ", Biome: " + biome);
 
             try {
-                for (final Setting setting : ore.getSettings())
+                for (final Setting setting : ore.getSettings()) {
                     errorMessage.append(", ").append(setting).append(": ").append(service.getValue(worldOreConfig, biome, ore, setting));
+                }
             } catch (final Exception e1) {
                 e1.printStackTrace();
             }

@@ -40,8 +40,6 @@ import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Version;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -56,8 +54,6 @@ import java.io.File;
 
 public class OreControl extends JavaPlugin implements Listener {
 
-    @Getter
-    @Setter
     private static OreControl instance;
 
     // register the ConfigurationSerializable's in a static block, that we can easy use them in Test cases
@@ -67,9 +63,7 @@ public class OreControl extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(BiomeOreSettingsYamlImpl.class);
     }
 
-    @Getter
     private ConfigValues configValues; // The Config values of this plugin
-    @Getter
     private Settings settings; // The Settings of this Plugin, other than the ConfigValues, this Values should not be modified
     private NMSServiceImpl nmsService = null; // The NMSService, we use this Variable, that we can easy set the variable in the onLoad method and use it in the onEnable method
     private OreControlCommand oreControlCommand; // The OreControlCommand handler
@@ -77,27 +71,40 @@ public class OreControl extends JavaPlugin implements Listener {
     private Permissions permissions;
     private OreControlServiceSupplier oreControlServiceSupplier;
 
+    public static OreControl getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(final OreControl instance) {
+        OreControl.instance = instance;
+    }
+
+    public ConfigValues getConfigValues() {
+        return this.configValues;
+    }
+
     @Override
     public void onLoad() {
         // initial instance variable
         instance = this;
         this.oreControlServiceSupplier = new OreControlServiceSupplier(this);
 
-        if (Version.getCurrent() == Version.v1_13_R1)
+        if (Version.getCurrent() == Version.v1_13_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        else if (Version.getCurrent() == Version.v1_13_R2)
+        } else if (Version.getCurrent() == Version.v1_13_R2) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        else if (Version.getCurrent() == Version.v1_14_R1)
+        } else if (Version.getCurrent() == Version.v1_14_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        else if (Version.getCurrent() == Version.v1_15_R1) {
+        } else if (Version.getCurrent() == Version.v1_15_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         } else if (Version.getCurrent() == Version.v1_16_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         }
 
         // if no suitable version was found, throw an Exception and stop onLoad part
-        if (nmsService == null)
+        if (nmsService == null) {
             throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
+        }
 
         // register GenerationHandlers
         final GenerationHandler normalOreGenerationHandler = new NormalOreGenerationHandler(nmsService.getNMSUtil());
@@ -266,20 +273,23 @@ public class OreControl extends JavaPlugin implements Listener {
     private void checkFile(@NotNull final String name) {
         final File file = new File(getDataFolder(), name);
 
-        if (!file.exists())
+        if (!file.exists()) {
             return;
+        }
 
         final YamlConfiguration configuration = new Config(file);
 
         final YamlConfiguration configuration2 = new Config(getResource(name));
 
-        if (configuration.getInt("version") == configuration2.getInt("version"))
+        if (configuration.getInt("version") == configuration2.getInt("version")) {
             return;
+        }
 
         getLogger().warning("File " + name + " has an outdated / new version, replacing it!");
 
-        if (!file.delete())
+        if (!file.delete()) {
             throw new RuntimeException("can't delete file " + name + " stop plugin start!");
+        }
 
         saveResource(name, true);
     }
@@ -300,8 +310,9 @@ public class OreControl extends JavaPlugin implements Listener {
     private void checkOldStorageType() {
         final File file = new File(getDataFolder(), "data/world_ore_configs.yml");
 
-        if (!file.exists())
+        if (!file.exists()) {
             return;
+        }
 
         if (file.isDirectory()) {
             getLogger().info("WTF?? why??");
@@ -317,8 +328,9 @@ public class OreControl extends JavaPlugin implements Listener {
 
         worldConfigYamlDao.getAll().forEach(service::saveWorldOreConfig);
 
-        if (!file.delete())
-            throw new RuntimeException("Can not delete File " + file);
+        if (!file.delete()) {
+            throw new RuntimeException("cannot delete File " + file);
+        }
 
         getLogger().info("Finish converting old storage format to new one");
     }

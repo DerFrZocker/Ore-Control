@@ -47,11 +47,12 @@ public class LazyWorldOreConfigCache implements ReloadAble {
     private WorldOreConfig worldOreConfig;
 
     public LazyWorldOreConfigCache(@NotNull final File file) {
-        Validate.notNull(file, "File can not be null");
+        Validate.notNull(file, "File cannot be null");
         Validate.isTrue(file.getName().endsWith(".yml"), "File " + file + " has not valid extension, must be '.yml'");
 
-        if (file.exists())
+        if (file.exists()) {
             Validate.isTrue(file.isFile(), "File " + file + " is not a File?");
+        }
 
         this.file = file;
     }
@@ -62,10 +63,11 @@ public class LazyWorldOreConfigCache implements ReloadAble {
      * @throws RuntimeException         if the file name and the worldOreConfig name does't match
      */
     public void setWorldConfig(@NotNull final WorldOreConfig worldOreConfig) {
-        Validate.notNull(worldOreConfig, "worldOreConfig can not be null");
+        Validate.notNull(worldOreConfig, "worldOreConfig cannot be null");
 
-        if (!worldOreConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4)))
+        if (!worldOreConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4))) {
             throw new RuntimeException("File name " + file.getName() + " and WorldConfig name " + worldOreConfig.getName() + " does not match");
+        }
 
         this.worldOreConfig = worldOreConfig;
     }
@@ -75,15 +77,17 @@ public class LazyWorldOreConfigCache implements ReloadAble {
      * Nothing will happen, if this LazyWorldOreConfigCache does not holds a WorldOreConfig
      */
     public void save() {
-        if (worldOreConfig == null)
+        if (worldOreConfig == null) {
             return;
+        }
 
         final WorldOreConfig worldOreConfig;
 
         if (!(this.worldOreConfig instanceof ConfigurationSerializable)) {
             worldOreConfig = new WorldOreConfigYamlImpl(this.worldOreConfig.getName(), this.worldOreConfig.isTemplate(), this.worldOreConfig.getOreSettings(), this.worldOreConfig.getBiomeOreSettings());
-        } else
+        } else {
             worldOreConfig = this.worldOreConfig;
+        }
 
         final Config config = new Config(file);
 
@@ -108,27 +112,31 @@ public class LazyWorldOreConfigCache implements ReloadAble {
      */
     @NotNull
     public WorldOreConfig getWorldOreConfig() {
-        if (worldOreConfig != null)
+        if (worldOreConfig != null) {
             return worldOreConfig;
+        }
 
         synchronized (look) {
-            if (worldOreConfig != null)
+            if (worldOreConfig != null) {
                 return worldOreConfig;
+            }
 
             if (!file.exists())
-                throw new RuntimeException("File " + file + " does not exists, can not load WorldOreConfig from none existing file");
+                throw new RuntimeException("File " + file + " does not exists, cannot load WorldOreConfig from none existing file");
 
             final Config config = new Config(file);
 
             final Object object = config.get("value");
 
-            if (!(object instanceof WorldOreConfig))
+            if (!(object instanceof WorldOreConfig)) {
                 throw new RuntimeException("File " + file + " does not have a WorldOreConfig under the key 'value'");
+            }
 
             final WorldOreConfig worldOreConfig = (WorldOreConfig) object;
 
-            if (!worldOreConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4)))
+            if (!worldOreConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4))) {
                 throw new RuntimeException("File name " + file.getName() + " and WorldOreConfig name " + worldOreConfig.getName() + " does not match");
+            }
 
             this.worldOreConfig = worldOreConfig;
         }

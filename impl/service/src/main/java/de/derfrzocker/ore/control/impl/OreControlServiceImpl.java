@@ -43,8 +43,8 @@ public abstract class OreControlServiceImpl implements OreControlService {
     private final WorldOreConfigDao dao;
 
     public OreControlServiceImpl(@NotNull final NMSService nmsService, @NotNull final WorldOreConfigDao dao) {
-        Validate.notNull(nmsService, "NMSService can not be null");
-        Validate.notNull(dao, "WorldOreConfigDao can not be null");
+        Validate.notNull(nmsService, "NMSService cannot be null");
+        Validate.notNull(dao, "WorldOreConfigDao cannot be null");
 
         this.nmsService = nmsService;
         this.dao = dao;
@@ -74,7 +74,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
     @NotNull
     @Override
     public Optional<WorldOreConfig> getWorldOreConfig(@NotNull final World world) {
-        Validate.notNull(world, "World can not be null");
+        Validate.notNull(world, "World cannot be null");
 
         return this.dao.get(world.getName());
     }
@@ -82,7 +82,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
     @NotNull
     @Override
     public Optional<WorldOreConfig> getWorldOreConfig(@NotNull final String name) {
-        Validate.notNull(name, "Name can not be null");
+        Validate.notNull(name, "Name cannot be null");
 
         return this.dao.get(name);
     }
@@ -102,7 +102,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
     @NotNull
     @Override
     public WorldOreConfig createWorldOreConfig(@NotNull final World world) {
-        Validate.notNull(world, "World can not be null");
+        Validate.notNull(world, "World cannot be null");
 
         final WorldOreConfig worldOreConfig = getNewWorldOreConfig(world.getName(), false);
 
@@ -114,8 +114,8 @@ public abstract class OreControlServiceImpl implements OreControlService {
     @NotNull
     @Override
     public WorldOreConfig createWorldOreConfigTemplate(@NotNull final String name) {
-        Validate.notNull(name, "Name can not be null");
-        Validate.notEmpty(name, "Name can not be empty");
+        Validate.notNull(name, "Name cannot be null");
+        Validate.notEmpty(name, "Name cannot be empty");
         Validate.notEmpty(name.trim(), "Name cannot consist of only spaces");
 
         final WorldOreConfig worldOreConfig = getNewWorldOreConfig(name, true);
@@ -127,14 +127,14 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public void saveWorldOreConfig(@NotNull final WorldOreConfig config) {
-        Validate.notNull(config, "WorldOreConfig can not be null");
+        Validate.notNull(config, "WorldOreConfig cannot be null");
 
         this.dao.save(config);
     }
 
     @Override
     public void removeWorldOreConfig(@NotNull final WorldOreConfig config) {
-        Validate.notNull(config, "WorldOreConfig can not be null");
+        Validate.notNull(config, "WorldOreConfig cannot be null");
 
         this.dao.remove(config);
     }
@@ -147,8 +147,8 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public double getDefaultValue(@NotNull final Ore ore, @NotNull final Setting setting) {
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
         return getDefaultValue0(ore, setting);
@@ -156,9 +156,9 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public double getDefaultValue(@NotNull Biome biome, @NotNull Ore ore, @NotNull Setting setting) {
-        Validate.notNull(ore, "Biome can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(ore, "Biome cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
         Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
@@ -167,10 +167,10 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public double getValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
         Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
@@ -197,9 +197,9 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public double getValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
         return getValue0(worldOreConfig, null, ore, setting);
@@ -207,10 +207,10 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public void setValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting, final double value) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
         Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
@@ -239,9 +239,9 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public void setValue(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, @NotNull final Setting setting, final double value) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
+        Validate.notNull(setting, "Setting cannot be null");
         Validate.isTrue(Sets.newHashSet(ore.getSettings()).contains(setting), "The Ore '" + ore + "' dont have the Setting '" + setting + "'");
 
         final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
@@ -326,9 +326,9 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public void setActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Biome biome, @NotNull final Ore ore, final boolean value) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
         Validate.isTrue(Sets.newHashSet(biome.getOres()).contains(ore), "The Biome '" + biome + "' dont have the Ore '" + ore + "'");
 
         final Optional<BiomeOreSettings> biomeOreSettingsOptional = worldOreConfig.getBiomeOreSettings(biome);
@@ -356,8 +356,8 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @Override
     public void setActivated(@NotNull final WorldOreConfig worldOreConfig, @NotNull final Ore ore, final boolean value) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
 
         final Optional<OreSettings> oreSettingsOptional = worldOreConfig.getOreSettings(ore);
         final OreSettings oreSettings;

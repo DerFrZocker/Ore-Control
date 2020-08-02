@@ -68,7 +68,7 @@ public class SettingsGuiSettings extends BasicSettings {
 
     @NotNull
     public Set<SettingsGuiSettings.ItemStackValues> getItemStackValues() {
-        Set<SettingsGuiSettings.ItemStackValues> set = new HashSet<>();
+        final Set<SettingsGuiSettings.ItemStackValues> set = new HashSet<>();
         getSection().getConfigurationSection("items").
                 getKeys(false).stream().
                 map(value -> getSection().getConfigurationSection("items." + value)).

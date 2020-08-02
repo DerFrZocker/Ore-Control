@@ -61,7 +61,7 @@ public class Permissions {
     private final Permission configEdit;
 
     public Permissions(@NotNull final JavaPlugin javaPlugin) {
-        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
 
         base = new Permission(null, "ore.control", javaPlugin, false);
         reload = new Permission(base, "reload", javaPlugin, true);

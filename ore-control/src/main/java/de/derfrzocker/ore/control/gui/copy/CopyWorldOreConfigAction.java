@@ -45,8 +45,8 @@ public class CopyWorldOreConfigAction implements CopyAction {
     private WorldOreConfig worldOreConfigTarget = null;
 
     public CopyWorldOreConfigAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource) {
-        Validate.notNull(oreControlValues, "OreControlValues can not be null");
-        Validate.notNull(worldOreConfigSource, "WorldOreConfig can not be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfigSource = worldOreConfigSource;
@@ -60,7 +60,7 @@ public class CopyWorldOreConfigAction implements CopyAction {
 
     @Override
     public void setWorldOreConfigTarget(@NotNull final WorldOreConfig worldOreConfig) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         this.worldOreConfigTarget = worldOreConfig;
     }

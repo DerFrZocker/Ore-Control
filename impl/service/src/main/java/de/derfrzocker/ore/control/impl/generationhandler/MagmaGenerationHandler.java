@@ -42,7 +42,7 @@ public class MagmaGenerationHandler implements GenerationHandler {
     private final NMSUtil nmsUtil;
 
     public MagmaGenerationHandler(@NotNull final NMSUtil nmsUtil) {
-        Validate.notNull(nmsUtil, "NMSUtil can not be null");
+        Validate.notNull(nmsUtil, "NMSUtil cannot be null");
 
         this.nmsUtil = nmsUtil;
     }
@@ -51,23 +51,27 @@ public class MagmaGenerationHandler implements GenerationHandler {
     public boolean generate(@NotNull final World world, @NotNull final WorldOreConfig worldOreConfig, @NotNull final OreControlService service, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final ChunkCoordIntPair chunkCoordIntPair, @NotNull final Object defaultConfiguration, @NotNull final Object defaultFeatureConfiguration, @Nullable final BiFunction<Location, Integer, Boolean> generateFunction, @NotNull final BiFunction<Object, Object, Boolean> passFunction, @NotNull final Random random) {
         final int veinsPerChunk = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEINS_PER_CHUNK), random);
 
-        if (veinsPerChunk == 0)
+        if (veinsPerChunk == 0) {
             return true;
+        }
 
         final int veinSize = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.VEIN_SIZE), random);
 
-        if (veinSize == 0)
+        if (veinSize == 0) {
             return true;
+        }
 
         int heightRange = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.HEIGHT_RANGE), random);
         int seaLevelDivider = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.SEA_LEVEL_DIVIDER), random);
         final int seaLevelAdder = NumberUtil.getInt(service.getValue(worldOreConfig, biome, ore, Setting.SEA_LEVEL_ADDER), random);
 
-        if (heightRange == 0)
+        if (heightRange == 0) {
             heightRange = 1;
+        }
 
-        if (seaLevelDivider == 0)
+        if (seaLevelDivider == 0) {
             seaLevelDivider = 1;
+        }
 
         final Location location = new Location(null, chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
 

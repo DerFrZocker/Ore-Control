@@ -27,28 +27,26 @@ package de.derfrzocker.ore.control;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.ReloadAble;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ConfigValues implements ReloadAble {
 
-    @NonNull
-    private File file;
-
     public final Set SET = new Set();
-
     public final Default DEFAULT = new Default();
-
-    @NonNull
+    @NotNull
+    private File file;
     private volatile YamlConfiguration yaml;
 
-    public ConfigValues(File file) {
+    public ConfigValues(@NotNull final File file) {
+        Validate.notNull(file, "File cannot be null");
+
         this.file = file;
+
         reload();
         RELOAD_ABLES.add(this);
     }
@@ -78,10 +76,15 @@ public class ConfigValues implements ReloadAble {
         yaml = Config.getConfig(OreControl.getInstance(), file.getName());
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public class Set {
 
-        public void setLanguage(final @NonNull Language language) {
+        private Set() {
+
+        }
+
+        public void setLanguage(@NotNull final Language language) {
+            Validate.notNull(language, "Language cannot be null");
+
             yaml.set("language", language.toString());
 
             try {
@@ -133,8 +136,11 @@ public class ConfigValues implements ReloadAble {
 
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public class Default {
+
+        private Default() {
+
+        }
 
         public Language defaultLanguage() {
             return Language.getLanguage(yaml.getDefaultSection().getString("language"));

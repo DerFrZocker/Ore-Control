@@ -30,7 +30,8 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.message.MessageKey;
-import lombok.NonNull;
+import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,9 @@ public class OreControlUtil {
      * @param value   that get checked
      * @return true for unsafe false for safe
      */
-    public static boolean isUnSafe(final @NonNull Setting setting, final double value) {
+    public static boolean isUnSafe(@NotNull final Setting setting, final double value) {
+        Validate.notNull(setting, "Setting cannot be null");
+
         return setting.getMinimumValue() > value;
     }
 
@@ -64,7 +67,9 @@ public class OreControlUtil {
      * @return a map with the translated Ore names of the given Ores
      * @throws NullPointerException if Ore is null
      */
-    public static HashMap<Ore, String> getTranslatedOres(final @NonNull Ore... ores) { //TODO add test cases
+    public static HashMap<Ore, String> getTranslatedOres(@NotNull final Ore... ores) { //TODO add test cases
+        Validate.notNull(ores, "Ores cannot be null");
+
         final HashMap<Ore, String> map = new HashMap<>();
 
         Stream.of(ores).forEach(value -> map.put(value, new MessageKey(OreControl.getInstance(), "ore." + value.toString()).getMessage().replace(" ", "_")));
@@ -95,7 +100,9 @@ public class OreControlUtil {
      * @return a map with the translated Setting names of the given Settings
      * @throws NullPointerException if Setting is null
      */
-    public static HashMap<Setting, String> getTranslatedSettings(final @NonNull Setting... settings) { //TODO add test cases
+    public static HashMap<Setting, String> getTranslatedSettings(@NotNull final Setting... settings) { //TODO add test cases
+        Validate.notNull(settings, "Settings cannot be null");
+
         final HashMap<Setting, String> map = new HashMap<>();
 
         Stream.of(settings).forEach(value -> map.put(value, new MessageKey(OreControl.getInstance(), "setting." + value.toString()).getMessage().replace(" ", "_")));
@@ -112,17 +119,20 @@ public class OreControlUtil {
      * @return an Optional describing the Ore of the given String,
      * or an empty Optional if the String not match an Ore.
      */
-    public static Optional<Ore> getOre(final @NonNull String oreName, final boolean translated) { //TODO add test cases
+    public static Optional<Ore> getOre(@NotNull final String oreName, final boolean translated) { //TODO add test cases
+        Validate.notNull(oreName, "Ore name cannot be null");
+
         Optional<Ore> optional;
 
-        if (translated)
+        if (translated) {
             optional = getTranslatedOres().entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(oreName)).findAny().map(Map.Entry::getKey);
-        else
+        } else {
             try {
                 optional = Optional.of(Ore.valueOf(oreName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 optional = Optional.empty();
             }
+        }
 
         return optional;
     }
@@ -139,17 +149,21 @@ public class OreControlUtil {
      * @return an Optional describing the Ore of the given String,
      * or an empty Optional if the String not match an Ore.
      */
-    public static Optional<Ore> getOre(final @NonNull String oreName, final boolean translated, final @NonNull Ore... ores) { //TODO add test cases
+    public static Optional<Ore> getOre(@NotNull final String oreName, final boolean translated, @NotNull final Ore... ores) { //TODO add test cases
+        Validate.notNull(oreName, "Ore name cannot be null");
+        Validate.notNull(ores, "Ores cannot be null");
+
         Optional<Ore> optional;
 
-        if (translated)
+        if (translated) {
             optional = getTranslatedOres(ores).entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(oreName)).findAny().map(Map.Entry::getKey);
-        else
+        } else {
             try {
                 optional = Optional.of(Ore.valueOf(oreName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 optional = Optional.empty();
             }
+        }
 
         return optional;
     }
@@ -163,19 +177,23 @@ public class OreControlUtil {
      * @return an Optional describing the Biome of the given String,
      * or an empty Optional if the String not match an Biome.
      */
-    public static Optional<Biome> getBiome(final @NonNull String biomeName, final boolean translated) { //TODO add test cases
+    public static Optional<Biome> getBiome(@NotNull final String biomeName, final boolean translated) { //TODO add test cases
+        Validate.notNull(biomeName, "Biome Name cannot be null");
+
         Optional<Biome> optional;
 
-        if (translated)
+        if (translated) {
             optional = getTranslatedBiomes().entrySet().stream().filter(entry -> Version.getCurrent().isOlderOrSameVersion(entry.getKey().getSince())).filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
-        else
+        } else {
             try {
                 optional = Optional.of(Biome.valueOf(biomeName.toUpperCase()));
-                if (Version.getCurrent().isNewerVersion(optional.get().getSince()))
+                if (Version.getCurrent().isNewerVersion(optional.get().getSince())) {
                     optional = Optional.empty();
-            } catch (IllegalArgumentException e) {
+                }
+            } catch (final IllegalArgumentException e) {
                 optional = Optional.empty();
             }
+        }
 
         return optional;
     }
@@ -189,17 +207,20 @@ public class OreControlUtil {
      * @return an Optional describing the Setting of the given String,
      * or an empty Optional if the String not match an Setting.
      */
-    public static Optional<Setting> getSetting(final @NonNull String settingName, final boolean translated) { //TODO add test cases
+    public static Optional<Setting> getSetting(@NotNull final String settingName, final boolean translated) { //TODO add test cases
+        Validate.notNull(settingName, "Setting Name cannot be null");
+
         Optional<Setting> optional;
 
-        if (translated)
+        if (translated) {
             optional = getTranslatedSettings().entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(settingName)).findAny().map(Map.Entry::getKey);
-        else
+        } else {
             try {
                 optional = Optional.of(Setting.valueOf(settingName.toUpperCase()));
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 optional = Optional.empty();
             }
+        }
 
         return optional;
     }
@@ -216,17 +237,21 @@ public class OreControlUtil {
      * @return an Optional describing the Setting of the given String,
      * or an empty Optional if the String not match an Setting.
      */
-    public static Optional<Setting> getSetting(final @NonNull String settingName, final boolean translated, final @NonNull Setting... settings) { //TODO add test cases
+    public static Optional<Setting> getSetting(@NotNull final String settingName, final boolean translated, @NotNull final Setting... settings) { //TODO add test cases
+        Validate.notNull(settingName, "Setting name cannot be null");
+        Validate.notNull(settings, "Settings cannot be null");
+
         Optional<Setting> optional;
 
-        if (translated)
+        if (translated) {
             optional = getTranslatedSettings(settings).entrySet().stream().filter(entry -> entry.getValue().equalsIgnoreCase(settingName)).findAny().map(Map.Entry::getKey);
-        else
+        } else {
             try {
                 optional = Stream.of(settings).filter(value -> value.toString().equalsIgnoreCase(settingName.toUpperCase())).findAny();
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 optional = Optional.empty();
             }
+        }
 
         return optional;
     }

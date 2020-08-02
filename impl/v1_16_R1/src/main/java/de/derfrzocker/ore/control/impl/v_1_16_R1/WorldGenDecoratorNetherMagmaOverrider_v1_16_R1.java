@@ -47,8 +47,8 @@ public class WorldGenDecoratorNetherMagmaOverrider_v1_16_R1 extends WorldGenDeco
     public WorldGenDecoratorNetherMagmaOverrider_v1_16_R1(final Codec<WorldGenDecoratorFrequencyConfiguration> codec, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
         super(codec);
 
-        Validate.notNull(biome, "Biome can not be null");
-        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.biome = biome;
         this.serviceSupplier = serviceSupplier;

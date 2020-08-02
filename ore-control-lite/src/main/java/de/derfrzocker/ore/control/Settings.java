@@ -44,15 +44,15 @@ import java.util.logging.Logger;
 public class Settings implements ReloadAble {
 
     @NotNull
-    private Map<Ore, OreSettings> oreSettings = new HashMap<>();
-    @NotNull
-    private Map<Biome, BiomeOreSettingsStorage> biomeOreSettingsStorage = new HashMap<>();
-    @NotNull
     private final Supplier<YamlConfiguration> yamlSupplier;
     @NotNull
     private final Version version;
     @NotNull
     private final Logger logger;
+    @NotNull
+    private Map<Ore, OreSettings> oreSettings = new HashMap<>();
+    @NotNull
+    private Map<Biome, BiomeOreSettingsStorage> biomeOreSettingsStorage = new HashMap<>();
 
     public Settings(@NotNull final Supplier<YamlConfiguration> yamlSupplier, @NotNull final Version version, @NotNull final Logger logger) {
         Validate.notNull(yamlSupplier, "YamlSupplier cannot be null");

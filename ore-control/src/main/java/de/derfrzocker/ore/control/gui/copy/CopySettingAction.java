@@ -64,10 +64,10 @@ public class CopySettingAction implements CopyAction {
     private int status = 0;
 
     public CopySettingAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @Nullable final Biome biomeSource, @NotNull final Ore oreSource, @NotNull final Setting settingSource) {
-        Validate.notNull(oreControlValues, "OreControlValues can not be null");
-        Validate.notNull(worldOreConfigSource, "WorldOreConfig can not be null");
-        Validate.notNull(oreSource, "Ore can not be null");
-        Validate.notNull(settingSource, "Setting can not be null");
+        Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
+        Validate.notNull(oreSource, "Ore cannot be null");
+        Validate.notNull(settingSource, "Setting cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfigSource = worldOreConfigSource;
@@ -84,21 +84,21 @@ public class CopySettingAction implements CopyAction {
 
     @Override
     public void setWorldOreConfigTarget(@NotNull final WorldOreConfig worldOreConfig) {
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         this.worldOreConfigTarget = worldOreConfig;
     }
 
     @Override
     public void setBiomeTarget(@NotNull final Biome biome) {
-        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
 
         this.biomeTarget = biome;
     }
 
     @Override
     public void setSettingTarget(@NotNull final Setting setting) {
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         this.settingTarget = setting;
     }
@@ -110,7 +110,7 @@ public class CopySettingAction implements CopyAction {
 
     @Override
     public void setOreTarget(@NotNull final Ore ore) {
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(ore, "Ore cannot be null");
 
         this.oreTarget = ore;
     }
@@ -124,10 +124,11 @@ public class CopySettingAction implements CopyAction {
         }
 
         if (status == 1) {
-            if (chooseBiome)
+            if (chooseBiome) {
                 new BiomeGui(oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
-            else
+            } else {
                 new OreGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+            }
 
             status++;
             return;
@@ -152,40 +153,42 @@ public class CopySettingAction implements CopyAction {
         }
 
         if (status == 3) {
-            if (biomeSource == null)
+            if (biomeSource == null) {
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, settingSource, oreTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
                 });
-            else
+            } else {
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, settingSource, oreTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
                 });
+            }
 
             status++;
             return;
         }
 
         if (status == 4) {
-            if (biomeSource == null)
+            if (biomeSource == null) {
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, settingSource, oreTarget, biomeTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
                 });
-            else
+            } else {
                 openVerifyIfNeeded(humanEntity, inventoryGui, event -> {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, oreSource, biomeSource, settingSource, oreTarget, biomeTarget, settingTarget);
                     oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
                     inventoryGui.closeSync(humanEntity);
                     oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
                 });
+            }
 
             status++;
         }
@@ -214,14 +217,17 @@ public class CopySettingAction implements CopyAction {
 
     @Override
     public boolean shouldSet(@NotNull final Setting setting) {
-        if (biomeSource != biomeTarget)
+        if (biomeSource != biomeTarget) {
             return true;
+        }
 
-        if (oreSource != oreTarget)
+        if (oreSource != oreTarget) {
             return true;
+        }
 
-        if (worldOreConfigSource != worldOreConfigTarget || !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName()))
+        if (worldOreConfigSource != worldOreConfigTarget || !worldOreConfigSource.getName().equals(worldOreConfigTarget.getName())) {
             return true;
+        }
 
         return settingSource != setting;
     }

@@ -52,7 +52,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     private boolean template;
 
     public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template) {
-        Validate.notNull(name, "Name can not be null");
+        Validate.notNull(name, "Name cannot be null");
 
         this.name = name;
         this.template = template;
@@ -60,21 +60,21 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
     public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template, @NotNull final Map<Ore, OreSettings> oreSettings) {
         this(name, template);
-        Validate.notNull(oreSettings, "OreSettings map can not be null");
+        Validate.notNull(oreSettings, "OreSettings map cannot be null");
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
     public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template, @NotNull final Map<Ore, OreSettings> oreSettings, @NotNull final Map<Biome, BiomeOreSettings> biomeOreSettings) {
         this(name, template, oreSettings);
-        Validate.notNull(biomeOreSettings, "BiomeOreSettings map can not be null");
+        Validate.notNull(biomeOreSettings, "BiomeOreSettings map cannot be null");
 
         biomeOreSettings.forEach((key, value) -> this.biomeOreSettings.put(key, value.clone()));
     }
 
     @NotNull
     public static WorldOreConfigYamlImpl deserialize(@NotNull final Map<String, Object> map) {
-        Validate.notNull(map, "Map can not be null");
+        Validate.notNull(map, "Map cannot be null");
 
         final Map<Ore, OreSettings> oreSettings = new LinkedHashMap<>();
         final Map<Biome, BiomeOreSettings> biomeOreSettings = new LinkedHashMap<>();
@@ -109,17 +109,19 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
         final String name;
 
-        if (map.containsKey(WORLD_KEY))
+        if (map.containsKey(WORLD_KEY)) {
             name = (String) map.get(WORLD_KEY);
-        else
+        } else {
             name = (String) map.get(NAME_KEY);
+        }
 
         return new WorldOreConfigYamlImpl(name, (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
     }
 
     private static boolean isOre(@Nullable final String string) {
-        if (string == null)
+        if (string == null) {
             return false;
+        }
 
         try {
             Ore.valueOf(string.toUpperCase());
@@ -131,8 +133,9 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     }
 
     private static boolean isBiome(@Nullable final String string) {
-        if (string == null)
+        if (string == null) {
             return false;
+        }
 
         try {
             Biome.valueOf(string.toUpperCase());
@@ -151,7 +154,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     @NotNull
     @Override
     public Optional<OreSettings> getOreSettings(@NotNull final Ore ore) {
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(ore, "Ore cannot be null");
 
         return Optional.ofNullable(this.oreSettings.get(ore));
     }
@@ -164,7 +167,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
     @Override
     public void setOreSettings(@NotNull final OreSettings oreSettings) {
-        Validate.notNull(oreSettings, "OreSettings can not be null");
+        Validate.notNull(oreSettings, "OreSettings cannot be null");
 
         this.oreSettings.put(oreSettings.getOre(), oreSettings);
     }
@@ -172,7 +175,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     @NotNull
     @Override
     public Optional<BiomeOreSettings> getBiomeOreSettings(@NotNull final Biome biome) {
-        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
 
         return Optional.ofNullable(getBiomeOreSettings().get(biome));
     }
@@ -185,7 +188,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
     @Override
     public void setBiomeOreSettings(@NotNull final BiomeOreSettings biomeOreSettings) {
-        Validate.notNull(biomeOreSettings, "BiomeOreSettings can not be null");
+        Validate.notNull(biomeOreSettings, "BiomeOreSettings cannot be null");
 
         getBiomeOreSettings().put(biomeOreSettings.getBiome(), biomeOreSettings);
     }
@@ -203,17 +206,19 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     @NotNull
     @Override
     public WorldOreConfig clone(@NotNull final String name) {
-        Validate.notNull(name, "Name can not be null");
+        Validate.notNull(name, "Name cannot be null");
 
         return new WorldOreConfigYamlImpl(name, isTemplate(), getOreSettings(), getBiomeOreSettings());
     }
 
     @Override
     public boolean equals(@Nullable final Object object) {
-        if (this == object)
+        if (this == object) {
             return true;
-        if (object == null || getClass() != object.getClass())
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
+        }
 
         final WorldOreConfigYamlImpl that = (WorldOreConfigYamlImpl) object;
 
@@ -235,8 +240,9 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
         serialize.put(NAME_KEY, getName());
 
-        if (isTemplate())
+        if (isTemplate()) {
             serialize.put(TEMPLATE_KEY, true);
+        }
 
         final Map<Ore, OreSettings> oreSettingsMap = getOreSettings();
         if (!oreSettingsMap.isEmpty()) {

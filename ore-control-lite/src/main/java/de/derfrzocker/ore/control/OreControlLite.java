@@ -181,8 +181,9 @@ public class OreControlLite extends JavaPlugin implements Listener {
     private void checkFile(@NotNull final String name) {
         final File file = new File(getDataFolder(), name);
 
-        if (!file.exists())
+        if (!file.exists()) {
             return;
+        }
 
         final YamlConfiguration configuration = new Config(file);
 
@@ -193,8 +194,9 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
         getLogger().warning("File " + name + " has an outdated / new version, replacing it!");
 
-        if (!file.delete())
+        if (!file.delete()) {
             throw new RuntimeException("can't delete file " + name + " stop plugin start!");
+        }
 
         saveResource(name, true);
     }
@@ -215,8 +217,9 @@ public class OreControlLite extends JavaPlugin implements Listener {
     private void checkOldStorageType() {
         final File file = new File(getDataFolder(), "data/world_ore_configs.yml");
 
-        if (!file.exists())
+        if (!file.exists()) {
             return;
+        }
 
         if (file.isDirectory()) {
             getLogger().info("WTF?? why??");
@@ -232,8 +235,9 @@ public class OreControlLite extends JavaPlugin implements Listener {
 
         worldConfigYamlDao.getAll().forEach(service::saveWorldOreConfig);
 
-        if (!file.delete())
-            throw new RuntimeException("Can not delete File " + file);
+        if (!file.delete()) {
+            throw new RuntimeException("cannot delete File " + file);
+        }
 
         getLogger().info("Finish converting old storage format to new one");
     }

@@ -48,21 +48,21 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
     private final Map<Ore, OreSettings> oreSettings = new LinkedHashMap<>();
 
     public BiomeOreSettingsYamlImpl(@NotNull final Biome biome) {
-        Validate.notNull(biome, "Biome can not be null");
+        Validate.notNull(biome, "Biome cannot be null");
 
         this.biome = biome;
     }
 
     public BiomeOreSettingsYamlImpl(@NotNull final Biome biome, @NotNull final Map<Ore, OreSettings> oreSettings) {
         this(biome);
-        Validate.notNull(oreSettings, "OreSettings map can not be null");
+        Validate.notNull(oreSettings, "OreSettings map cannot be null");
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
     @NotNull
     public static BiomeOreSettingsYamlImpl deserialize(@NotNull final Map<String, Object> map) {
-        Validate.notNull(map, "Map can not be null");
+        Validate.notNull(map, "Map cannot be null");
 
         final Map<Ore, OreSettings> oreSettings = new HashMap<>();
 
@@ -84,8 +84,9 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
     }
 
     private static boolean isOre(@Nullable final String string) {
-        if (string == null)
+        if (string == null) {
             return false;
+        }
 
         try {
             Ore.valueOf(string.toUpperCase());
@@ -105,7 +106,7 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
     @NotNull
     @Override
     public Optional<OreSettings> getOreSettings(@NotNull final Ore ore) {
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(ore, "Ore cannot be null");
 
         return Optional.ofNullable(getOreSettings().get(ore));
     }
@@ -118,7 +119,7 @@ public class BiomeOreSettingsYamlImpl implements ConfigurationSerializable, Biom
 
     @Override
     public void setOreSettings(@NotNull final OreSettings oreSettings) {
-        Validate.notNull(oreSettings, "OreSettings can not be null");
+        Validate.notNull(oreSettings, "OreSettings cannot be null");
 
         this.oreSettings.put(oreSettings.getOre(), oreSettings);
     }

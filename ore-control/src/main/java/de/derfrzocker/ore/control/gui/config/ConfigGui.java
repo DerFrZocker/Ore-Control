@@ -81,11 +81,13 @@ public class ConfigGui extends BasicGui {
     }
 
     private static ConfigGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (booleanGuiSetting == null)
+        if (booleanGuiSetting == null) {
             booleanGuiSetting = new BooleanGuiSetting(javaPlugin, "data/gui/boolean-gui.yml", true);
+        }
 
-        if (configGuiSettings == null)
+        if (configGuiSettings == null) {
             configGuiSettings = new ConfigGuiSettings(javaPlugin, "data/gui/config-gui.yml", true);
+        }
 
         return configGuiSettings;
     }

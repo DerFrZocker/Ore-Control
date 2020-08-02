@@ -59,8 +59,8 @@ public class WorldConfigGui extends BasicGui {
     WorldConfigGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -71,20 +71,25 @@ public class WorldConfigGui extends BasicGui {
 
         addDecorations();
 
-        if (permissions.getSetValuePermission().hasPermission(permissible))
+        if (permissions.getSetValuePermission().hasPermission(permissible)) {
             addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getOreItemStack()), event -> new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, null).openSync(event.getWhoClicked()));
+        }
 
-        if (permissions.getSetBiomePermission().hasPermission(permissible))
+        if (permissions.getSetBiomePermission().hasPermission(permissible)) {
             addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+        }
 
-        if (permissions.getValueResetPermission().hasPermission(permissible))
+        if (permissions.getValueResetPermission().hasPermission(permissible)) {
             addItem(worldConfigGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getResetValueItemStack()), this::handleResetValues);
+        }
 
-        if (permissions.getValueCopyPermission().hasPermission(permissible))
+        if (permissions.getValueCopyPermission().hasPermission(permissible)) {
             addItem(worldConfigGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getCopyValueItemStack()), event -> new WorldGui(oreControlValues, new CopyWorldOreConfigAction(oreControlValues, worldOreConfig)).openSync(event.getWhoClicked()));
+        }
 
-        if (permissions.getTemplateDeletePermission().hasPermission(permissible) && !worldOreConfig.getName().equals("Default"))
+        if (permissions.getTemplateDeletePermission().hasPermission(permissible) && !worldOreConfig.getName().equals("Default")) {
             addItem(worldConfigGuiSettings.getTemplateDeleteSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getTemplateDeleteItemStack()), this::handleDeleteTemplate);
+        }
 
         addItem(worldConfigGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBackItemStack()), event -> new WorldGui(oreControlValues, event.getWhoClicked()).openSync(event.getWhoClicked()));
         addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
@@ -93,9 +98,9 @@ public class WorldConfigGui extends BasicGui {
     public WorldConfigGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull CopyAction copyAction) {
         super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(copyAction, "CopyAction can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(copyAction, "CopyAction cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -109,36 +114,41 @@ public class WorldConfigGui extends BasicGui {
         if (permissions.getSetValuePermission().hasPermission(permissible)) {
             boolean bool = false;
 
-            for (Ore ore : Ore.values())
+            for (Ore ore : Ore.values()) {
                 if (copyAction.shouldSet(ore)) {
                     bool = true;
                     break;
                 }
+            }
 
-            if (bool)
+            if (bool) {
                 addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getOreItemStack()), this::handleCopyAction);
+            }
         }
 
         if (permissions.getSetBiomePermission().hasPermission(permissible)) {
             boolean bool = false;
 
-            for (final Biome biome : Biome.values())
+            for (final Biome biome : Biome.values()) {
                 if (copyAction.shouldSet(biome)) {
                     bool = true;
                     break;
                 }
+            }
 
 
-            if (bool)
+            if (bool) {
                 addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBiomeItemStack()), this::handleCopyActionBiome);
+            }
         }
 
         addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
     }
 
     private static WorldConfigGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (worldConfigGuiSettings == null)
+        if (worldConfigGuiSettings == null) {
             worldConfigGuiSettings = new WorldConfigGuiSettings(javaPlugin, "data/gui/world-config-gui.yml", true);
+        }
 
         return worldConfigGuiSettings;
     }

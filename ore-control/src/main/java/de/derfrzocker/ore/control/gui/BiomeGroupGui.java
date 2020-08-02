@@ -64,9 +64,9 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     BiomeGroupGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @NotNull final BiomeGuiSettings biomeGuiSettings) {
         super(oreControlValues.getJavaPlugin(), biomeGuiSettings);
 
-        Validate.notNull(permissible, "Permissible can not be null");
-        Validate.notNull(worldOreConfig, "WorldOreConfig can not be null");
-        Validate.notNull(biomeGuiSettings, "BiomeGuiSettings can not be null");
+        Validate.notNull(permissible, "Permissible cannot be null");
+        Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
+        Validate.notNull(biomeGuiSettings, "BiomeGuiSettings cannot be null");
 
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
@@ -107,7 +107,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         private YamlConfiguration yaml;
 
         private BiomeGroups(@NotNull final JavaPlugin javaPlugin) {
-            Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+            Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
 
             this.javaPlugin = javaPlugin;
 
@@ -116,8 +116,9 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         }
 
         private static BiomeGroups getInstance(@NotNull final JavaPlugin javaPlugin) {
-            if (instance != null)
+            if (instance != null) {
                 return instance;
+            }
 
             instance = new BiomeGroups(javaPlugin);
 
@@ -140,7 +141,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
         @Override
         public void reload() {
-            yaml = new Config(Objects.requireNonNull(javaPlugin.getResource(FILE), "InputStream can not be null"));
+            yaml = new Config(Objects.requireNonNull(javaPlugin.getResource(FILE), "InputStream cannot be null"));
         }
 
     }
@@ -153,8 +154,8 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         private final Set<Biome> biomes;
 
         BiomeGroup(@NotNull final String name, @NotNull final Set<Biome> biomes) {
-            Validate.notNull(name, "Name can not be null");
-            Validate.notNull(biomes, "Biomes can not be null");
+            Validate.notNull(name, "Name cannot be null");
+            Validate.notNull(biomes, "Biomes cannot be null");
 
             this.name = name;
             this.biomes = biomes;

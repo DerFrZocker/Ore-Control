@@ -56,21 +56,21 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     private boolean activated = true;
 
     public OreSettingsYamlImpl(@NotNull final Ore ore) {
-        Validate.notNull(ore, "Ore can not be null");
+        Validate.notNull(ore, "Ore cannot be null");
 
         this.ore = ore;
     }
 
     public OreSettingsYamlImpl(@NotNull final Ore ore, @NotNull final Map<Setting, Double> settings) {
         this(ore);
-        Validate.notNull(settings, "Settings map can not be null");
+        Validate.notNull(settings, "Settings map cannot be null");
 
         this.settings.putAll(settings);
     }
 
     @NotNull
     public static OreSettingsYamlImpl deserialize(@NotNull final Map<String, Object> map) {
-        Validate.notNull(map, "Map can not be null");
+        Validate.notNull(map, "Map cannot be null");
 
         final Map<Setting, Double> settings = new LinkedHashMap<>();
 
@@ -84,7 +84,7 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
             // old storage type
             final OreControlService service = Bukkit.getServicesManager().load(OreControlService.class);
 
-            Validate.notNull(service, "OreControlService can not be null");
+            Validate.notNull(service, "OreControlService cannot be null");
 
             map.entrySet().stream().filter(entry -> isSetting(entry.getKey())).
                     forEach(entry -> settings.put(Setting.valueOf(entry.getKey().toUpperCase()), NumberConversions.toDouble(entry.getValue())));
@@ -92,15 +92,17 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
 
         final OreSettingsYamlImpl oreSettingsYaml = new OreSettingsYamlImpl(Ore.valueOf(((String) map.get(ORE_KEY)).toUpperCase()), settings);
 
-        if (map.containsKey(STATUS_KEY))
+        if (map.containsKey(STATUS_KEY)) {
             oreSettingsYaml.setActivated((boolean) map.get(STATUS_KEY));
+        }
 
         return oreSettingsYaml;
     }
 
     private static boolean isSetting(@Nullable final String string) {
-        if (string == null)
+        if (string == null) {
             return false;
+        }
 
         try {
             Setting.valueOf(string.toUpperCase());
@@ -119,14 +121,14 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
     @NotNull
     @Override
     public Optional<Double> getValue(@NotNull final Setting setting) {
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         return Optional.ofNullable(getSettings().get(setting));
     }
 
     @Override
     public void setValue(@NotNull final Setting setting, final double value) {
-        Validate.notNull(setting, "Setting can not be null");
+        Validate.notNull(setting, "Setting cannot be null");
 
         this.settings.put(setting, value);
     }
@@ -159,10 +161,12 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
 
     @Override
     public boolean equals(@Nullable final Object object) {
-        if (this == object)
+        if (this == object) {
             return true;
-        if (object == null || getClass() != object.getClass())
+        }
+        if (object == null || getClass() != object.getClass()) {
             return false;
+        }
 
         final OreSettingsYamlImpl that = (OreSettingsYamlImpl) object;
 
@@ -183,8 +187,9 @@ public class OreSettingsYamlImpl implements ConfigurationSerializable, OreSettin
 
         serialize.put(ORE_KEY, getOre().toString());
 
-        if (!isActivated())
+        if (!isActivated()) {
             serialize.put(STATUS_KEY, false);
+        }
 
         final Map<Setting, Double> settingsMap = getSettings();
         if (!settingsMap.isEmpty()) {
