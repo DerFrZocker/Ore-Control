@@ -115,6 +115,10 @@ public class NMSUtil_v1_16_R1 implements NMSUtil {
     @NotNull
     @Override
     public Dimension getDimension(@NotNull final World world) {
+        if (world.getGenerator() != null) {
+            return Dimension.CUSTOM;
+        }
+
         final WorldServer worldServer = ((CraftWorld) world).getHandle();
         final DimensionManager dimensionManager = worldServer.getDimensionManager();
 

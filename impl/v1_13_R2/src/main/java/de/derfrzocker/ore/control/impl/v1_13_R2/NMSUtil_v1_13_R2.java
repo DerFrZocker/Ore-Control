@@ -109,16 +109,20 @@ public class NMSUtil_v1_13_R2 implements NMSUtil {
     @NotNull
     @Override
     public Dimension getDimension(@NotNull final World world) {
-        final WorldServer worldServer = ((CraftWorld) world).getHandle();
-        final DimensionManager dimensionManager = worldServer.worldProvider.getDimensionManager();
+        if (world.getGenerator() != null) {
+            return Dimension.CUSTOM;
+        }
 
-        if (dimensionManager == DimensionManager.OVERWORLD) {
+        final WorldServer worldServer = ((CraftWorld) world).getHandle();
+        final WorldProvider worldProvider = worldServer.worldProvider.getDimensionManager().e();
+
+        if (worldProvider instanceof WorldProviderNormal) {
             return Dimension.OVERWORLD;
         }
-        if (dimensionManager == DimensionManager.NETHER) {
+        if (worldProvider instanceof WorldProviderHell) {
             return Dimension.NETHER;
         }
-        if (dimensionManager == DimensionManager.THE_END) {
+        if (worldProvider instanceof WorldProviderTheEnd) {
             return Dimension.THE_END;
         }
 
