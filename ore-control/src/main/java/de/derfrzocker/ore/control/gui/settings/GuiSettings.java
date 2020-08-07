@@ -81,32 +81,39 @@ public class GuiSettings {
         Validate.isTrue(directory.isDirectory(), "Directory '" + directory + "' dis not a directory");
         Validate.notNull(version, "Version cannot be null");
 
-        this.booleanGuiSetting = new BooleanGuiSetting(javaPlugin, new File(directory, "boolean-gui.yml").toString(), true);
-        this.configGuiSettings = new ConfigGuiSettings(javaPlugin, new File(directory, "config-gui.yml").toString(), true);
-        this.languageGuiSettings = new LanguageGuiSettings(javaPlugin, new File(directory, "language-gui.yml").toString(), true);
-        this.settingsGuiSettings = new SettingsGuiSettings(javaPlugin, new File(directory, "settings-gui.yml").toString(), true);
-        this.worldConfigGuiSettings = new WorldConfigGuiSettings(javaPlugin, new File(directory, "world-config-gui.yml").toString(), true);
+        final File dataFolder = javaPlugin.getDataFolder();
+
+        this.booleanGuiSetting = new BooleanGuiSetting(javaPlugin, getStringFromFile(dataFolder, new File(directory, "boolean-gui.yml")), true);
+        this.configGuiSettings = new ConfigGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "config-gui.yml")), true);
+        this.languageGuiSettings = new LanguageGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "language-gui.yml")), true);
+        this.settingsGuiSettings = new SettingsGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "settings-gui.yml")), true);
+        this.worldConfigGuiSettings = new WorldConfigGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "world-config-gui.yml")), true);
 
         if (version == Version.v1_13_R1 || version == Version.v1_13_R2) {
-            this.biomeGuiSettings = new BiomeGuiSettings(javaPlugin, new File(directory, "biome-gui_v1.13.yml").toString(), true);
-            this.oreGuiSettings = new OreGuiSettings(javaPlugin, new File(directory, "ore-gui_v1.13.yml").toString(), true);
-            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, new File(directory, "ore-settings-gui_v1.13.yml").toString(), true);
-            this.worldGuiSettings = new WorldGuiSettings(javaPlugin, new File(directory, "world-gui_v1.13.yml").toString(), true);
+            this.biomeGuiSettings = new BiomeGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "biome-gui_v1.13.yml")), true);
+            this.oreGuiSettings = new OreGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "ore-gui_v1.13.yml")), true);
+            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "ore-settings-gui_v1.13.yml")), true);
+            this.worldGuiSettings = new WorldGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "world-gui_v1.13.yml")), true);
 
         } else {
-            this.biomeGuiSettings = new BiomeGuiSettings(javaPlugin, new File(directory, "biome-gui.yml").toString(), true);
-            this.oreGuiSettings = new OreGuiSettings(javaPlugin, new File(directory, "ore-gui.yml").toString(), true);
-            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, new File(directory, "ore-settings-gui.yml").toString(), true);
-            this.worldGuiSettings = new WorldGuiSettings(javaPlugin, new File(directory, "world-gui.yml").toString(), true);
+            this.biomeGuiSettings = new BiomeGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "biome-gui.yml")), true);
+            this.oreGuiSettings = new OreGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "ore-gui.yml")), true);
+            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "ore-settings-gui.yml")), true);
+            this.worldGuiSettings = new WorldGuiSettings(javaPlugin, getStringFromFile(dataFolder, new File(directory, "world-gui.yml")), true);
 
             if (Version.v1_14_R1.isNewerOrSameVersion(version)) {
-                this.biomeGuiSettings.addValues(new File(directory, "biome-gui_v1.14.yml").toString(), true);
+                this.biomeGuiSettings.addValues(getStringFromFile(dataFolder, new File(directory, "biome-gui_v1.14.yml")), true);
             }
 
             if (Version.v1_16_R1.isNewerOrSameVersion(version)) {
-                this.biomeGuiSettings.addValues(new File(directory, "biome-gui_v1.16.yml").toString(), true);
+                this.biomeGuiSettings.addValues(getStringFromFile(dataFolder, new File(directory, "biome-gui_v1.16.yml")), true);
             }
         }
+    }
+
+    // Not the best solution, but for now it works
+    private static String getStringFromFile(@NotNull File pluginDataFolder, @NotNull final File file) {
+        return file.toString().replace(pluginDataFolder.toString() + "\\", "").replace("\\", "/");
     }
 
     @NotNull
