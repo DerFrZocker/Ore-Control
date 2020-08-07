@@ -27,6 +27,7 @@ package de.derfrzocker.ore.control;
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.command.OreControlCommand;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.impl.*;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao;
 import de.derfrzocker.ore.control.impl.dao.WorldOreConfigYamlDao_Old;
@@ -267,7 +268,10 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
-        getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions)));
+        getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(
+                new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions),
+                new GuiSettings(this, new File(getDataFolder(), "data/gui"), Version.getCurrent())
+        ));
     }
 
     private void checkFile(@NotNull final String name) {

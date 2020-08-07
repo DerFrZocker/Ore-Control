@@ -31,9 +31,9 @@ import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.config.ConfigGui;
 import de.derfrzocker.ore.control.gui.copy.CopyAction;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.gui.settings.WorldGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
-import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -45,7 +45,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,45 +54,47 @@ import java.util.concurrent.ExecutionException;
 public class WorldGui extends PageGui<String> {
 
     private final static Set<Dimension> DIMENSIONS = Collections.unmodifiableSet(Sets.newHashSet(Dimension.OVERWORLD, Dimension.NETHER));
-    private static WorldGuiSettings worldGuiSettings;
+    @NotNull
+    private final GuiSettings guiSettings;
     @NotNull
     private final OreControlValues oreControlValues;
     @Nullable
     private final CopyAction copyAction;
     private Map<String, WorldOreConfig> worldOreConfigs = new HashMap<>();
 
-    public WorldGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible) {
-        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
+    public WorldGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible) {
+        super(oreControlValues.getJavaPlugin(), guiSettings.getWorldGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
 
-        checkSettings(oreControlValues.getJavaPlugin());
-
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
         this.copyAction = null;
+
+        final WorldGuiSettings worldGuiSettings = guiSettings.getWorldGuiSettings();
 
         final Permissions permissions = oreControlValues.getPermissions();
 
         addDecorations();
-        init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName), getDimension(configName)).openSync(event.getWhoClicked()));
+        init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName), getDimension(configName)).openSync(event.getWhoClicked()));
 
         if (permissions.getTemplateCreatePermission().hasPermission(permissible)) {
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
         }
 
         if (permissions.getConfigEditPermission().hasPermission(permissible)) {
-            addItem(worldGuiSettings.getEditConfigSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getEditConfigItemStack()), event -> new ConfigGui(oreControlValues).openSync(event.getWhoClicked()));
+            addItem(worldGuiSettings.getEditConfigSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getEditConfigItemStack()), event -> new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked()));
         }
 
         worldOreConfigs = null;
     }
 
-    WorldGui(@NotNull final OreControlValues oreControlValues, @NotNull final CopyAction copyAction) {
-        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
+    WorldGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final CopyAction copyAction) {
+        super(oreControlValues.getJavaPlugin(), guiSettings.getWorldGuiSettings());
+
         Validate.notNull(copyAction, "CopyAction cannot be null");
 
-        checkSettings(oreControlValues.getJavaPlugin());
-
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
         this.copyAction = copyAction;
 
@@ -101,23 +102,11 @@ public class WorldGui extends PageGui<String> {
         init(getStrings(), String[]::new, this::getItemStack, this::handleCopyAction);
     }
 
-    private static WorldGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (worldGuiSettings == null) {
-            if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
-                worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/gui/world-gui_v1.13.yml", true);
-            } else {
-                worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/gui/world-gui.yml", true);
-            }
-        }
-
-        return worldGuiSettings;
-    }
-
     private ItemStack getItemStack(@NotNull final String value) {
         if (worldOreConfigs.containsKey(value) && worldOreConfigs.get(value).isTemplate()) {
-            return MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getTemplateItemStack(), new MessageValue("template", value));
+            return MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getWorldGuiSettings().getTemplateItemStack(), new MessageValue("template", value));
         } else {
-            return MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getWorldItemStack(), new MessageValue("world", value));
+            return MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getWorldGuiSettings().getWorldItemStack(), new MessageValue("world", value));
         }
     }
 
@@ -135,7 +124,7 @@ public class WorldGui extends PageGui<String> {
 
                                     service.createWorldOreConfigTemplate(value);
 
-                                    new WorldGui(oreControlValues, player).openSync(event.getWhoClicked());
+                                    new WorldGui(this.guiSettings, this.oreControlValues, player).openSync(event.getWhoClicked());
 
                                     return AnvilGUI.Response.text("");
                                 })

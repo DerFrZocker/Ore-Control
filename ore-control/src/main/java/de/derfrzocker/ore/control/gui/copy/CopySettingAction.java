@@ -32,6 +32,7 @@ import de.derfrzocker.ore.control.gui.BiomeGui;
 import de.derfrzocker.ore.control.gui.OreGui;
 import de.derfrzocker.ore.control.gui.OreSettingsGui;
 import de.derfrzocker.ore.control.gui.WorldConfigGui;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.CopyUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
@@ -46,6 +47,8 @@ import java.util.function.Consumer;
 
 public class CopySettingAction implements CopyAction {
 
+    @NotNull
+    private final GuiSettings guiSettings;
     @NotNull
     private final OreControlValues oreControlValues;
     @NotNull
@@ -63,12 +66,14 @@ public class CopySettingAction implements CopyAction {
     private boolean chooseBiome = false;
     private int status = 0;
 
-    public CopySettingAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @Nullable final Biome biomeSource, @NotNull final Ore oreSource, @NotNull final Setting settingSource) {
+    public CopySettingAction(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @Nullable final Biome biomeSource, @NotNull final Ore oreSource, @NotNull final Setting settingSource) {
+        Validate.notNull(guiSettings, "GuiSettings cannot be null");
         Validate.notNull(oreControlValues, "OreControlValues cannot be null");
         Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
         Validate.notNull(oreSource, "Ore cannot be null");
         Validate.notNull(settingSource, "Setting cannot be null");
 
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
         this.worldOreConfigSource = worldOreConfigSource;
         this.biomeSource = biomeSource;
@@ -118,16 +123,16 @@ public class CopySettingAction implements CopyAction {
     @Override
     public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
         if (status == 0) {
-            new WorldConfigGui(oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
+            new WorldConfigGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 1) {
             if (chooseBiome) {
-                new BiomeGui(oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
+                new BiomeGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
             } else {
-                new OreGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+                new OreGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
             }
 
             status++;
@@ -135,19 +140,19 @@ public class CopySettingAction implements CopyAction {
         }
 
         if (status == 2 && chooseBiome) {
-            new OreGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+            new OreGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 2) {
-            new OreSettingsGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, oreTarget, this).openSync(humanEntity);
+            new OreSettingsGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, oreTarget, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 3 && chooseBiome) {
-            new OreSettingsGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, oreTarget, this).openSync(humanEntity);
+            new OreSettingsGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, oreTarget, this).openSync(humanEntity);
             status++;
             return;
         }

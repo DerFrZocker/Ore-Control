@@ -26,6 +26,7 @@ package de.derfrzocker.ore.control.gui.config;
 
 import de.derfrzocker.ore.control.gui.settings.BooleanGuiSetting;
 import de.derfrzocker.ore.control.gui.settings.ConfigGuiSettings;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
@@ -37,19 +38,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class ConfigGui extends BasicGui {
 
-    private static BooleanGuiSetting booleanGuiSetting;
-    private static ConfigGuiSettings configGuiSettings;
-
+    @NotNull
+    private final GuiSettings guiSettings;
     @NotNull
     private final OreControlValues oreControlValues;
 
-    public ConfigGui(@NotNull final OreControlValues oreControlValues) {
-        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
+    public ConfigGui(@NotNull GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues) {
+        super(oreControlValues.getJavaPlugin(), guiSettings.getConfigGuiSettings());
 
-        checkSettings(oreControlValues.getJavaPlugin());
-
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
 
+        final ConfigGuiSettings configGuiSettings = guiSettings.getConfigGuiSettings();
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
 
         addDecorations();
@@ -57,7 +57,7 @@ public class ConfigGui extends BasicGui {
         addItem(configGuiSettings.getLanguageSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getLanguageItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
-        ), event -> new LanguageGui(oreControlValues).openSync(event.getWhoClicked()));
+        ), event -> new LanguageGui(guiSettings, oreControlValues).openSync(event.getWhoClicked()));
 
         addItem(configGuiSettings.getsafeModeSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getsafeModeItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isSafeMode()),
@@ -80,25 +80,15 @@ public class ConfigGui extends BasicGui {
         ), this::handleVerifyResetAction);
     }
 
-    private static ConfigGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (booleanGuiSetting == null) {
-            booleanGuiSetting = new BooleanGuiSetting(javaPlugin, "data/gui/boolean-gui.yml", true);
-        }
-
-        if (configGuiSettings == null) {
-            configGuiSettings = new ConfigGuiSettings(javaPlugin, "data/gui/config-gui.yml", true);
-        }
-
-        return configGuiSettings;
-    }
-
     private void handleSafeMode(@NotNull final InventoryClickEvent event) {
+        final BooleanGuiSetting booleanGuiSetting = guiSettings.getBooleanGuiSetting();
+
         final VerifyGui verifyGui = new VerifyGui(getPlugin(), event1 -> {
             oreControlValues.getConfigValues().SET.setSafeMode(true);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, event1 -> {
             oreControlValues.getConfigValues().SET.setSafeMode(false);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
@@ -109,12 +99,14 @@ public class ConfigGui extends BasicGui {
     }
 
     private void handleTranslateTabCompilation(@NotNull final InventoryClickEvent event) {
+        final BooleanGuiSetting booleanGuiSetting = guiSettings.getBooleanGuiSetting();
+
         final VerifyGui verifyGui = new VerifyGui(getPlugin(), event1 -> {
             oreControlValues.getConfigValues().SET.setTranslateTabCompilation(true);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, event1 -> {
             oreControlValues.getConfigValues().SET.setTranslateTabCompilation(false);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
@@ -125,12 +117,14 @@ public class ConfigGui extends BasicGui {
     }
 
     private void handleVerifyCopyAction(@NotNull final InventoryClickEvent event) {
+        final BooleanGuiSetting booleanGuiSetting = guiSettings.getBooleanGuiSetting();
+
         final VerifyGui verifyGui = new VerifyGui(getPlugin(), event1 -> {
             oreControlValues.getConfigValues().SET.setVerifyCopyAction(true);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, event1 -> {
             oreControlValues.getConfigValues().SET.setVerifyCopyAction(false);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
@@ -141,12 +135,14 @@ public class ConfigGui extends BasicGui {
     }
 
     private void handleVerifyResetAction(@NotNull final InventoryClickEvent event) {
+        final BooleanGuiSetting booleanGuiSetting = guiSettings.getBooleanGuiSetting();
+
         final VerifyGui verifyGui = new VerifyGui(getPlugin(), event1 -> {
             oreControlValues.getConfigValues().SET.setVerifyResetAction(true);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, event1 -> {
             oreControlValues.getConfigValues().SET.setVerifyResetAction(false);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),

@@ -31,6 +31,7 @@ import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.BiomeGui;
 import de.derfrzocker.ore.control.gui.OreGui;
 import de.derfrzocker.ore.control.gui.WorldConfigGui;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.CopyUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
@@ -47,6 +48,8 @@ import java.util.function.Consumer;
 public class CopyOreAction implements CopyAction {
 
     @NotNull
+    private final GuiSettings guiSettings;
+    @NotNull
     private final OreControlValues oreControlValues;
     @NotNull
     private final WorldOreConfig worldOreConfigSource;
@@ -60,11 +63,13 @@ public class CopyOreAction implements CopyAction {
     private WorldOreConfig worldOreConfigTarget;
     private int status = 0;
 
-    public CopyOreAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @Nullable final Biome biomeSource, @NotNull final Ore oreSource) {
+    public CopyOreAction(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @Nullable final Biome biomeSource, @NotNull final Ore oreSource) {
+        Validate.notNull(guiSettings, "GuiSettings cannot be null");
         Validate.notNull(oreControlValues, "OreControlValues cannot be null");
         Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
         Validate.notNull(oreSource, "Ore cannot be null");
 
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
         this.worldOreConfigSource = worldOreConfigSource;
         this.biomeSource = biomeSource;
@@ -114,16 +119,16 @@ public class CopyOreAction implements CopyAction {
         Validate.notNull(inventoryGui, "InventoryGui cannot be null");
 
         if (status == 0) {
-            new WorldConfigGui(oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
+            new WorldConfigGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
             status++;
             return;
         }
 
         if (status == 1) {
             if (chooseBiome) {
-                new BiomeGui(oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
+                new BiomeGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, this).openSync(humanEntity);
             } else {
-                new OreGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+                new OreGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
             }
 
             status++;
@@ -131,7 +136,7 @@ public class CopyOreAction implements CopyAction {
         }
 
         if (status == 2 && chooseBiome) {
-            new OreGui(oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
+            new OreGui(guiSettings, oreControlValues, humanEntity, worldOreConfigTarget, biomeTarget, this).openSync(humanEntity);
             status++;
             return;
         }

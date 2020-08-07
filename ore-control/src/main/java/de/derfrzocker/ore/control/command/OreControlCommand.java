@@ -27,6 +27,7 @@ package de.derfrzocker.ore.control.command;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.command.set.SetCommand;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.command.CommandSeparator;
 import de.derfrzocker.spigot.utils.command.HelpCommand;
@@ -34,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class OreControlCommand extends CommandSeparator {
 
-    public OreControlCommand(@NotNull final OreControlValues oreControlValues) {
+    public OreControlCommand(@NotNull final OreControlValues oreControlValues, @NotNull final GuiSettings guiSettings) {
         super(oreControlValues.getJavaPlugin());
 
         final OreControlMessages oreControlMessages = oreControlValues.getOreControlMessages();
@@ -42,7 +43,7 @@ public class OreControlCommand extends CommandSeparator {
 
         registerExecutor(new SetCommand(oreControlValues), "set", permissions.getSetPermission(), null, null);
         registerExecutor(new CreateCommand(oreControlValues), "create", permissions.getTemplateCreatePermission(), oreControlMessages.getCommandCreateUsageMessage(), oreControlMessages.getCommandCreateDescriptionMessage());
-        registerExecutor(new GuiCommand(oreControlValues), "", permissions.getGuiPermission(), null, null);
+        registerExecutor(new GuiCommand(oreControlValues, guiSettings), "", permissions.getGuiPermission(), null, null);
         registerExecutor(new ReloadCommand(oreControlValues), "reload", permissions.getReloadPermission(), oreControlMessages.getCommandReloadUsageMessage(), oreControlMessages.getCommandReloadDescriptionMessage());
 
         final HelpCommand helpCommand = new HelpCommand(this, oreControlMessages);

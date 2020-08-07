@@ -24,6 +24,7 @@
 
 package de.derfrzocker.ore.control.gui.config;
 
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.gui.settings.LanguageGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Language;
@@ -40,16 +41,18 @@ import java.util.function.Consumer;
 
 public class LanguageGui extends BasicGui {
 
-    private static LanguageGuiSettings languageGuiSettings;
-
+    @NotNull
+    private final GuiSettings guiSettings;
     @NotNull
     private final OreControlValues oreControlValues;
 
-    LanguageGui(@NotNull final OreControlValues oreControlValues) {
-        super(oreControlValues.getJavaPlugin(), checkSettings(oreControlValues.getJavaPlugin()));
+    LanguageGui(@NotNull GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues) {
+        super(oreControlValues.getJavaPlugin(), guiSettings.getLanguageGuiSettings());
 
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
 
+        final LanguageGuiSettings languageGuiSettings = guiSettings.getLanguageGuiSettings();
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
         final Language[] languages = Language.values();
 
@@ -65,14 +68,6 @@ public class LanguageGui extends BasicGui {
         ));
     }
 
-    private static LanguageGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (languageGuiSettings == null) {
-            languageGuiSettings = new LanguageGuiSettings(javaPlugin, "data/gui/language-gui.yml", true);
-        }
-
-        return languageGuiSettings;
-    }
-
     private final class LanguageConsumer implements Consumer<InventoryClickEvent> {
 
         @NotNull
@@ -85,7 +80,7 @@ public class LanguageGui extends BasicGui {
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
             oreControlValues.getConfigValues().SET.setLanguage(language);
-            new ConfigGui(oreControlValues).openSync(event.getWhoClicked());
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }
 
     }

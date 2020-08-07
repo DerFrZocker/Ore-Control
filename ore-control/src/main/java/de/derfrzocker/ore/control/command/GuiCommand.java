@@ -25,6 +25,7 @@
 package de.derfrzocker.ore.control.command;
 
 import de.derfrzocker.ore.control.gui.WorldGui;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.Command;
@@ -41,11 +42,15 @@ public class GuiCommand implements TabExecutor {
 
     @NotNull
     private final OreControlValues oreControlValues;
+    @NotNull
+    private final GuiSettings guiSettings;
 
-    public GuiCommand(@NotNull final OreControlValues oreControlValues) {
+    public GuiCommand(@NotNull final OreControlValues oreControlValues, @NotNull final GuiSettings guiSettings) {
         Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(guiSettings, "GuiSettings cannot be null");
 
         this.oreControlValues = oreControlValues;
+        this.guiSettings = guiSettings;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class GuiCommand implements TabExecutor {
             return true;
         }
 
-        new WorldGui(oreControlValues, sender).openSync((Player) sender);
+        new WorldGui(guiSettings, oreControlValues, sender).openSync((Player) sender);
 
         return true;
     }

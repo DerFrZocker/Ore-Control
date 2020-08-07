@@ -28,6 +28,7 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Dimension;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
+import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Config;
@@ -53,42 +54,42 @@ import java.util.Set;
 public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
     @NotNull
+    private final GuiSettings guiSettings;
+    @NotNull
     private final OreControlValues oreControlValues;
     @NotNull
     private final WorldOreConfig worldOreConfig;
     @Nullable
     private final Dimension dimension;
-    @NotNull
-    private final BiomeGuiSettings biomeGuiSettings;
 
-    BiomeGroupGui(@NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @NotNull final BiomeGuiSettings biomeGuiSettings) {
-        super(oreControlValues.getJavaPlugin(), biomeGuiSettings);
+    BiomeGroupGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
+        super(oreControlValues.getJavaPlugin(), guiSettings.getBiomeGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
-        Validate.notNull(biomeGuiSettings, "BiomeGuiSettings cannot be null");
 
+        this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
-        this.biomeGuiSettings = biomeGuiSettings;
         this.dimension = dimension;
 
+        final BiomeGuiSettings biomeGuiSettings = guiSettings.getBiomeGuiSettings();
         final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
 
         addDecorations();
         init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
-        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
-        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(@NotNull final BiomeGroup biomeGroup) {
-        return MessageUtil.replaceItemStack(getPlugin(), biomeGuiSettings.getBiomeItemStack(biomeGroup.getName().toUpperCase()));
+        return MessageUtil.replaceItemStack(getPlugin(), guiSettings.getBiomeGuiSettings().getBiomeItemStack(biomeGroup.getName().toUpperCase()));
     }
 
     private void handleNormalClick(@NotNull final BiomeGroup biomeGroup, @NotNull final InventoryClickEvent event) {
-        new OreGui(oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, biomeGuiSettings).openSync(event.getWhoClicked());
+        new OreGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup).openSync(event.getWhoClicked());
     }
 
     private MessageValue[] getMessagesValues() {
