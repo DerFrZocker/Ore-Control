@@ -253,3 +253,17 @@ gui:
     name: "Activate or Deactivate"
     true: "Activate"
     false: "Deactivate"
+
+welcome:
+  button-open-string: "&4["
+  button-close-string: "&4]"
+  header: "&bThanks for using Ore-Control!"
+  found-bug: "If you found a bug, please report it on %%button%"
+  feature-request: "If you have a feature request, use also %%button%"
+  support: "Join my %%button% server, if you have questions about my plugin"
+  support-my-work: "If you like my work, please %%button:[rating]% it, or make a small %%button:[donation]%"
+  not-show-again: "Do not show again"
+  not-show-again-success: "&aThe welcome message won't show again"
+  click-me: "Click me"
+  rating: "rate"
+  donation: "donation"

@@ -257,3 +257,17 @@ gui:
     name: "Aktiviere oder Deaktiviere"
     true: "Aktiviere"
     false: "Deaktiviere"
+
+welcome:
+  button-open-string: "&4["
+  button-close-string: "&4]"
+  header: "&bDanke, das du Ore-Control benutzt!"
+  found-bug: "Wenn du einen Fehler gefunden hast, melden ihn bitte auf %%button%"
+  feature-request: "Wenn du zusätzliche funktionen haben möchtest, verwenden bitte auch %%button%"
+  support: "Treten meinem %%button% Server bei, wenn du Fragen zu meinem Plugin hast"
+  support-my-work: "Wenn dir meine Arbeit gefällt, %%button:[rating]% sie bitte oder mache eine kleine %%button:[donation]%"
+  not-show-again: "Nicht mehr anzeigen"
+  not-show-again-success: "&aDie Willkommensnachricht wird nicht mehr angezeigt"
+  click-me: "Klick mich"
+  rating: "bewerte"
+  donation: "Spende"

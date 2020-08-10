@@ -26,16 +26,19 @@ package de.derfrzocker.ore.control.command;
 
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
+import de.derfrzocker.ore.control.PlayerJoinListener;
+import de.derfrzocker.ore.control.WelcomeMessage;
 import de.derfrzocker.ore.control.command.set.SetCommand;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.command.CommandSeparator;
 import de.derfrzocker.spigot.utils.command.HelpCommand;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class OreControlCommand extends CommandSeparator {
 
-    public OreControlCommand(@NotNull final OreControlValues oreControlValues, @NotNull final GuiSettings guiSettings) {
+    public OreControlCommand(@NotNull final OreControlValues oreControlValues, @NotNull final GuiSettings guiSettings, @Nullable final PlayerJoinListener playerJoinListener, @Nullable final WelcomeMessage welcomeMessage) {
         super(oreControlValues.getJavaPlugin());
 
         final OreControlMessages oreControlMessages = oreControlValues.getOreControlMessages();
@@ -48,7 +51,12 @@ public class OreControlCommand extends CommandSeparator {
 
         final HelpCommand helpCommand = new HelpCommand(this, oreControlMessages);
         registerExecutor(helpCommand, "help", null, oreControlMessages.getCommandHelpUsageMessage(), oreControlMessages.getCommandHelpDescriptionMessage());
-        registerExecutor(helpCommand, null, null, oreControlMessages.getCommandHelpUsageMessage(), oreControlMessages.getCommandHelpDescriptionMessage());
+
+        if (playerJoinListener == null || welcomeMessage == null) {
+            registerExecutor(helpCommand, null, null, oreControlMessages.getCommandHelpUsageMessage(), oreControlMessages.getCommandHelpDescriptionMessage());
+        } else {
+            registerExecutor(new WelcomeCommand(helpCommand, oreControlValues, welcomeMessage, playerJoinListener), null, null, oreControlMessages.getCommandHelpUsageMessage(), oreControlMessages.getCommandHelpDescriptionMessage());
+        }
     }
 
 }

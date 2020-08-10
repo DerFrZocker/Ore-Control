@@ -71,6 +71,10 @@ public class ConfigValues implements ReloadAble {
         return yaml.getBoolean("verify.reset-action", true);
     }
 
+    public boolean showWelcomeMessage() {
+        return yaml.getBoolean("show-welcome-message", true);
+    }
+
     @Override
     public void reload() {
         yaml = Config.getConfig(OreControl.getInstance(), file.getName());
@@ -134,6 +138,16 @@ public class ConfigValues implements ReloadAble {
             }
         }
 
+        public void setShowWelcomeMessage(final boolean bool) {
+            yaml.set("show-welcome-message", bool);
+
+            try {
+                yaml.save(file);
+            } catch (final IOException e) {
+                throw new RuntimeException("Error while save config.yml, while set verify.reset_action to: " + bool, e);
+            }
+        }
+
     }
 
     public class Default {
@@ -160,6 +174,10 @@ public class ConfigValues implements ReloadAble {
 
         public boolean defaultVerifyResetAction() {
             return yaml.getDefaultSection().getBoolean("verify.reset-action", true);
+        }
+
+        public boolean defaultShowWelcomeMessage() {
+            return yaml.getDefaultSection().getBoolean("show-welcome-message", true);
         }
 
     }

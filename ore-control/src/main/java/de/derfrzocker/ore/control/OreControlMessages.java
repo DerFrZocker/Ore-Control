@@ -127,6 +127,32 @@ public class OreControlMessages implements HelpConfig {
     @NotNull
     private final MessageKey commandHelpDescription;
 
+    // Welcome message
+    @NotNull
+    private final MessageKey buttonOpenString;
+    @NotNull
+    private final MessageKey buttonCloseString;
+    @NotNull
+    private final MessageKey welcomeHeader;
+    @NotNull
+    private final MessageKey foundBug;
+    @NotNull
+    private final MessageKey featureRequest;
+    @NotNull
+    private final MessageKey support;
+    @NotNull
+    private final MessageKey supportMyWork;
+    @NotNull
+    private final MessageKey notShowAgain;
+    @NotNull
+    private final MessageKey notShowAgainSuccess;
+    @NotNull
+    private final MessageKey clickMe;
+    @NotNull
+    private final MessageKey rating;
+    @NotNull
+    private final MessageKey donation;
+
     public OreControlMessages(@NotNull final JavaPlugin javaPlugin) {
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
 
@@ -169,6 +195,18 @@ public class OreControlMessages implements HelpConfig {
         commandHelpShortFormat = new MessageKey(javaPlugin, "command.help.short-format");
         commandHelpUsage = new MessageKey(javaPlugin, "command.help.usage");
         commandHelpDescription = new MessageKey(javaPlugin, "command.help.description");
+        buttonOpenString = new MessageKey(javaPlugin, "welcome.button-open-string");
+        buttonCloseString = new MessageKey(javaPlugin, "welcome.button-close-string");
+        welcomeHeader = new MessageKey(javaPlugin, "welcome.header");
+        foundBug = new MessageKey(javaPlugin, "welcome.found-bug");
+        featureRequest = new MessageKey(javaPlugin, "welcome.feature-request");
+        support = new MessageKey(javaPlugin, "welcome.support");
+        supportMyWork = new MessageKey(javaPlugin, "welcome.support-my-work");
+        notShowAgain = new MessageKey(javaPlugin, "welcome.not-show-again");
+        notShowAgainSuccess = new MessageKey(javaPlugin, "welcome.not-show-again-success");
+        clickMe = new MessageKey(javaPlugin, "welcome.click-me");
+        rating = new MessageKey(javaPlugin, "welcome.rating");
+        donation = new MessageKey(javaPlugin, "welcome.donation");
     }
 
     @NotNull
@@ -385,4 +423,64 @@ public class OreControlMessages implements HelpConfig {
         return commandHelpDescription;
     }
 
+    // Welcome message
+    @NotNull
+    public MessageKey getButtonCloseString() {
+        return buttonCloseString;
+    }
+
+    @NotNull
+    public MessageKey getButtonOpenString() {
+        return buttonOpenString;
+    }
+
+    @NotNull
+    public MessageKey getWelcomeHeader() {
+        return welcomeHeader;
+    }
+
+    @NotNull
+    public MessageKey getNotShowAgain() {
+        return notShowAgain;
+    }
+
+    @NotNull
+    public MessageKey getSupportMyWork() {
+        return supportMyWork;
+    }
+
+    @NotNull
+    public MessageKey getSupport() {
+        return support;
+    }
+
+    @NotNull
+    public MessageKey getFeatureRequest() {
+        return featureRequest;
+    }
+
+    @NotNull
+    public MessageKey getFoundBug() {
+        return foundBug;
+    }
+
+    @NotNull
+    public MessageKey getClickMe() {
+        return clickMe;
+    }
+
+    @NotNull
+    public MessageKey getRating() {
+        return rating;
+    }
+
+    @NotNull
+    public MessageKey getDonation() {
+        return donation;
+    }
+
+    @NotNull
+    public MessageKey getNotShowAgainSuccess() {
+        return notShowAgainSuccess;
+    }
 }

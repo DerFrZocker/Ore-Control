@@ -46,7 +46,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class OreSettingsGui extends PageGui<Setting> {
 

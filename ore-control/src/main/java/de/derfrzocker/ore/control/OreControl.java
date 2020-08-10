@@ -50,6 +50,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -230,8 +231,15 @@ public class OreControl extends JavaPlugin implements Listener {
         // the player see that no command function, and looks in to the log to see if a error happen
         nmsService.replaceNMS();
 
-        // register the command and subcommand's
-        registerCommands();
+        if (configValues.showWelcomeMessage()) {
+            final WelcomeMessage welcomeMessage = new WelcomeMessage(this, oreControlMessages);
+            final PlayerJoinListener playerJoinListener = new PlayerJoinListener(permissions.getBasePermission(), welcomeMessage);
+
+            registerCommands(playerJoinListener, welcomeMessage);
+            getServer().getPluginManager().registerEvents(playerJoinListener, this);
+        } else {
+            registerCommands(null, null);
+        }
 
         // register the Listener for the WorldLoad event
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -267,11 +275,11 @@ public class OreControl extends JavaPlugin implements Listener {
         };
     }
 
-    private void registerCommands() {
+    private void registerCommands(@Nullable final PlayerJoinListener playerJoinListener, @Nullable final WelcomeMessage welcomeMessage) {
         getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(
                 new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions),
                 new GuiSettings(this, new File(getDataFolder(), "data/gui"), Version.getCurrent())
-        ));
+                , playerJoinListener, welcomeMessage));
     }
 
     private void checkFile(@NotNull final String name) {
