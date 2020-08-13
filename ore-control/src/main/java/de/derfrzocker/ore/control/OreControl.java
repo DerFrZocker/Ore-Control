@@ -35,6 +35,7 @@ import de.derfrzocker.ore.control.impl.generationhandler.*;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
+import de.derfrzocker.ore.control.impl.v1_16_R2.NMSUtil_v1_16_R2;
 import de.derfrzocker.ore.control.impl.v_1_15_R1.NMSUtil_v1_15_R1;
 import de.derfrzocker.ore.control.impl.v_1_16_R1.NMSUtil_v1_16_R1;
 import de.derfrzocker.ore.control.utils.OreControlValues;
@@ -101,6 +102,8 @@ public class OreControl extends JavaPlugin implements Listener {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         } else if (Version.getCurrent() == Version.v1_16_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
+        } else if (Version.getCurrent() == Version.v1_16_R2) {
+            nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         }
 
         // if no suitable version was found, throw an Exception and stop onLoad part

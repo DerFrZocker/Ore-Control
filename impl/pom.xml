@@ -18,6 +18,7 @@
         <module>v1_16_R1</module>
         <module>yaml</module>
         <module>service</module>
+        <module>v1_16_R2</module>
     </modules>
 
     <artifactId>ore-control-impl</artifactId>

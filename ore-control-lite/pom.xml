@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_16_R1</artifactId>
+            <artifactId>ore-control-impl-v1_16_R2</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
