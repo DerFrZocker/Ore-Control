@@ -22,23 +22,22 @@
  * SOFTWARE.
  */
 
-package de.derfrzocker.ore.control.impl.v_1_15_R1;
+package de.derfrzocker.ore.control.impl.v1_16_R1;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_16_R1.*;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
-public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_15_R1 extends WorldGenDecoratorNetherHeight {
+public class WorldGenDecoratorEmeraldOverrider_v1_16_R1 extends WorldGenDecoratorEmerald {
 
     @NotNull
     private final Biome biome;
@@ -46,8 +45,8 @@ public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_15_R1 extends
     @NotNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    public WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_15_R1(final Function<Dynamic<?>, ? extends WorldGenFeatureChanceDecoratorCountConfiguration> dynamicFunction, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
-        super(dynamicFunction);
+    public WorldGenDecoratorEmeraldOverrider_v1_16_R1(Codec<WorldGenFeatureEmptyConfiguration2> codec, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
+        super(codec);
 
         Validate.notNull(biome, "Biome cannot be null");
         Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
@@ -57,10 +56,10 @@ public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_15_R1 extends
     }
 
     @Override
-    public <FC extends WorldGenFeatureConfiguration, F extends WorldGenerator<FC>> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettingsDefault> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, final WorldGenFeatureConfigured<FC, F> worldGenFeatureConfigured) {
-        return serviceSupplier.get().getNMSService().generate(generatorAccess.getMinecraftWorld().getWorld(), biome, Ore.GOLD_BADLANDS, new ChunkCoordIntPair(blockPosition.getX() >> 4, blockPosition.getZ() >> 4), worldGenFeatureChanceDecoratorCountConfiguration, worldGenFeatureConfigured,
-                null,
-                (configuration, featureConfiguration) -> super.a(generatorAccess, chunkGenerator, random, blockPosition, (WorldGenFeatureChanceDecoratorCountConfiguration) configuration, (WorldGenFeatureConfigured<?, ?>) featureConfiguration)
+    public <FC extends WorldGenFeatureConfiguration, F extends WorldGenerator<FC>> boolean a(final GeneratorAccessSeed generatorAccess, final StructureManager structureManager, final ChunkGenerator chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureEmptyConfiguration2 worldGenFeatureDecoratorEmptyConfiguration, final WorldGenFeatureConfigured<FC, F> worldGenFeatureConfigured) {
+        return serviceSupplier.get().getNMSService().generate(generatorAccess.getMinecraftWorld().getWorld(), biome, Ore.EMERALD, new ChunkCoordIntPair(blockPosition.getX() >> 4, blockPosition.getZ() >> 4), worldGenFeatureDecoratorEmptyConfiguration, worldGenFeatureConfigured,
+                (location, Integer) -> worldGenFeatureConfigured.d.generate(generatorAccess, structureManager, chunkGenerator, random, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), worldGenFeatureConfigured.e),
+                (configuration, featureConfiguration) -> super.a(generatorAccess, structureManager, chunkGenerator, random, blockPosition, (WorldGenFeatureEmptyConfiguration2) configuration, (WorldGenFeatureConfigured<?, ?>) featureConfiguration)
                 , random);
     }
 

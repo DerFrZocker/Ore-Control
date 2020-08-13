@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.derfrzocker.ore.control.impl.v_1_16_R1;
+package de.derfrzocker.ore.control.impl.v1_16_R1;
 
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;

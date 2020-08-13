@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.derfrzocker.ore.control.impl.v_1_16_R1;
+package de.derfrzocker.ore.control.impl.v1_16_R1;
 
 import com.mojang.serialization.Codec;
 import de.derfrzocker.ore.control.api.Biome;
@@ -36,7 +36,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class WorldGenDecoratorNetherMagmaOverrider_v1_16_R1 extends WorldGenDecoratorNetherMagma {
+@SuppressWarnings("Duplicates")
+public class WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_16_R1 extends WorldGenDecoratorNetherHeight {
 
     @NotNull
     private final Biome biome;
@@ -44,7 +45,7 @@ public class WorldGenDecoratorNetherMagmaOverrider_v1_16_R1 extends WorldGenDeco
     @NotNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    public WorldGenDecoratorNetherMagmaOverrider_v1_16_R1(final Codec<WorldGenDecoratorFrequencyConfiguration> codec, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
+    public WorldGenDecoratorNetherHeightBadlandsGoldOverrider_v1_16_R1(final Codec<WorldGenFeatureChanceDecoratorCountConfiguration> codec, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
         super(codec);
 
         Validate.notNull(biome, "Biome cannot be null");
@@ -55,10 +56,10 @@ public class WorldGenDecoratorNetherMagmaOverrider_v1_16_R1 extends WorldGenDeco
     }
 
     @Override
-    public <FC extends WorldGenFeatureConfiguration, F extends WorldGenerator<FC>> boolean a(final GeneratorAccessSeed generatorAccess, final StructureManager structureManager, final ChunkGenerator chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenDecoratorFrequencyConfiguration worldGenDecoratorFrequencyConfiguration, final WorldGenFeatureConfigured<FC, F> worldGenFeatureConfigured) {
-        return serviceSupplier.get().getNMSService().generate(generatorAccess.getMinecraftWorld().getWorld(), biome, Ore.MAGMA, new ChunkCoordIntPair(blockPosition.getX() >> 4, blockPosition.getZ() >> 4), worldGenDecoratorFrequencyConfiguration, worldGenFeatureConfigured,
-                (location, Integer) -> worldGenFeatureConfigured.d.generate(generatorAccess, structureManager, chunkGenerator, random, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), (FC) new WorldGenFeatureOreConfiguration(WorldGenFeatureOreConfiguration.Target.NETHERRACK, Blocks.MAGMA_BLOCK.getBlockData(), Integer)),
-                (configuration, featureConfiguration) -> super.a(generatorAccess, structureManager, chunkGenerator, random, blockPosition, (WorldGenDecoratorFrequencyConfiguration) configuration, (WorldGenFeatureConfigured<?, ?>) featureConfiguration)
+    public <FC extends WorldGenFeatureConfiguration, F extends WorldGenerator<FC>> boolean a(final GeneratorAccessSeed generatorAccess, final StructureManager structureManager, final ChunkGenerator chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenFeatureChanceDecoratorCountConfiguration worldGenFeatureChanceDecoratorCountConfiguration, final WorldGenFeatureConfigured<FC, F> worldGenFeatureConfigured) {
+        return serviceSupplier.get().getNMSService().generate(generatorAccess.getMinecraftWorld().getWorld(), biome, Ore.GOLD_BADLANDS, new ChunkCoordIntPair(blockPosition.getX() >> 4, blockPosition.getZ() >> 4), worldGenFeatureChanceDecoratorCountConfiguration, worldGenFeatureConfigured,
+                null,
+                (configuration, featureConfiguration) -> super.a(generatorAccess, structureManager, chunkGenerator, random, blockPosition, (WorldGenFeatureChanceDecoratorCountConfiguration) configuration, (WorldGenFeatureConfigured<?, ?>) featureConfiguration)
                 , random);
     }
 

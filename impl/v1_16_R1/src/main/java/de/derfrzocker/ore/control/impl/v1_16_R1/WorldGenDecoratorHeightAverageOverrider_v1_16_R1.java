@@ -22,45 +22,49 @@
  * SOFTWARE.
  */
 
-package de.derfrzocker.ore.control.impl.v_1_15_R1;
+package de.derfrzocker.ore.control.impl.v1_16_R1;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
-import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_16_R1.*;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
-public class WorldGenDecoratorHeightAverageOverrider_v1_15_R1 extends WorldGenDecoratorHeightAverage {
+public class WorldGenDecoratorHeightAverageOverrider_v1_16_R1 extends WorldGenDecoratorHeightAverage {
 
     @NotNull
     private final Biome biome;
 
     @NotNull
+    private final Ore ore;
+
+    @NotNull
     private final Supplier<OreControlService> serviceSupplier;
 
-    public WorldGenDecoratorHeightAverageOverrider_v1_15_R1(final Function<Dynamic<?>, ? extends WorldGenDecoratorHeightAverageConfiguration> dynamicFunction, @NotNull final Biome biome, @NotNull final Supplier<OreControlService> serviceSupplier) {
-        super(dynamicFunction);
+    public WorldGenDecoratorHeightAverageOverrider_v1_16_R1(Codec<WorldGenDecoratorHeightAverageConfiguration> codec, @NotNull final Biome biome, @NotNull final Ore ore, @NotNull final Supplier<OreControlService> serviceSupplier) {
+        super(codec);
 
         Validate.notNull(biome, "Biome cannot be null");
+        Validate.notNull(ore, "Ore cannot be null");
         Validate.notNull(serviceSupplier, "Service Supplier cannot be null");
 
         this.biome = biome;
+        this.ore = ore;
         this.serviceSupplier = serviceSupplier;
     }
 
     @Override
-    public <FC extends WorldGenFeatureConfiguration, F extends WorldGenerator<FC>> boolean a(final GeneratorAccess generatorAccess, final ChunkGenerator<? extends GeneratorSettingsDefault> chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenDecoratorHeightAverageConfiguration worldGenDecoratorHeightAverageConfiguration, final WorldGenFeatureConfigured<FC, F> worldGenFeatureConfigured) {
-        return serviceSupplier.get().getNMSService().generate(generatorAccess.getMinecraftWorld().getWorld(), biome, Ore.LAPIS, new ChunkCoordIntPair(blockPosition.getX() >> 4, blockPosition.getZ() >> 4), worldGenDecoratorHeightAverageConfiguration, worldGenFeatureConfigured,
+    public <FC extends WorldGenFeatureConfiguration, F extends WorldGenerator<FC>> boolean a(final GeneratorAccessSeed generatorAccess, final StructureManager structureManager, final ChunkGenerator chunkGenerator, final Random random, final BlockPosition blockPosition, final WorldGenDecoratorHeightAverageConfiguration worldGenDecoratorHeightAverageConfiguration, final WorldGenFeatureConfigured<FC, F> worldGenFeatureConfigured) {
+        return serviceSupplier.get().getNMSService().generate(generatorAccess.getMinecraftWorld().getWorld(), biome, ore, new ChunkCoordIntPair(blockPosition.getX() >> 4, blockPosition.getZ() >> 4), worldGenDecoratorHeightAverageConfiguration, worldGenFeatureConfigured,
                 null,
-                (configuration, featureConfiguration) -> super.a(generatorAccess, chunkGenerator, random, blockPosition, (WorldGenDecoratorHeightAverageConfiguration) configuration, (WorldGenFeatureConfigured<?, ?>) featureConfiguration)
+                (configuration, featureConfiguration) -> super.a(generatorAccess, structureManager, chunkGenerator, random, blockPosition, (WorldGenDecoratorHeightAverageConfiguration) configuration, (WorldGenFeatureConfigured<?, ?>) featureConfiguration)
                 , random);
     }
 
