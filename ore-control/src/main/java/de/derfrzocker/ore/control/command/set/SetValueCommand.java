@@ -65,7 +65,7 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
             return true;
         }
 
-        CommandUtil.runAsynchronously(sender, oreControlValues.getJavaPlugin(), () -> {
+        CommandUtil.runAsynchronously(sender, oreControlValues.getPlugin(), () -> {
             final String oreName = args[0];
             final String settingName = args[1];
             final String configName = args[2];

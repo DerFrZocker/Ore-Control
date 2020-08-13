@@ -206,7 +206,7 @@ public class CopyOresAction implements CopyAction {
 
     private void openVerifyIfNeeded(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui, @NotNull final Consumer<InventoryClickEvent> acceptAction) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
-            new VerifyGui(oreControlValues.getJavaPlugin(), acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).openSync(humanEntity);
+            new VerifyGui(oreControlValues.getPlugin(), acceptAction, clickEvent1 -> inventoryGui.closeSync(humanEntity)).openSync(humanEntity);
             return;
         }
 

@@ -50,7 +50,7 @@ public class ReloadCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        CommandUtil.runAsynchronously(sender, oreControlValues.getJavaPlugin(), () -> {
+        CommandUtil.runAsynchronously(sender, oreControlValues.getPlugin(), () -> {
             oreControlValues.getOreControlMessages().getCommandReloadBeginMessage().sendMessage(sender);
 
             ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);

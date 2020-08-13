@@ -88,7 +88,7 @@ public class CopyWorldOreConfigAction implements CopyAction {
     @Override
     public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
-            new VerifyGui(oreControlValues.getJavaPlugin(), clickEvent -> {
+            new VerifyGui(oreControlValues.getPlugin(), clickEvent -> {
                 CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget);
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
                 inventoryGui.closeSync(humanEntity);

@@ -27,7 +27,7 @@ package de.derfrzocker.ore.control;
 
 import de.derfrzocker.spigot.utils.Permission;
 import org.apache.commons.lang.Validate;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -60,22 +60,22 @@ public class Permissions {
     @NotNull
     private final Permission configEdit;
 
-    public Permissions(@NotNull final JavaPlugin javaPlugin) {
-        Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
+    public Permissions(@NotNull final Plugin plugin) {
+        Validate.notNull(plugin, "Plugin cannot be null");
 
-        base = new Permission(null, "ore.control", javaPlugin, false);
-        reload = new Permission(base, "reload", javaPlugin, true);
-        set = new Permission(base, "set", javaPlugin, true);
-        setValue = new Permission(set, "value", javaPlugin, true);
-        setBiome = new Permission(set, "biome", javaPlugin, true);
-        gui = new Permission(base, "gui", javaPlugin, false);
-        template = new Permission(base, "template", javaPlugin, false);
-        templateCreate = new Permission(template, "create", javaPlugin, false);
-        templateDelete = new Permission(template, "delete", javaPlugin, false);
-        value = new Permission(base, "value", javaPlugin, false);
-        valueReset = new Permission(value, "reset", javaPlugin, false);
-        valueCopy = new Permission(value, "copy", javaPlugin, false);
-        configEdit = new Permission(base, "config.edit", javaPlugin, false);
+        base = new Permission(null, "ore.control", plugin, false);
+        reload = new Permission(base, "reload", plugin, true);
+        set = new Permission(base, "set", plugin, true);
+        setValue = new Permission(set, "value", plugin, true);
+        setBiome = new Permission(set, "biome", plugin, true);
+        gui = new Permission(base, "gui", plugin, false);
+        template = new Permission(base, "template", plugin, false);
+        templateCreate = new Permission(template, "create", plugin, false);
+        templateDelete = new Permission(template, "delete", plugin, false);
+        value = new Permission(base, "value", plugin, false);
+        valueReset = new Permission(value, "reset", plugin, false);
+        valueCopy = new Permission(value, "copy", plugin, false);
+        configEdit = new Permission(base, "config.edit", plugin, false);
     }
 
     @NotNull

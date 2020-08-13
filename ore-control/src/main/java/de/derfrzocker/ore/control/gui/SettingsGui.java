@@ -42,7 +42,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +70,7 @@ public class SettingsGui extends BasicGui {
     private double current = 0;
 
     SettingsGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable Dimension dimension, @Nullable final Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getSettingsGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getSettingsGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
@@ -89,29 +89,29 @@ public class SettingsGui extends BasicGui {
         addDecorations();
 
         final SettingsGuiSettings settingsGuiSettings = guiSettings.getSettingsGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
         final Permissions permissions = oreControlValues.getPermissions();
 
-        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(javaPlugin, value.getItemStack()), new SettingConsumer(value.getValue())));
+        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack()), new SettingConsumer(value.getValue())));
 
-        addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getBackItemStack()),
+        addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getBackItemStack()),
                 event -> new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore).openSync(event.getWhoClicked()));
 
-        addItem(settingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biome == null ? settingsGuiSettings.getInfoItemStack() : settingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues(false)));
+        addItem(settingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, biome == null ? settingsGuiSettings.getInfoItemStack() : settingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues(false)));
 
         updateItemStack();
 
         if (permissions.getValueResetPermission().hasPermission(permissible)) {
-            addItem(settingsGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getResetValueItemStack()), this::handleResetValues);
+            addItem(settingsGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getResetValueItemStack()), this::handleResetValues);
         }
 
         if (permissions.getValueCopyPermission().hasPermission(permissible)) {
-            addItem(settingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopySettingAction(guiSettings, oreControlValues, worldOreConfig, biome, ore, setting)).openSync(event.getWhoClicked()));
+            addItem(settingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopySettingAction(guiSettings, oreControlValues, worldOreConfig, biome, ore, setting)).openSync(event.getWhoClicked()));
         }
     }
 
     SettingsGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable Dimension dimension, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final Ore ore, @NotNull final Setting setting) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getSettingsGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getSettingsGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
@@ -130,12 +130,12 @@ public class SettingsGui extends BasicGui {
         addDecorations();
 
         final SettingsGuiSettings settingsGuiSettings = guiSettings.getSettingsGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
 
-        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(javaPlugin, value.getItemStack()), new SettingBiomeGroupConsumer(value.getValue())));
+        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack()), new SettingBiomeGroupConsumer(value.getValue())));
 
-        addItem(settingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues(true)));
-        addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, settingsGuiSettings.getBackItemStack()),
+        addItem(settingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues(true)));
+        addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getBackItemStack()),
                 event -> new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, ore).openSync(event.getWhoClicked()));
 
         updateBiomeGroupItemStack(true);

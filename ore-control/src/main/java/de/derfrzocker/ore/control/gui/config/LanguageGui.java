@@ -33,7 +33,7 @@ import de.derfrzocker.spigot.utils.gui.InventoryUtil;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -47,22 +47,22 @@ public class LanguageGui extends BasicGui {
     private final OreControlValues oreControlValues;
 
     LanguageGui(@NotNull GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getLanguageGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getLanguageGuiSettings());
 
         this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
 
         final LanguageGuiSettings languageGuiSettings = guiSettings.getLanguageGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
         final Language[] languages = Language.values();
 
         addDecorations();
 
         for (int i = 0; i < languages.length; i++) {
-            addItem(InventoryUtil.calculateSlot(i, languageGuiSettings.getLanguageGap()), MessageUtil.replaceItemStack(javaPlugin, languageGuiSettings.getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
+            addItem(InventoryUtil.calculateSlot(i, languageGuiSettings.getLanguageGap()), MessageUtil.replaceItemStack(plugin, languageGuiSettings.getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
         }
 
-        addItem(languageGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, languageGuiSettings.getInfoItemStack(),
+        addItem(languageGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, languageGuiSettings.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ));

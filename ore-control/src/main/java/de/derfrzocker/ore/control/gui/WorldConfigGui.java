@@ -42,7 +42,7 @@ import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class WorldConfigGui extends BasicGui {
     private final CopyAction copyAction;
 
     WorldConfigGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getWorldConfigGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getWorldConfigGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
@@ -69,37 +69,37 @@ public class WorldConfigGui extends BasicGui {
         this.copyAction = null;
 
         final WorldConfigGuiSettings worldConfigGuiSettings = guiSettings.getWorldConfigGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
         final Permissions permissions = oreControlValues.getPermissions();
 
         addDecorations();
 
         if (permissions.getSetValuePermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getOreItemStack()), event -> new OreGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, (Biome) null).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getOreItemStack()), event -> new OreGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, (Biome) null).openSync(event.getWhoClicked()));
         }
 
         if (permissions.getSetBiomePermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBiomeItemStack()), event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBiomeItemStack()), event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
         }
 
         if (permissions.getValueResetPermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getResetValueItemStack()), this::handleResetValues);
+            addItem(worldConfigGuiSettings.getResetValueSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getResetValueItemStack()), this::handleResetValues);
         }
 
         if (permissions.getValueCopyPermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopyWorldOreConfigAction(oreControlValues, worldOreConfig)).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopyWorldOreConfigAction(oreControlValues, worldOreConfig)).openSync(event.getWhoClicked()));
         }
 
         if (permissions.getTemplateDeletePermission().hasPermission(permissible) && !worldOreConfig.getName().equals("Default")) {
-            addItem(worldConfigGuiSettings.getTemplateDeleteSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getTemplateDeleteItemStack()), this::handleDeleteTemplate);
+            addItem(worldConfigGuiSettings.getTemplateDeleteSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getTemplateDeleteItemStack()), this::handleDeleteTemplate);
         }
 
-        addItem(worldConfigGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBackItemStack()), event -> new WorldGui(guiSettings, oreControlValues, event.getWhoClicked()).openSync(event.getWhoClicked()));
-        addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
+        addItem(worldConfigGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBackItemStack()), event -> new WorldGui(guiSettings, oreControlValues, event.getWhoClicked()).openSync(event.getWhoClicked()));
+        addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
     }
 
     public WorldConfigGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @NotNull CopyAction copyAction) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getWorldConfigGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getWorldConfigGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
@@ -111,7 +111,7 @@ public class WorldConfigGui extends BasicGui {
         this.copyAction = copyAction;
 
         final WorldConfigGuiSettings worldConfigGuiSettings = guiSettings.getWorldConfigGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
         final Permissions permissions = oreControlValues.getPermissions();
 
         addDecorations();
@@ -127,7 +127,7 @@ public class WorldConfigGui extends BasicGui {
             }
 
             if (bool) {
-                addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getOreItemStack()), this::handleCopyAction);
+                addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getOreItemStack()), this::handleCopyAction);
             }
         }
 
@@ -143,11 +143,11 @@ public class WorldConfigGui extends BasicGui {
 
 
             if (bool) {
-                addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getBiomeItemStack()), this::handleCopyActionBiome);
+                addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBiomeItemStack()), this::handleCopyActionBiome);
             }
         }
 
-        addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
+        addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
     }
 
     private void handleCopyAction(@NotNull final InventoryClickEvent event) {

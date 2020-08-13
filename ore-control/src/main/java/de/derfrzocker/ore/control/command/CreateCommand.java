@@ -60,7 +60,7 @@ public class CreateCommand implements TabExecutor {
             return true;
         }
 
-        CommandUtil.runAsynchronously(sender, oreControlValues.getJavaPlugin(), () -> {
+        CommandUtil.runAsynchronously(sender, oreControlValues.getPlugin(), () -> {
             final String configName = args[0];
 
             final OreControlService service = oreControlValues.getService();

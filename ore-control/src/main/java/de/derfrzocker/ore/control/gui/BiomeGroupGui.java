@@ -42,7 +42,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,7 +63,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     private final Dimension dimension;
 
     BiomeGroupGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getBiomeGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getBiomeGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
         Validate.notNull(worldOreConfig, "WorldOreConfig cannot be null");
@@ -74,14 +74,14 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         this.dimension = dimension;
 
         final BiomeGuiSettings biomeGuiSettings = guiSettings.getBiomeGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
 
         addDecorations();
-        init(BiomeGroups.getInstance(javaPlugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
+        init(BiomeGroups.getInstance(plugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
 
-        addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
-        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
-        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(javaPlugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
+        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+        addItem(biomeGuiSettings.getBiomeGroupSwitchSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getBiomeItemStack()), event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(@NotNull final BiomeGroup biomeGroup) {
@@ -103,25 +103,25 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         private static BiomeGroups instance;
 
         @NotNull
-        private final JavaPlugin javaPlugin;
+        private final Plugin plugin;
         @NotNull
         private YamlConfiguration yaml;
 
-        private BiomeGroups(@NotNull final JavaPlugin javaPlugin) {
-            Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
+        private BiomeGroups(@NotNull final Plugin plugin) {
+            Validate.notNull(plugin, "Plugin cannot be null");
 
-            this.javaPlugin = javaPlugin;
+            this.plugin = plugin;
 
-            yaml = Config.getConfig(javaPlugin, FILE);
+            yaml = Config.getConfig(plugin, FILE);
             RELOAD_ABLES.add(this);
         }
 
-        private static BiomeGroups getInstance(@NotNull final JavaPlugin javaPlugin) {
+        private static BiomeGroups getInstance(@NotNull final Plugin plugin) {
             if (instance != null) {
                 return instance;
             }
 
-            instance = new BiomeGroups(javaPlugin);
+            instance = new BiomeGroups(plugin);
 
             return instance;
         }
@@ -142,7 +142,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
         @Override
         public void reload() {
-            yaml = new Config(Objects.requireNonNull(javaPlugin.getResource(FILE), "InputStream cannot be null"));
+            yaml = new Config(Objects.requireNonNull(plugin.getResource(FILE), "InputStream cannot be null"));
         }
 
     }

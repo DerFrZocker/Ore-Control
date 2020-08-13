@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 public class OreControlCommand extends CommandSeparator {
 
     public OreControlCommand(@NotNull final OreControlValues oreControlValues, @NotNull final GuiSettings guiSettings, @Nullable final PlayerJoinListener playerJoinListener, @Nullable final WelcomeMessage welcomeMessage) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getPlugin());
 
         final OreControlMessages oreControlMessages = oreControlValues.getOreControlMessages();
         final Permissions permissions = oreControlValues.getPermissions();

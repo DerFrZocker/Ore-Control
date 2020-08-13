@@ -33,7 +33,7 @@ import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class ConfigGui extends BasicGui {
@@ -44,37 +44,37 @@ public class ConfigGui extends BasicGui {
     private final OreControlValues oreControlValues;
 
     public ConfigGui(@NotNull GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getConfigGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getConfigGuiSettings());
 
         this.guiSettings = guiSettings;
         this.oreControlValues = oreControlValues;
 
         final ConfigGuiSettings configGuiSettings = guiSettings.getConfigGuiSettings();
-        final JavaPlugin javaPlugin = oreControlValues.getJavaPlugin();
+        final Plugin plugin = oreControlValues.getPlugin();
 
         addDecorations();
 
-        addItem(configGuiSettings.getLanguageSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getLanguageItemStack(),
+        addItem(configGuiSettings.getLanguageSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getLanguageItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ), event -> new LanguageGui(guiSettings, oreControlValues).openSync(event.getWhoClicked()));
 
-        addItem(configGuiSettings.getsafeModeSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getsafeModeItemStack(),
+        addItem(configGuiSettings.getsafeModeSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getsafeModeItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isSafeMode()),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultSafeMode())
         ), this::handleSafeMode);
 
-        addItem(configGuiSettings.getTranslateTabCompilationSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getTranslateTabCompilationItemStack(),
+        addItem(configGuiSettings.getTranslateTabCompilationSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getTranslateTabCompilationItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isTranslateTabCompilation()),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultTranslateTabCompilation())
         ), this::handleTranslateTabCompilation);
 
-        addItem(configGuiSettings.getVerifyCopyActionSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getVerifyCopyActionItemStack(),
+        addItem(configGuiSettings.getVerifyCopyActionSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getVerifyCopyActionItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().verifyCopyAction()),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultVerifyCopyAction())
         ), this::handleVerifyCopyAction);
 
-        addItem(configGuiSettings.getVerifyResetActionSlot(), MessageUtil.replaceItemStack(javaPlugin, configGuiSettings.getVerifyResetActionItemStack(),
+        addItem(configGuiSettings.getVerifyResetActionSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getVerifyResetActionItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().verifyResetAction()),
                 new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultVerifyResetAction())
         ), this::handleVerifyResetAction);

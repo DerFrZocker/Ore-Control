@@ -28,22 +28,22 @@ import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.spigot.utils.gui.PageSettings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public class OreSettingsGuiSettings extends PageSettings {
 
-    public OreSettingsGuiSettings(@NotNull JavaPlugin plugin, @NotNull String file) {
+    public OreSettingsGuiSettings(@NotNull Plugin plugin, @NotNull String file) {
         super(plugin, file);
     }
 
-    public OreSettingsGuiSettings(@NotNull JavaPlugin plugin, @NotNull String file, boolean copy) {
+    public OreSettingsGuiSettings(@NotNull Plugin plugin, @NotNull String file, boolean copy) {
         super(plugin, file, copy);
     }
 
-    public OreSettingsGuiSettings(@NotNull JavaPlugin plugin, @NotNull Supplier<ConfigurationSection> configurationSectionSupplier) {
+    public OreSettingsGuiSettings(@NotNull Plugin plugin, @NotNull Supplier<ConfigurationSection> configurationSectionSupplier) {
         super(plugin, configurationSectionSupplier);
     }
 

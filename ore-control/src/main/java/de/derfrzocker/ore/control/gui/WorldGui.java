@@ -63,7 +63,7 @@ public class WorldGui extends PageGui<String> {
     private Map<String, WorldOreConfig> worldOreConfigs = new HashMap<>();
 
     public WorldGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getWorldGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getWorldGuiSettings());
 
         Validate.notNull(permissible, "Permissible cannot be null");
 
@@ -90,7 +90,7 @@ public class WorldGui extends PageGui<String> {
     }
 
     WorldGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final CopyAction copyAction) {
-        super(oreControlValues.getJavaPlugin(), guiSettings.getWorldGuiSettings());
+        super(oreControlValues.getPlugin(), guiSettings.getWorldGuiSettings());
 
         Validate.notNull(copyAction, "CopyAction cannot be null");
 

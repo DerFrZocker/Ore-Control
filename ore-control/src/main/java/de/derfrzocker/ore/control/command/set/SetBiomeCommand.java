@@ -62,7 +62,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             return true;
         }
 
-        CommandUtil.runAsynchronously(sender, oreControlValues.getJavaPlugin(), () -> {
+        CommandUtil.runAsynchronously(sender, oreControlValues.getPlugin(), () -> {
             final String biomeName = args[0];
             final String oreName = args[1];
             final String settingName = args[2];

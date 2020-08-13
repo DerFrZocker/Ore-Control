@@ -29,7 +29,7 @@ import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.OreControlService;
 import org.apache.commons.lang.Validate;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -39,7 +39,7 @@ public class OreControlValues {
     @NotNull
     private final Supplier<OreControlService> serviceSupplier;
     @NotNull
-    private final JavaPlugin javaPlugin;
+    private final Plugin plugin;
     @NotNull
     private final ConfigValues configValues;
     @NotNull
@@ -47,15 +47,15 @@ public class OreControlValues {
     @NotNull
     private final Permissions permissions;
 
-    public OreControlValues(@NotNull final Supplier<OreControlService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final ConfigValues configValues, @NotNull final OreControlMessages oreControlMessages, @NotNull final Permissions permissions) {
+    public OreControlValues(@NotNull final Supplier<OreControlService> serviceSupplier, @NotNull final Plugin plugin, @NotNull final ConfigValues configValues, @NotNull final OreControlMessages oreControlMessages, @NotNull final Permissions permissions) {
         Validate.notNull(serviceSupplier, "Service supplier cannot be null");
-        Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
+        Validate.notNull(plugin, "Plugin cannot be null");
         Validate.notNull(configValues, "ConfigValues cannot be null");
         Validate.notNull(oreControlMessages, "OreControlMessages cannot be null");
         Validate.notNull(permissions, "Permissions cannot be null");
 
         this.serviceSupplier = serviceSupplier;
-        this.javaPlugin = javaPlugin;
+        this.plugin = plugin;
         this.configValues = configValues;
         this.oreControlMessages = oreControlMessages;
         this.permissions = permissions;
@@ -72,8 +72,8 @@ public class OreControlValues {
     }
 
     @NotNull
-    public JavaPlugin getJavaPlugin() {
-        return javaPlugin;
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     @NotNull

@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 public class SetCommand extends CommandSeparator {
 
     public SetCommand(@NotNull final OreControlValues oreControlValues) {
-        super(oreControlValues.getJavaPlugin());
+        super(oreControlValues.getPlugin());
 
         final OreControlMessages messages = oreControlValues.getOreControlMessages();
         final Permissions permissions = oreControlValues.getPermissions();

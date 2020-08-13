@@ -92,7 +92,7 @@ public class CopyBiomesAction implements CopyAction {
     @Override
     public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
-            new VerifyGui(oreControlValues.getJavaPlugin(), clickEvent -> {
+            new VerifyGui(oreControlValues.getPlugin(), clickEvent -> {
                 for (Biome biome : biomes) {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, biome, biome);
                 }
