@@ -77,9 +77,13 @@ public class GuiSettings {
     public GuiSettings(@NotNull final JavaPlugin javaPlugin, @NotNull final File directory, @NotNull final Version version) {
         Validate.notNull(javaPlugin, "JavaPlugin cannot be null");
         Validate.notNull(directory, "Directory cannot be null");
-        Validate.isTrue(directory.exists(), "Directory '" + directory + "' does not exist");
-        Validate.isTrue(directory.isDirectory(), "Directory '" + directory + "' dis not a directory");
         Validate.notNull(version, "Version cannot be null");
+
+        if (!directory.exists()) {
+            Validate.isTrue(directory.mkdirs(), "Can't create directory '" + directory + "'");
+        } else {
+            Validate.isTrue(directory.isDirectory(), "Directory '" + directory + "' is not a directory");
+        }
 
         final File dataFolder = javaPlugin.getDataFolder();
 
