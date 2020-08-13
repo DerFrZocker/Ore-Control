@@ -68,10 +68,8 @@ class NMSReplacer_v1_16_R2 {
         final Biome biome;
 
         try {
-            System.out.println(minecraftKey.getKey().toUpperCase());
             biome = Biome.valueOf(minecraftKey.getKey().toUpperCase());
         } catch (final IllegalArgumentException e) {
-            System.out.println(minecraftKey.getKey().toUpperCase() + " --not found--");
             return;
         }
 
@@ -114,9 +112,7 @@ class NMSReplacer_v1_16_R2 {
         feature = RegistryGeneration.e.get(registry.getKey(feature));
 
         if (feature == null) {
-            //TODO maybe return / log / throw error
-
-            System.out.println("ping"); //temp
+            return null;
         }
 
         if (feature == BiomeDecoratorGroups.ORE_GOLD_DELTAS || feature == BiomeDecoratorGroups.ORE_GOLD_NETHER) {
