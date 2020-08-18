@@ -35,9 +35,9 @@ import de.derfrzocker.ore.control.impl.generationhandler.*;
 import de.derfrzocker.ore.control.impl.v1_13_R1.NMSUtil_v1_13_R1;
 import de.derfrzocker.ore.control.impl.v1_13_R2.NMSUtil_v1_13_R2;
 import de.derfrzocker.ore.control.impl.v1_14_R1.NMSUtil_v1_14_R1;
-import de.derfrzocker.ore.control.impl.v1_16_R2.NMSUtil_v1_16_R2;
 import de.derfrzocker.ore.control.impl.v1_15_R1.NMSUtil_v1_15_R1;
 import de.derfrzocker.ore.control.impl.v1_16_R1.NMSUtil_v1_16_R1;
+import de.derfrzocker.ore.control.impl.v1_16_R2.NMSUtil_v1_16_R2;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
@@ -281,7 +281,7 @@ public class OreControl extends JavaPlugin implements Listener {
     private void registerCommands(@Nullable final PlayerJoinListener playerJoinListener, @Nullable final WelcomeMessage welcomeMessage) {
         getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(
                 new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions),
-                new GuiSettings(this, new File(getDataFolder(), "data/gui"), Version.getCurrent())
+                new GuiSettings(this, "data/gui", Version.getCurrent())
                 , playerJoinListener, welcomeMessage));
     }
 

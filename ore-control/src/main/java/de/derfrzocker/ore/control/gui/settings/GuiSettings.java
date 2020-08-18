@@ -74,50 +74,39 @@ public class GuiSettings {
         this.worldGuiSettings = worldGuiSettings;
     }
 
-    public GuiSettings(@NotNull final Plugin plugin, @NotNull final File directory, @NotNull final Version version) {
+    public GuiSettings(@NotNull final Plugin plugin, @NotNull final String directory, @NotNull final Version version) {
         Validate.notNull(plugin, "Plugin cannot be null");
         Validate.notNull(directory, "Directory cannot be null");
         Validate.notNull(version, "Version cannot be null");
 
-        if (!directory.exists()) {
-            Validate.isTrue(directory.mkdirs(), "Can't create directory '" + directory + "'");
-        } else {
-            Validate.isTrue(directory.isDirectory(), "Directory '" + directory + "' is not a directory");
-        }
-
         final File dataFolder = plugin.getDataFolder();
 
-        this.booleanGuiSetting = new BooleanGuiSetting(plugin, getStringFromFile(dataFolder, new File(directory, "boolean-gui.yml")), true);
-        this.configGuiSettings = new ConfigGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "config-gui.yml")), true);
-        this.languageGuiSettings = new LanguageGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "language-gui.yml")), true);
-        this.settingsGuiSettings = new SettingsGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "settings-gui.yml")), true);
-        this.worldConfigGuiSettings = new WorldConfigGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "world-config-gui.yml")), true);
+        this.booleanGuiSetting = new BooleanGuiSetting(plugin, directory + "/boolean-gui.yml", true);
+        this.configGuiSettings = new ConfigGuiSettings(plugin, directory + "/config-gui.yml", true);
+        this.languageGuiSettings = new LanguageGuiSettings(plugin, directory + "/language-gui.yml", true);
+        this.settingsGuiSettings = new SettingsGuiSettings(plugin, directory + "/settings-gui.yml", true);
+        this.worldConfigGuiSettings = new WorldConfigGuiSettings(plugin, directory + "/world-config-gui.yml", true);
 
         if (version == Version.v1_13_R1 || version == Version.v1_13_R2) {
-            this.biomeGuiSettings = new BiomeGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "biome-gui_v1.13.yml")), true);
-            this.oreGuiSettings = new OreGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "ore-gui_v1.13.yml")), true);
-            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "ore-settings-gui_v1.13.yml")), true);
-            this.worldGuiSettings = new WorldGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "world-gui_v1.13.yml")), true);
+            this.biomeGuiSettings = new BiomeGuiSettings(plugin, directory + "/biome-gui_v1.13.yml", true);
+            this.oreGuiSettings = new OreGuiSettings(plugin, directory + "/ore-gui_v1.13.yml", true);
+            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui_v1.13.yml", true);
+            this.worldGuiSettings = new WorldGuiSettings(plugin, directory + "/world-gui_v1.13.yml", true);
 
         } else {
-            this.biomeGuiSettings = new BiomeGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "biome-gui.yml")), true);
-            this.oreGuiSettings = new OreGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "ore-gui.yml")), true);
-            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "ore-settings-gui.yml")), true);
-            this.worldGuiSettings = new WorldGuiSettings(plugin, getStringFromFile(dataFolder, new File(directory, "world-gui.yml")), true);
+            this.biomeGuiSettings = new BiomeGuiSettings(plugin, directory + "/biome-gui.yml", true);
+            this.oreGuiSettings = new OreGuiSettings(plugin, directory + "/ore-gui.yml", true);
+            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui.yml", true);
+            this.worldGuiSettings = new WorldGuiSettings(plugin, directory + "/world-gui.yml", true);
 
             if (Version.v1_14_R1.isNewerOrSameVersion(version)) {
-                this.biomeGuiSettings.addValues(getStringFromFile(dataFolder, new File(directory, "biome-gui_v1.14.yml")), true);
+                this.biomeGuiSettings.addValues(directory + "/biome-gui_v1.14.yml", true);
             }
 
             if (Version.v1_16_R1.isNewerOrSameVersion(version)) {
-                this.biomeGuiSettings.addValues(getStringFromFile(dataFolder, new File(directory, "biome-gui_v1.16.yml")), true);
+                this.biomeGuiSettings.addValues(directory + "/biome-gui_v1.16.yml", true);
             }
         }
-    }
-
-    // Not the best solution, but for now it works
-    private static String getStringFromFile(@NotNull File pluginDataFolder, @NotNull final File file) {
-        return file.toString().replace(pluginDataFolder.toString() + "\\", "").replace("\\", "/");
     }
 
     @NotNull
