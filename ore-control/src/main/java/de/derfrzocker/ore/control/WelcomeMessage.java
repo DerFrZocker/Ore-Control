@@ -67,7 +67,7 @@ public class WelcomeMessage {
         final BaseComponent[] language = buildLanguageButtons();
         final BaseComponent[] foundBug = buildLineWithUrlButton(messages.getFoundBug().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/issues");
         final BaseComponent[] featureRequest = buildLineWithUrlButton(messages.getFeatureRequest().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/issues");
-        final BaseComponent[] support = buildLineWithUrlButton(messages.getSupport().getRawMessage(), "Discord", "https://discord.gg/dGA8BD8");
+        final BaseComponent[] support = buildLineWithUrlButton(messages.getSupport().getRawMessage(), "Discord", "http://discord.derfrzocker.de");
 
         final Map<String, Pair<String, String>> buttonValues = new HashMap<>();
         buttonValues.put("rating", new Pair<>(messages.getRating().getRawMessage(), "https://www.spigotmc.org/resources/63621"));
