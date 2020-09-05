@@ -36,11 +36,13 @@ import java.util.function.Supplier;
 
 public abstract class OreControlMetrics {
 
+    private final static int B_STATS_PLUGIN_ID = 4244;
+
     public OreControlMetrics(@NotNull final Plugin plugin, @NotNull final Supplier<OreControlService> serviceSupplier) {
         Validate.notNull(plugin, "Plugin cannot be null");
         Validate.notNull(serviceSupplier, "Service supplier cannot be null");
 
-        final Metrics metrics = new Metrics(plugin);
+        final Metrics metrics = new Metrics(plugin, B_STATS_PLUGIN_ID);
 
         // Config values
         metrics.addCustomChart(new Metrics.SimplePie("used_language", this::getLanguage));

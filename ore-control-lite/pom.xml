@@ -12,18 +12,11 @@
 
     <artifactId>ore-control-lite</artifactId>
 
-    <repositories>
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.4</version>
+            <version>${bstats.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

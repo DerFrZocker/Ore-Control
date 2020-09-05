@@ -31,6 +31,7 @@
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
         <spigot-utils.version>dev-47-SNAPSHOT</spigot-utils.version>
+        <bstats.version>1.7</bstats.version>
     </properties>
 
     <repositories>
@@ -41,6 +42,10 @@
         <repository>
             <id>derfrzocker-repo</id>
             <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
     </repositories>
 
