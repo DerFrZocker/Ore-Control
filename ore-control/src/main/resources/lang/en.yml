@@ -235,7 +235,7 @@ gui:
       name: "Change the Language!"
       description: "Change the Language of this Plugin, you can submit a new Language if you want. Simply translate the messages.yml in the Ore-Control folder and send it to me"
     safe-mode:
-      name:  "Activate / Deactivate safe mode!"
+      name: "Activate / Deactivate safe mode!"
       description: "Choose if the plugin should warn you if you set a unsafe value"
     translate-tab-compilation:
       name: "Activate / Deactivate Tab translation!"

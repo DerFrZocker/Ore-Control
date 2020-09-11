@@ -89,7 +89,7 @@ public class OreGui extends PageGui<Ore> {
                 continue;
             }
 
-            if (Version.getCurrent().isNewerVersion(ore.getSince())) {
+            if (oreControlValues.getVersion().isOlderThan(ore.getSince())) {
                 continue;
             }
 
@@ -135,7 +135,7 @@ public class OreGui extends PageGui<Ore> {
         final Set<Ore> ores = new LinkedHashSet<>();
 
         for (final Ore ore : biome == null ? Ore.values() : biome.getOres()) {
-            if (Version.getCurrent().isNewerVersion(ore.getSince())) {
+            if (oreControlValues.getVersion().isOlderThan(ore.getSince())) {
                 continue;
             }
 
@@ -178,7 +178,7 @@ public class OreGui extends PageGui<Ore> {
         final Plugin plugin = oreControlValues.getPlugin();
         final Set<Ore> ores = new LinkedHashSet<>();
 
-        biomeGroup.getBiomes().stream().map(Biome::getOres).flatMap(Stream::of).distinct().filter(ore -> dimension == null || ore.getDimension() == dimension).filter(ore -> !Version.getCurrent().isNewerVersion(ore.getSince())).forEach(ores::add);
+        biomeGroup.getBiomes().stream().map(Biome::getOres).flatMap(Stream::of).distinct().filter(ore -> dimension == null || ore.getDimension() == dimension).filter(ore -> !oreControlValues.getVersion().isOlderThan(ore.getSince())).forEach(ores::add);
 
         final Ore[] oresArray = ores.toArray(new Ore[0]);
 

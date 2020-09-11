@@ -61,6 +61,8 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     private final WorldOreConfig worldOreConfig;
     @Nullable
     private final Dimension dimension;
+    @NotNull
+    private final BiomeGroups biomeGroups;
 
     BiomeGroupGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension) {
         super(oreControlValues.getPlugin(), guiSettings.getBiomeGuiSettings());
@@ -72,12 +74,13 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         this.oreControlValues = oreControlValues;
         this.worldOreConfig = worldOreConfig;
         this.dimension = dimension;
+        this.biomeGroups = new BiomeGroups(oreControlValues.getPlugin());
 
         final BiomeGuiSettings biomeGuiSettings = guiSettings.getBiomeGuiSettings();
         final Plugin plugin = oreControlValues.getPlugin();
 
         addDecorations();
-        init(BiomeGroups.getInstance(plugin).getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
+        init(biomeGroups.getGroups(), BiomeGroup[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
         addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getBackItemStack()), event -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
@@ -96,11 +99,9 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
         return new MessageValue[]{new MessageValue("world", worldOreConfig.getName())};
     }
 
-    private static class BiomeGroups implements ReloadAble {
+    private class BiomeGroups implements ReloadAble {
 
         private final static String FILE = "data/gui/biome-groups.yml";
-
-        private static BiomeGroups instance;
 
         @NotNull
         private final Plugin plugin;
@@ -116,16 +117,6 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
             RELOAD_ABLES.add(this);
         }
 
-        private static BiomeGroups getInstance(@NotNull final Plugin plugin) {
-            if (instance != null) {
-                return instance;
-            }
-
-            instance = new BiomeGroups(plugin);
-
-            return instance;
-        }
-
         private BiomeGroup[] getGroups() {
             final ConfigurationSection section = yaml.getConfigurationSection("biome-groups");
 
@@ -134,7 +125,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
 
                 final List<String> stringList = section.getStringList(string);
 
-                stringList.forEach(biomeName -> OreControlUtil.getBiome(biomeName, false).ifPresent(biomeSet::add));
+                stringList.forEach(biomeName -> OreControlUtil.getBiome(biomeName, false, oreControlValues.getVersion()).ifPresent(biomeSet::add));
 
                 return new BiomeGroup(string, biomeSet);
             }).toArray(BiomeGroup[]::new);

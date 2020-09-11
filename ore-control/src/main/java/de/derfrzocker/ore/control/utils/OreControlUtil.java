@@ -39,6 +39,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("Duplicates")
+@Deprecated
 public class OreControlUtil {
 
     /**
@@ -177,17 +178,18 @@ public class OreControlUtil {
      * @return an Optional describing the Biome of the given String,
      * or an empty Optional if the String not match an Biome.
      */
-    public static Optional<Biome> getBiome(@NotNull final String biomeName, final boolean translated) { //TODO add test cases
+    public static Optional<Biome> getBiome(@NotNull final String biomeName, final boolean translated, @NotNull final Version version) { //TODO add test cases
         Validate.notNull(biomeName, "Biome Name cannot be null");
+        Validate.notNull(version, "Version cannot be null");
 
         Optional<Biome> optional;
 
         if (translated) {
-            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> Version.getCurrent().isOlderOrSameVersion(entry.getKey().getSince())).filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
+            optional = getTranslatedBiomes().entrySet().stream().filter(entry -> version.isNewerOrSameThan(entry.getKey().getSince())).filter(entry -> entry.getValue().equalsIgnoreCase(biomeName)).findAny().map(Map.Entry::getKey);
         } else {
             try {
                 optional = Optional.of(Biome.valueOf(biomeName.toUpperCase()));
-                if (Version.getCurrent().isNewerVersion(optional.get().getSince())) {
+                if (version.isOlderThan(optional.get().getSince())) {
                     optional = Optional.empty();
                 }
             } catch (final IllegalArgumentException e) {

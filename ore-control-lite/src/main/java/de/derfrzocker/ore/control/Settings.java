@@ -121,7 +121,7 @@ public class Settings implements ReloadAble {
             final Ore ore = oreSetting.getOre();
 
             // ignoring ore-settings from ores which are not present in the version the server is running
-            if (version.isNewerVersion(ore.getSince())) {
+            if (version.isOlderThan(ore.getSince())) {
                 continue;
             }
 
@@ -149,11 +149,11 @@ public class Settings implements ReloadAble {
             final Biome biome = biomeOreSetting.getBiome();
 
             // ignoring biome-ore-settings from biomes which are not present in the version the server is running
-            if (version.isNewerVersion(biome.getSince())) {
+            if (version.isOlderThan(biome.getSince())) {
                 continue;
             }
 
-            if (biome.getUntil() != null && version.isOlderVersion(biome.getUntil())) {
+            if (biome.getUntil() != null && version.isNewerThan(biome.getUntil())) {
                 continue;
             }
 

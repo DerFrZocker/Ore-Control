@@ -99,11 +99,11 @@ public class GuiSettings {
             this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui.yml", true);
             this.worldGuiSettings = new WorldGuiSettings(plugin, directory + "/world-gui.yml", true);
 
-            if (Version.v1_14_R1.isNewerOrSameVersion(version)) {
+            if (version.isNewerOrSameThan(Version.v1_14_R1)) {
                 this.biomeGuiSettings.addValues(directory + "/biome-gui_v1.14.yml", true);
             }
 
-            if (Version.v1_16_R1.isNewerOrSameVersion(version)) {
+            if (version.isNewerOrSameThan(Version.v1_16_R1)) {
                 this.biomeGuiSettings.addValues(directory + "/biome-gui_v1.16.yml", true);
             }
         }

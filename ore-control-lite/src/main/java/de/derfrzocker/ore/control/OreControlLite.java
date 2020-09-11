@@ -133,7 +133,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
         checkFile("data/settings.yml");
 
         // load the Settings
-        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
+        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), Version.getServerVersion(getServer()), getLogger());
 
         checkOldStorageType();
 

@@ -81,11 +81,11 @@ public class BiomeGui extends PageGui<Biome> {
         final Set<Biome> biomes = new LinkedHashSet<>();
 
         for (final Biome biome : Biome.values()) {
-            if (Version.getCurrent().isNewerVersion(biome.getSince())) {
+            if (oreControlValues.getVersion().isOlderThan(biome.getSince())) {
                 continue;
             }
 
-            if (biome.getUntil() != null && Version.getCurrent().isOlderVersion(biome.getUntil())) {
+            if (biome.getUntil() != null && oreControlValues.getVersion().isNewerThan(biome.getUntil())) {
                 continue;
             }
 
@@ -133,11 +133,11 @@ public class BiomeGui extends PageGui<Biome> {
         final Set<Biome> biomes = new LinkedHashSet<>();
 
         for (final Biome biome : Biome.values()) {
-            if (Version.getCurrent().isNewerVersion(biome.getSince())) {
+            if (oreControlValues.getVersion().isOlderThan(biome.getSince())) {
                 continue;
             }
 
-            if (biome.getUntil() != null && Version.getCurrent().isOlderVersion(biome.getUntil())) {
+            if (biome.getUntil() != null && oreControlValues.getVersion().isNewerThan(biome.getUntil())) {
                 continue;
             }
 

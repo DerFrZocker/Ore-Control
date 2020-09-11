@@ -92,23 +92,34 @@ public class OreControl extends JavaPlugin implements Listener {
         instance = this;
         this.oreControlServiceSupplier = new OreControlServiceSupplier(this);
 
-        if (Version.getCurrent() == Version.v1_13_R1) {
+        Version version = Version.getServerVersion(getServer());
+
+        if (version == Version.v1_13_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        } else if (Version.getCurrent() == Version.v1_13_R2) {
+        } else if (version == Version.v1_13_R2) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_13_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        } else if (Version.getCurrent() == Version.v1_14_R1) {
+        } else if (version == Version.v1_14_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_14_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        } else if (Version.getCurrent() == Version.v1_15_R1) {
+        } else if (version == Version.v1_15_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_15_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        } else if (Version.getCurrent() == Version.v1_16_R1) {
+        } else if (version == Version.v1_16_R1) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R1(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
-        } else if (Version.getCurrent() == Version.v1_16_R2) {
+        } else if (version == Version.v1_16_R2) {
             nmsService = new NMSServiceImpl(new NMSUtil_v1_16_R2(this.oreControlServiceSupplier), this.oreControlServiceSupplier);
         }
 
-        // if no suitable version was found, throw an Exception and stop onLoad part
+        // if no suitable version was found, log and return
         if (nmsService == null) {
-            throw new IllegalStateException("no matching server version found, stop plugin start", new NullPointerException("overrider can't be null"));
+            getLogger().warning("The Server version which you are running is unsupported, you are running version '" + version + "'");
+            getLogger().warning("The plugin supports following version " + combineVersions(Version.v1_13_R1, Version.v1_13_R2, Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2));
+            getLogger().warning("(Spigot / Paper version 1.13.1 - 1.16.2), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this cas please contact the developer, so he can resolve this Issue");
+
+            if (version == Version.UNKNOWN) {
+                getLogger().warning("The Version '" + version + "' can indicate, that you are using a newer Minecraft version than currently supported.");
+                getLogger().warning("In this case please update to the newest version of this plugin. If this is the newest Version, than please be patient. It can take some weeks until the plugin is updated");
+            }
+
+            return;
         }
 
         // register GenerationHandlers
@@ -151,7 +162,8 @@ public class OreControl extends JavaPlugin implements Listener {
 
         oreControlMessages = new OreControlMessages(this);
         permissions = new Permissions(this);
-        this.oreControlServiceSupplier.registerEvents();
+        Version version = Version.getServerVersion(getServer());
+        oreControlServiceSupplier.registerEvents();
 
         final WorldOreConfigDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world-ore-configs"));
 
@@ -202,15 +214,15 @@ public class OreControl extends JavaPlugin implements Listener {
         checkFile("data/gui/verify-gui.yml");
         checkFile("data/gui/world-config-gui.yml");
 
-        if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent())) {
+        if (version.isNewerOrSameThan(Version.v1_14_R1)) {
             checkFile("data/gui/biome-gui_v1.14.yml");
         }
 
-        if (Version.v1_16_R1.isNewerOrSameVersion(Version.getCurrent())) {
+        if (version.isNewerOrSameThan(Version.v1_16_R1)) {
             checkFile("data/gui/biome-gui_v1.16.yml");
         }
 
-        if (Version.getCurrent() == Version.v1_13_R1 || Version.getCurrent() == Version.v1_13_R2) {
+        if (version == Version.v1_13_R1 || version == Version.v1_13_R2) {
             checkFile("data/gui/biome-gui_v1.13.yml");
             checkFile("data/gui/ore-gui_v1.13.yml");
             checkFile("data/gui/ore-settings-gui_v1.13.yml");
@@ -223,7 +235,7 @@ public class OreControl extends JavaPlugin implements Listener {
         }
 
         // load the Settings
-        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), Version.getCurrent(), getLogger());
+        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), version, getLogger());
 
         checkOldStorageType();
 
@@ -280,8 +292,8 @@ public class OreControl extends JavaPlugin implements Listener {
 
     private void registerCommands(@Nullable final PlayerJoinListener playerJoinListener, @Nullable final WelcomeMessage welcomeMessage) {
         getCommand("orecontrol").setExecutor(oreControlCommand = new OreControlCommand(
-                new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions),
-                new GuiSettings(this, "data/gui", Version.getCurrent())
+                new OreControlValues(this.oreControlServiceSupplier, this, configValues, oreControlMessages, permissions, Version.getServerVersion(getServer())),
+                new GuiSettings(this, "data/gui", Version.getServerVersion(getServer()))
                 , playerJoinListener, welcomeMessage));
     }
 
@@ -348,6 +360,26 @@ public class OreControl extends JavaPlugin implements Listener {
         }
 
         getLogger().info("Finish converting old storage format to new one");
+    }
+
+    private String combineVersions(Version... versions) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        boolean first = true;
+
+        for (Version version : versions) {
+            if (first) {
+                first = false;
+            } else {
+                stringBuilder.append(" ");
+            }
+
+            stringBuilder.append("'");
+            stringBuilder.append(version);
+            stringBuilder.append("'");
+        }
+
+        return stringBuilder.toString();
     }
 
 }

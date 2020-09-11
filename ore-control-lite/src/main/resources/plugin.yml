@@ -2,7 +2,7 @@ name: ${parent.name}
 version: ${project.version}-lite
 description: ${project.description}
 author: ${project.author}
-authors: [${project.authors}]
+authors: [ ${ project.authors } ]
 main: de.derfrzocker.ore.control.OreControlLite
 api-version: "1.13"
 load: STARTUP

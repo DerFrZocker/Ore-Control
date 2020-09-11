@@ -71,7 +71,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
             final boolean translated = oreControlValues.getConfigValues().isTranslateTabCompilation();
             final OreControlMessages messages = oreControlValues.getOreControlMessages();
 
-            final Optional<Biome> optionalBiome = OreControlUtil.getBiome(biomeName, translated);
+            final Optional<Biome> optionalBiome = OreControlUtil.getBiome(biomeName, translated, oreControlValues.getVersion());
 
             if (!optionalBiome.isPresent()) {
                 messages.getBiomeNotFoundMessage().sendMessage(sender, new MessageValue("biome", biomeName));
@@ -174,7 +174,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         }
 
         if (args.length == 2) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated, oreControlValues.getVersion());
 
             if (!biome.isPresent()) {
                 return list;
@@ -192,7 +192,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         }
 
         if (args.length == 3) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated, oreControlValues.getVersion());
 
             if (!biome.isPresent()) {
                 return list;
@@ -217,7 +217,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         }
 
         if (args.length == 4) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated, oreControlValues.getVersion());
 
             if (!biome.isPresent()) {
                 return list;
@@ -242,7 +242,7 @@ public class SetBiomeCommand implements TabExecutor { //TODO "merge" set and set
         }
 
         if (args.length == 5) {
-            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated);
+            final Optional<Biome> biome = OreControlUtil.getBiome(args[0], translated, oreControlValues.getVersion());
 
             if (!biome.isPresent()) {
                 return list;

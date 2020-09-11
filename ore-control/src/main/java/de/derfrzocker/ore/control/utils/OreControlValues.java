@@ -28,6 +28,7 @@ import de.derfrzocker.ore.control.ConfigValues;
 import de.derfrzocker.ore.control.OreControlMessages;
 import de.derfrzocker.ore.control.Permissions;
 import de.derfrzocker.ore.control.api.OreControlService;
+import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -46,19 +47,23 @@ public class OreControlValues {
     private final OreControlMessages oreControlMessages;
     @NotNull
     private final Permissions permissions;
+    @NotNull
+    private final Version version;
 
-    public OreControlValues(@NotNull final Supplier<OreControlService> serviceSupplier, @NotNull final Plugin plugin, @NotNull final ConfigValues configValues, @NotNull final OreControlMessages oreControlMessages, @NotNull final Permissions permissions) {
+    public OreControlValues(@NotNull final Supplier<OreControlService> serviceSupplier, @NotNull final Plugin plugin, @NotNull final ConfigValues configValues, @NotNull final OreControlMessages oreControlMessages, @NotNull final Permissions permissions, @NotNull final Version version) {
         Validate.notNull(serviceSupplier, "Service supplier cannot be null");
         Validate.notNull(plugin, "Plugin cannot be null");
         Validate.notNull(configValues, "ConfigValues cannot be null");
         Validate.notNull(oreControlMessages, "OreControlMessages cannot be null");
         Validate.notNull(permissions, "Permissions cannot be null");
+        Validate.notNull(version, "Version cannot be null");
 
         this.serviceSupplier = serviceSupplier;
         this.plugin = plugin;
         this.configValues = configValues;
         this.oreControlMessages = oreControlMessages;
         this.permissions = permissions;
+        this.version = version;
     }
 
     @NotNull
@@ -89,6 +94,11 @@ public class OreControlValues {
     @NotNull
     public Permissions getPermissions() {
         return permissions;
+    }
+
+    @NotNull
+    public Version getVersion() {
+        return version;
     }
 
 }
