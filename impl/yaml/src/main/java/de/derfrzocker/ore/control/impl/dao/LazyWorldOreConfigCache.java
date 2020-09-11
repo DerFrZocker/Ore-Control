@@ -94,7 +94,7 @@ public class LazyWorldOreConfigCache implements ReloadAble {
         config.set("value", worldOreConfig);
 
         try {
-            config.options().header("Only edit this file if you 10000% sure you know what you are doing. \nYou can set everything via the plugin commands / gui, no need to edit this file manually.").copyHeader(true);
+            config.options().header("This file is machine generated, please use the in game commands and gui to change values. \nModifying this file per hand on your own risk.").copyHeader(true);
             config.save(file);
         } catch (final IOException e) {
             throw new RuntimeException("Unexpected error while saving WorldOreConfig " + worldOreConfig.getName() + " to disk!", e);
