@@ -35,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -52,9 +54,7 @@ class NMSReplacer_v1_16_R2 {
     }
 
     void replaceNMS() {
-        final CraftServer craftServer = (CraftServer) Bukkit.getServer();
-
-        final IRegistryWritable<BiomeBase> registry = craftServer.getServer().aX().b(IRegistry.ay);
+        final IRegistryWritable<BiomeBase> registry = getRegistry().b(IRegistry.ay);
         for (final BiomeBase biomeBase : registry) {
             try {
                 replaceBase(biomeBase, registry.getKey(biomeBase));
@@ -107,8 +107,7 @@ class NMSReplacer_v1_16_R2 {
     private WorldGenFeatureConfigured<?, ?> check(final Biome biome, WorldGenFeatureConfigured<?, ?> feature) {
         //Not the best method to do this, but hey it works
 
-        final CraftServer craftServer = (CraftServer) Bukkit.getServer();
-        final IRegistryWritable<WorldGenFeatureConfigured<?, ?>> registry = craftServer.getServer().aX().b(IRegistry.au);
+        final IRegistryWritable<WorldGenFeatureConfigured<?, ?>> registry = getRegistry().b(IRegistry.au);
         feature = RegistryGeneration.e.get(registry.getKey(feature));
 
         if (feature == null) {
@@ -216,6 +215,34 @@ class NMSReplacer_v1_16_R2 {
                 return getField(superClass, fieldName);
             }
         }
+    }
+
+    @NotNull
+    private IRegistryCustom getRegistry() {
+        final DedicatedServer server = ((CraftServer) Bukkit.getServer()).getServer();
+
+        IRegistryCustom registryCustom = null;
+
+        // 1.16.2 use the method name 'aX' and 1.16.3 'getCustomRegistry'
+        try {
+            registryCustom = server.getCustomRegistry();
+        } catch (NoSuchMethodError e) {
+            System.out.println("ping");
+            try {
+                @SuppressWarnings("JavaReflectionMemberAccess") Method registryCustomMethod = MinecraftServer.class.getDeclaredMethod("aX");
+
+                registryCustom = (IRegistryCustom) registryCustomMethod.invoke(server);
+
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException noSuchFieldException) {
+                throw new RuntimeException("Cannot find IRegistryCustom", e);
+            }
+        }
+
+        if (registryCustom == null) {
+            throw new RuntimeException("Cannot find IRegistryCustom");
+        }
+
+        return registryCustom;
     }
 
 }
