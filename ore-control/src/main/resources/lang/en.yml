@@ -29,6 +29,9 @@ command:
     description: 'Reload config, messages and gui settings'
     begin: '&aBegin with the reload!'
     end: '&aReload finish!'
+  info:
+    usage: '&f/&9orecontrol info'
+    description: 'Shows you some infos about the plugin'
 
   help:
     separator-format: '  '

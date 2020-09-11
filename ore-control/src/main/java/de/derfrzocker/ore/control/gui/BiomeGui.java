@@ -34,7 +34,6 @@ import de.derfrzocker.ore.control.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.ore.control.utils.ResetUtil;
-import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;

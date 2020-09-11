@@ -29,6 +29,9 @@ command:
     description: "重新加载插件配置"
     begin: "&c请重新加载该插件"
     end: "&a已重新加载该插件"
+  info:
+    usage: '&f/&9orecontrol info'
+    description: 'Shows you some infos about the plugin'
 
   help:
     separator-format: '  '

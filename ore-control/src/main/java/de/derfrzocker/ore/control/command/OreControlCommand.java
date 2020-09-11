@@ -51,6 +51,7 @@ public class OreControlCommand extends CommandSeparator {
 
         final HelpCommand helpCommand = new HelpCommand(this, oreControlMessages);
         registerExecutor(helpCommand, "help", null, oreControlMessages.getCommandHelpUsageMessage(), oreControlMessages.getCommandHelpDescriptionMessage());
+        registerExecutor(new InfoCommand(oreControlValues), "info", null, oreControlMessages.getCommandInfoUsageMessage(), oreControlMessages.getCommandInfoDescriptionMessage());
 
         if (playerJoinListener == null || welcomeMessage == null) {
             registerExecutor(helpCommand, null, null, oreControlMessages.getCommandHelpUsageMessage(), oreControlMessages.getCommandHelpDescriptionMessage());

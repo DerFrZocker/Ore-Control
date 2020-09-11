@@ -29,6 +29,9 @@ command:
     description: 'Reloaded die Nachrichten, Config und Gui Einstellungen'
     begin: '&aBeginne mit dem Reloaden!'
     end: '&aReloaden Fertig!'
+  info:
+    usage: '&f/&9orecontrol info'
+    description: 'Zeigt dir ein par Informationen zum Plugin'
 
   help:
     separator-format: '  '

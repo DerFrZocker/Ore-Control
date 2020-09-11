@@ -127,6 +127,12 @@ public class OreControlMessages implements HelpConfig {
     @NotNull
     private final MessageKey commandHelpDescription;
 
+    // info messages
+    @NotNull
+    private final MessageKey commandInfoUsage;
+    @NotNull
+    private final MessageKey commandInfoDescription;
+
     // Welcome message
     @NotNull
     private final MessageKey buttonOpenString;
@@ -195,6 +201,8 @@ public class OreControlMessages implements HelpConfig {
         commandHelpShortFormat = new MessageKey(plugin, "command.help.short-format");
         commandHelpUsage = new MessageKey(plugin, "command.help.usage");
         commandHelpDescription = new MessageKey(plugin, "command.help.description");
+        commandInfoUsage = new MessageKey(plugin, "command.info.usage");
+        commandInfoDescription = new MessageKey(plugin, "command.info.description");
         buttonOpenString = new MessageKey(plugin, "welcome.button-open-string");
         buttonCloseString = new MessageKey(plugin, "welcome.button-close-string");
         welcomeHeader = new MessageKey(plugin, "welcome.header");
@@ -423,6 +431,17 @@ public class OreControlMessages implements HelpConfig {
         return commandHelpDescription;
     }
 
+    // info messages
+    @NotNull
+    public MessageKey getCommandInfoUsageMessage() {
+        return commandInfoUsage;
+    }
+
+    @NotNull
+    public MessageKey getCommandInfoDescriptionMessage() {
+        return commandInfoDescription;
+    }
+
     // Welcome message
     @NotNull
     public MessageKey getButtonCloseString() {
@@ -483,4 +502,5 @@ public class OreControlMessages implements HelpConfig {
     public MessageKey getNotShowAgainSuccess() {
         return notShowAgainSuccess;
     }
+
 }
