@@ -217,8 +217,15 @@ class NMSReplacer_v1_16_R2 {
         }
     }
 
+    @Nullable
+    private IRegistryCustom iRegistryCustom;
+
     @NotNull
     private IRegistryCustom getRegistry() {
+        if (iRegistryCustom != null) {
+            return iRegistryCustom;
+        }
+
         final DedicatedServer server = ((CraftServer) Bukkit.getServer()).getServer();
 
         IRegistryCustom registryCustom = null;
@@ -241,7 +248,7 @@ class NMSReplacer_v1_16_R2 {
             throw new RuntimeException("Cannot find IRegistryCustom");
         }
 
-        return registryCustom;
+        return iRegistryCustom = registryCustom;
     }
 
 }
