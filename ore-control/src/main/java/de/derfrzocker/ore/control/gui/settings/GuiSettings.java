@@ -24,33 +24,37 @@
 
 package de.derfrzocker.ore.control.gui.settings;
 
+import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 public class GuiSettings {
 
     @NotNull
-    private final BiomeGuiSettings biomeGuiSettings;
+    private final Supplier<BiomeGuiSettings> biomeGuiSettings;
     @NotNull
-    private final BooleanGuiSetting booleanGuiSetting;
+    private final Supplier<BooleanGuiSetting> booleanGuiSetting;
     @NotNull
-    private final ConfigGuiSettings configGuiSettings;
+    private final Supplier<ConfigGuiSettings> configGuiSettings;
     @NotNull
-    private final LanguageGuiSettings languageGuiSettings;
+    private final Supplier<LanguageGuiSettings> languageGuiSettings;
     @NotNull
-    private final OreGuiSettings oreGuiSettings;
+    private final Supplier<OreGuiSettings> oreGuiSettings;
     @NotNull
-    private final OreSettingsGuiSettings oreSettingsGuiSettings;
+    private final Supplier<OreSettingsGuiSettings> oreSettingsGuiSettings;
     @NotNull
-    private final SettingsGuiSettings settingsGuiSettings;
+    private final Supplier<SettingsGuiSettings> settingsGuiSettings;
     @NotNull
-    private final WorldConfigGuiSettings worldConfigGuiSettings;
+    private final Supplier<WorldConfigGuiSettings> worldConfigGuiSettings;
     @NotNull
-    private final WorldGuiSettings worldGuiSettings;
+    private final Supplier<WorldGuiSettings> worldGuiSettings;
 
     public GuiSettings(@NotNull final BiomeGuiSettings biomeGuiSettings, @NotNull final BooleanGuiSetting booleanGuiSetting, @NotNull final ConfigGuiSettings configGuiSettings, @NotNull final LanguageGuiSettings languageGuiSettings, @NotNull final OreGuiSettings oreGuiSettings, @NotNull final OreSettingsGuiSettings oreSettingsGuiSettings, @NotNull final SettingsGuiSettings settingsGuiSettings, @NotNull final WorldConfigGuiSettings worldConfigGuiSettings, @NotNull final WorldGuiSettings worldGuiSettings) {
         Validate.notNull(biomeGuiSettings, "BiomeGuiSettings cannot be null");
@@ -63,15 +67,15 @@ public class GuiSettings {
         Validate.notNull(worldConfigGuiSettings, "WorldConfigGuiSettings cannot be null");
         Validate.notNull(worldGuiSettings, "WorldGuiSettings cannot be null");
 
-        this.biomeGuiSettings = biomeGuiSettings;
-        this.booleanGuiSetting = booleanGuiSetting;
-        this.configGuiSettings = configGuiSettings;
-        this.languageGuiSettings = languageGuiSettings;
-        this.oreGuiSettings = oreGuiSettings;
-        this.oreSettingsGuiSettings = oreSettingsGuiSettings;
-        this.settingsGuiSettings = settingsGuiSettings;
-        this.worldConfigGuiSettings = worldConfigGuiSettings;
-        this.worldGuiSettings = worldGuiSettings;
+        this.biomeGuiSettings = () -> biomeGuiSettings;
+        this.booleanGuiSetting = () -> booleanGuiSetting;
+        this.configGuiSettings = () -> configGuiSettings;
+        this.languageGuiSettings = () -> languageGuiSettings;
+        this.oreGuiSettings = () -> oreGuiSettings;
+        this.oreSettingsGuiSettings = () -> oreSettingsGuiSettings;
+        this.settingsGuiSettings = () -> settingsGuiSettings;
+        this.worldConfigGuiSettings = () -> worldConfigGuiSettings;
+        this.worldGuiSettings = () -> worldGuiSettings;
     }
 
     public GuiSettings(@NotNull final Plugin plugin, @NotNull final String directory, @NotNull final Version version) {
@@ -79,79 +83,225 @@ public class GuiSettings {
         Validate.notNull(directory, "Directory cannot be null");
         Validate.notNull(version, "Version cannot be null");
 
-        final File dataFolder = plugin.getDataFolder();
+        this.booleanGuiSetting = new SettingsSupplier<BooleanGuiSetting>() {
+            @NotNull
+            @Override
+            protected BooleanGuiSetting get0() {
+                checkFile(plugin, directory + "/boolean-gui.yml");
+                return new BooleanGuiSetting(plugin, directory + "/boolean-gui.yml", true);
+            }
+        };
 
-        this.booleanGuiSetting = new BooleanGuiSetting(plugin, directory + "/boolean-gui.yml", true);
-        this.configGuiSettings = new ConfigGuiSettings(plugin, directory + "/config-gui.yml", true);
-        this.languageGuiSettings = new LanguageGuiSettings(plugin, directory + "/language-gui.yml", true);
-        this.settingsGuiSettings = new SettingsGuiSettings(plugin, directory + "/settings-gui.yml", true);
-        this.worldConfigGuiSettings = new WorldConfigGuiSettings(plugin, directory + "/world-config-gui.yml", true);
+        this.configGuiSettings = new SettingsSupplier<ConfigGuiSettings>() {
+            @NotNull
+            @Override
+            protected ConfigGuiSettings get0() {
+                checkFile(plugin, directory + "/config-gui.yml");
+                return new ConfigGuiSettings(plugin, directory + "/config-gui.yml", true);
+            }
+        };
+
+        this.languageGuiSettings = new SettingsSupplier<LanguageGuiSettings>() {
+            @NotNull
+            @Override
+            protected LanguageGuiSettings get0() {
+                checkFile(plugin, directory + "/language-gui.yml");
+                return new LanguageGuiSettings(plugin, directory + "/language-gui.yml", true);
+            }
+        };
+
+        this.settingsGuiSettings = new SettingsSupplier<SettingsGuiSettings>() {
+            @NotNull
+            @Override
+            protected SettingsGuiSettings get0() {
+                checkFile(plugin, directory + "/settings-gui.yml");
+                return new SettingsGuiSettings(plugin, directory + "/settings-gui.yml", true);
+            }
+        };
+
+        this.worldConfigGuiSettings = new SettingsSupplier<WorldConfigGuiSettings>() {
+            @NotNull
+            @Override
+            protected WorldConfigGuiSettings get0() {
+                checkFile(plugin, directory + "/world-config-gui.yml");
+                return new WorldConfigGuiSettings(plugin, directory + "/world-config-gui.yml", true);
+            }
+        };
 
         if (version == Version.v1_13_R1 || version == Version.v1_13_R2) {
-            this.biomeGuiSettings = new BiomeGuiSettings(plugin, directory + "/biome-gui_v1.13.yml", true);
-            this.oreGuiSettings = new OreGuiSettings(plugin, directory + "/ore-gui_v1.13.yml", true);
-            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui_v1.13.yml", true);
-            this.worldGuiSettings = new WorldGuiSettings(plugin, directory + "/world-gui_v1.13.yml", true);
+            this.biomeGuiSettings = new SettingsSupplier<BiomeGuiSettings>() {
+                @NotNull
+                @Override
+                protected BiomeGuiSettings get0() {
+                    checkFile(plugin, directory + "/biome-gui_v1.13.yml");
+                    return new BiomeGuiSettings(plugin, directory + "/biome-gui_v1.13.yml", true);
+                }
+            };
 
+            this.oreGuiSettings = new SettingsSupplier<OreGuiSettings>() {
+                @NotNull
+                @Override
+                protected OreGuiSettings get0() {
+                    checkFile(plugin, directory + "/ore-gui_v1.13.yml");
+                    return new OreGuiSettings(plugin, directory + "/ore-gui_v1.13.yml", true);
+                }
+            };
+
+            this.oreSettingsGuiSettings = new SettingsSupplier<OreSettingsGuiSettings>() {
+                @NotNull
+                @Override
+                protected OreSettingsGuiSettings get0() {
+                    checkFile(plugin, directory + "/ore-settings-gui_v1.13.yml");
+                    return new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui_v1.13.yml", true);
+                }
+            };
+
+            this.worldGuiSettings = new SettingsSupplier<WorldGuiSettings>() {
+                @NotNull
+                @Override
+                protected WorldGuiSettings get0() {
+                    checkFile(plugin, directory + "/world-gui_v1.13.yml");
+                    return new WorldGuiSettings(plugin, directory + "/world-gui_v1.13.yml", true);
+                }
+            };
         } else {
-            this.biomeGuiSettings = new BiomeGuiSettings(plugin, directory + "/biome-gui.yml", true);
-            this.oreGuiSettings = new OreGuiSettings(plugin, directory + "/ore-gui.yml", true);
-            this.oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui.yml", true);
-            this.worldGuiSettings = new WorldGuiSettings(plugin, directory + "/world-gui.yml", true);
+            this.biomeGuiSettings = new SettingsSupplier<BiomeGuiSettings>() {
+                @NotNull
+                @Override
+                protected BiomeGuiSettings get0() {
+                    checkFile(plugin, directory + "/biome-gui.yml");
+                    final BiomeGuiSettings settings = new BiomeGuiSettings(plugin, directory + "/biome-gui.yml", true);
 
-            if (version.isNewerOrSameThan(Version.v1_14_R1)) {
-                this.biomeGuiSettings.addValues(directory + "/biome-gui_v1.14.yml", true);
-            }
+                    if (version.isNewerOrSameThan(Version.v1_14_R1)) {
+                        checkFile(plugin, directory + "/biome-gui_v1.14.yml");
+                        settings.addValues(directory + "/biome-gui_v1.14.yml", true);
+                    }
 
-            if (version.isNewerOrSameThan(Version.v1_16_R1)) {
-                this.biomeGuiSettings.addValues(directory + "/biome-gui_v1.16.yml", true);
-            }
+                    if (version.isNewerOrSameThan(Version.v1_16_R1)) {
+                        checkFile(plugin, directory + "/biome-gui_v1.16.yml");
+                        settings.addValues(directory + "/biome-gui_v1.16.yml", true);
+                    }
+
+                    return settings;
+                }
+            };
+
+            this.oreGuiSettings = new SettingsSupplier<OreGuiSettings>() {
+                @NotNull
+                @Override
+                protected OreGuiSettings get0() {
+                    checkFile(plugin, directory + "/ore-gui.yml");
+                    return new OreGuiSettings(plugin, directory + "/ore-gui.yml", true);
+                }
+            };
+
+            this.oreSettingsGuiSettings = new SettingsSupplier<OreSettingsGuiSettings>() {
+                @NotNull
+                @Override
+                protected OreSettingsGuiSettings get0() {
+                    checkFile(plugin, directory + "/ore-settings-gui.yml");
+                    return new OreSettingsGuiSettings(plugin, directory + "/ore-settings-gui.yml", true);
+                }
+            };
+
+            this.worldGuiSettings = new SettingsSupplier<WorldGuiSettings>() {
+                @NotNull
+                @Override
+                protected WorldGuiSettings get0() {
+                    checkFile(plugin, directory + "/world-gui.yml");
+                    return new WorldGuiSettings(plugin, directory + "/world-gui.yml", true);
+                }
+            };
+
         }
     }
 
     @NotNull
     public BiomeGuiSettings getBiomeGuiSettings() {
-        return this.biomeGuiSettings;
+        return this.biomeGuiSettings.get();
     }
 
     @NotNull
     public BooleanGuiSetting getBooleanGuiSetting() {
-        return this.booleanGuiSetting;
+        return this.booleanGuiSetting.get();
     }
 
     @NotNull
     public ConfigGuiSettings getConfigGuiSettings() {
-        return this.configGuiSettings;
+        return this.configGuiSettings.get();
     }
 
     @NotNull
     public LanguageGuiSettings getLanguageGuiSettings() {
-        return this.languageGuiSettings;
+        return this.languageGuiSettings.get();
     }
 
     @NotNull
     public OreGuiSettings getOreGuiSettings() {
-        return this.oreGuiSettings;
+        return this.oreGuiSettings.get();
     }
 
     @NotNull
     public OreSettingsGuiSettings getOreSettingsGuiSettings() {
-        return this.oreSettingsGuiSettings;
+        return this.oreSettingsGuiSettings.get();
     }
 
     @NotNull
     public SettingsGuiSettings getSettingsGuiSettings() {
-        return this.settingsGuiSettings;
+        return this.settingsGuiSettings.get();
     }
 
     @NotNull
     public WorldConfigGuiSettings getWorldConfigGuiSettings() {
-        return this.worldConfigGuiSettings;
+        return this.worldConfigGuiSettings.get();
     }
 
     @NotNull
     public WorldGuiSettings getWorldGuiSettings() {
-        return this.worldGuiSettings;
+        return this.worldGuiSettings.get();
+    }
+
+
+    private abstract static class SettingsSupplier<T> implements Supplier<T> {
+
+        @Nullable
+        private T setting;
+
+        @Override
+        public T get() {
+            if (setting == null) {
+                setting = get0();
+            }
+
+            return setting;
+        }
+
+        @NotNull
+        protected abstract T get0();
+
+    }
+
+    private void checkFile(@NotNull Plugin plugin, @NotNull final String name) {
+        final File file = new File(plugin.getDataFolder(), name);
+
+        if (!file.exists()) {
+            return;
+        }
+
+        final YamlConfiguration configuration = new Config(file);
+
+        final YamlConfiguration configuration2 = new Config(plugin.getResource(name));
+
+        if (configuration.getInt("version") == configuration2.getInt("version"))
+            return;
+
+        plugin.getLogger().warning("File " + name + " has an outdated / new version, replacing it!");
+
+        if (!file.delete()) {
+            throw new RuntimeException("can't delete file " + name + " stop plugin start!");
+        }
+
+        plugin.saveResource(name, true);
     }
 
 }
