@@ -26,6 +26,7 @@ package de.derfrzocker.ore.control;
 
 import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
+import de.derfrzocker.ore.control.command.NoCommandsAvailableCommand;
 import de.derfrzocker.ore.control.command.OreControlCommand;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.impl.*;
@@ -204,6 +205,40 @@ public class OreControl extends JavaPlugin implements Listener {
                 },
                 this, ServicePriority.Normal);
 
+
+        // load the Settings
+        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), version, getLogger());
+
+        checkOldStorageType();
+
+        // start the Metric of this Plugin (https://bstats.org/plugin/bukkit/Ore-Control)
+        setUpMetric();
+
+        // hook in the WorldGenerator, we try this before we register the commands and events, that if something goes wrong here
+        // the player see that no command function, and looks in to the log to see if a error happen
+        nmsService.replaceNMS();
+
+        // register the Listener for the WorldLoad event
+        Bukkit.getPluginManager().registerEvents(this, this);
+
+        // checking if the server jar contains the bungee chat api
+        // for example normal CraftBukkit does not contains it
+        // if it does not contains it, print a message that no commands are available
+        // but the plugin should run anyway
+        try {
+            Class.forName("net.md_5.bungee.api.ChatColor");
+        } catch (final ClassNotFoundException e) {
+            getLogger().warning("It seems your are running a server jar, which does not contains the package 'net.md_5.bungee.api'");
+            getLogger().warning("This plugin requires this package for the commands and gui");
+            getLogger().warning("If no other error appears, than the plugin should work anyway (beside commands and gui)");
+            getLogger().warning("If you want to use the commands and gui, please use a server jar which contains the package 'net.md_5.bungee.api', such as Spigot (not CraftBukkit)");
+            getLogger().warning("After you have set the values, you can use the other server jar again");
+
+            getCommand("orecontrol").setExecutor(new NoCommandsAvailableCommand());
+
+            return;
+        }
+
         // check all files, that can be have other values (not other not new one), so we can replace them
         checkFile("data/gui/biome-groups.yml");
         checkFile("data/gui/boolean-gui.yml");
@@ -234,18 +269,6 @@ public class OreControl extends JavaPlugin implements Listener {
             checkFile("data/gui/world-gui.yml");
         }
 
-        // load the Settings
-        settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), version, getLogger());
-
-        checkOldStorageType();
-
-        // start the Metric of this Plugin (https://bstats.org/plugin/bukkit/Ore-Control)
-        setUpMetric();
-
-        // hook in the WorldGenerator, we try this before we register the commands and events, that if something goes wrong here
-        // the player see that no command function, and looks in to the log to see if a error happen
-        nmsService.replaceNMS();
-
         if (configValues.showWelcomeMessage()) {
             final WelcomeMessage welcomeMessage = new WelcomeMessage(this, oreControlMessages);
             final PlayerJoinListener playerJoinListener = new PlayerJoinListener(permissions.getBasePermission(), welcomeMessage);
@@ -256,8 +279,6 @@ public class OreControl extends JavaPlugin implements Listener {
             registerCommands(null, null);
         }
 
-        // register the Listener for the WorldLoad event
-        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     private void setUpMetric() {

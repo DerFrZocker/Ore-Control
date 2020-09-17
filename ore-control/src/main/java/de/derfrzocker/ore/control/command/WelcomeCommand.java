@@ -115,4 +115,5 @@ public class WelcomeCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         return tabExecutor.onTabComplete(sender, command, alias, args);
     }
+
 }
