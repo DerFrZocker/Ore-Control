@@ -227,7 +227,6 @@ class NMSReplacer_v1_16_R2 {
         try {
             registryCustom = server.getCustomRegistry();
         } catch (NoSuchMethodError e) {
-            System.out.println("ping");
             try {
                 @SuppressWarnings("JavaReflectionMemberAccess") Method registryCustomMethod = MinecraftServer.class.getDeclaredMethod("aX");
 
