@@ -28,10 +28,15 @@ import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.spigot.utils.ChunkCoordIntPair;
 import net.minecraft.server.v1_16_R2.*;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 @SuppressWarnings("Duplicates")
@@ -55,7 +60,7 @@ public class NMSUtil_v1_16_R2 implements NMSUtil {
     public Biome getBiome(@NotNull final World world, @NotNull final ChunkCoordIntPair chunkCoordIntPair) {
         final BiomeBase biomeBase = ((CraftWorld) world).getHandle().getChunkProvider().getChunkGenerator().getWorldChunkManager().getBiome(chunkCoordIntPair.getX() << 4, 0, chunkCoordIntPair.getZ() << 4);
 
-        return Biome.valueOf(RegistryGeneration.WORLDGEN_BIOME.getKey(biomeBase).getKey().toUpperCase());
+        return Biome.valueOf(getRegistry().b(IRegistry.ay).getKey(biomeBase).getKey().toUpperCase());
     }
 
     @Override
@@ -185,6 +190,40 @@ public class NMSUtil_v1_16_R2 implements NMSUtil {
         }
 
         return Dimension.CUSTOM;
+    }
+
+    @Nullable
+    private IRegistryCustom iRegistryCustom;
+
+    @NotNull
+    private IRegistryCustom getRegistry() {
+        if (iRegistryCustom != null) {
+            return iRegistryCustom;
+        }
+
+        final DedicatedServer server = ((CraftServer) Bukkit.getServer()).getServer();
+
+        IRegistryCustom registryCustom = null;
+
+        // 1.16.2 use the method name 'aX' and 1.16.3 'getCustomRegistry'
+        try {
+            registryCustom = server.getCustomRegistry();
+        } catch (NoSuchMethodError e) {
+            try {
+                @SuppressWarnings("JavaReflectionMemberAccess") Method registryCustomMethod = MinecraftServer.class.getDeclaredMethod("aX");
+
+                registryCustom = (IRegistryCustom) registryCustomMethod.invoke(server);
+
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException noSuchFieldException) {
+                throw new RuntimeException("Cannot find IRegistryCustom", e);
+            }
+        }
+
+        if (registryCustom == null) {
+            throw new RuntimeException("Cannot find IRegistryCustom");
+        }
+
+        return iRegistryCustom = registryCustom;
     }
 
 }

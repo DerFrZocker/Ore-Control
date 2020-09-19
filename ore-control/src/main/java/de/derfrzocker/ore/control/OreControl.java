@@ -113,7 +113,7 @@ public class OreControl extends JavaPlugin implements Listener {
         if (nmsService == null) {
             getLogger().warning("The Server version which you are running is unsupported, you are running version '" + version + "'");
             getLogger().warning("The plugin supports following version " + combineVersions(Version.v1_13_R1, Version.v1_13_R2, Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2));
-            getLogger().warning("(Spigot / Paper version 1.13.1 - 1.16.2), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this cas please contact the developer, so he can resolve this Issue");
+            getLogger().warning("(Spigot / Paper version 1.13.1 - 1.16.2), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
 
             if (version == Version.UNKNOWN) {
                 getLogger().warning("The Version '" + version + "' can indicate, that you are using a newer Minecraft version than currently supported.");

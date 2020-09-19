@@ -24,6 +24,7 @@
 
 package de.derfrzocker.ore.control.impl.v1_16_R2;
 
+import com.mojang.serialization.Dynamic;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
@@ -106,7 +107,6 @@ class NMSReplacer_v1_16_R2 {
     @Nullable
     private WorldGenFeatureConfigured<?, ?> check(final Biome biome, WorldGenFeatureConfigured<?, ?> feature) {
         //Not the best method to do this, but hey it works
-
         final IRegistryWritable<WorldGenFeatureConfigured<?, ?>> registry = getRegistry().b(IRegistry.au);
         feature = RegistryGeneration.e.get(registry.getKey(feature));
 
