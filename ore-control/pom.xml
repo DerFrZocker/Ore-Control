@@ -88,6 +88,12 @@
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
+            <artifactId>ore-control-impl-v1_16_R3</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-impl-service</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

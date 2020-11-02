@@ -34,6 +34,7 @@ import de.derfrzocker.ore.control.gui.copy.CopyAction;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.gui.settings.WorldGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -78,7 +79,7 @@ public class WorldGui extends PageGui<String> {
         addDecorations();
         init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName), getDimension(configName)).openSync(event.getWhoClicked()));
 
-        if (permissions.getTemplateCreatePermission().hasPermission(permissible)) {
+        if (permissions.getTemplateCreatePermission().hasPermission(permissible) && oreControlValues.getVersion() != Version.v1_16_R3) { // TODO update anvil gui
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
         }
 
