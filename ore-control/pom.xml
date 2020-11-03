@@ -26,10 +26,11 @@
             <version>${bstats.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- TODO switch back to WesJD main branch -->
         <dependency>
-            <groupId>com.github.WesJD.AnvilGUI</groupId>
-            <artifactId>anvilgui</artifactId>
-            <version>cee0befbaf</version>
+            <groupId>com.github.mastercake10</groupId>
+            <artifactId>AnvilGUI</artifactId>
+            <version>70dbe3f37d</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

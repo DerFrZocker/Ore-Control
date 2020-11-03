@@ -79,7 +79,7 @@ public class WorldGui extends PageGui<String> {
         addDecorations();
         init(getStrings(), String[]::new, this::getItemStack, (configName, event) -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), getWorldOreConfig(configName), getDimension(configName)).openSync(event.getWhoClicked()));
 
-        if (permissions.getTemplateCreatePermission().hasPermission(permissible) && oreControlValues.getVersion() != Version.v1_16_R3) { // TODO update anvil gui
+        if (permissions.getTemplateCreatePermission().hasPermission(permissible)) {
             addItem(worldGuiSettings.getCreateTemplateSlot(), MessageUtil.replaceItemStack(getPlugin(), worldGuiSettings.getCreateTemplateItemStack()), this::handleCreateTemplate);
         }
 
