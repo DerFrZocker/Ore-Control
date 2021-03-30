@@ -120,7 +120,7 @@ public class OreControlLite extends JavaPlugin implements Listener {
                     @NotNull
                     @Override
                     protected WorldOreConfig getNewWorldOreConfig(@NotNull final String name, final boolean template) {
-                        return new WorldOreConfigYamlImpl(name, template);
+                        return new WorldOreConfigYamlImpl(name, template ? ConfigType.TEMPLATE : ConfigType.UNKNOWN);
                     }
 
                     @NotNull
@@ -206,8 +206,8 @@ public class OreControlLite extends JavaPlugin implements Listener {
     public void onWorldLoad(@NotNull final WorldLoadEvent event) {
         Bukkit.getScheduler().runTaskAsynchronously(this, () ->
                 this.oreControlServiceSupplier.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
-                    if (value.isTemplate()) {
-                        value.setTemplate(false);
+                    if (value.getConfigType() == ConfigType.TEMPLATE) {
+                        value.setConfigType(ConfigType.UNKNOWN);
                         this.oreControlServiceSupplier.get().saveWorldOreConfig(value);
                     }
                 })

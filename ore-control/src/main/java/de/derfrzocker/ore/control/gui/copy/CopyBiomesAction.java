@@ -37,24 +37,40 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.entity.HumanEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public class CopyBiomesAction implements CopyAction {
 
     @NotNull
     private final OreControlValues oreControlValues;
+    @NotNull
+    private final Supplier<InventoryGui> startGui;
     @NotNull
     private final WorldOreConfig worldOreConfigSource;
     @NotNull
     private final Biome[] biomes;
     private WorldOreConfig worldOreConfigTarget;
 
-    public CopyBiomesAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource, @NotNull final Biome[] biomes) {
+    public CopyBiomesAction(@NotNull final OreControlValues oreControlValues, @NotNull Supplier<InventoryGui> startGui, @NotNull final WorldOreConfig worldOreConfigSource, @NotNull final Biome[] biomes) {
         Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(startGui, "Start Gui cannot be null");
         Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
         Validate.notNull(biomes, "Biomes cannot be null");
 
         this.oreControlValues = oreControlValues;
+        this.startGui = startGui;
         this.worldOreConfigSource = worldOreConfigSource;
         this.biomes = biomes;
+    }
+
+    @Override
+    public void abort(@NotNull HumanEntity humanEntity) {
+        startGui.get().openSync(humanEntity);
+    }
+
+    @Override
+    public void back(@NotNull HumanEntity humanEntity) {
+        throw new UnsupportedOperationException();
     }
 
     @NotNull
@@ -91,17 +107,21 @@ public class CopyBiomesAction implements CopyAction {
     }
 
     @Override
-    public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
+    public void next(@NotNull final HumanEntity humanEntity, @NotNull final Supplier<InventoryGui> inventoryGui) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
-            new VerifyGui(oreControlValues.getPlugin(), clickEvent -> {
+            VerifyGui verifyGui = new VerifyGui(oreControlValues.getPlugin(), clickEvent -> {
                 for (Biome biome : biomes) {
                     CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget, biome, biome);
                 }
 
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
-                inventoryGui.closeSync(humanEntity);
+                startGui.get().openSync(clickEvent.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
-            }, clickEvent1 -> inventoryGui.openSync(humanEntity)).openSync(humanEntity);
+            }, clickEvent1 -> inventoryGui.get().openSync(humanEntity));
+
+            verifyGui.addDecorations();
+
+            verifyGui.openSync(humanEntity);
 
             return;
         }
@@ -111,8 +131,13 @@ public class CopyBiomesAction implements CopyAction {
         }
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfigSource);
-        inventoryGui.closeSync(humanEntity);
+        startGui.get().openSync(humanEntity);
         oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
+    }
+
+    @Override
+    public boolean allowBack() {
+        return false;
     }
 
     @Override

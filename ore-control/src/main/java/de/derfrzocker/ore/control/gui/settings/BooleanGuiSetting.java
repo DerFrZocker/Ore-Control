@@ -77,4 +77,12 @@ public class BooleanGuiSetting extends BasicSettings implements VerifyGui.Verify
         return getSection().getInt("info.slot");
     }
 
+    public ItemStack getBackItemStack() {
+        return getSection().getItemStack("back.item-stack").clone();
+    }
+
+    public int getBackSlot() {
+        return getSection().getInt("back.slot");
+    }
+
 }

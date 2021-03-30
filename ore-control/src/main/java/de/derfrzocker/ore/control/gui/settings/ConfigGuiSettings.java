@@ -92,4 +92,20 @@ public class ConfigGuiSettings extends BasicSettings {
         return getSection().getItemStack("verify.reset-action.item-stack").clone();
     }
 
+    public ItemStack getBackItemStack() {
+        return getSection().getItemStack("back.item-stack").clone();
+    }
+
+    public int getBackSlot() {
+        return getSection().getInt("back.slot");
+    }
+
+    public ItemStack getReloadItemStack() {
+        return getSection().getItemStack("reload.item-stack").clone();
+    }
+
+    public int getReloadSlot() {
+        return getSection().getInt("reload.slot");
+    }
+
 }

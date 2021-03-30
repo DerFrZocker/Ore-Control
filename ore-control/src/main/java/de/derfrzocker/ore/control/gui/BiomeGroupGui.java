@@ -89,7 +89,7 @@ public class BiomeGroupGui extends PageGui<BiomeGroupGui.BiomeGroup> {
     }
 
     private ItemStack getItemStack(@NotNull final BiomeGroup biomeGroup) {
-        return MessageUtil.replaceItemStack(getPlugin(), guiSettings.getBiomeGuiSettings().getBiomeItemStack(biomeGroup.getName().toUpperCase()));
+        return MessageUtil.replaceItemStack(getPlugin(), guiSettings.getBiomeGuiSettings().getBiomeItemStack(biomeGroup.getName().toUpperCase()), new MessageValue("reset-copy", ""));
     }
 
     private void handleNormalClick(@NotNull final BiomeGroup biomeGroup, @NotNull final InventoryClickEvent event) {

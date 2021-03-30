@@ -75,4 +75,16 @@ public class WorldGuiSettings extends PageSettings {
         return getSection().getItemStack("config.edit.item-stack").clone();
     }
 
+    public ItemStack getGlobalItemStack() {
+        return getSection().getItemStack("global.item-stack").clone();
+    }
+
+    public ItemStack getAbortItemStack() {
+        return getSection().getItemStack("abort.item-stack").clone();
+    }
+
+    public int getAbortSlot() {
+        return getSection().getInt("abort.slot");
+    }
+
 }

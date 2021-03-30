@@ -84,7 +84,7 @@ public class LazyWorldOreConfigCache implements ReloadAble {
         final WorldOreConfig worldOreConfig;
 
         if (!(this.worldOreConfig instanceof ConfigurationSerializable)) {
-            worldOreConfig = new WorldOreConfigYamlImpl(this.worldOreConfig.getName(), this.worldOreConfig.isTemplate(), this.worldOreConfig.getOreSettings(), this.worldOreConfig.getBiomeOreSettings());
+            worldOreConfig = new WorldOreConfigYamlImpl(this.worldOreConfig.getName(), this.worldOreConfig.getConfigType(), this.worldOreConfig.getOreSettings(), this.worldOreConfig.getBiomeOreSettings());
         } else {
             worldOreConfig = this.worldOreConfig;
         }

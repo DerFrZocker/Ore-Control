@@ -76,11 +76,15 @@ public class WorldConfigGui extends BasicGui {
         addDecorations();
 
         if (permissions.getSetValuePermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getOreItemStack()), event -> new OreGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, (Biome) null).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getOreItemStackSlot(),
+                    MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getOreItemStack(), new MessageValue("reset-copy", "")),
+                    event -> new OreGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, (Biome) null).openSync(event.getWhoClicked()));
         }
 
         if (permissions.getSetBiomePermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBiomeItemStack()), event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getBiomeItemStackSlot(),
+                    MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBiomeItemStack(), new MessageValue("reset-copy", "")),
+                    event -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension).openSync(event.getWhoClicked()));
         }
 
         if (permissions.getValueResetPermission().hasPermission(permissible)) {
@@ -88,7 +92,10 @@ public class WorldConfigGui extends BasicGui {
         }
 
         if (permissions.getValueCopyPermission().hasPermission(permissible)) {
-            addItem(worldConfigGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopyWorldOreConfigAction(oreControlValues, worldOreConfig)).openSync(event.getWhoClicked()));
+            addItem(worldConfigGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getCopyValueItemStack()),
+                    event -> new WorldGui(guiSettings, oreControlValues, new CopyWorldOreConfigAction(oreControlValues,
+                            () -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension), worldOreConfig)).
+                            openSync(event.getWhoClicked()));
         }
 
         if (permissions.getTemplateDeletePermission().hasPermission(permissible) && !worldOreConfig.getName().equals("Default")) {
@@ -128,7 +135,7 @@ public class WorldConfigGui extends BasicGui {
             }
 
             if (bool) {
-                addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getOreItemStack()), this::handleCopyAction);
+                addItem(worldConfigGuiSettings.getOreItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getOreItemStack(), new MessageValue("reset-copy", "reset-copy.")), this::handleCopyAction);
             }
         }
 
@@ -144,21 +151,23 @@ public class WorldConfigGui extends BasicGui {
 
 
             if (bool) {
-                addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBiomeItemStack()), this::handleCopyActionBiome);
+                addItem(worldConfigGuiSettings.getBiomeItemStackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBiomeItemStack(), new MessageValue("reset-copy", "reset-copy.")), this::handleCopyActionBiome);
             }
         }
 
+        addItem(worldConfigGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getBackItemStack()), event -> copyAction.back(event.getWhoClicked()));
         addItem(worldConfigGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, worldConfigGuiSettings.getInfoItemStack(), getMessagesValues()));
+        addItem(worldConfigGuiSettings.getAbortSlot(), MessageUtil.replaceItemStack(getPlugin(), worldConfigGuiSettings.getAbortItemStack()), (event) -> copyAction.abort(event.getWhoClicked()));
     }
 
     private void handleCopyAction(@NotNull final InventoryClickEvent event) {
         copyAction.setChooseBiome(false);
-        copyAction.next(event.getWhoClicked(), this);
+        copyAction.next(event.getWhoClicked(), () -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, copyAction));
     }
 
     private void handleCopyActionBiome(@NotNull final InventoryClickEvent event) {
         copyAction.setChooseBiome(true);
-        copyAction.next(event.getWhoClicked(), this);
+        copyAction.next(event.getWhoClicked(), () -> new WorldConfigGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, copyAction));
     }
 
     private MessageValue[] getMessagesValues() {
@@ -167,12 +176,16 @@ public class WorldConfigGui extends BasicGui {
 
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
-            new VerifyGui(getPlugin(), clickEvent -> {
+            VerifyGui verifyGui = new VerifyGui(getPlugin(), clickEvent -> {
                 ResetUtil.reset(this.worldOreConfig);
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
-            }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked()));
+
+            verifyGui.addDecorations();
+
+            verifyGui.openSync(event.getWhoClicked());
             return;
         }
 
@@ -182,10 +195,14 @@ public class WorldConfigGui extends BasicGui {
     }
 
     private void handleDeleteTemplate(@NotNull final InventoryClickEvent event) {
-        new VerifyGui(getPlugin(), clickEvent -> {
+        VerifyGui verifyGui = new VerifyGui(getPlugin(), clickEvent -> {
             oreControlValues.getService().removeWorldOreConfig(worldOreConfig);
             closeSync(event.getWhoClicked());
-        }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
+        }, clickEvent1 -> openSync(event.getWhoClicked()));
+
+        verifyGui.addDecorations();
+
+        verifyGui.openSync(event.getWhoClicked());
     }
 
 }

@@ -1,272 +1,386 @@
+version: 10
 command:
-
-  player-only: 'This Command is only for Players!'
+  player-only: This Command is only for Players!
   set:
     value:
       usage: '&f/&9orecontrol set value &f<&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>'
-      description: 'Set a specific value to an ore type and world'
-      not-enough-args:
-        - "&4Wrong amount of arguments!"
-        - "&cuse  %%translation:[command.set.value.usage]%"
-      success: '&aThe value has been updated successfully!'
-
-    biome:
-      usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9ore&f> <&9setting&f> <&9world&f> <&9amount&f(&9%&f)>'
-      description: 'Set a specific value to an ore type in a specific biome and world'
+      description: Set a specific value to an ore type and world
       not-enough-args:
         - '&4Wrong amount of arguments!'
-        - "&cuse  %%translation:[command.set.biome.usage]%"
+        - '&cuse  %%translation:[command.set.value.usage]%'
+      success: '&aThe value has been updated successfully!'
+    biome:
+      usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9ore&f> <&9setting&f> <&9world&f>
+        <&9amount&f(&9%&f)>'
+      description: Set a specific value to an ore type in a specific biome and world
+      not-enough-args:
+        - '&4Wrong amount of arguments!'
+        - '&cuse  %%translation:[command.set.biome.usage]%'
       success: '&aThe value has been updated successfully!'
   create:
     usage: '&f/&9orecontrol create &f<&9name&f>'
-    description: 'Create a template file, in there you can set values before create a new world'
+    description: Create a template file, in there you can set values before create
+      a new world
     not-enough-args:
-      - "&4Wrong amount of arguments!"
-      - "&cuse %%translation:[command.create.usage]%"
-    success: "&aThe template &f'&9%world-config%&f' &awas created successfully!"
+      - '&4Wrong amount of arguments!'
+      - '&cuse %%translation:[command.create.usage]%'
+    success: '&aThe template &f''&9%world-config%&f'' &awas created successfully!'
   reload:
     usage: '&f/&9orecontrol reload'
-    description: 'Reload config, messages and gui settings'
+    description: Reload config, messages and gui settings
     begin: '&aBegin with the reload!'
     end: '&aReload finish!'
   info:
     usage: '&f/&9orecontrol info'
-    description: 'Shows you some infos about the plugin'
-
+    description: Shows you some infos about the plugin
   help:
     separator-format: '  '
-    header-format: "~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~"
-    footer-format: "~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~"
-    permission-format: "-> &9permission&f: %permission%"
-    description-format: "-> &9description&f: %description%"
-    usage-format: "&9usage&f: %usage%"
-    short-format: "&9%command%&f: %description%"
+    header-format: ~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~
+    footer-format: ~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~
+    permission-format: '-> &9permission&f: %permission%'
+    description-format: '-> &9description&f: %description%'
+    usage-format: '&9usage&f: %usage%'
+    short-format: '&9%command%&f: %description%'
     usage: '&f/&9orecontrol help &f(<&9subcommand&f>)'
-    description: 'Displays all commands and if a subcommand is specified, more details are displayed'
-
+    description: Displays all commands and if a subcommand is specified, more details
+      are displayed
 world-config:
-  not-found: "&4The config &f'&9%world-config%&f'&4 does not exist!"
-  already-exists: "&4The Config &f'&9%world-config%&f' &4already exist!"
+  not-found: '&4The config &f''&9%world-config%&f''&4 does not exist!'
+  already-exists: '&4The Config &f''&9%world-config%&f'' &4already exist!'
 ore:
   not-found:
-    - "&4The ore &f'&9%ore%&f' &4does not exist!, "
-    - "&cuse &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f' &cor"
-    - "&f'&9redstone&f'"
-  not-valid: "&4The Ore &f'&9%ore%&f' &4is not valid for the biome &f'&9%biome%&f'&4!"
-  DIAMOND: "Diamond"
-  COAL: "Coal"
-  GOLD: "Gold"
-  GOLD_BADLANDS: "Badlands Gold"
-  LAPIS: "Lapis"
-  IRON: "Iron"
-  REDSTONE: "Redstone"
-  EMERALD: "Emerald"
-  DIRT: "Dirt"
-  GRAVEL: "Gravel"
-  GRANITE: "Granite"
-  DIORITE: "Diorite"
-  ANDESITE: "Andesite"
-  NETHER_QUARTZ: "Nether Quartz"
-  INFESTED_STONE: "Infested Stone"
-  MAGMA: "Magma"
-  NETHER_GOLD: "Nether Gold"
-  ANCIENT_DEBRIS: "Ancient Debris"
-  ANCIENT_DEBRIS_2: "Ancient Debris 2"
-
+    - '&4The ore &f''&9%ore%&f'' &4does not exist!, '
+    - '&cuse &f''&9diamond&f'', ''&9coal&f'', ''&9lapis&f'', ''&9iron&f'', ''&9gold&f'',
+    ''&9gold_badlands&f'' &cor'
+    - '&f''&9redstone&f'''
+  not-valid: '&4The Ore &f''&9%ore%&f'' &4is not valid for the biome &f''&9%biome%&f''&4!'
+  DIAMOND: Diamond
+  COAL: Coal
+  GOLD: Gold
+  GOLD_BADLANDS: Badlands Gold
+  LAPIS: Lapis
+  IRON: Iron
+  REDSTONE: Redstone
+  EMERALD: Emerald
+  DIRT: Dirt
+  GRAVEL: Gravel
+  GRANITE: Granite
+  DIORITE: Diorite
+  ANDESITE: Andesite
+  NETHER_QUARTZ: Nether Quartz
+  INFESTED_STONE: Infested Stone
+  MAGMA: Magma
+  NETHER_GOLD: Nether Gold
+  ANCIENT_DEBRIS: Ancient Debris
+  ANCIENT_DEBRIS_2: Ancient Debris 2
 setting:
-  not-found: "&4The setting &f'&9%setting%&f' &4does not exist!"
-  not-valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
-  VEIN_SIZE: "Vein Size"
-  VEINS_PER_CHUNK: "Veins per Chunk"
-  HEIGHT_RANGE: "Height Range"
-  HEIGHT_CENTER: "Height Center"
-  MINIMUM_ORES_PER_CHUNK: "Minimum Ores Per Chunk"
-  ORES_PER_CHUNK_RANGE: "Ores per Chunk Range"
-  MINIMUM_HEIGHT: "Minimum Height"
-  HEIGHT_SUBTRACT_VALUE: "Height Subtract Value"
-  VEINS_PER_BIOME: "Veins Per Biome"
-  SEA_LEVEL_DIVIDER: "Sea Level Divider"
-  SEA_LEVEL_ADDER: "Sea Level Adder"
-
+  not-found: '&4The setting &f''&9%setting%&f'' &4does not exist!'
+  not-valid: '&4The setting &f''&9%setting%&f'' &4is not valid with the ore &f''&9%ore%&f''&4!'
+  VEIN_SIZE: Vein Size
+  VEINS_PER_CHUNK: Veins per Chunk
+  HEIGHT_RANGE: Height Range
+  HEIGHT_CENTER: Height Center
+  MINIMUM_ORES_PER_CHUNK: Minimum Ores Per Chunk
+  ORES_PER_CHUNK_RANGE: Ores per Chunk Range
+  MINIMUM_HEIGHT: Minimum Height
+  HEIGHT_SUBTRACT_VALUE: Height Subtract Value
+  VEINS_PER_BIOME: Veins Per Biome
+  SEA_LEVEL_DIVIDER: Sea Level Divider
+  SEA_LEVEL_ADDER: Sea Level Adder
 biome:
-  not-found: "&4The biome &f'&9%biome%&f' &4does not exist!"
-  OCEAN: "Ocean"
-  PLAINS: "Plains"
-  DESERT: "Desert"
-  MOUNTAINS: "Mountains"
-  FOREST: "Forest"
-  TAIGA: "Taiga"
-  SWAMP: "Swamp"
-  RIVER: "River"
-  FROZEN_OCEAN: "Frozen Ocean"
-  FROZEN_RIVER: "Frozen River"
-  SNOWY_TUNDRA: "Snowy Tundra"
-  SNOWY_MOUNTAINS: "Snowy Mountains"
-  MUSHROOM_FIELDS: "Mushroom Fields"
-  MUSHROOM_FIELD_SHORE: "Mushroom Field Shore"
-  BEACH: "Beach"
-  DESERT_HILLS: "Desert Hills"
-  WOODED_HILLS: "Wooded Hills"
-  TAIGA_HILLS: "Taiga Hills"
-  MOUNTAIN_EDGE: "Mountain Edge"
-  JUNGLE: "Jungle"
-  JUNGLE_HILLS: "Jungle Hills"
-  JUNGLE_EDGE: "Jungle Edge"
-  DEEP_OCEAN: "Deep Ocean"
-  STONE_SHORE: "Stone Shore"
-  SNOWY_BEACH: "Snowy Beach"
-  BIRCH_FOREST: "Birch Forest"
-  BIRCH_FOREST_HILLS: "Birch Forest Hills"
-  DARK_FOREST: "Dark Forest"
-  SNOWY_TAIGA: "Snowy Taiga"
-  SNOWY_TAIGA_HILLS: "Snowy Taiga Hills"
-  GIANT_TREE_TAIGA: "Giant Tree Taiga"
-  GIANT_TREE_TAIGA_HILLS: "Giant Tree Taiga Hills"
-  WOODED_MOUNTAINS: "Wooded Mountains"
-  SAVANNA: "Savanna"
-  SAVANNA_PLATEAU: "Savanna Plateau"
-  BADLANDS: "Badlands"
-  WOODED_BADLANDS_PLATEAU: "Wooded Badlands Plateau"
-  BADLANDS_PLATEAU: "Badlands Plateau"
-  WARM_OCEAN: "Warm Ocean"
-  LUKEWARM_OCEAN: "Lukewarm Ocean"
-  COLD_OCEAN: "Cold Ocean"
-  DEEP_WARM_OCEAN: "Deep Warm Ocean"
-  DEEP_LUKEWARM_OCEAN: "Deep Lukewarm Ocean"
-  DEEP_COLD_OCEAN: "Deep Cold Ocean"
-  DEEP_FROZEN_OCEAN: "Deep Frozen Ocean"
-  SUNFLOWER_PLAINS: "Sunflower Plains"
-  DESERT_LAKES: "Desert Lakes"
-  GRAVELLY_MOUNTAINS: "Gravelly Mountains"
-  FLOWER_FOREST: "Flower Forest"
-  TAIGA_MOUNTAINS: "Taiga Mountains"
-  SWAMP_HILLS: "Swamp Hills"
-  ICE_SPIKES: "Ice Spikes"
-  MODIFIED_JUNGLE: "Modified Jungle"
-  MODIFIED_JUNGLE_EDGE: "Modified Jungle Edge"
-  TALL_BIRCH_FOREST: "Tall Birch Forest"
-  TALL_BIRCH_HILLS: "Tall Birch Hills"
-  DARK_FOREST_HILLS: "Dark Forest Hills"
-  SNOWY_TAIGA_MOUNTAINS: "Snowy Taiga Mountains"
-  GIANT_SPRUCE_TAIGA: "Giant Spruce Taiga"
-  GIANT_SPRUCE_TAIGA_HILLS: "Giant Spruce Taiga Hills"
-  MODIFIED_GRAVELLY_MOUNTAINS: "Modified Gravelly Mountains"
-  SHATTERED_SAVANNA: "Shattered Savanna"
-  SHATTERED_SAVANNA_PLATEAU: "Shattered Savanna Plateau"
-  ERODED_BADLANDS: "Eroded Badlands"
-  MODIFIED_WOODED_BADLANDS_PLATEAU: "Modified Wooded Badlands Plateau"
-  MODIFIED_BADLANDS_PLATEAU: "Modified Badlands Plateau"
-  BAMBOO_JUNGLE: "Bamboo Jungle"
-  BAMBOO_JUNGLE_HILLS: "Bamboo Jungle Hills"
-  HILLS: "Hills"
-  SNOWY: "Snowy"
-  NETHER: "Nether"
-  NETHER_WASTES: "Nether Wastes"
-  SOUL_SAND_VALLEY: "Soul Sand Valley"
-  CRIMSON_FOREST: "Crimson Forest"
-  WARPED_FOREST: "Warped Forest"
-  BASALT_DELTAS: "Basalt Deltas"
-
+  not-found: '&4The biome &f''&9%biome%&f'' &4does not exist!'
+  OCEAN: Ocean
+  PLAINS: Plains
+  DESERT: Desert
+  MOUNTAINS: Mountains
+  FOREST: Forest
+  TAIGA: Taiga
+  SWAMP: Swamp
+  RIVER: River
+  FROZEN_OCEAN: Frozen Ocean
+  FROZEN_RIVER: Frozen River
+  SNOWY_TUNDRA: Snowy Tundra
+  SNOWY_MOUNTAINS: Snowy Mountains
+  MUSHROOM_FIELDS: Mushroom Fields
+  MUSHROOM_FIELD_SHORE: Mushroom Field Shore
+  BEACH: Beach
+  DESERT_HILLS: Desert Hills
+  WOODED_HILLS: Wooded Hills
+  TAIGA_HILLS: Taiga Hills
+  MOUNTAIN_EDGE: Mountain Edge
+  JUNGLE: Jungle
+  JUNGLE_HILLS: Jungle Hills
+  JUNGLE_EDGE: Jungle Edge
+  DEEP_OCEAN: Deep Ocean
+  STONE_SHORE: Stone Shore
+  SNOWY_BEACH: Snowy Beach
+  BIRCH_FOREST: Birch Forest
+  BIRCH_FOREST_HILLS: Birch Forest Hills
+  DARK_FOREST: Dark Forest
+  SNOWY_TAIGA: Snowy Taiga
+  SNOWY_TAIGA_HILLS: Snowy Taiga Hills
+  GIANT_TREE_TAIGA: Giant Tree Taiga
+  GIANT_TREE_TAIGA_HILLS: Giant Tree Taiga Hills
+  WOODED_MOUNTAINS: Wooded Mountains
+  SAVANNA: Savanna
+  SAVANNA_PLATEAU: Savanna Plateau
+  BADLANDS: Badlands
+  WOODED_BADLANDS_PLATEAU: Wooded Badlands Plateau
+  BADLANDS_PLATEAU: Badlands Plateau
+  WARM_OCEAN: Warm Ocean
+  LUKEWARM_OCEAN: Lukewarm Ocean
+  COLD_OCEAN: Cold Ocean
+  DEEP_WARM_OCEAN: Deep Warm Ocean
+  DEEP_LUKEWARM_OCEAN: Deep Lukewarm Ocean
+  DEEP_COLD_OCEAN: Deep Cold Ocean
+  DEEP_FROZEN_OCEAN: Deep Frozen Ocean
+  SUNFLOWER_PLAINS: Sunflower Plains
+  DESERT_LAKES: Desert Lakes
+  GRAVELLY_MOUNTAINS: Gravelly Mountains
+  FLOWER_FOREST: Flower Forest
+  TAIGA_MOUNTAINS: Taiga Mountains
+  SWAMP_HILLS: Swamp Hills
+  ICE_SPIKES: Ice Spikes
+  MODIFIED_JUNGLE: Modified Jungle
+  MODIFIED_JUNGLE_EDGE: Modified Jungle Edge
+  TALL_BIRCH_FOREST: Tall Birch Forest
+  TALL_BIRCH_HILLS: Tall Birch Hills
+  DARK_FOREST_HILLS: Dark Forest Hills
+  SNOWY_TAIGA_MOUNTAINS: Snowy Taiga Mountains
+  GIANT_SPRUCE_TAIGA: Giant Spruce Taiga
+  GIANT_SPRUCE_TAIGA_HILLS: Giant Spruce Taiga Hills
+  MODIFIED_GRAVELLY_MOUNTAINS: Modified Gravelly Mountains
+  SHATTERED_SAVANNA: Shattered Savanna
+  SHATTERED_SAVANNA_PLATEAU: Shattered Savanna Plateau
+  ERODED_BADLANDS: Eroded Badlands
+  MODIFIED_WOODED_BADLANDS_PLATEAU: Modified Wooded Badlands Plateau
+  MODIFIED_BADLANDS_PLATEAU: Modified Badlands Plateau
+  BAMBOO_JUNGLE: Bamboo Jungle
+  BAMBOO_JUNGLE_HILLS: Bamboo Jungle Hills
+  HILLS: Hills
+  SNOWY: Snowy
+  NETHER: Nether
+  NETHER_WASTES: Nether Wastes
+  SOUL_SAND_VALLEY: Soul Sand Valley
+  CRIMSON_FOREST: Crimson Forest
+  WARPED_FOREST: Warped Forest
+  BASALT_DELTAS: Basalt Deltas
+config-type:
+  GLOBAL: Global
+  TEMPLATE: Template
+  OVERWORLD: Overworld
+  NETHER: Nether
 number:
-  not-valid: "&f'&9%value%&f' &4is not a valid number!"
+  not-valid: '&f''&9%value%&f'' &4is not a valid number!'
   not-safe:
-    - "&4The number &f'&9%value%&f' &4is not safe!"
-    - "&4If you want to use it anyway,"
-    - "&4set &f'&9safe-mode&f' &4in the config to &f'&9false&f'"
-    - "&4And execute the &f'&9/orecontrol reload&f' &4command"
-  not-safe-warning: "&eWarn: The number &f'&9%value%&f' &eis not safe!"
-
-
+    - '&4The number &f''&9%value%&f'' &4is not safe!'
+    - '&4If you want to use it anyway,'
+    - '&4set &f''&9safe-mode&f'' &4in the config to &f''&9false&f'''
+    - '&4And execute the &f''&9/orecontrol reload&f'' &4command'
+  not-safe-warning: '&eWarn: The number &f''&9%value%&f'' &eis not safe!'
 gui:
   copy:
-    success: "&aCopy the values with Success!"
+    success: '&aCopy the values with Success!'
   reset:
-    success: "&aReset the values with Success!"
+    success: '&aReset the values with Success!'
   anvil:
-    title: "Type a name!"
-  previous-page: "&rPrevious page"
-  next-page: "&rNext page"
-  back: "&rGo one step Back"
+    title: Type a name!
+  previous-page:
+    name: '&fPrevious page'
+    click: '&7>> &bClick to go to the previous page! &7<<'
+  next-page:
+    name: '&fNext page'
+    click: '&7>> &bClick to go to the next page! &7<<'
+  back:
+    name: '&fBack'
+    click: '&7>> &bClick to go a step back! &7<<'
+  abort:
+    name: '&fAbort'
+    click: '&7>> &bClick to abort the copy action! &7<<'
   info:
-    name: "Info"
-    lore-world: "world: %world%"
-    lore-biome: "biome: %%translation:[biome.%biome%]%"
-    lore-ore: "ore: %%translation:[ore.%ore%]%"
-    lore-setting: "setting: %%translation:[setting.%setting%]%"
-    lore-current: "current: %amount%"
-    lore-default: "default: %value%"
+    name: '&eInfo'
+    lore-world: ' &7> &fWorld: &d%world%'
+    lore-biome: ' &7> &fBiome: &d%%translation:[biome.%biome%]%'
+    lore-ore: ' &7> &fOre: &d%%translation:[ore.%ore%]%'
+    lore-setting: ' &7> &fSetting: &d%%translation:[setting.%setting%]%'
+    lore-current: ' &7> &fCurrently: &d%amount%'
+    lore-default: ' &7> &fDefault: &d%default%'
   world:
-    name: "Choose a World!"
+    name: Choose a World!
+    type: ' &7> &fType: &d%%translation:[config-type.%config-type%]%'
+    world:
+      click: '&7>> &bClick to edit this world! &7<<'
     template:
-      create: "Create a new Template!"
+      create:
+        name: '&fNew template'
+        create: '&7>> &bClick to create a new template! &7<<'
+      click: '&7>> &bClick to edit this template! &7<<'
     config:
-      edit: "Change the config settings!"
+      edit: Change the config settings!
+      name: '&fConfig'
+      click: '&7>> &bClick to edit the config! &7<<'
+    reset-copy:
+      world:
+        click: '&7>> &bClick to select this world! &7<<'
+      template:
+        click: '&7>> &bClick to select this template! &7<<'
   world-config:
-    name: "Choose a Type!"
-    biome: "§bSet a value for a specific §dbiome§b!"
-    ore: "§bSet a value for the whole §dworld§b!"
-    reset: "Reset all settings to the default values!"
-    copy: "Copy all settings to an other World or Template"
-    delete: "Delete this Template!"
+    name: Choose a Type!
+    biome:
+      name: '&fBiome specific'
+      click: '&7>> &bClick to edit a specific biome! &7<<'
+    ore:
+      name: '&fWhole world'
+      click: '&7>> &bClick to edit the whole world! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all settings! &7<<'
+    delete:
+      name: '&fDelete'
+      click: '&7>> &bClick to delete this world-config! &7<<'
+    reset-copy:
+      biome:
+        click: '&7>> &bClick to select biome! &7<<'
+      ore:
+        click: '&7>> &bClick to select whole word! &7<<'
   biome:
-    name: "Choose a Biome!"
-    biome: "Biomes"
-    biome-group: "Biome Groups"
-    reset: "Reset all Biome settings to the default values!"
-    copy: "Copy all Biome settings to an other World or Template!"
+    name: Choose a Biome!
+    biome:
+      click: '&7>> &bClick to edit this biome! &7<<'
+    switch:
+      biome:
+        name: '&fBiome'
+        click: '&7>> &bClick to switch to biome selection! &7<<'
+      biome-group:
+        name: '&fBiome Group'
+        click: '&7>> &bClick to switch to biome group selection! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all biome settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all biome settings! &7<<'
+    reset-copy:
+      biome:
+        click: '&7>> &bClick to select this biome! &7<<'
   ore:
-    name: "Choose an Ore!"
-    reset: "Reset all Ore settings to the default values!"
-    copy: "Copy all Ore settings to an other World or Template!"
+    name: Choose an Ore!
+    ore:
+      name: '&f%%translation:[ore.%ore%]%'
+      status: ' &7> &fStatus: &a%%translation:[gui.boolean.%status%]%'
+      click: '&7>> &bClick to edit this ore! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all ore settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all ore settings! &7<<'
+    reset-copy:
+      ore:
+        click: '&7>> &bClick to select this ore! &7<<'
   ore-settings:
-    name: "Choose a Setting!"
-    activate: "§aActivate the Ore Generation!"
-    deactivate: "§cDeactivate the Ore Generation!"
-    reset: "Reset all settings of this Ore to the default values!"
-    copy: "Copy all settings of this Ore to an other World or Template!"
+    name: Choose a Setting!
+    setting:
+      click: '&7>> &bClick to edit this setting! &7<<'
+    status:
+      active:
+        name: '&fActivate / Deactivate'
+        current: ' &7> &fCurrently: &aActive'
+        click: '&7>> &bClick to deactivate this ore! &7<<'
+      inactive:
+        name: '&fActivate / Deactivate'
+        current: ' &7> &fCurrently: &cInactive'
+        click: '&7>> &bClick to activate this ore! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all settings! &7<<'
+    reset-copy:
+      setting:
+        click: '&7>> &bClick to select this setting! &7<<'
   settings:
-    name: "Set a value!"
-    reset: "Reset this setting to the default value!"
-    copy: "Copy this setting to an other World or Template!"
+    name: Set a value!
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset this setting! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy this setting! &7<<'
+    add:
+      click: '&7>> &bClick to add %change-value%! &7<<'
+    remove:
+      click: '&7>> &bClick to remove %change-value%! &7<<'
   verify:
-    name: "Accept or Deny the Action!"
-    accept: "Accept"
-    deny: "Deny"
+    name: Accept or Deny the Action!
+    accept:
+      name: '&fAccept'
+      click: '&7>> &bClick to accept! &7<<'
+    deny:
+      name: '&fDeny'
+      click: '&7>> &bClick to deny! &7<<'
   config:
-    name: "Select a config option!"
+    name: Select a config option!
+    back:
+      click: '&7>> &bClick to go back to world gui! &7<<'
+    reload:
+      name: '&fReload'
+      click: '&7>> &bClick to reload configs from disk &7<<'
     language:
-      name: "Change the Language!"
-      description: "Change the Language of this Plugin, you can submit a new Language if you want. Simply translate the messages.yml in the Ore-Control folder and send it to me"
+      name: '&fLanguage'
+      description: ' &7> &cHelp to translate the plugin!%%new-line% &7> &fEvery bit
+        helps, simply%%new-line% &7> &ftranslate the &dmessages.yml%%new-line% &7>
+        &fin the plugins directory and%%new-line% &7> &fsend it to me.'
+      click: '&7>> &bClick to change the language! &7<<'
     safe-mode:
-      name: "Activate / Deactivate safe mode!"
-      description: "Choose if the plugin should warn you if you set a unsafe value"
+      name: '&fSafe mode'
+      description: ' &7> &fChoose if the plugin should warn%%new-line% &7> &fyou if
+        you set a unsafe value.'
+      click: '&7>> &bClick to turn safe mode on / off! &7<<'
     translate-tab-compilation:
-      name: "Activate / Deactivate Tab translation!"
-      description: "Choose if you can type Biomes / Ores / Settings in your select Language, in the commands"
+      name: '&fTap translation'
+      description: ' &7> &fActivate, if you want to type%%new-line% &7> &fBiomes /
+        Ores / Settings in your%%new-line% &7> &fselected Language, in commands.'
+      click: '&7>> &bClick to turn tab translation on / off! &7<<'
     verify:
       copy-action:
-        name: "Activate / Deactivate Verify for Copy Actions!"
-        description: "Choose if you must verify a copy action or not"
+        name: '&fVerify copy actions'
+        description: ' &7> &fActivate, if you want to verify%%new-line% &7> &fcopy
+          actions.'
+        click: '&7>> &bClick to turn verification on / off! &7<<'
       reset-action:
-        name: "Activate / Deactivate Verify for Reset Actions!"
-        description: "Choose if you must verify a reset action or not"
+        name: '&fVerify reset actions'
+        description: ' &7> &fActivate, if you want to verify%%new-line% &7> &freset
+          actions.'
+        click: '&7>> &bClick to turn verification on / off! &7<<'
   language:
-    name: "Choose a Language!"
+    name: Choose a Language!
+    custom:
+      click: '&7>> &bClick to select custom as language! &7<<'
   boolean:
-    name: "Activate or Deactivate"
-    true: "Activate"
-    false: "Deactivate"
-
+    true-click: '&7>> &bClick to Activate! &7<<'
+    false-click: '&7>> &bClick to Deactivate! &7<<'
+    set:
+      'true': '&fActivate'
+      'false': '&fDeactivate'
+    name: Activate or Deactivate
+    'true': '&aActive'
+    'false': '&cInactive'
 welcome:
-  button-open-string: "&4["
-  button-close-string: "&4]"
-  header: "&bThanks for using Ore-Control!"
-  found-bug: "If you found a bug, please report it on %%button%"
-  feature-request: "If you have a feature request, use also %%button%"
-  support: "Join my %%button% server, if you have questions about my plugin"
-  support-my-work: "If you like my work, please %%button:[rating]% it, or make a small %%button:[donation]%"
-  not-show-again: "Do not show again"
-  not-show-again-success: "&aThe welcome message won't show again"
-  click-me: "Click me"
-  rating: "rate"
-  donation: "donation"
+  button-open-string: '&4['
+  button-close-string: '&4]'
+  header: '&bThanks for using Ore-Control!'
+  found-bug: If you found a bug, please report it on %%button%
+  feature-request: If you have a feature request, use also %%button%
+  support: Join my %%button% server, if you have questions about my plugin
+  support-my-work: If you like my work, please %%button:[rating]% it, or make a small
+    %%button:[donation]%
+  not-show-again: Do not show again
+  not-show-again-success: '&aThe welcome message won''t show again'
+  click-me: Click me
+  rating: rate
+  donation: donation

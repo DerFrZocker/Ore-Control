@@ -33,7 +33,13 @@ import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import org.bukkit.entity.HumanEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public interface CopyAction {
+
+    void abort(@NotNull HumanEntity humanEntity);
+
+    void back(@NotNull HumanEntity humanEntity);
 
     @NotNull
     WorldOreConfig getWorldOreConfigSource();
@@ -48,7 +54,9 @@ public interface CopyAction {
 
     void setOreTarget(@NotNull Ore ore);
 
-    void next(@NotNull HumanEntity humanEntity, @NotNull InventoryGui inventoryGui);
+    void next(@NotNull HumanEntity humanEntity, @NotNull Supplier<InventoryGui> inventoryGui);
+
+    boolean allowBack();
 
     boolean isFilterWorldOreConfig();
 

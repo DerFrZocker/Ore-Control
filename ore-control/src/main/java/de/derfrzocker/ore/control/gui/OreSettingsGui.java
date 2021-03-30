@@ -111,7 +111,9 @@ public class OreSettingsGui extends PageGui<Setting> {
         }
 
         if (permissions.getValueCopyPermission().hasPermission(permissible)) {
-            addItem(oreSettingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, oreSettingsGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopyOreAction(guiSettings, oreControlValues, worldOreConfig, biome, ore)).openSync(event.getWhoClicked()));
+            addItem(oreSettingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, oreSettingsGuiSettings.getCopyValueItemStack()),
+                    event -> new WorldGui(guiSettings, oreControlValues, new CopyOreAction(guiSettings, oreControlValues, () -> new OreSettingsGui(guiSettings, oreControlValues, permissible, worldOreConfig, dimension, biome, ore), worldOreConfig, biome, ore)).
+                            openSync(event.getWhoClicked()));
         }
     }
 
@@ -150,10 +152,12 @@ public class OreSettingsGui extends PageGui<Setting> {
         init(settings, Setting[]::new, this::getSettingItemStack, (setting, event) -> {
             copyAction.setSettingTarget(setting);
 
-            copyAction.next(event.getWhoClicked(), OreSettingsGui.this);
+            copyAction.next(event.getWhoClicked(), () -> new OreSettingsGui(guiSettings, oreControlValues, permissible, worldOreConfig, biome, ore, copyAction));
         });
 
+        addItem(oreSettingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, oreSettingsGuiSettings.getBackItemStack()), event -> copyAction.back(event.getWhoClicked()));
         addItem(oreSettingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, biome == null ? oreSettingsGuiSettings.getInfoItemStack() : oreSettingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues()));
+        addItem(oreSettingsGuiSettings.getAbortSlot(), MessageUtil.replaceItemStack(getPlugin(), oreSettingsGuiSettings.getAbortItemStack()), (event) -> copyAction.abort(event.getWhoClicked()));
     }
 
     OreSettingsGui(@NotNull final GuiSettings guiSettings, @NotNull final OreControlValues oreControlValues, @NotNull final Permissible permissible, @NotNull final WorldOreConfig worldOreConfig, @Nullable final Dimension dimension, @NotNull final BiomeGroupGui.BiomeGroup biomeGroup, @NotNull final Ore ore) {
@@ -199,9 +203,22 @@ public class OreSettingsGui extends PageGui<Setting> {
         final ItemStack itemStack;
 
         if (biome == null) {
-            itemStack = MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getOreSettingsGuiSettings().getSettingsItemStack(setting), new MessageValue("amount", String.valueOf(service.getValue(worldOreConfig, ore, setting))));
+            if (biomeGroup == null) {
+                itemStack = MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getOreSettingsGuiSettings().getSettingsItemStack(setting),
+                        new MessageValue("amount", service.getValue(worldOreConfig, ore, setting)),
+                        new MessageValue("default", service.getDefaultValue(ore, setting)),
+                        new MessageValue("reset-copy", copyAction == null ? "" : "reset-copy."));
+            } else {
+                itemStack = MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getOreSettingsGuiSettings().getSettingsItemStack(setting),
+                        new MessageValue("amount", "N/A"),
+                        new MessageValue("default", "N/A"),
+                        new MessageValue("reset-copy", copyAction == null ? "" : "reset-copy."));
+            }
         } else {
-            itemStack = MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getOreSettingsGuiSettings().getSettingsItemStack(setting), new MessageValue("amount", String.valueOf(service.getValue(worldOreConfig, biome, ore, setting))));
+            itemStack = MessageUtil.replaceItemStack(getPlugin(), this.guiSettings.getOreSettingsGuiSettings().getSettingsItemStack(setting),
+                    new MessageValue("amount", service.getValue(worldOreConfig, biome, ore, setting)),
+                    new MessageValue("default", service.getDefaultValue(biome, ore, setting)),
+                    new MessageValue("reset-copy", copyAction == null ? "" : "reset-copy."));
         }
 
         return itemStack;
@@ -247,7 +264,7 @@ public class OreSettingsGui extends PageGui<Setting> {
         final OreControlService service = oreControlValues.getService();
 
         if (oreControlValues.getConfigValues().verifyResetAction()) {
-            new VerifyGui(getPlugin(), clickEvent -> {
+            VerifyGui verifyGui = new VerifyGui(getPlugin(), clickEvent -> {
                 if (biome != null) {
                     ResetUtil.reset(worldOreConfig, ore, biome);
                 } else {
@@ -257,9 +274,18 @@ public class OreSettingsGui extends PageGui<Setting> {
                 service.saveWorldOreConfig(worldOreConfig);
                 activated = biome == null ? service.isActivated(worldOreConfig, ore) : service.isActivated(worldOreConfig, biome, ore);
                 addItem(statusSlot, MessageUtil.replaceItemStack(getPlugin(), activated ? this.guiSettings.getOreSettingsGuiSettings().getDeactivateItemStack() : this.guiSettings.getOreSettingsGuiSettings().getActivateItemStack()));
-                openSync(event.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
-            }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
+
+                if (biomeGroup == null) {
+                    new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore).openSync(event.getWhoClicked());
+                } else {
+                    new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, ore).openSync(event.getWhoClicked());
+                }
+            }, clickEvent1 -> openSync(event.getWhoClicked()));
+
+            verifyGui.addDecorations();
+
+            verifyGui.openSync(event.getWhoClicked());
             return;
         }
         if (biome != null) {
@@ -272,6 +298,12 @@ public class OreSettingsGui extends PageGui<Setting> {
         activated = biome == null ? service.isActivated(worldOreConfig, ore) : service.isActivated(worldOreConfig, biome, ore);
         addItem(statusSlot, MessageUtil.replaceItemStack(getPlugin(), activated ? this.guiSettings.getOreSettingsGuiSettings().getDeactivateItemStack() : this.guiSettings.getOreSettingsGuiSettings().getActivateItemStack()));
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
+
+        if (biomeGroup == null) {
+            new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore).openSync(event.getWhoClicked());
+        } else {
+            new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biomeGroup, ore).openSync(event.getWhoClicked());
+        }
     }
 
 }

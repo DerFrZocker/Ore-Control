@@ -111,7 +111,10 @@ public class BiomeGui extends PageGui<Biome> {
         }
 
         if (permissions.getValueCopyPermission().hasPermission(permissible)) {
-            addItem(biomeGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopyBiomesAction(oreControlValues, worldOreConfig, Biome.values())).openSync(event.getWhoClicked()));
+            addItem(biomeGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getCopyValueItemStack()),
+                    event -> new WorldGui(guiSettings, oreControlValues, new CopyBiomesAction(oreControlValues,
+                            () -> new BiomeGui(guiSettings, oreControlValues, permissible, worldOreConfig, dimension), worldOreConfig, Biome.values())).
+                            openSync(event.getWhoClicked()));
         }
     }
 
@@ -149,11 +152,13 @@ public class BiomeGui extends PageGui<Biome> {
         addDecorations();
         init(biomes.toArray(new Biome[0]), Biome[]::new, this::getItemStack, this::handleCopyAction);
 
+        addItem(biomeGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getBackItemStack()), event -> copyAction.back(event.getWhoClicked()));
         addItem(biomeGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getInfoItemStack(), getMessagesValues()));
+        addItem(biomeGuiSettings.getAbortSlot(), MessageUtil.replaceItemStack(getPlugin(), biomeGuiSettings.getAbortItemStack()), (event) -> copyAction.abort(event.getWhoClicked()));
     }
 
     private ItemStack getItemStack(@NotNull final Biome biome) {
-        return MessageUtil.replaceItemStack(getPlugin(), guiSettings.getBiomeGuiSettings().getBiomeItemStack(biome.toString()));
+        return MessageUtil.replaceItemStack(getPlugin(), guiSettings.getBiomeGuiSettings().getBiomeItemStack(biome.toString()), new MessageValue("reset-copy", copyAction == null ? "" : "reset-copy."));
     }
 
     private void handleNormalClick(@NotNull final Biome biome, @NotNull final InventoryClickEvent event) {
@@ -162,12 +167,12 @@ public class BiomeGui extends PageGui<Biome> {
 
     private void handleCopyAction(@NotNull final Biome biome, @NotNull final InventoryClickEvent event) {
         copyAction.setBiomeTarget(biome);
-        copyAction.next(event.getWhoClicked(), this);
+        copyAction.next(event.getWhoClicked(), () -> new BiomeGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, copyAction));
     }
 
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
-            new VerifyGui(getPlugin(), clickEvent -> {
+            VerifyGui verifyGui = new VerifyGui(getPlugin(), clickEvent -> {
                 for (Biome biome : Biome.values()) {
                     ResetUtil.reset(this.worldOreConfig, biome);
                 }
@@ -175,7 +180,11 @@ public class BiomeGui extends PageGui<Biome> {
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
-            }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
+            }, clickEvent1 -> openSync(event.getWhoClicked()));
+
+            verifyGui.addDecorations();
+
+            verifyGui.openSync(event.getWhoClicked());
             return;
         }
 

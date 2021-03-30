@@ -40,7 +40,7 @@ public class ConfigValues implements ReloadAble {
     public final Set SET = new Set();
     public final Default DEFAULT = new Default();
     @NotNull
-    private File file;
+    private final File file;
     private volatile YamlConfiguration yaml;
 
     public ConfigValues(@NotNull final File file) {

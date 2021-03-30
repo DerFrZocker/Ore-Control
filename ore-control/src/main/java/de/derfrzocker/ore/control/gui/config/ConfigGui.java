@@ -25,10 +25,12 @@
 
 package de.derfrzocker.ore.control.gui.config;
 
+import de.derfrzocker.ore.control.gui.WorldGui;
 import de.derfrzocker.ore.control.gui.settings.BooleanGuiSetting;
 import de.derfrzocker.ore.control.gui.settings.ConfigGuiSettings;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
+import de.derfrzocker.spigot.utils.ReloadAble;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -55,29 +57,36 @@ public class ConfigGui extends BasicGui {
 
         addDecorations();
 
+        addItem(configGuiSettings.getReloadSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getReloadItemStack()), event -> {
+            ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);
+            new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
+        });
+
+        addItem(configGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getBackItemStack()), event -> new WorldGui(guiSettings, oreControlValues, event.getWhoClicked()).openSync(event.getWhoClicked()));
+
         addItem(configGuiSettings.getLanguageSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getLanguageItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ), event -> new LanguageGui(guiSettings, oreControlValues).openSync(event.getWhoClicked()));
 
         addItem(configGuiSettings.getsafeModeSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getsafeModeItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isSafeMode()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultSafeMode())
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultSafeMode())
         ), this::handleSafeMode);
 
         addItem(configGuiSettings.getTranslateTabCompilationSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getTranslateTabCompilationItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isTranslateTabCompilation()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultTranslateTabCompilation())
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultTranslateTabCompilation())
         ), this::handleTranslateTabCompilation);
 
         addItem(configGuiSettings.getVerifyCopyActionSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getVerifyCopyActionItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().verifyCopyAction()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultVerifyCopyAction())
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultVerifyCopyAction())
         ), this::handleVerifyCopyAction);
 
         addItem(configGuiSettings.getVerifyResetActionSlot(), MessageUtil.replaceItemStack(plugin, configGuiSettings.getVerifyResetActionItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().verifyResetAction()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultVerifyResetAction())
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultVerifyResetAction())
         ), this::handleVerifyResetAction);
     }
 
@@ -92,9 +101,13 @@ public class ConfigGui extends BasicGui {
             new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
+        verifyGui.addDecorations();
+
+        verifyGui.addItem(booleanGuiSetting.getBackSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getBackItemStack()), click -> new ConfigGui(guiSettings, oreControlValues).openSync(click.getWhoClicked()));
+
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isSafeMode()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultSafeMode())));
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultSafeMode())));
 
         verifyGui.openSync(event.getWhoClicked());
     }
@@ -110,9 +123,13 @@ public class ConfigGui extends BasicGui {
             new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
+        verifyGui.addDecorations();
+
+        verifyGui.addItem(booleanGuiSetting.getBackSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getBackItemStack()), click -> new ConfigGui(guiSettings, oreControlValues).openSync(click.getWhoClicked()));
+
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().isTranslateTabCompilation()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultTranslateTabCompilation())));
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultTranslateTabCompilation())));
 
         verifyGui.openSync(event.getWhoClicked());
     }
@@ -128,9 +145,13 @@ public class ConfigGui extends BasicGui {
             new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
+        verifyGui.addDecorations();
+
+        verifyGui.addItem(booleanGuiSetting.getBackSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getBackItemStack()), click -> new ConfigGui(guiSettings, oreControlValues).openSync(click.getWhoClicked()));
+
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().verifyCopyAction()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultVerifyCopyAction())));
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultVerifyCopyAction())));
 
         verifyGui.openSync(event.getWhoClicked());
     }
@@ -146,9 +167,13 @@ public class ConfigGui extends BasicGui {
             new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked());
         }, booleanGuiSetting);
 
+        verifyGui.addDecorations();
+
+        verifyGui.addItem(booleanGuiSetting.getBackSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getBackItemStack()), click -> new ConfigGui(guiSettings, oreControlValues).openSync(click.getWhoClicked()));
+
         verifyGui.addItem(booleanGuiSetting.getInfoSlot(), MessageUtil.replaceItemStack(getPlugin(), booleanGuiSetting.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().verifyResetAction()),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultVerifyResetAction())));
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultVerifyResetAction())));
 
         verifyGui.openSync(event.getWhoClicked());
     }

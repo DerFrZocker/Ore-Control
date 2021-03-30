@@ -37,20 +37,36 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.entity.HumanEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public class CopyWorldOreConfigAction implements CopyAction {
 
     @NotNull
     private final OreControlValues oreControlValues;
     @NotNull
+    private final Supplier<InventoryGui> startGui;
+    @NotNull
     private final WorldOreConfig worldOreConfigSource;
     private WorldOreConfig worldOreConfigTarget = null;
 
-    public CopyWorldOreConfigAction(@NotNull final OreControlValues oreControlValues, @NotNull final WorldOreConfig worldOreConfigSource) {
+    public CopyWorldOreConfigAction(@NotNull final OreControlValues oreControlValues, @NotNull Supplier<InventoryGui> startGui, @NotNull final WorldOreConfig worldOreConfigSource) {
         Validate.notNull(oreControlValues, "OreControlValues cannot be null");
+        Validate.notNull(startGui, "Start Gui cannot be null");
         Validate.notNull(worldOreConfigSource, "WorldOreConfig cannot be null");
 
         this.oreControlValues = oreControlValues;
+        this.startGui = startGui;
         this.worldOreConfigSource = worldOreConfigSource;
+    }
+
+    @Override
+    public void abort(@NotNull HumanEntity humanEntity) {
+        startGui.get().openSync(humanEntity);
+    }
+
+    @Override
+    public void back(@NotNull HumanEntity humanEntity) {
+        throw new UnsupportedOperationException();
     }
 
     @NotNull
@@ -87,21 +103,30 @@ public class CopyWorldOreConfigAction implements CopyAction {
     }
 
     @Override
-    public void next(@NotNull final HumanEntity humanEntity, @NotNull final InventoryGui inventoryGui) {
+    public void next(@NotNull final HumanEntity humanEntity, @NotNull final Supplier<InventoryGui> inventoryGui) {
         if (oreControlValues.getConfigValues().verifyCopyAction()) {
-            new VerifyGui(oreControlValues.getPlugin(), clickEvent -> {
+            VerifyGui verifyGui = new VerifyGui(oreControlValues.getPlugin(), clickEvent -> {
                 CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget);
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
-                inventoryGui.closeSync(humanEntity);
+                startGui.get().openSync(humanEntity);
                 oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
-            }, clickEvent1 -> inventoryGui.openSync(humanEntity)).openSync(humanEntity);
+            }, clickEvent1 -> inventoryGui.get().openSync(humanEntity));
+
+            verifyGui.addDecorations();
+
+            verifyGui.openSync(humanEntity);
             return;
         }
 
         CopyUtil.copy(oreControlValues.getService(), worldOreConfigSource, worldOreConfigTarget);
         oreControlValues.getService().saveWorldOreConfig(worldOreConfigTarget);
-        inventoryGui.closeSync(humanEntity);
+        startGui.get().openSync(humanEntity);
         oreControlValues.getOreControlMessages().getGuiCopySuccessMessage().sendMessage(humanEntity);
+    }
+
+    @Override
+    public boolean allowBack() {
+        return false;
     }
 
     @Override

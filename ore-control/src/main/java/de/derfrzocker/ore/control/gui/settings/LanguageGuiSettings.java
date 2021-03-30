@@ -50,7 +50,7 @@ public class LanguageGuiSettings extends BasicSettings {
 
     @NotNull
     public ItemStack getLanguageItemStack(@NotNull final Language language) {
-        final ItemStack itemStack = getSection().getItemStack("language." + language);
+        final ItemStack itemStack = getSection().getItemStack("language." + language + ".item-stack");
 
         if (itemStack == null) {
             throw new IllegalArgumentException("There is no ItemStack for the language '" + language + "'");
@@ -59,8 +59,16 @@ public class LanguageGuiSettings extends BasicSettings {
         return itemStack.clone();
     }
 
-    public int getLanguageGap() {
-        return getSection().getInt("inventory.language-gap");
+    public int getLanguageSlot(@NotNull final Language language) {
+        return getSection().getInt("language." + language + ".slot");
+    }
+
+    public ItemStack getBackItemStack() {
+        return getSection().getItemStack("back.item-stack").clone();
+    }
+
+    public int getBackSlot() {
+        return getSection().getInt("back.slot");
     }
 
     @NotNull

@@ -39,8 +39,10 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
     @Deprecated
     private static final String WORLD_KEY = "world";
-    private static final String NAME_KEY = "name";
+    @Deprecated
     private static final String TEMPLATE_KEY = "template";
+    private static final String NAME_KEY = "name";
+    private static final String CONFIG_TYPE_KEY = "config-type";
     private static final String ORE_SETTINGS_KEY = "ore-settings";
     private static final String BIOME_ORE_SETTINGS_KEY = "biome-ore-settings";
 
@@ -50,24 +52,24 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     private final Map<Biome, BiomeOreSettings> biomeOreSettings = new LinkedHashMap<>();
     @NotNull
     private final String name;
-    private boolean template;
+    private ConfigType configType;
 
-    public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template) {
+    public WorldOreConfigYamlImpl(@NotNull final String name, final ConfigType configType) {
         Validate.notNull(name, "Name cannot be null");
 
         this.name = name;
-        this.template = template;
+        this.configType = configType;
     }
 
-    public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template, @NotNull final Map<Ore, OreSettings> oreSettings) {
-        this(name, template);
+    public WorldOreConfigYamlImpl(@NotNull final String name, final ConfigType configType, @NotNull final Map<Ore, OreSettings> oreSettings) {
+        this(name, configType);
         Validate.notNull(oreSettings, "OreSettings map cannot be null");
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
-    public WorldOreConfigYamlImpl(@NotNull final String name, final boolean template, @NotNull final Map<Ore, OreSettings> oreSettings, @NotNull final Map<Biome, BiomeOreSettings> biomeOreSettings) {
-        this(name, template, oreSettings);
+    public WorldOreConfigYamlImpl(@NotNull final String name, final ConfigType configType, @NotNull final Map<Ore, OreSettings> oreSettings, @NotNull final Map<Biome, BiomeOreSettings> biomeOreSettings) {
+        this(name, configType, oreSettings);
         Validate.notNull(biomeOreSettings, "BiomeOreSettings map cannot be null");
 
         biomeOreSettings.forEach((key, value) -> this.biomeOreSettings.put(key, value.clone()));
@@ -116,7 +118,19 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
             name = (String) map.get(NAME_KEY);
         }
 
-        return new WorldOreConfigYamlImpl(name, (boolean) map.getOrDefault(TEMPLATE_KEY, false), oreSettings, biomeOreSettings);
+        String configTypeString = (String) map.get(CONFIG_TYPE_KEY);
+        ConfigType configType;
+        if (configTypeString == null) {
+            if ((boolean) map.getOrDefault(TEMPLATE_KEY, false)) {
+                configType = ConfigType.TEMPLATE;
+            } else {
+                configType = ConfigType.UNKNOWN;
+            }
+        } else {
+            configType = ConfigType.valueOf(configTypeString.toUpperCase());
+        }
+
+        return new WorldOreConfigYamlImpl(name, configType, oreSettings, biomeOreSettings);
     }
 
     private static boolean isOre(@Nullable final String string) {
@@ -196,12 +210,29 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
 
     @Override
     public boolean isTemplate() {
-        return this.template;
+        return configType == ConfigType.TEMPLATE || configType == ConfigType.GLOBAL;
     }
 
     @Override
     public void setTemplate(boolean status) {
-        this.template = status;
+        if (status) {
+            this.configType = ConfigType.TEMPLATE;
+        } else {
+            this.configType = ConfigType.UNKNOWN;
+        }
+    }
+
+    @NotNull
+    @Override
+    public ConfigType getConfigType() {
+        return this.configType;
+    }
+
+    @Override
+    public void setConfigType(@NotNull ConfigType configType) {
+        Validate.notNull(configType, "ConfigType cannot be null");
+
+        this.configType = configType;
     }
 
     @NotNull
@@ -209,7 +240,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     public WorldOreConfig clone(@NotNull final String name) {
         Validate.notNull(name, "Name cannot be null");
 
-        return new WorldOreConfigYamlImpl(name, isTemplate(), getOreSettings(), getBiomeOreSettings());
+        return new WorldOreConfigYamlImpl(name, getConfigType(), getOreSettings(), getBiomeOreSettings());
     }
 
     @Override
@@ -240,10 +271,7 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
         final Map<String, Object> serialize = new LinkedHashMap<>();
 
         serialize.put(NAME_KEY, getName());
-
-        if (isTemplate()) {
-            serialize.put(TEMPLATE_KEY, true);
-        }
+        serialize.put(CONFIG_TYPE_KEY, configType.name());
 
         final Map<Ore, OreSettings> oreSettingsMap = getOreSettings();
         if (!oreSettingsMap.isEmpty()) {

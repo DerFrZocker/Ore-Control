@@ -114,4 +114,12 @@ public class OreSettingsGuiSettings extends PageSettings {
         return getSection().getItemStack("value.copy.item-stack").clone();
     }
 
+    public ItemStack getAbortItemStack() {
+        return getSection().getItemStack("abort.item-stack").clone();
+    }
+
+    public int getAbortSlot() {
+        return getSection().getInt("abort.slot");
+    }
+
 }

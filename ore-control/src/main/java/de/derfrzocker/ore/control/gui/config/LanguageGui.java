@@ -30,7 +30,6 @@ import de.derfrzocker.ore.control.gui.settings.LanguageGuiSettings;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
-import de.derfrzocker.spigot.utils.gui.InventoryUtil;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -55,17 +54,18 @@ public class LanguageGui extends BasicGui {
 
         final LanguageGuiSettings languageGuiSettings = guiSettings.getLanguageGuiSettings();
         final Plugin plugin = oreControlValues.getPlugin();
-        final Language[] languages = Language.values();
 
         addDecorations();
 
-        for (int i = 0; i < languages.length; i++) {
-            addItem(InventoryUtil.calculateSlot(i, languageGuiSettings.getLanguageGap()), MessageUtil.replaceItemStack(plugin, languageGuiSettings.getLanguageItemStack(languages[i])), new LanguageConsumer(languages[i]));
+        for (Language language : Language.values()) {
+            addItem(languageGuiSettings.getLanguageSlot(language), MessageUtil.replaceItemStack(plugin, languageGuiSettings.getLanguageItemStack(language)), new LanguageConsumer(language));
         }
+
+        addItem(languageGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, languageGuiSettings.getBackItemStack()), event -> new ConfigGui(guiSettings, oreControlValues).openSync(event.getWhoClicked()));
 
         addItem(languageGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, languageGuiSettings.getInfoItemStack(),
                 new MessageValue("amount", oreControlValues.getConfigValues().getLanguage().getNames()[0]),
-                new MessageValue("value", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
+                new MessageValue("default", oreControlValues.getConfigValues().DEFAULT.defaultLanguage().getNames()[0])
         ));
     }
 

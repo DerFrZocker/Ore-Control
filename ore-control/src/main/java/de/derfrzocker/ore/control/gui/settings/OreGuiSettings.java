@@ -59,8 +59,12 @@ public class OreGuiSettings extends PageSettings {
         return getSection().getInt("info.slot");
     }
 
+    public String getDefaultOreItemStackSettingsFormat() {
+        return getSection().getString("default-ore.settings-format");
+    }
+
     public ItemStack getDefaultOreItemStack() {
-        return getSection().getItemStack("default-ore-item_stack").clone();
+        return getSection().getItemStack("default-ore.item-stack").clone();
     }
 
     public ItemStack getBackItemStack() {
@@ -85,6 +89,14 @@ public class OreGuiSettings extends PageSettings {
 
     public ItemStack getCopyValueItemStack() {
         return getSection().getItemStack("value.copy.item-stack").clone();
+    }
+
+    public ItemStack getAbortItemStack() {
+        return getSection().getItemStack("abort.item-stack").clone();
+    }
+
+    public int getAbortSlot() {
+        return getSection().getInt("abort.slot");
     }
 
 }

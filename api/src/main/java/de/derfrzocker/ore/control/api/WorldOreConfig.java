@@ -124,6 +124,7 @@ public interface WorldOreConfig {
     /**
      * @return true if this  WorldOreConfig is a Template
      * otherwise it return  false
+     * @deprecated use {@link #getConfigType()}
      */
     boolean isTemplate();
 
@@ -134,8 +135,24 @@ public interface WorldOreConfig {
      * and uses the config anyway.
      *
      * @param status true for Template  false for no-Template
+     * @deprecated use {@link #setConfigType(ConfigType)}
      */
+    @Deprecated
     void setTemplate(boolean status);
+
+    /**
+     * @return the type of this config
+     */
+    @NotNull
+    ConfigType getConfigType();
+
+    /**
+     * Sets this config to the given config type
+     *
+     * @param configType to set
+     * @throws IllegalArgumentException if config Type is null
+     */
+    void setConfigType(@NotNull ConfigType configType);
 
     /**
      * This copy the current  WorldOreConfig Settings with a new name to a new one.

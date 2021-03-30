@@ -93,7 +93,7 @@ public class SettingsGui extends BasicGui {
         final Plugin plugin = oreControlValues.getPlugin();
         final Permissions permissions = oreControlValues.getPermissions();
 
-        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack()), new SettingConsumer(value.getValue())));
+        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack(), new MessageValue("change-value", Math.abs(value.getValue()))), new SettingConsumer(value.getValue())));
 
         addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getBackItemStack()),
                 event -> new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore).openSync(event.getWhoClicked()));
@@ -107,7 +107,10 @@ public class SettingsGui extends BasicGui {
         }
 
         if (permissions.getValueCopyPermission().hasPermission(permissible)) {
-            addItem(settingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getCopyValueItemStack()), event -> new WorldGui(guiSettings, oreControlValues, new CopySettingAction(guiSettings, oreControlValues, worldOreConfig, biome, ore, setting)).openSync(event.getWhoClicked()));
+            addItem(settingsGuiSettings.getCopyValueSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getCopyValueItemStack()),
+                    event -> new WorldGui(guiSettings, oreControlValues, new CopySettingAction(guiSettings, oreControlValues,
+                            () -> new SettingsGui(guiSettings, oreControlValues, permissible, worldOreConfig, dimension, biome, ore, setting), worldOreConfig, biome, ore, setting)).
+                            openSync(event.getWhoClicked()));
         }
     }
 
@@ -133,7 +136,7 @@ public class SettingsGui extends BasicGui {
         final SettingsGuiSettings settingsGuiSettings = guiSettings.getSettingsGuiSettings();
         final Plugin plugin = oreControlValues.getPlugin();
 
-        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack()), new SettingBiomeGroupConsumer(value.getValue())));
+        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack(), new MessageValue("change-value", Math.abs(value.getValue()))), new SettingBiomeGroupConsumer(value.getValue())));
 
         addItem(settingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues(true)));
         addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getBackItemStack()),
@@ -147,7 +150,8 @@ public class SettingsGui extends BasicGui {
                 new MessageValue("biome", biome == null ? biomeGroup == null ? "" : biomeGroup.getName() : biome.toString()),
                 new MessageValue("ore", ore.toString()),
                 new MessageValue("setting", setting.toString()),
-                new MessageValue("amount", String.valueOf(biome == null ? biomeGroup == null ? oreControlValues.getService().getValue(worldOreConfig, ore, setting) : firstUpdate ? "N/A" : current : oreControlValues.getService().getValue(worldOreConfig, biome, ore, setting)))
+                new MessageValue("amount", String.valueOf(biome == null ? biomeGroup == null ? oreControlValues.getService().getValue(worldOreConfig, ore, setting) : firstUpdate ? "N/A" : current : oreControlValues.getService().getValue(worldOreConfig, biome, ore, setting))),
+                new MessageValue("default", String.valueOf(biome == null ? biomeGroup == null ? oreControlValues.getService().getDefaultValue(ore, setting) : "N/A" : oreControlValues.getService().getDefaultValue(biome, ore, setting)))
         };
     }
 
@@ -167,7 +171,7 @@ public class SettingsGui extends BasicGui {
 
     private void handleResetValues(@NotNull final InventoryClickEvent event) {
         if (oreControlValues.getConfigValues().verifyResetAction()) {
-            new VerifyGui(getPlugin(), clickEvent -> {
+            VerifyGui verifyGui = new VerifyGui(getPlugin(), clickEvent -> {
                 if (biome != null) {
                     ResetUtil.reset(worldOreConfig, ore, biome, setting);
                 } else {
@@ -177,7 +181,17 @@ public class SettingsGui extends BasicGui {
                 oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
                 openSync(event.getWhoClicked());
                 oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
-            }, clickEvent1 -> openSync(event.getWhoClicked())).openSync(event.getWhoClicked());
+
+                if (biomeGroup == null) {
+                    updateItemStack();
+                } else {
+                    updateBiomeGroupItemStack(false);
+                }
+            }, clickEvent1 -> openSync(event.getWhoClicked()));
+
+            verifyGui.addDecorations();
+
+            verifyGui.openSync(event.getWhoClicked());
             return;
         }
         if (biome != null) {
@@ -188,6 +202,11 @@ public class SettingsGui extends BasicGui {
 
         oreControlValues.getService().saveWorldOreConfig(worldOreConfig);
         oreControlValues.getOreControlMessages().getGuiResetSuccessMessage().sendMessage(event.getWhoClicked());
+        if (biomeGroup == null) {
+            updateItemStack();
+        } else {
+            updateBiomeGroupItemStack(false);
+        }
     }
 
     private final class SettingConsumer implements Consumer<InventoryClickEvent> {

@@ -110,4 +110,12 @@ public class WorldConfigGuiSettings extends BasicSettings {
         return getSection().getItemStack("template.delete.item-stack").clone();
     }
 
+    public ItemStack getAbortItemStack() {
+        return getSection().getItemStack("abort.item-stack").clone();
+    }
+
+    public int getAbortSlot() {
+        return getSection().getInt("abort.slot");
+    }
+
 }
