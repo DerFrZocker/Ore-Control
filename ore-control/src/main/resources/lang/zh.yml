@@ -1,3 +1,4 @@
+version: 10
 command:
 
   player-only: "此命令仅供玩家使用！"

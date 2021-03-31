@@ -57,6 +57,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class OreControl extends JavaPlugin implements Listener {
 
@@ -215,6 +218,7 @@ public class OreControl extends JavaPlugin implements Listener {
         settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), version, getLogger());
 
         checkOldStorageType();
+        checkLanguage();
         worldOreConfigYamlDao.reload();
 
         // start the Metric of this Plugin (https://bstats.org/plugin/bukkit/Ore-Control)
@@ -255,6 +259,42 @@ public class OreControl extends JavaPlugin implements Listener {
             registerCommands(null, null);
         }
 
+    }
+
+    private void checkLanguage() {
+        for (Language language : Language.values()) {
+            File file = new File(getDataFolder(), language.getFileLocation());
+            if (!file.exists()) {
+                continue;
+            }
+
+            Config diskConfig = new Config(file);
+            Config jarConfig = new Config(getResource(language.getFileLocation()));
+            int diskVersion = diskConfig.getInt("version", 0);
+            int jarVersion = jarConfig.getInt("version", 0);
+
+            if (diskVersion != jarVersion) {
+                getLogger().warning("The language file " + language.getFileLocation() + " has an outdated / new version, replacing it!");
+
+                File newLocation = new File(getDataFolder(), language.getFileLocation() + "_old_" + diskVersion);
+
+                int i = 1;
+                while (newLocation.exists()) {
+                    newLocation = new File(getDataFolder(), language.getFileLocation() + "_old_" + diskVersion + "_" + i);
+                    i++;
+                }
+
+                try {
+                    newLocation.createNewFile();
+                    Files.move(file.toPath(), newLocation.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException("Error while creating and moving file", e);
+                }
+
+                getLogger().warning("You find the old version under: " + newLocation.toPath());
+            }
+
+        }
     }
 
     private void setUpMetric() {

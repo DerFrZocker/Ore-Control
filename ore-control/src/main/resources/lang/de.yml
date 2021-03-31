@@ -1,3 +1,4 @@
+version: 10
 command:
   player-only: Dieser Befehl ist nur für Spieler!
   set:
