@@ -197,7 +197,7 @@ public class WorldConfigGui extends BasicGui {
     private void handleDeleteTemplate(@NotNull final InventoryClickEvent event) {
         VerifyGui verifyGui = new VerifyGui(getPlugin(), clickEvent -> {
             oreControlValues.getService().removeWorldOreConfig(worldOreConfig);
-            closeSync(event.getWhoClicked());
+            new WorldGui(guiSettings, oreControlValues, event.getWhoClicked()).openSync(event.getWhoClicked());
         }, clickEvent1 -> openSync(event.getWhoClicked()));
 
         verifyGui.addDecorations();
