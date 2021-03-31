@@ -226,7 +226,9 @@ public class WorldGui extends PageGui<WorldGui.WorldConfigData> {
             WorldConfigData worldConfigData = null;
 
             for (WorldConfigData worldConfigData1 : worldConfigDatas) {
-                if (worldConfigData1.worldOreConfig != null && copyAction.getWorldOreConfigSource().getName().equals(worldConfigData1.worldOreConfig.getName())) {
+                WorldOreConfig current = worldConfigData1.worldOreConfig;
+                WorldOreConfig source = copyAction.getWorldOreConfigSource();
+                if (current != null && source.getName().equals(current.getName()) && current.getConfigType() == source.getConfigType()) {
                     worldConfigData = worldConfigData1;
                 }
             }

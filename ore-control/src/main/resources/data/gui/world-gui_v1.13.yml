@@ -91,12 +91,12 @@ global:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '%%translation:[config-type.global]%'
+      display-name: '&f%%translation:[config-type.GLOBAL]%'
       lore:
         - "   "
         - "%%translation:[gui.world.type]%"
         - "   "
-        - '%%translation:[gui.world.%reset-copy%template.click]%'
+        - '%%translation:[gui.world.%reset-copy%global.click]%'
 config:
   edit:
     slot: 3

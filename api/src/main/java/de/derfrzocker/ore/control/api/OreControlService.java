@@ -74,7 +74,7 @@ public interface OreControlService {
      * @return the default WorldOreConfig
      */
     @NotNull
-    WorldOreConfig getDefaultWorldOreConfig();
+    WorldOreConfig getGlobalWorldOreConfig();
 
     /**
      * Creates a new WorldOreConfig for the given world.

@@ -88,7 +88,7 @@ public class NMSServiceImpl implements NMSService {
         WorldOreConfig worldOreConfig = service.getWorldOreConfig(world).orElse(null);
 
         if (worldOreConfig == null) {
-            worldOreConfig = service.getDefaultWorldOreConfig();
+            worldOreConfig = service.getGlobalWorldOreConfig();
         }
 
         try {

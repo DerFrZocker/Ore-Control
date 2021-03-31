@@ -45,6 +45,7 @@ import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Version;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.EventHandler;
@@ -322,11 +323,32 @@ public class OreControl extends JavaPlugin implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(this, () ->
                 this.oreControlServiceSupplier.get().getWorldOreConfig(event.getWorld().getName()).ifPresent(value -> {
                     if (value.getConfigType() == ConfigType.TEMPLATE) {
-                        value.setConfigType(ConfigType.UNKNOWN);
+                        value.setConfigType(getConfigType(event.getWorld()));
                         this.oreControlServiceSupplier.get().saveWorldOreConfig(value);
+                    }
+                    if (value.getConfigType() == ConfigType.GLOBAL) {
+                        WorldOreConfig worldOreConfig = value.clone(value.getName());
+                        worldOreConfig.setConfigType(getConfigType(event.getWorld()));
+                        this.oreControlServiceSupplier.get().saveWorldOreConfig(worldOreConfig);
                     }
                 })
         );
+    }
+
+    private ConfigType getConfigType(World world) {
+        Dimension dimension = this.oreControlServiceSupplier.get().getNMSService().getNMSUtil().getDimension(world);
+
+        switch (dimension) {
+            case OVERWORLD:
+                return ConfigType.OVERWORLD;
+            case NETHER:
+                return ConfigType.NETHER;
+            case THE_END:
+            case CUSTOM:
+                return ConfigType.UNKNOWN;
+        }
+
+        return ConfigType.UNKNOWN;
     }
 
     @Deprecated

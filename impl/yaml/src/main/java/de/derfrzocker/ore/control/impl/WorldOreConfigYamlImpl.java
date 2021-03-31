@@ -52,23 +52,25 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     private final Map<Biome, BiomeOreSettings> biomeOreSettings = new LinkedHashMap<>();
     @NotNull
     private final String name;
+    @NotNull
     private ConfigType configType;
 
-    public WorldOreConfigYamlImpl(@NotNull final String name, final ConfigType configType) {
+    public WorldOreConfigYamlImpl(@NotNull final String name, @NotNull final ConfigType configType) {
         Validate.notNull(name, "Name cannot be null");
+        Validate.notNull(configType, "Config Type cannot be null");
 
         this.name = name;
         this.configType = configType;
     }
 
-    public WorldOreConfigYamlImpl(@NotNull final String name, final ConfigType configType, @NotNull final Map<Ore, OreSettings> oreSettings) {
+    public WorldOreConfigYamlImpl(@NotNull final String name, @NotNull final ConfigType configType, @NotNull final Map<Ore, OreSettings> oreSettings) {
         this(name, configType);
         Validate.notNull(oreSettings, "OreSettings map cannot be null");
 
         oreSettings.forEach((key, value) -> this.oreSettings.put(key, value.clone()));
     }
 
-    public WorldOreConfigYamlImpl(@NotNull final String name, final ConfigType configType, @NotNull final Map<Ore, OreSettings> oreSettings, @NotNull final Map<Biome, BiomeOreSettings> biomeOreSettings) {
+    public WorldOreConfigYamlImpl(@NotNull final String name, @NotNull final ConfigType configType, @NotNull final Map<Ore, OreSettings> oreSettings, @NotNull final Map<Biome, BiomeOreSettings> biomeOreSettings) {
         this(name, configType, oreSettings);
         Validate.notNull(biomeOreSettings, "BiomeOreSettings map cannot be null");
 
@@ -244,20 +246,16 @@ public class WorldOreConfigYamlImpl implements ConfigurationSerializable, WorldO
     }
 
     @Override
-    public boolean equals(@Nullable final Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorldOreConfigYamlImpl)) return false;
 
-        final WorldOreConfigYamlImpl that = (WorldOreConfigYamlImpl) object;
+        WorldOreConfigYamlImpl that = (WorldOreConfigYamlImpl) o;
 
-        return isTemplate() == that.isTemplate() &&
-                getOreSettings().equals(that.getOreSettings()) &&
-                getBiomeOreSettings().equals(that.getBiomeOreSettings()) &&
-                getName().equals(that.getName());
+        if (!getOreSettings().equals(that.getOreSettings())) return false;
+        if (!getBiomeOreSettings().equals(that.getBiomeOreSettings())) return false;
+        if (!getName().equals(that.getName())) return false;
+        return getConfigType() == that.getConfigType();
     }
 
     @Override

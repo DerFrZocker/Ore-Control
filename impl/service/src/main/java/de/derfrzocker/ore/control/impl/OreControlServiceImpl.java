@@ -90,14 +90,8 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
     @NotNull
     @Override
-    public WorldOreConfig getDefaultWorldOreConfig() {
-        final Optional<WorldOreConfig> worldOreConfigOptional = this.dao.get("Default");
-
-        if (worldOreConfigOptional.isPresent()) {
-            return worldOreConfigOptional.get();
-        }
-
-        return createWorldOreConfigTemplate("Default");
+    public WorldOreConfig getGlobalWorldOreConfig() {
+        return this.dao.getGlobalWorldOreConfig();
     }
 
     @NotNull
@@ -280,7 +274,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
         //checking in default WorldOreConfig
         {
-            final WorldOreConfig defaultW = getDefaultWorldOreConfig();
+            final WorldOreConfig defaultW = getGlobalWorldOreConfig();
             final Optional<BiomeOreSettings> biomeOreSettings = defaultW.getBiomeOreSettings(biome);
 
             if (biomeOreSettings.isPresent()) {
@@ -314,7 +308,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
 
         //checking in default WorldOreConfig
         {
-            final WorldOreConfig defaultW = getDefaultWorldOreConfig();
+            final WorldOreConfig defaultW = getGlobalWorldOreConfig();
             final Optional<OreSettings> oreSettings = defaultW.getOreSettings(ore);
 
             if (oreSettings.isPresent()) {
@@ -436,7 +430,7 @@ public abstract class OreControlServiceImpl implements OreControlService {
     }
 
     private double getDefaultWorldOreConfigValue(@Nullable Biome biome, @NotNull final Ore ore, @NotNull final Setting setting) {
-        final WorldOreConfig worldOreConfig = getDefaultWorldOreConfig();
+        final WorldOreConfig worldOreConfig = getGlobalWorldOreConfig();
 
         if (biome != null) {
             final Optional<BiomeOreSettings> biomeOreSettings = worldOreConfig.getBiomeOreSettings(biome);

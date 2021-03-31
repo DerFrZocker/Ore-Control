@@ -25,20 +25,31 @@
 
 package de.derfrzocker.ore.control.impl.dao;
 
+import de.derfrzocker.ore.control.api.ConfigType;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
 import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
+import de.derfrzocker.ore.control.impl.WorldOreConfigYamlImpl;
+import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.ReloadAble;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
 
+    private final static String GLOBAL_NAME = "__global__";
+
     private final Map<String, LazyWorldOreConfigCache> lazyWorldOreConfigCacheMap = new HashMap<>();
+    private LazyWorldOreConfigCache global;
     @NotNull
     private final File directory;
+    @NotNull
+    private final File globalDirectory;
+    @NotNull
+    private final File globalFile;
 
     public WorldOreConfigYamlDao(@NotNull final File directory) {
         Validate.notNull(directory, "Directory cannot be null");
@@ -47,6 +58,17 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
         }
 
         this.directory = directory;
+        this.globalDirectory = new File(directory, GLOBAL_NAME);
+
+        if (globalDirectory.exists()) {
+            Validate.isTrue(globalDirectory.isDirectory(), "Global directory is not a directory?");
+        }
+
+        this.globalFile = new File(globalDirectory, GLOBAL_NAME + ".yml");
+
+        if (globalFile.exists()) {
+            Validate.isTrue(globalFile.isFile(), "Global file is not a file?");
+        }
 
         RELOAD_ABLES.add(this);
     }
@@ -65,6 +87,9 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
         final File file = new File(directory, key + ".yml");
 
         if (!file.exists() || !file.isFile()) {
+            if (key.equals(GLOBAL_NAME)) {
+                return Optional.of(global.getWorldOreConfig());
+            }
             return Optional.empty();
         }
 
@@ -79,6 +104,12 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
     public void remove(@NotNull final WorldOreConfig value) {
         Validate.notNull(value, "WorldOreConfig cannot be null");
 
+        if (value.getConfigType() == ConfigType.GLOBAL) {
+            global.setWorldConfig(new WorldOreConfigYamlImpl(GLOBAL_NAME, ConfigType.GLOBAL));
+            global.save();
+            return;
+        }
+
         lazyWorldOreConfigCacheMap.remove(value.getName());
         new File(directory, value.getName() + ".yml").delete();
     }
@@ -86,6 +117,12 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
     @Override
     public void save(@NotNull final WorldOreConfig value) {
         Validate.notNull(value, "WorldOreConfig cannot be null");
+
+        if (value.getConfigType() == ConfigType.GLOBAL) {
+            global.setWorldConfig(value);
+            global.save();
+            return;
+        }
 
         LazyWorldOreConfigCache lazyWorldOreConfigCache = lazyWorldOreConfigCacheMap.get(value.getName());
 
@@ -103,6 +140,8 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
         final Set<WorldOreConfig> worldConfigs = new LinkedHashSet<>();
 
         lazyWorldOreConfigCacheMap.forEach((name, lazyWorldConfigCache) -> worldConfigs.add(lazyWorldConfigCache.getWorldOreConfig()));
+
+        worldConfigs.add(global.getWorldOreConfig());
 
         return worldConfigs;
     }
@@ -125,7 +164,50 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
                 continue;
             }
 
+            if (file.getName().equals("Default.yml") && !globalFile.exists()) {
+                try {
+                    globalDirectory.mkdirs();
+                    globalFile.createNewFile();
+
+                    Config config = new Config(file);
+                    WorldOreConfig worldOreConfig = (WorldOreConfig) config.get("value");
+
+                    Config globalConfig = new Config(globalFile);
+                    WorldOreConfig globalWorldOreConfig = worldOreConfig.clone(GLOBAL_NAME);
+                    globalWorldOreConfig.setConfigType(ConfigType.GLOBAL);
+                    globalConfig.set("value", globalWorldOreConfig);
+                    globalConfig.save(globalFile);
+
+                    file.delete();
+                    continue;
+                } catch (IOException e) {
+                    throw new RuntimeException("Error while moving file", e);
+                }
+            }
+
             lazyWorldOreConfigCacheMap.put(file.getName().substring(0, file.getName().length() - 4), new LazyWorldOreConfigCache(file));
         }
+
+        if (!globalFile.exists()) {
+            try {
+                globalDirectory.mkdirs();
+                globalFile.createNewFile();
+
+                Config config = new Config(globalFile);
+                config.set("value", new WorldOreConfigYamlImpl(GLOBAL_NAME, ConfigType.GLOBAL));
+                config.save(globalFile);
+            } catch (IOException e) {
+                throw new RuntimeException("Error while setting up global", e);
+            }
+        }
+
+        global = new LazyWorldOreConfigCache(globalFile);
     }
+
+    @NotNull
+    @Override
+    public WorldOreConfig getGlobalWorldOreConfig() {
+        return global.getWorldOreConfig();
+    }
+
 }

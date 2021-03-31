@@ -215,6 +215,8 @@ gui:
         name: '&fNew template'
         create: '&7>> &bClick to create a new template! &7<<'
       click: '&7>> &bClick to edit this template! &7<<'
+    global:
+      click: '&7>> &bClick to edit the global config! &7<<'
     config:
       edit: Change the config settings!
       name: '&fConfig'
@@ -224,6 +226,8 @@ gui:
         click: '&7>> &bClick to select this world! &7<<'
       template:
         click: '&7>> &bClick to select this template! &7<<'
+      global:
+        click: '&7>> &bClick to select the global config! &7<<'
   world-config:
     name: Choose a Type!
     biome:

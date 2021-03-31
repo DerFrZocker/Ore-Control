@@ -55,4 +55,10 @@ public class WorldOreConfigYamlDao_Old extends BasicYamlDao<String, WorldOreConf
         throw new UnsupportedOperationException("Not supported");
     }
 
+    @NotNull
+    @Override
+    public WorldOreConfig getGlobalWorldOreConfig() {
+        throw new UnsupportedOperationException("Not supported");
+    }
+
 }
