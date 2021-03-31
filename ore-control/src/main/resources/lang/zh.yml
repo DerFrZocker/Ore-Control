@@ -185,84 +185,199 @@ number:
 
 gui:
   copy:
-    success: "&a复制成功！"
+    success: '&aCopy the values with Success!'
   reset:
-    success: "&a已重置"
+    success: '&aReset the values with Success!'
   anvil:
-    name-already-exist: "该名称已存在！"
-    title: "请输入名称!"
-  previous-page: "&r上一页"
-  next-page: "&r下一页'"
-  back: "&r返回"
+    title: Type a name!
+  previous-page:
+    name: '&fPrevious page'
+    click: '&7>> &bClick to go to the previous page! &7<<'
+  next-page:
+    name: '&fNext page'
+    click: '&7>> &bClick to go to the next page! &7<<'
+  back:
+    name: '&fBack'
+    click: '&7>> &bClick to go a step back! &7<<'
+  abort:
+    name: '&fAbort'
+    click: '&7>> &bClick to abort the copy action! &7<<'
   info:
-    name: "信息"
-    lore-world: "世界: %world%"
-    lore-biome: "生物群系: %%translation:[biome.%biome%]%"
-    lore-ore: "矿石: %%translation:[ore.%ore%]%"
-    lore-setting: "生成设置: %%translation:[setting.%setting%]%"
-    lore-current: "当前: %amount%"
-    lore-default: "默认: %value%"
+    name: '&eInfo'
+    lore-world: ' &7> &fWorld: &d%world%'
+    lore-biome: ' &7> &fBiome: &d%%translation:[biome.%biome%]%'
+    lore-ore: ' &7> &fOre: &d%%translation:[ore.%ore%]%'
+    lore-setting: ' &7> &fSetting: &d%%translation:[setting.%setting%]%'
+    lore-current: ' &7> &fCurrently: &d%amount%'
+    lore-default: ' &7> &fDefault: &d%default%'
   world:
-    name: "&r选择一个世界！"
+    name: Choose a World!
+    type: ' &7> &fType: &d%%translation:[config-type.%config-type%]%'
+    world:
+      click: '&7>> &bClick to edit this world! &7<<'
     template:
-      create: "&r创建一个新的矿物生成矿物生成模板"
+      create:
+        name: '&fNew template'
+        create: '&7>> &bClick to create a new template! &7<<'
+      click: '&7>> &bClick to edit this template! &7<<'
+    global:
+      click: '&7>> &bClick to edit the global config! &7<<'
     config:
-      edit: "&r更改设置"
+      name: '&fConfig'
+      click: '&7>> &bClick to edit the config! &7<<'
+    reset-copy:
+      world:
+        click: '&7>> &bClick to select this world! &7<<'
+      template:
+        click: '&7>> &bClick to select this template! &7<<'
+      global:
+        click: '&7>> &bClick to select the global config! &7<<'
   world-config:
-    name: "&r选择一个类型！"
-    biome: "§b设置生物群系矿物生成"
-    ore: "§b设置世界矿物生成"
-    reset: "&r将所有设置重置为默认值！"
-    copy: "&r将所有设置复制到其他世界或矿物生成模板"
-    delete: "&r删除一个矿物生成模板！"
+    name: Choose a Type!
+    biome:
+      name: '&fBiome specific'
+      click: '&7>> &bClick to edit a specific biome! &7<<'
+    ore:
+      name: '&fWhole world'
+      click: '&7>> &bClick to edit the whole world! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all settings! &7<<'
+    delete:
+      name: '&fDelete'
+      click: '&7>> &bClick to delete this world-config! &7<<'
+    reset-copy:
+      biome:
+        click: '&7>> &bClick to select biome! &7<<'
+      ore:
+        click: '&7>> &bClick to select whole word! &7<<'
   biome:
-    name: "&r选择一个生物群系！"
-    biome: "个生物群系"
-    biome-group: "个生物群系组"
-    reset: "&r将所有生物群系设置重置为默认值！"
-    copy: "&r将所有生物群系矿物生成设置复制到其他世界或矿物生成模板"
+    name: Choose a Biome!
+    biome:
+      click: '&7>> &bClick to edit this biome! &7<<'
+    switch:
+      biome:
+        name: '&fBiome'
+        click: '&7>> &bClick to switch to biome selection! &7<<'
+      biome-group:
+        name: '&fBiome Group'
+        click: '&7>> &bClick to switch to biome group selection! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all biome settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all biome settings! &7<<'
+    reset-copy:
+      biome:
+        click: '&7>> &bClick to select this biome! &7<<'
   ore:
-    name: "&r选择一种矿石！"
-    reset: "&r将所有矿石生成设置设置重置为默认值！"
-    copy: "&r将所有矿石生成设置复制到其他世界或矿物生成模板！"
+    name: Choose an Ore!
+    ore:
+      name: '&f%%translation:[ore.%ore%]%'
+      status: ' &7> &fStatus: &a%%translation:[gui.boolean.%status%]%'
+      click: '&7>> &bClick to edit this ore! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all ore settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all ore settings! &7<<'
+    reset-copy:
+      ore:
+        click: '&7>> &bClick to select this ore! &7<<'
   ore-settings:
-    name: "&r选择一种设置！"
-    activate: "§a启用矿石生成！"
-    deactivate: "§c停用矿石生成！"
-    reset: "&r将此矿物生成的所有设置重置为默认值！"
-    copy: "&r将此矿物的所有设置复制到其他世界或模板！"
+    name: Choose a Setting!
+    setting:
+      click: '&7>> &bClick to edit this setting! &7<<'
+    status:
+      active:
+        name: '&fActivate / Deactivate'
+        current: ' &7> &fCurrently: &aActive'
+        click: '&7>> &bClick to deactivate this ore! &7<<'
+      inactive:
+        name: '&fActivate / Deactivate'
+        current: ' &7> &fCurrently: &cInactive'
+        click: '&7>> &bClick to activate this ore! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset all settings! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy all settings! &7<<'
+    reset-copy:
+      setting:
+        click: '&7>> &bClick to select this setting! &7<<'
   settings:
-    name: "&r设置一个值！"
-    reset: "&r将此设置重置为默认值！"
-    copy: "&r将此设置复制到其他世界或矿物生成模板！"
+    name: Set a value!
+    reset:
+      name: '&fReset'
+      click: '&7>> &bClick to reset this setting! &7<<'
+    copy:
+      name: '&fCopy'
+      click: '&7>> &bClick to copy this setting! &7<<'
+    add:
+      click: '&7>> &bClick to add %change-value%! &7<<'
+    remove:
+      click: '&7>> &bClick to remove %change-value%! &7<<'
   verify:
-    name: "&r确认当前操作吗？"
-    accept: "&r确认"
-    deny: "&r返回"
+    name: Accept or Deny the Action!
+    accept:
+      name: '&fAccept'
+      click: '&7>> &bClick to accept! &7<<'
+    deny:
+      name: '&fDeny'
+      click: '&7>> &bClick to deny! &7<<'
   config:
-    name: "&r选择一个配置选项！"
+    name: Select a config option!
+    back:
+      click: '&7>> &bClick to go back to world gui! &7<<'
+    reload:
+      name: '&fReload'
+      click: '&7>> &bClick to reload configs from disk &7<<'
     language:
-      name: "&r更改语言设置！"
-      description: "更改此插件的语言。如果你愿意的话，您可以提交新语言，只需翻译ore-control文件夹中的messages.yml，然后提交给寄给插件作者"
+      name: '&fLanguage'
+      description: ' &7> &cHelp to translate the plugin!%%new-line% &7> &fEvery bit
+        helps, simply%%new-line% &7> &ftranslate the &dmessages.yml%%new-line% &7>
+        &fin the plugins directory and%%new-line% &7> &fsend it to me.'
+      click: '&7>> &bClick to change the language! &7<<'
     safe-mode:
-      name: "启用/停用安全模式！"
-      description: "如果设置了不合适的值，请选择插件是否应警告您"
+      name: '&fSafe mode'
+      description: ' &7> &fChoose if the plugin should warn%%new-line% &7> &fyou if
+        you set a unsafe value.'
+      click: '&7>> &bClick to turn safe mode on / off! &7<<'
     translate-tab-compilation:
-      name: "启用/停用标签转换！"
-      description: "选择是否在命令中输入biomes/ores/settings语言"
+      name: '&fTap translation'
+      description: ' &7> &fActivate, if you want to type%%new-line% &7> &fBiomes /
+        Ores / Settings in your%%new-line% &7> &fselected Language, in commands.'
+      click: '&7>> &bClick to turn tab translation on / off! &7<<'
     verify:
       copy-action:
-        name: "启用/停用复制操作的验证！"
-        description: "&r选择是否必须验证复制操作"
+        name: '&fVerify copy actions'
+        description: ' &7> &fActivate, if you want to verify%%new-line% &7> &fcopy
+          actions.'
+        click: '&7>> &bClick to turn verification on / off! &7<<'
       reset-action:
-        name: "启用/停用重置操作验证！"
-        description: "&r选择是否必须验证重置操作"
+        name: '&fVerify reset actions'
+        description: ' &7> &fActivate, if you want to verify%%new-line% &7> &freset
+          actions.'
+        click: '&7>> &bClick to turn verification on / off! &7<<'
   language:
-    name: "&r选择一个语言！"
+    name: Choose a Language!
+    custom:
+      click: '&7>> &bClick to select custom as language! &7<<'
   boolean:
-    name: "使用或停用"
-    true: "已使用"
-    false: "已停用"
+    true-click: '&7>> &bClick to Activate! &7<<'
+    false-click: '&7>> &bClick to Deactivate! &7<<'
+    set:
+      'true': '&fActivate'
+      'false': '&fDeactivate'
+    name: Activate or Deactivate
+    'true': '&aActive'
+    'false': '&cInactive'
 
 welcome:
   button-open-string: "&4["
