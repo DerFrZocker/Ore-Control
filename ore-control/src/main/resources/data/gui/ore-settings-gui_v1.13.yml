@@ -63,7 +63,7 @@ value:
           - "%%translation:[gui.ore-settings.copy.click]%"
 status:
   slot: 4
-  activate:
+  deactivate:
     ==: org.bukkit.inventory.ItemStack
     v: 1519
     type: GREEN_TERRACOTTA
@@ -76,7 +76,7 @@ status:
         - '%%translation:[gui.ore-settings.status.active.current]%'
         - "   "
         - '%%translation:[gui.ore-settings.status.active.click]%'
-  deactivate:
+  activate:
     ==: org.bukkit.inventory.ItemStack
     v: 1519
     type: RED_TERRACOTTA
