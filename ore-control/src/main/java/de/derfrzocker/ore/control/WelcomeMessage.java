@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control;
 
+import de.derfrzocker.ore.control.utils.BaseComponentUtil;
 import de.derfrzocker.spigot.utils.Language;
 import de.derfrzocker.spigot.utils.Pair;
 import net.md_5.bungee.api.ChatColor;
@@ -66,9 +67,9 @@ public class WelcomeMessage {
     public void sendMessage(@NotNull final CommandSender sender) {
         final BaseComponent[] welcome = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', messages.getWelcomeHeader().getRawMessage()));
         final BaseComponent[] language = buildLanguageButtons();
-        final BaseComponent[] foundBug = buildLineWithUrlButton(messages.getFoundBug().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/issues");
-        final BaseComponent[] featureRequest = buildLineWithUrlButton(messages.getFeatureRequest().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/issues");
-        final BaseComponent[] support = buildLineWithUrlButton(messages.getSupport().getRawMessage(), "Discord", "http://discord.derfrzocker.de");
+        final BaseComponent[] foundBug = BaseComponentUtil.buildLineWithUrlButton(messages.getFoundBug().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/issues", messages);
+        final BaseComponent[] featureRequest = BaseComponentUtil.buildLineWithUrlButton(messages.getFeatureRequest().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/issues", messages);
+        final BaseComponent[] support = BaseComponentUtil.buildLineWithUrlButton(messages.getSupport().getRawMessage(), "Discord", "http://discord.derfrzocker.de", messages);
 
         final Map<String, Pair<String, String>> buttonValues = new HashMap<>();
         buttonValues.put("rating", new Pair<>(messages.getRating().getRawMessage(), "https://www.spigotmc.org/resources/63621"));
@@ -96,8 +97,8 @@ public class WelcomeMessage {
             if (result == null) {
                 result = button;
             } else {
-                result = combineBaseComponent(result, space);
-                result = combineBaseComponent(result, button);
+                result = BaseComponentUtil.combineBaseComponent(result, space);
+                result = BaseComponentUtil.combineBaseComponent(result, button);
             }
         }
 
@@ -124,7 +125,7 @@ public class WelcomeMessage {
                 buttonValue = new Pair<>("not Found", "not Found");
             }
 
-            final BaseComponent[] button = buildUrlButton(buttonValue.getFirst(), buttonValue.getSecond());
+            final BaseComponent[] button = BaseComponentUtil.buildUrlButton(buttonValue.getFirst(), buttonValue.getSecond(), messages);
 
             if (matcher.start() == 0) {
                 result = button;
@@ -134,10 +135,10 @@ public class WelcomeMessage {
                 final BaseComponent[] before = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', textBefore));
 
                 if (result == null) {
-                    result = combineBaseComponent(before, button);
+                    result = BaseComponentUtil.combineBaseComponent(before, button);
                 } else {
-                    result = combineBaseComponent(result, before);
-                    result = combineBaseComponent(result, button);
+                    result = BaseComponentUtil.combineBaseComponent(result, before);
+                    result = BaseComponentUtil.combineBaseComponent(result, button);
                 }
 
             }
@@ -150,37 +151,8 @@ public class WelcomeMessage {
             if (result == null) {
                 result = end;
             } else {
-                result = combineBaseComponent(result, end);
+                result = BaseComponentUtil.combineBaseComponent(result, end);
             }
-        }
-
-        return result;
-    }
-
-    private BaseComponent[] buildLineWithUrlButton(String lineText, String clickText, String url) {
-        final String[] split = lineText.split("%%button%");
-
-        final BaseComponent[] button = buildUrlButton(clickText, url);
-
-        BaseComponent[] result = null;
-
-        for (int i = 0; i < split.length; i++) {
-            final BaseComponent[] textPart = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', split[i]));
-
-            if (result == null) {
-                result = textPart;
-            } else {
-                result = combineBaseComponent(result, textPart);
-            }
-
-            if ((i + 1) < split.length) {
-                result = combineBaseComponent(result, button);
-            }
-
-            if ((i + 1) == split.length && lineText.endsWith("%%button%")) {
-                result = combineBaseComponent(result, button);
-            }
-
         }
 
         return result;
@@ -200,39 +172,9 @@ public class WelcomeMessage {
             button.setClickEvent(clickEvent);
         }
 
-        final BaseComponent[] first = combineBaseComponent(begin, buttons);
+        final BaseComponent[] first = BaseComponentUtil.combineBaseComponent(begin, buttons);
 
-        return combineBaseComponent(first, end);
-    }
-
-    private BaseComponent[] buildUrlButton(String text, String url) {
-        final BaseComponent[] begin = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', messages.getButtonOpenString().getRawMessage()));
-        final BaseComponent[] end = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', messages.getButtonCloseString().getRawMessage()));
-
-        final BaseComponent[] buttons = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', text));
-        final BaseComponent[] hoverEventMessage = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', messages.getClickMe().getRawMessage()));
-        final HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventMessage);
-        final ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, url);
-
-        for (final BaseComponent button : buttons) {
-            button.setHoverEvent(hoverEvent);
-            button.setClickEvent(clickEvent);
-        }
-
-        final BaseComponent[] first = combineBaseComponent(begin, buttons);
-
-        return combineBaseComponent(first, end);
-    }
-
-    private static BaseComponent[] combineBaseComponent(@NotNull final BaseComponent[] baseComponents, @NotNull final BaseComponent... baseComponents1) {
-        final int firstLength = baseComponents.length;
-        final int secondLength = baseComponents1.length;
-        final BaseComponent[] result = new BaseComponent[firstLength + secondLength];
-
-        System.arraycopy(baseComponents, 0, result, 0, firstLength);
-        System.arraycopy(baseComponents1, 0, result, firstLength, secondLength);
-
-        return result;
+        return BaseComponentUtil.combineBaseComponent(first, end);
     }
 
 }

@@ -183,6 +183,7 @@ number:
     - '&4setze in der config den Wert &f''&9safe-mode&f'' &4auf &f''&9false&f'''
     - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
   not-safe-warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
+  not-safe-see-also: "&eFür mehr informationen lese dir diesen %%button%&e wiki eintrag durch"
 gui:
   copy:
     success: '&aDie Werte wurden erfolgreich kopiert!'

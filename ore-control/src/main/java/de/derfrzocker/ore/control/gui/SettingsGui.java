@@ -31,6 +31,7 @@ import de.derfrzocker.ore.control.api.*;
 import de.derfrzocker.ore.control.gui.copy.CopySettingAction;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
 import de.derfrzocker.ore.control.gui.settings.SettingsGuiSettings;
+import de.derfrzocker.ore.control.utils.BaseComponentUtil;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.ore.control.utils.ResetUtil;
@@ -38,7 +39,9 @@ import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.gui.VerifyGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.Validate;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -243,12 +246,18 @@ public class SettingsGui extends BasicGui {
 
             double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
-            if (OreControlUtil.isUnSafe(setting, newValue)) {
+            if (OreControlUtil.isUnSafe(setting, newValue) || (setting == Setting.VEIN_SIZE && newValue <= 2.001)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
                     oreControlValues.getOreControlMessages().getNumberNotSafeMessage().sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                    if ((setting == Setting.VEIN_SIZE && newValue <= 2.001)) {
+                        sendSeeAlso(event.getWhoClicked());
+                    }
                     return;
                 }
                 oreControlValues.getOreControlMessages().getNumberNotSafeWarningMessage().sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                if ((setting == Setting.VEIN_SIZE && newValue <= 2.001)) {
+                    sendSeeAlso(event.getWhoClicked());
+                }
             }
 
             if (biome == null) {
@@ -281,12 +290,18 @@ public class SettingsGui extends BasicGui {
             final OreControlService service = oreControlValues.getService();
             double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
-            if (OreControlUtil.isUnSafe(setting, newValue)) {
+            if (OreControlUtil.isUnSafe(setting, newValue) || (setting == Setting.VEIN_SIZE && newValue <= 2.001)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
                     oreControlValues.getOreControlMessages().getNumberNotSafeMessage().sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                    if ((setting == Setting.VEIN_SIZE && newValue <= 2.001)) {
+                        sendSeeAlso(event.getWhoClicked());
+                    }
                     return;
                 }
                 oreControlValues.getOreControlMessages().getNumberNotSafeWarningMessage().sendMessage(event.getWhoClicked(), new MessageValue("value", String.valueOf(newValue)));
+                if ((setting == Setting.VEIN_SIZE && newValue <= 2.001)) {
+                    sendSeeAlso(event.getWhoClicked());
+                }
             }
 
             current = newValue;
@@ -298,6 +313,11 @@ public class SettingsGui extends BasicGui {
             updateBiomeGroupItemStack(false);
         }
 
+    }
+
+    private void sendSeeAlso(CommandSender commandSender) {
+        BaseComponent[] message = BaseComponentUtil.buildLineWithUrlButton(oreControlValues.getOreControlMessages().getNumberNotSafeSeeAlso().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/wiki/Vein-Size", oreControlValues.getOreControlMessages());
+        commandSender.spigot().sendMessage(message);
     }
 
 }

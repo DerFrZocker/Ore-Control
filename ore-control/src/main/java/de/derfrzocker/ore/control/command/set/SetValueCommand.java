@@ -30,10 +30,12 @@ import de.derfrzocker.ore.control.api.Ore;
 import de.derfrzocker.ore.control.api.OreControlService;
 import de.derfrzocker.ore.control.api.Setting;
 import de.derfrzocker.ore.control.api.WorldOreConfig;
+import de.derfrzocker.ore.control.utils.BaseComponentUtil;
 import de.derfrzocker.ore.control.utils.OreControlUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -127,12 +129,18 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
 
             final double value2 = percents ? (service.getDefaultValue(ore, setting) * (value / 100)) : value;
 
-            if (OreControlUtil.isUnSafe(setting, value2)) {
+            if (OreControlUtil.isUnSafe(setting, value2) || (setting == Setting.VEIN_SIZE && value2 <= 2.001)) {
                 if (oreControlValues.getConfigValues().isSafeMode()) {
                     messages.getNumberNotSafeMessage().sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                    if ((setting == Setting.VEIN_SIZE && value2 <= 2.001)) {
+                        sendSeeAlso(sender);
+                    }
                     return;
                 }
                 messages.getNumberNotSafeWarningMessage().sendMessage(sender, new MessageValue("value", String.valueOf(value2)));
+                if ((setting == Setting.VEIN_SIZE && value2 <= 2.001)) {
+                    sendSeeAlso(sender);
+                }
             }
 
             service.setValue(worldOreConfig, ore, setting, value2);
@@ -232,6 +240,11 @@ public class SetValueCommand implements TabExecutor { //TODO "merge" set and set
         }
 
         return list;
+    }
+
+    private void sendSeeAlso(CommandSender commandSender) {
+        BaseComponent[] message = BaseComponentUtil.buildLineWithUrlButton(oreControlValues.getOreControlMessages().getNumberNotSafeSeeAlso().getRawMessage(), "GitHub", "https://github.com/DerFrZocker/Ore-Control/wiki/Vein-Size", oreControlValues.getOreControlMessages());
+        commandSender.spigot().sendMessage(message);
     }
 
 }

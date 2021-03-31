@@ -53,6 +53,8 @@ public class OreControlMessages implements HelpConfig {
     private final MessageKey numberNotSafe;
     @NotNull
     private final MessageKey numberNotSafeWarning;
+    @NotNull
+    private final MessageKey numberNotSafeSeeAlso;
 
     // gui
     @NotNull
@@ -216,6 +218,7 @@ public class OreControlMessages implements HelpConfig {
         clickMe = new MessageKey(plugin, "welcome.click-me");
         rating = new MessageKey(plugin, "welcome.rating");
         donation = new MessageKey(plugin, "welcome.donation");
+        numberNotSafeSeeAlso = new MessageKey(plugin, "number.not-safe-see-also");
     }
 
     @NotNull
@@ -268,6 +271,10 @@ public class OreControlMessages implements HelpConfig {
         return numberNotSafeWarning;
     }
 
+    @NotNull
+    public MessageKey getNumberNotSafeSeeAlso() {
+        return numberNotSafeSeeAlso;
+    }
 
     //gui
     @NotNull

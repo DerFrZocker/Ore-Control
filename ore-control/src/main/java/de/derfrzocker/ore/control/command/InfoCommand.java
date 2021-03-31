@@ -25,10 +25,12 @@
 
 package de.derfrzocker.ore.control.command;
 
+import de.derfrzocker.ore.control.utils.BaseComponentUtil;
 import de.derfrzocker.ore.control.utils.OreControlValues;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -56,15 +58,15 @@ public class InfoCommand implements TabExecutor {
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         CommandUtil.runAsynchronously(sender, oreControlValues.getPlugin(), () -> {
 
-            final BaseComponent[] source = buildUrlButton("Source", "https://github.com/DerFrZocker/Ore-Control");
-            final BaseComponent[] discord = buildUrlButton("Discord", "http://discord.derfrzocker.de");
-            final BaseComponent[] patreon = buildUrlButton("Patreon", "https://www.patreon.com/woollydevelopment");
+            final BaseComponent[] source = BaseComponentUtil.buildUrlButton("Source", "https://github.com/DerFrZocker/Ore-Control", oreControlValues.getOreControlMessages());
+            final BaseComponent[] discord = BaseComponentUtil.buildUrlButton("Discord", "http://discord.derfrzocker.de", oreControlValues.getOreControlMessages());
+            final BaseComponent[] patreon = BaseComponentUtil.buildUrlButton("Patreon", "https://www.patreon.com/woollydevelopment", oreControlValues.getOreControlMessages());
 
-            final BaseComponent[] spaceSource = combineBaseComponent(space, source);
-            final BaseComponent[] spaceSourceSpace = combineBaseComponent(spaceSource, space);
-            final BaseComponent[] spaceSourceSpaceDiscord = combineBaseComponent(spaceSourceSpace, discord);
-            final BaseComponent[] spaceSourceSpaceDiscordSpace = combineBaseComponent(spaceSourceSpaceDiscord, space);
-            final BaseComponent[] spaceSourceSpaceDiscordSpacePatreon = combineBaseComponent(spaceSourceSpaceDiscordSpace, patreon);
+            final BaseComponent[] spaceSource = BaseComponentUtil.combineBaseComponent(space, source);
+            final BaseComponent[] spaceSourceSpace = BaseComponentUtil.combineBaseComponent(spaceSource, space);
+            final BaseComponent[] spaceSourceSpaceDiscord = BaseComponentUtil.combineBaseComponent(spaceSourceSpace, discord);
+            final BaseComponent[] spaceSourceSpaceDiscordSpace = BaseComponentUtil.combineBaseComponent(spaceSourceSpaceDiscord, space);
+            final BaseComponent[] spaceSourceSpaceDiscordSpacePatreon = BaseComponentUtil.combineBaseComponent(spaceSourceSpaceDiscordSpace, patreon);
 
             sender.sendMessage("------- " + ChatColor.BLUE + "Ore-Control" + ChatColor.RESET + " -------");
             sender.spigot().sendMessage(spaceSourceSpaceDiscordSpacePatreon);
@@ -82,36 +84,6 @@ public class InfoCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         return new ArrayList<>();
-    }
-
-    private BaseComponent[] buildUrlButton(String text, String url) {
-        final BaseComponent[] begin = new ComponentBuilder("[").color(ChatColor.DARK_RED).create();
-        final BaseComponent[] end = new ComponentBuilder("]").color(ChatColor.DARK_RED).create();
-
-        final BaseComponent[] buttons = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', text));
-        final BaseComponent[] hoverEventMessage = new ComponentBuilder("Click me").create();
-        final HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventMessage);
-        final ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, url);
-
-        for (final BaseComponent button : buttons) {
-            button.setHoverEvent(hoverEvent);
-            button.setClickEvent(clickEvent);
-        }
-
-        final BaseComponent[] first = combineBaseComponent(begin, buttons);
-
-        return combineBaseComponent(first, end);
-    }
-
-    private static BaseComponent[] combineBaseComponent(@NotNull final BaseComponent[] baseComponents, @NotNull final BaseComponent... baseComponents1) {
-        final int firstLength = baseComponents.length;
-        final int secondLength = baseComponents1.length;
-        final BaseComponent[] result = new BaseComponent[firstLength + secondLength];
-
-        System.arraycopy(baseComponents, 0, result, 0, firstLength);
-        System.arraycopy(baseComponents1, 0, result, firstLength, secondLength);
-
-        return result;
     }
 
 }

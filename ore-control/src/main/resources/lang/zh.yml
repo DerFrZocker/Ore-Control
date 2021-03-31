@@ -182,7 +182,7 @@ number:
     - "&4请将配置中的&f'&9safe-mode&f' &4设置为&f'&9false&f'"
     - "&4然后&f'&9/重启该插件（/orecontrol reload）&f'"
   not-safe-warning: "&e警告: 这个数字 &f'&9%value%&f' &不合适！"
-
+  not-safe-see-also: "&eFor more infos visit this %%button%&e wiki post"
 
 gui:
   copy:
