@@ -26,7 +26,6 @@
 package de.derfrzocker.ore.control;
 
 import de.derfrzocker.ore.control.api.*;
-import de.derfrzocker.ore.control.api.dao.WorldOreConfigDao;
 import de.derfrzocker.ore.control.command.NoCommandsAvailableCommand;
 import de.derfrzocker.ore.control.command.OreControlCommand;
 import de.derfrzocker.ore.control.gui.settings.GuiSettings;
@@ -170,7 +169,7 @@ public class OreControl extends JavaPlugin implements Listener {
         Version version = Version.getServerVersion(getServer());
         oreControlServiceSupplier.registerEvents();
 
-        final WorldOreConfigDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world-ore-configs"));
+        final WorldOreConfigYamlDao worldOreConfigYamlDao = new WorldOreConfigYamlDao(new File(getDataFolder(), "data/world-ore-configs"));
 
         // Register the OreControl Service, this need for checkFile and Settings, since some Files have Objects that need this Service to deserialize
         Bukkit.getServicesManager().register(OreControlService.class,
@@ -215,6 +214,7 @@ public class OreControl extends JavaPlugin implements Listener {
         settings = new Settings(() -> Config.getConfig(this, "data/settings.yml"), version, getLogger());
 
         checkOldStorageType();
+        worldOreConfigYamlDao.reload();
 
         // start the Metric of this Plugin (https://bstats.org/plugin/bukkit/Ore-Control)
         setUpMetric();
