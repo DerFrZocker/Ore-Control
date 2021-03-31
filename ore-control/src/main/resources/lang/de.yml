@@ -1,176 +1,179 @@
 command:
-
-  player-only: 'Dieser Befehl ist nur für Spieler!'
+  player-only: Dieser Befehl ist nur für Spieler!
   set:
     value:
-      usage: '&f/&9orecontrol set value &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f> <&9Anzahl&f(&9%&f)>'
-      description: 'Setze ein Wert, für eine Welt'
-      not-enough-args:
-        - "&4Falsche Anzahl an Argumenten!"
-        - "&cbenutze  %%translation:[command.set.value.usage]%"
-      success: '&aDer Wert wurde erfolgreich gesetzt!'
-
-    biome:
-      usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f> <&9Welt&f> <&9Anzahl&f(&9%&f)>'
-      description: 'Setze einen Wert, für ein bestimmtes Biome'
+      usage: '&f/&9orecontrol set value &f<&9Erz&f> <&9Einstellung&f> <&9Weltd&f>
+        <&9Anzahl&f(&9%&f)>'
+      description: Setze ein Wert, für eine Welt
       not-enough-args:
         - '&4Falsche Anzahl an Argumenten!'
-        - "&cbenutze  %%translation:[command.set.biome.usage]%"
+        - '&cbenutze  %%translation:[command.set.value.usage]%'
+      success: '&aDer Wert wurde erfolgreich gesetzt!'
+    biome:
+      usage: '&f/&9orecontrol set biome &f<&9biome&f> <&9Erz&f> <&9Einstellung&f>
+        <&9Welt&f> <&9Anzahl&f(&9%&f)>'
+      description: Setze einen Wert, für ein bestimmtes Biome
+      not-enough-args:
+        - '&4Falsche Anzahl an Argumenten!'
+        - '&cbenutze  %%translation:[command.set.biome.usage]%'
       success: '&aDer Wert wurde erfolgreich gesetzt!'
   create:
     usage: '&f/&9orecontrol create &f<&9name&f>'
-    description: 'Erstelle eine Vorlage, in der du Werte setzen kannst bevor du eine Welt erstellst'
+    description: Erstelle eine Vorlage, in der du Werte setzen kannst bevor du eine
+      Welt erstellst
     not-enough-args:
-      - "&4Falsche Anzahl an Argumenten!"
-      - "&cbenutze %%translation:[command.create.usage]%"
-    success: "&aDie Vorlage &f'&9%world-config%&f' &awurde erfolgreich erstellt!"
+      - '&4Falsche Anzahl an Argumenten!'
+      - '&cbenutze %%translation:[command.create.usage]%'
+    success: '&aDie Vorlage &f''&9%world-config%&f'' &awurde erfolgreich erstellt!'
   reload:
     usage: '&f/&9orecontrol reload'
-    description: 'Reloaded die Nachrichten, Config und Gui Einstellungen'
+    description: Reloaded die Nachrichten, Config und Gui Einstellungen
     begin: '&aBeginne mit dem Reloaden!'
     end: '&aReloaden Fertig!'
   info:
     usage: '&f/&9orecontrol info'
-    description: 'Zeigt dir ein par Informationen zum Plugin'
-
+    description: Zeigt dir ein par Informationen zum Plugin
   help:
     separator-format: '  '
-    header-format: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
-    footer-format: "~~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~~"
-    permission-format: "-> &9Berechtigung&f: %permission%"
-    description-format: "-> &9Beschreibung&f: %description%"
-    usage-format: "&9Benutzung&f: %usage%"
-    short-format: "&9%command%&f: %description%"
+    header-format: ~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~
+    footer-format: ~~~~~~~~~~~~~~~~~~~&9Befehle&f~~~~~~~~~~~~~~~~~~~
+    permission-format: '-> &9Berechtigung&f: %permission%'
+    description-format: '-> &9Beschreibung&f: %description%'
+    usage-format: '&9Benutzung&f: %usage%'
+    short-format: '&9%command%&f: %description%'
     usage: '&f/&9orecontrol help &f(<&9subbefehl&f>)'
-    description: 'Zeigt dir alle Befehle an und wenn ein SubBefehl angegeben ist, werden genauere Details zu diesem Befehl angezeigt'
-
+    description: Zeigt dir alle Befehle an und wenn ein SubBefehl angegeben ist, werden
+      genauere Details zu diesem Befehl angezeigt
 world-config:
-  not-found: "&4Die Config &f'&9%world-config%&f'&4 existiert nicht!"
-  already-exists: "&4Cie Config &f'&9%world-config%&f' &4existiert bereits!"
+  not-found: '&4Die Config &f''&9%world-config%&f''&4 existiert nicht!'
+  already-exists: '&4Cie Config &f''&9%world-config%&f'' &4existiert bereits!'
 ore:
   not-found:
-    - "&4Das Erz &f'&9%ore%&f' &4existiert nicht!, "
-    - "&cbenutze &f'&9diamond&f', '&9coal&f', '&9lapis&f', '&9iron&f', '&9gold&f', '&9gold_badlands&f'"
-    - "&coder &f'&9redstone&f'"
+    - '&4Das Erz &f''&9%ore%&f'' &4existiert nicht!, '
+    - '&cbenutze &f''&9diamond&f'', ''&9coal&f'', ''&9lapis&f'', ''&9iron&f'', ''&9gold&f'',
+    ''&9gold_badlands&f'''
+    - '&coder &f''&9redstone&f'''
   not-valid:
-    - "&4Das Erz &f'&9%ore%&f' &4kann nicht in das"
-    - "&4Biom &f'&9%biome%&f'&4gesetzt werden!"
-  DIAMOND: "Diamant"
-  COAL: "Kohle"
-  GOLD: "Gold"
-  GOLD_BADLANDS: "Ödland Gold"
-  LAPIS: "Lapis"
-  IRON: "Eisen"
-  REDSTONE: "Redstone"
-  EMERALD: "Smaragd"
-  DIRT: "Erde"
-  GRAVEL: "Kies"
-  GRANITE: "Granit"
-  DIORITE: "Diorit"
-  ANDESITE: "Andesit"
-  NETHER_QUARTZ: "Nether Quartz"
-  INFESTED_STONE: "Befallener Stein"
-  MAGMA: "Magma"
-  NETHER_GOLD: "Nether Gold"
-  ANCIENT_DEBRIS: "Antiker Schutt"
-  ANCIENT_DEBRIS_2: "Antiker Schutt 2"
-
+    - '&4Das Erz &f''&9%ore%&f'' &4kann nicht in das'
+    - '&4Biom &f''&9%biome%&f''&4gesetzt werden!'
+  DIAMOND: Diamant
+  COAL: Kohle
+  GOLD: Gold
+  GOLD_BADLANDS: Ödland Gold
+  LAPIS: Lapis
+  IRON: Eisen
+  REDSTONE: Redstone
+  EMERALD: Smaragd
+  DIRT: Erde
+  GRAVEL: Kies
+  GRANITE: Granit
+  DIORITE: Diorit
+  ANDESITE: Andesit
+  NETHER_QUARTZ: Nether Quartz
+  INFESTED_STONE: Befallener Stein
+  MAGMA: Magma
+  NETHER_GOLD: Nether Gold
+  ANCIENT_DEBRIS: Antiker Schutt
+  ANCIENT_DEBRIS_2: Antiker Schutt 2
 setting:
-  not-found: "&4Die Einstellung &f'&9%setting%&f' &4existiert nicht!"
+  not-found: '&4Die Einstellung &f''&9%setting%&f'' &4existiert nicht!'
   not-valid:
-    - "&4Die Einstellung &f'&9%setting%&f' &4ist nicht für das"
-    - "&4Erz &f'&9%ore%&f'&4 bestimmt!"
-  VEIN_SIZE: "Adergröße"
-  VEINS_PER_CHUNK: "Adern pro Chunk"
-  HEIGHT_RANGE: "Höhenbereich"
-  HEIGHT_CENTER: "Höhe Mitte"
-  MINIMUM_ORES_PER_CHUNK: "Minimale Erze pro Chunk"
-  ORES_PER_CHUNK_RANGE: "Erze pro Chunk Bereich"
-  MINIMUM_HEIGHT: "Mindesthöhe"
-  HEIGHT_SUBTRACT_VALUE: "Höhe subtrahieren Wert"
-  VEINS_PER_BIOME: "Adern pro Biome"
-  SEA_LEVEL_DIVIDER: "Meeresspiegelteiler"
-  SEA_LEVEL_ADDER: "Meeresspiegeladdierer"
-
+    - '&4Die Einstellung &f''&9%setting%&f'' &4ist nicht für das'
+    - '&4Erz &f''&9%ore%&f''&4 bestimmt!'
+  VEIN_SIZE: Adergröße
+  VEINS_PER_CHUNK: Adern pro Chunk
+  HEIGHT_RANGE: Höhenbereich
+  HEIGHT_CENTER: Höhe Mitte
+  MINIMUM_ORES_PER_CHUNK: Minimale Erze pro Chunk
+  ORES_PER_CHUNK_RANGE: Erze pro Chunk Bereich
+  MINIMUM_HEIGHT: Mindesthöhe
+  HEIGHT_SUBTRACT_VALUE: Höhe subtrahieren Wert
+  VEINS_PER_BIOME: Adern pro Biome
+  SEA_LEVEL_DIVIDER: Meeresspiegelteiler
+  SEA_LEVEL_ADDER: Meeresspiegeladdierer
 biome:
-  not-found: "&4Das Biome &f'&9%biome%&f' &4existiert nicht!"
-  OCEAN: "Meer"
-  PLAINS: "Flachland"
-  DESERT: "Wüste"
-  MOUNTAINS: "Berge"
-  FOREST: "Wald"
-  TAIGA: "Taiga"
-  SWAMP: "Sumpf"
-  RIVER: "Fluss"
-  FROZEN_OCEAN: "Gefrorenes Meer"
-  FROZEN_RIVER: "Gefrorener Fluss"
-  SNOWY_TUNDRA: "Verschneite Tundra"
-  SNOWY_MOUNTAINS: "Verschneite Berge"
-  MUSHROOM_FIELDS: "Pilzfelder"
-  MUSHROOM_FIELD_SHORE: "Pilzfeld Ufer"
-  BEACH: "Strand"
-  DESERT_HILLS: "Wüstenhügel"
-  WOODED_HILLS: "Bewaldete Hügel"
-  TAIGA_HILLS: "Taiga Hügel"
-  MOUNTAIN_EDGE: "Gebirgsrand"
-  JUNGLE: "Dschungel"
-  JUNGLE_HILLS: "Dschungelhügel"
-  JUNGLE_EDGE: "Dschungelrand"
-  DEEP_OCEAN: "Tiefes Meer"
-  STONE_SHORE: "Steinufer"
-  SNOWY_BEACH: "Verschneiter Strand"
-  BIRCH_FOREST: "Birkenwald"
-  BIRCH_FOREST_HILLS: "Birkenwald Hügel"
-  DARK_FOREST: "Dunkler Wald"
-  SNOWY_TAIGA: "Verschneite Taiga"
-  SNOWY_TAIGA_HILLS: "Verschneite Taiga Hügel"
-  GIANT_TREE_TAIGA: "Riesenbaum Taiga"
-  GIANT_TREE_TAIGA_HILLS: "Riesenbaum Taiga Hügel"
-  WOODED_MOUNTAINS: "Bewaldete Berge"
-  SAVANNA: "Savanne"
-  SAVANNA_PLATEAU: "Savanne Plateau"
-  BADLANDS: "Ödland"
-  WOODED_BADLANDS_PLATEAU: "Bewaldete Ödland Plateau"
-  BADLANDS_PLATEAU: "Ödland Plateau"
-  WARM_OCEAN: "Warmes Meer"
-  LUKEWARM_OCEAN: "Lauwarmes Meer"
-  COLD_OCEAN: "Kaltes Meer"
-  DEEP_WARM_OCEAN: "Tiefes warmes Meer"
-  DEEP_LUKEWARM_OCEAN: "Tiefes Lauwarmes Meer"
-  DEEP_COLD_OCEAN: "Tiefes Kaltes Meer"
-  DEEP_FROZEN_OCEAN: "Tiefes Gefrorenes Meer"
-  SUNFLOWER_PLAINS: "Sonnenblumenebenen"
-  DESERT_LAKES: "Wüstenseen"
-  GRAVELLY_MOUNTAINS: "Kiesige Berge"
-  FLOWER_FOREST: "Blumenwald"
-  TAIGA_MOUNTAINS: "Taiga Berge"
-  SWAMP_HILLS: "Sumpfhügel"
-  ICE_SPIKES: "Eisspitzen"
-  MODIFIED_JUNGLE: "Modifizierter Dschungel"
-  MODIFIED_JUNGLE_EDGE: "Modifizierter Dschungelrand"
-  TALL_BIRCH_FOREST: "Hoher Birkenwald"
-  TALL_BIRCH_HILLS: "Hohe Birkenhügel"
-  DARK_FOREST_HILLS: "Dunkle Waldhügel"
-  SNOWY_TAIGA_MOUNTAINS: "Verschneite Taiga Berge"
-  GIANT_SPRUCE_TAIGA: "Riesige Fichten Taiga"
-  GIANT_SPRUCE_TAIGA_HILLS: "Riesige Fichten Taiga Hügel"
-  MODIFIED_GRAVELLY_MOUNTAINS: "Modifizierte Kiesige Berge"
-  SHATTERED_SAVANNA: "Zerschlagene Savanne"
-  SHATTERED_SAVANNA_PLATEAU: "Zerschlagenes Savannen Plateau"
-  ERODED_BADLANDS: "Ausgehöhltes Ödland"
-  MODIFIED_WOODED_BADLANDS_PLATEAU: "Modifiziertes Bewaldetes Ödland Plateau"
-  MODIFIED_BADLANDS_PLATEAU: "Modified Ödland Plateau"
-  BAMBOO_JUNGLE: "Bambus Dschungel"
-  BAMBOO_JUNGLE_HILLS: "Bambus Dschungelhügel"
-  HILLS: "Hügels"
-  SNOWY: "Verschneite"
-  NETHER: "Nether"
-  NETHER_WASTES: "Nether-Ödland"
-  SOUL_SAND_VALLEY: "Seelensandtal"
-  CRIMSON_FOREST: "Karmesinwald"
-  WARPED_FOREST: "Wirrwald"
-  BASALT_DELTAS: "Basaltdeltas"
-
+  not-found: '&4Das Biome &f''&9%biome%&f'' &4existiert nicht!'
+  OCEAN: Meer
+  PLAINS: Flachland
+  DESERT: Wüste
+  MOUNTAINS: Berge
+  FOREST: Wald
+  TAIGA: Taiga
+  SWAMP: Sumpf
+  RIVER: Fluss
+  FROZEN_OCEAN: Gefrorenes Meer
+  FROZEN_RIVER: Gefrorener Fluss
+  SNOWY_TUNDRA: Verschneite Tundra
+  SNOWY_MOUNTAINS: Verschneite Berge
+  MUSHROOM_FIELDS: Pilzfelder
+  MUSHROOM_FIELD_SHORE: Pilzfeld Ufer
+  BEACH: Strand
+  DESERT_HILLS: Wüstenhügel
+  WOODED_HILLS: Bewaldete Hügel
+  TAIGA_HILLS: Taiga Hügel
+  MOUNTAIN_EDGE: Gebirgsrand
+  JUNGLE: Dschungel
+  JUNGLE_HILLS: Dschungelhügel
+  JUNGLE_EDGE: Dschungelrand
+  DEEP_OCEAN: Tiefes Meer
+  STONE_SHORE: Steinufer
+  SNOWY_BEACH: Verschneiter Strand
+  BIRCH_FOREST: Birkenwald
+  BIRCH_FOREST_HILLS: Birkenwald Hügel
+  DARK_FOREST: Dunkler Wald
+  SNOWY_TAIGA: Verschneite Taiga
+  SNOWY_TAIGA_HILLS: Verschneite Taiga Hügel
+  GIANT_TREE_TAIGA: Riesenbaum Taiga
+  GIANT_TREE_TAIGA_HILLS: Riesenbaum Taiga Hügel
+  WOODED_MOUNTAINS: Bewaldete Berge
+  SAVANNA: Savanne
+  SAVANNA_PLATEAU: Savanne Plateau
+  BADLANDS: Ödland
+  WOODED_BADLANDS_PLATEAU: Bewaldete Ödland Plateau
+  BADLANDS_PLATEAU: Ödland Plateau
+  WARM_OCEAN: Warmes Meer
+  LUKEWARM_OCEAN: Lauwarmes Meer
+  COLD_OCEAN: Kaltes Meer
+  DEEP_WARM_OCEAN: Tiefes warmes Meer
+  DEEP_LUKEWARM_OCEAN: Tiefes Lauwarmes Meer
+  DEEP_COLD_OCEAN: Tiefes Kaltes Meer
+  DEEP_FROZEN_OCEAN: Tiefes Gefrorenes Meer
+  SUNFLOWER_PLAINS: Sonnenblumenebenen
+  DESERT_LAKES: Wüstenseen
+  GRAVELLY_MOUNTAINS: Kiesige Berge
+  FLOWER_FOREST: Blumenwald
+  TAIGA_MOUNTAINS: Taiga Berge
+  SWAMP_HILLS: Sumpfhügel
+  ICE_SPIKES: Eisspitzen
+  MODIFIED_JUNGLE: Modifizierter Dschungel
+  MODIFIED_JUNGLE_EDGE: Modifizierter Dschungelrand
+  TALL_BIRCH_FOREST: Hoher Birkenwald
+  TALL_BIRCH_HILLS: Hohe Birkenhügel
+  DARK_FOREST_HILLS: Dunkle Waldhügel
+  SNOWY_TAIGA_MOUNTAINS: Verschneite Taiga Berge
+  GIANT_SPRUCE_TAIGA: Riesige Fichten Taiga
+  GIANT_SPRUCE_TAIGA_HILLS: Riesige Fichten Taiga Hügel
+  MODIFIED_GRAVELLY_MOUNTAINS: Modifizierte Kiesige Berge
+  SHATTERED_SAVANNA: Zerschlagene Savanne
+  SHATTERED_SAVANNA_PLATEAU: Zerschlagenes Savannen Plateau
+  ERODED_BADLANDS: Ausgehöhltes Ödland
+  MODIFIED_WOODED_BADLANDS_PLATEAU: Modifiziertes Bewaldetes Ödland Plateau
+  MODIFIED_BADLANDS_PLATEAU: Modified Ödland Plateau
+  BAMBOO_JUNGLE: Bambus Dschungel
+  BAMBOO_JUNGLE_HILLS: Bambus Dschungelhügel
+  HILLS: Hügels
+  SNOWY: Verschneite
+  NETHER: Nether
+  NETHER_WASTES: Nether-Ödland
+  SOUL_SAND_VALLEY: Seelensandtal
+  CRIMSON_FOREST: Karmesinwald
+  WARPED_FOREST: Wirrwald
+  BASALT_DELTAS: Basaltdeltas
+config-type:
+  GLOBAL: Global
+  TEMPLATE: Vorlage
+  OVERWORLD: Oberwelt
+  NETHER: Nether
 number:
   not-valid: '&f''&9%value%&f'' &4ist keine Zahl!'
   not-safe:
@@ -179,98 +182,218 @@ number:
     - '&4setze in der config den Wert &f''&9safe-mode&f'' &4auf &f''&9false&f'''
     - '&4Und führe den Befehl &f''&9/orecontrol reload&f'' &4aus'
   not-safe-warning: '&eWarn: Die Nummer &f''&9%value%&f'' &eist nicht sicher!'
-
-
 gui:
   copy:
-    success: "&aDie Werte wurden erfolgreich kopiert!"
+    success: '&aDie Werte wurden erfolgreich kopiert!'
   reset:
-    success: "&aDie Werte wurden erfolgreich zurückgesetzt!"
+    success: '&aDie Werte wurden erfolgreich zurückgesetzt!'
   anvil:
-    title: "Schreibe einen Namen!"
-  previous-page: "&rVorherige Seite"
-  next-page: "&rNächste Seite"
-  back: "&rGehe einen Schritt zurück"
+    title: Schreibe einen Namen!
+  previous-page:
+    name: '&fVorherige Seite'
+    click: '&7>> &bKlicke, um zur vorherigen Seite zu gehen! &7<<'
+  next-page:
+    name: '&fNächste Seite'
+    click: '&7>> &bKlicke, um zur nächsten Seite zu gehen! &7<<'
+  back:
+    name: '&fZurück'
+    click: '&7>> &bKlicke, um einen schrit zurück zu gehen! &7<<'
+  abort:
+    name: '&fAbbrechen'
+    click: '&7>> &bKlicke, um das Kopieren abzubrechen! &7<<'
   info:
-    name: "Info"
-    lore-world: "Welt: %world%"
-    lore-biome: "Biome: %%translation:[biome.%biome%]%"
-    lore-ore: "Erz: %%translation:[ore.%ore%]%"
-    lore-setting: "Einstellung: %%translation:[setting.%setting%]%"
-    lore-current: "Aktuell: %amount%"
-    lore-default: "Standart: %value%"
+    name: '&eInfo'
+    lore-world: ' &7> &fWelt: &d%world%'
+    lore-biome: ' &7> &fBiome: &d%%translation:[biome.%biome%]%'
+    lore-ore: ' &7> &fErz: &d%%translation:[ore.%ore%]%'
+    lore-setting: ' &7> &fEinstellung: &d%%translation:[setting.%setting%]%'
+    lore-current: ' &7> &fAktuell: &d%amount%'
+    lore-default: ' &7> &fStandart: &d%default%'
   world:
-    name: "Wähle eine Welt!"
+    name: Wähle eine Welt!
+    type: ' &7> &fTyp: &d%%translation:[config-type.%config-type%]%'
+    world:
+      click: '&7>> &bKlicke, um diese Welt zu bearbeiten! &7<<'
     template:
-      create: "Erstelle eine neue Vorlage!"
+      create:
+        name: '&fNeue Vorlage'
+        create: '&7>> &bklicke, um eine neue Vorlage zu erstellen! &7<<'
+      click: '&7>> &bKlicke, um diese Vorlage zu bearbeiten! &7<<'
+    global:
+      click: '&7>> &bKlicke, um die Globale Konfig zu bearbeiten! &7<<'
     config:
-      edit: "Ändere Config Einstellungen!"
+      edit: Ändere Config Einstellungen!
+      name: '&fKonfig'
+      click: '&7>> &bKlicke, um die Konfig zu bearbeiten! &7<<'
+    reset-copy:
+      world:
+        click: '&7>> &bKlicke, um diese Welt zu wählen! &7<<'
+      template:
+        click: '&7>> &bKlicke, um diese Vorlage zu wählen! &7<<'
+      global:
+        click: '&7>> &bKlicke, um die globale Konfig zu wählen! &7<<'
   world-config:
-    name: "Wähle einen Typ!"
-    biome: "§bLege eine Wert für ein bestimmtes §dBiom§b fest!"
-    ore: "§bLege einen Wert für die ganze §dWelt§b fest!"
-    reset: "Setze alle Werte auf Standart einstellungen zurück!"
-    copy: "Kopiere alle Eintellugen zu einer anderen Welt oder Vorlage!"
-    delete: "Lösches diese Vorlage!"
+    name: Wähle einen Typ!
+    biome:
+      name: '&fBiome spezifisch'
+      click: '&7>> &bKlicke, um ein bestimmtes Biom zu bearbeiten! &7<<'
+    ore:
+      name: '&fGanze Welt'
+      click: '&7>> &bKlicke, um die ganze Welt zu bearbeiten! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bKlicke, um alle Einstellungen zu resetten! &7<<'
+    copy:
+      name: '&fKopieren'
+      click: '&7>> &bKlicke, um alle Einstellung zu kopieren! &7<<'
+    delete:
+      name: '&fLöschen'
+      click: '&7>> &bKlicke, um diese Welten-Konfig zu löschen! &7<<'
+    reset-copy:
+      biome:
+        click: '&7>> &bKlicke, um ein Biome zu wählen! &7<<'
+      ore:
+        click: '&7>> &bKlicke, um die ganze Welt zu wählen! &7<<'
   biome:
-    name: "Wähle ein Biom!"
-    biome: "Biome"
-    biome-group: "Biome Gruppen"
-    reset: "Setze alle Biome Werte auf Standart einstellungen zurück!"
-    copy: "Kopiere alle Biome Eintellugen zu einer anderen Welt oder Vorlage!"
+    biome-group: Biome Gruppen
+    name: Wähle ein Biom!
+    biome:
+      click: '&7>> &bKlicke, um dieses Biome zu bearbeiten! &7<<'
+    switch:
+      biome:
+        name: '&fBiome'
+        click: '&7>> &bKlicke, um zur Biome-Auswahl zu wechseln! &7<<'
+      biome-group:
+        name: '&fBiome Gruppe'
+        click: '&7>> &bKlicke, um zur Auswahl der Biomgruppe zu wechseln! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bKlicke, um alle Biome zu resetten! &7<<'
+    copy:
+      name: '&fKopieren'
+      click: '&7>> &bKlicke, um alle Biome zu kopieren! &7<<'
+    reset-copy:
+      biome:
+        click: '&7>> &bKlicke, um dieses Biome zu wählen! &7<<'
   ore:
-    name: "Wähle ein Erz!"
-    reset: "Setze alle Erz Werte auf Standart einstellungen zurück!"
-    copy: "Kopiere alle Erz Eintellugen zu einer anderen Welt oder Vorlage!"
+    name: Wähle ein Erz!
+    ore:
+      name: '&f%%translation:[ore.%ore%]%'
+      status: ' &7> &fStatus: &a%%translation:[gui.boolean.%status%]%'
+      click: '&7>> &bKlicke, um diese Erz zu bearbeiten! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bKlicke, um alle Erze zu resetten! &7<<'
+    copy:
+      name: '&fKopieren'
+      click: '&7>> &bKlicke, um alle Erze zu kopieren! &7<<'
+    reset-copy:
+      ore:
+        click: '&7>> &bKlicke, um dieses Erz zu wählen! &7<<'
   ore-settings:
-    name: "Wähle eine Einstellung!"
-    activate: "§aAktiviere die Erzgenerierung!"
-    deactivate: "§cDeaktiviere die Erzgeneration!"
-    reset: "Setze alle Werte von diesem Erz auf Standart einstellungen zurück!"
-    copy: "Kopiere alle Eintellugen von diesem Erz zu einer anderen Welt oder Vorlage!"
+    activate: §aAktiviere die Erzgenerierung!
+    deactivate: §cDeaktiviere die Erzgeneration!
+    name: Wähle eine Einstellung!
+    setting:
+      click: '&7>> &bKlicke, um diese Einstellung zu bearbeiten! &7<<'
+    status:
+      active:
+        name: '&fAktivieren / Deaktivieren'
+        current: ' &7> &fAktuell: &aAktive'
+        click: '&7>> &bKlicke, um dieses Erz zu deaktivieren! &7<<'
+      inactive:
+        name: '&fAktivieren / Deaktivieren'
+        current: ' &7> &fAktuell: &cInaktive'
+        click: '&7>> &bKlicke, um dieses Erz zu aktivieren! &7<<'
+    reset:
+      name: '&fReset'
+      click: '&7>> &bKlicke, um alle Einstellungen zu resetten! &7<<'
+    copy:
+      name: '&fKopieren'
+      click: '&7>> &bKlicke, um alle Einstellungen zu kopieren! &7<<'
+    reset-copy:
+      setting:
+        click: '&7>> &bKlicke, um diese Einstellung zu wählen! &7<<'
   settings:
-    name: "Einen Wert einstellen!"
-    reset: "Setze diesen Wert auf die Standart einstellung zurück!"
-    copy: "Kopiere diese Eintellung zu einer anderen Welt oder Vorlage!"
+    name: Einen Wert einstellen!
+    reset:
+      name: '&fReset'
+      click: '&7>> &bKlicke, um diese Einstellung zu resetten! &7<<'
+    copy:
+      name: '&fKopieren'
+      click: '&7>> &bKlicke, um diese Einstellung zu kopieren! &7<<'
+    add:
+      click: '&7>> &bKlicke, um %change-value% hinzuzufügen! &7<<'
+    remove:
+      click: '&7>> &bKlicke, um %change-value% zu entfernen! &7<<'
   verify:
-    name: "Akzeptiere oder lehne die Aktion ab!"
-    accept: "Akzeptieren"
-    deny: "Ablehnen"
+    name: Akzeptiere oder lehne die Aktion ab!
+    accept:
+      name: '&fAkzeptieren'
+      click: '&7>> &bKlicke, um zu Akzeptieren! &7<<'
+    deny:
+      name: '&fAblehnen'
+      click: '&7>> &bKlicke, um Abzulehnen! &7<<'
   config:
-    name: "Wähle eine Config Option!"
+    name: Wähle eine Config Option!
+    back:
+      click: '&7>> &bKlicke, um zur welten gui zu gelangen! &7<<'
+    reload:
+      name: '&fNeu laden'
+      click: '&7>> &bKlicke, um die Konfig neu zuladen &7<<'
     language:
-      name: "Ändere die Sprache!"
-      description: "Ändere die Sprache von diesem Plugin, du kannst auch neue Sprachen einreichen. Einfach die messages.yml im Ore-Control Ordner übersetzen und an mich senden."
+      name: '&fSprache'
+      description: ' &7> &cHelfe beim Übersetzen des Plugins!%%new-line% &7> &fJedes
+        bisschen hilft, übersetze%%new-line% &7> &feinfach die &dmessages.yml&f in
+        dem%%new-line% &7> &fplugin Ordner und sende sie zu mir.'
+      click: '&7>> &bKlicke, um die Sprache zu ändern! &7<<'
     safe-mode:
-      name: "Aktiviere / Deaktiviere den Sicherheitsmodus!"
-      description: "Wähle ob dich das Plugin hindern soll, wenn du einen nicht sicheren Wert setzen willst"
+      name: '&fSicherer Modus'
+      description: ' &7> &fWähle, ob das Plugin warnen soll, wenn%%new-line% &7> &fein
+        nicht sicherer Wert gewählt wird.'
+      click: '&7>> &bKlicke, um den abgesicherten Modus ein-/auszuschalten! &7<<'
     translate-tab-compilation:
-      name: "Aktiviere / Deaktiviere Tab Übersetzung!"
-      description: "Wähle ob du Biom / Erz / Einstellungs namen in deiner gewählten Sprache in den Befehlen nutzen kannst"
+      name: '&fTap Übersetzung'
+      description: ' &7> &fAktiviere, wenn du Biome / Erze / Einstellungen%%new-line%
+        &7> &fin der von dir gewählten sprache schreiben%%new-line% &7> &fmöchtest,
+        in befehlen.'
+      click: '&7>> &bKlicke, um die Tap übersetzung ein-/auszuschalten! &7<<'
     verify:
       copy-action:
-        name: "Aktiviere / Deaktiviere bestädigung für Kopier Aktionen!"
-        description: "Wähle ob to Kopier Aktionen Bestätigen must oder nicht"
+        name: '&fÜberprüfen von Kopieraktionen'
+        description: ' &7> &fAktiviere, wenn du kopier Aktionen%%new-line% &7> &fbestädigen
+          möchtest.'
+        click: '&7>> &bKlicke, um die Verifizierung ein-/auszuschalten! &7<<'
       reset-action:
-        name: "Aktiviere / Deaktiviere bestädigung für Reset Aktionen!"
-        description: "Wähle ob to Reset Aktionen Bestätigen must oder nicht"
+        name: '&fRücksetzaktionen überprüfen'
+        description: ' &7> &fAktiviere, wenn du reset Aktionen%%new-line% &7> &fbestädigen
+          möchtest.'
+        click: '&7>> &bKlicke, um die Verifizierung ein-/auszuschalten! &7<<'
   language:
-    name: "Wähle eine Sprache!"
+    name: Wähle eine Sprache!
+    custom:
+      click: '&7>> &bKlicke, um custom als sprache zu wählen! &7<<'
   boolean:
-    name: "Aktiviere oder Deaktiviere"
-    true: "Aktiviere"
-    false: "Deaktiviere"
-
+    true-click: '&7>> &bKlicke, um zu Aktivieren! &7<<'
+    false-click: '&7>> &bKlicke, um zu Deaktivieren! &7<<'
+    set:
+      'true': '&fAktivieren'
+      'false': '&fDeaktivieren'
+    name: Aktivieren oder Deaktivieren
+    'true': '&aAktive'
+    'false': '&cInaktive'
 welcome:
-  button-open-string: "&4["
-  button-close-string: "&4]"
-  header: "&bDanke, das du Ore-Control benutzt!"
-  found-bug: "Wenn du einen Fehler gefunden hast, melden ihn bitte auf %%button%"
-  feature-request: "Wenn du zusätzliche funktionen haben möchtest, verwenden bitte auch %%button%"
-  support: "Treten meinem %%button% Server bei, wenn du Fragen zu meinem Plugin hast"
-  support-my-work: "Wenn dir meine Arbeit gefällt, %%button:[rating]% sie bitte oder mache eine kleine %%button:[donation]%"
-  not-show-again: "Nicht mehr anzeigen"
-  not-show-again-success: "&aDie Willkommensnachricht wird nicht mehr angezeigt"
-  click-me: "Klick mich"
-  rating: "bewerte"
-  donation: "Spende"
+  button-open-string: '&4['
+  button-close-string: '&4]'
+  header: '&bDanke, das du Ore-Control benutzt!'
+  found-bug: Wenn du einen Fehler gefunden hast, melden ihn bitte auf %%button%
+  feature-request: Wenn du zusätzliche funktionen haben möchtest, verwenden bitte
+    auch %%button%
+  support: Treten meinem %%button% Server bei, wenn du Fragen zu meinem Plugin hast
+  support-my-work: Wenn dir meine Arbeit gefällt, %%button:[rating]% sie bitte oder
+    mache eine kleine %%button:[donation]%
+  not-show-again: Nicht mehr anzeigen
+  not-show-again-success: '&aDie Willkommensnachricht wird nicht mehr angezeigt'
+  click-me: Klick mich
+  rating: bewerte
+  donation: Spende

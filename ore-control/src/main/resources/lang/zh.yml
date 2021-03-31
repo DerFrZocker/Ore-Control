@@ -35,8 +35,8 @@ command:
 
   help:
     separator-format: '  '
-    header-format: "~~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~~"
-    footer-format: "~~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~~"
+    header-format: "~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~"
+    footer-format: "~~~~~~~~~~~~~~~~~~~&9命令&f~~~~~~~~~~~~~~~~~~~"
     permission-format: "-> &9permission&f: %permission%"
     description-format: "-> &9description&f: %description%"
     usage-format: "&9usage&f: %usage%"
@@ -166,6 +166,12 @@ biome:
   CRIMSON_FOREST: "Crimson Forest"
   WARPED_FOREST: "Warped Forest"
   BASALT_DELTAS: "Basalt Deltas"
+
+config-type:
+  GLOBAL: Global
+  TEMPLATE: Template
+  OVERWORLD: Overworld
+  NETHER: Nether
 
 number:
   not-valid: "&f'&9%value%&f' &4这不是一个有效的数字！"

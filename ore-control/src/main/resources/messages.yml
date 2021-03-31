@@ -35,8 +35,8 @@ command:
     description: Shows you some infos about the plugin
   help:
     separator-format: '  '
-    header-format: ~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~
-    footer-format: ~~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~~
+    header-format: ~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~
+    footer-format: ~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~
     permission-format: '-> &9permission&f: %permission%'
     description-format: '-> &9description&f: %description%'
     usage-format: '&9usage&f: %usage%'
@@ -218,7 +218,6 @@ gui:
     global:
       click: '&7>> &bClick to edit the global config! &7<<'
     config:
-      edit: Change the config settings!
       name: '&fConfig'
       click: '&7>> &bClick to edit the config! &7<<'
     reset-copy:
