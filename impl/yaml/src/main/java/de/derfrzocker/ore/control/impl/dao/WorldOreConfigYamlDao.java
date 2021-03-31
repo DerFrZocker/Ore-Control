@@ -152,40 +152,39 @@ public class WorldOreConfigYamlDao implements WorldOreConfigDao, ReloadAble {
 
         final File[] files = directory.listFiles();
 
-        if (files == null)
-            return;
-
-        for (final File file : files) {
-            if (!file.isFile()) {
-                continue;
-            }
-
-            if (!file.getName().endsWith(".yml")) {
-                continue;
-            }
-
-            if (file.getName().equals("Default.yml") && !globalFile.exists()) {
-                try {
-                    globalDirectory.mkdirs();
-                    globalFile.createNewFile();
-
-                    Config config = new Config(file);
-                    WorldOreConfig worldOreConfig = (WorldOreConfig) config.get("value");
-
-                    Config globalConfig = new Config(globalFile);
-                    WorldOreConfig globalWorldOreConfig = worldOreConfig.clone(GLOBAL_NAME);
-                    globalWorldOreConfig.setConfigType(ConfigType.GLOBAL);
-                    globalConfig.set("value", globalWorldOreConfig);
-                    globalConfig.save(globalFile);
-
-                    file.delete();
+        if (files != null) {
+            for (final File file : files) {
+                if (!file.isFile()) {
                     continue;
-                } catch (IOException e) {
-                    throw new RuntimeException("Error while moving file", e);
                 }
-            }
 
-            lazyWorldOreConfigCacheMap.put(file.getName().substring(0, file.getName().length() - 4), new LazyWorldOreConfigCache(file));
+                if (!file.getName().endsWith(".yml")) {
+                    continue;
+                }
+
+                if (file.getName().equals("Default.yml") && !globalFile.exists()) {
+                    try {
+                        globalDirectory.mkdirs();
+                        globalFile.createNewFile();
+
+                        Config config = new Config(file);
+                        WorldOreConfig worldOreConfig = (WorldOreConfig) config.get("value");
+
+                        Config globalConfig = new Config(globalFile);
+                        WorldOreConfig globalWorldOreConfig = worldOreConfig.clone(GLOBAL_NAME);
+                        globalWorldOreConfig.setConfigType(ConfigType.GLOBAL);
+                        globalConfig.set("value", globalWorldOreConfig);
+                        globalConfig.save(globalFile);
+
+                        file.delete();
+                        continue;
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error while moving file", e);
+                    }
+                }
+
+                lazyWorldOreConfigCacheMap.put(file.getName().substring(0, file.getName().length() - 4), new LazyWorldOreConfigCache(file));
+            }
         }
 
         if (!globalFile.exists()) {
