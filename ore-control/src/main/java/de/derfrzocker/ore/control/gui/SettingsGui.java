@@ -93,7 +93,7 @@ public class SettingsGui extends BasicGui {
         final Plugin plugin = oreControlValues.getPlugin();
         final Permissions permissions = oreControlValues.getPermissions();
 
-        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack(), new MessageValue("change-value", Math.abs(value.getValue()))), new SettingConsumer(value.getValue())));
+        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack(), getMessagesValues(true, value.getValue())), new SettingConsumer(value.getValue())));
 
         addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getBackItemStack()),
                 event -> new OreSettingsGui(guiSettings, oreControlValues, event.getWhoClicked(), worldOreConfig, dimension, biome, ore).openSync(event.getWhoClicked()));
@@ -136,7 +136,7 @@ public class SettingsGui extends BasicGui {
         final SettingsGuiSettings settingsGuiSettings = guiSettings.getSettingsGuiSettings();
         final Plugin plugin = oreControlValues.getPlugin();
 
-        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack(), new MessageValue("change-value", Math.abs(value.getValue()))), new SettingBiomeGroupConsumer(value.getValue())));
+        settingsGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(plugin, value.getItemStack(), getMessagesValues(true, value.getValue())), new SettingBiomeGroupConsumer(value.getValue())));
 
         addItem(settingsGuiSettings.getInfoSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getInfoBiomeItemStack(), getMessagesValues(true)));
         addItem(settingsGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, settingsGuiSettings.getBackItemStack()),
@@ -155,11 +155,24 @@ public class SettingsGui extends BasicGui {
         };
     }
 
+    private MessageValue[] getMessagesValues(final boolean firstUpdate, double changeValue) {
+        return new MessageValue[]{new MessageValue("world", worldOreConfig.getName()),
+                new MessageValue("biome", biome == null ? biomeGroup == null ? "" : biomeGroup.getName() : biome.toString()),
+                new MessageValue("ore", ore.toString()),
+                new MessageValue("setting", setting.toString()),
+                new MessageValue("amount", String.valueOf(biome == null ? biomeGroup == null ? oreControlValues.getService().getValue(worldOreConfig, ore, setting) : firstUpdate ? "N/A" : current : oreControlValues.getService().getValue(worldOreConfig, biome, ore, setting))),
+                new MessageValue("default", String.valueOf(biome == null ? biomeGroup == null ? oreControlValues.getService().getDefaultValue(ore, setting) : "N/A" : oreControlValues.getService().getDefaultValue(biome, ore, setting))),
+                new MessageValue("change-value", Math.abs(changeValue))
+        };
+    }
+
     private void updateItemStack() {
         ItemStack itemStack = biome == null ? guiSettings.getSettingsGuiSettings().getDefaultOreItemStack() : guiSettings.getSettingsGuiSettings().getDefaultBiomeOreItemStack();
         itemStack.setType(ore.getMaterial());
         itemStack = MessageUtil.replaceItemStack(getPlugin(), itemStack, getMessagesValues(false));
         addItem(oreSlot, itemStack);
+
+        guiSettings.getSettingsGuiSettings().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(getPlugin(), value.getItemStack(), getMessagesValues(false, value.getValue()))));
     }
 
     private void updateBiomeGroupItemStack(final boolean firstUpdate) {
@@ -167,6 +180,8 @@ public class SettingsGui extends BasicGui {
         itemStack.setType(ore.getMaterial());
         itemStack = MessageUtil.replaceItemStack(getPlugin(), itemStack, getMessagesValues(firstUpdate));
         addItem(oreSlot, itemStack);
+
+        guiSettings.getSettingsGuiSettings().getItemStackValues().forEach(value -> addItem(value.getSlot(), MessageUtil.replaceItemStack(getPlugin(), value.getItemStack(), getMessagesValues(false, value.getValue()))));
     }
 
     private void handleResetValues(@NotNull final InventoryClickEvent event) {

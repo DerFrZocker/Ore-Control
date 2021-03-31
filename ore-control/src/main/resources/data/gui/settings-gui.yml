@@ -18,6 +18,9 @@ items:
         display-name: '&f-1.0'
         lore:
           - "   "
+          - '%%translation:[gui.info.lore-current]%'
+          - '%%translation:[gui.info.lore-default]%'
+          - "   "
           - "%%translation:[gui.settings.remove.click]%"
   '1':
     slot: 21
@@ -31,6 +34,9 @@ items:
         meta-type: UNSPECIFIC
         display-name: '&f-0.1'
         lore:
+          - "   "
+          - '%%translation:[gui.info.lore-current]%'
+          - '%%translation:[gui.info.lore-default]%'
           - "   "
           - "%%translation:[gui.settings.remove.click]%"
   '2':
@@ -46,6 +52,9 @@ items:
         display-name: '&f+0.1'
         lore:
           - "   "
+          - '%%translation:[gui.info.lore-current]%'
+          - '%%translation:[gui.info.lore-default]%'
+          - "   "
           - "%%translation:[gui.settings.add.click]%"
   '3':
     slot: 24
@@ -59,6 +68,9 @@ items:
         meta-type: UNSPECIFIC
         display-name: '&f+1.0'
         lore:
+          - "   "
+          - '%%translation:[gui.info.lore-current]%'
+          - '%%translation:[gui.info.lore-default]%'
           - "   "
           - "%%translation:[gui.settings.add.click]%"
 back:
@@ -83,6 +95,7 @@ default-ore-item-stack:
     meta-type: UNSPECIFIC
     display-name: '&f%%translation:[ore.%ore%]%'
     lore:
+      - "   "
       - '%%translation:[gui.info.lore-current]%'
       - '%%translation:[gui.info.lore-default]%'
 default-biome-ore-item-stack:
