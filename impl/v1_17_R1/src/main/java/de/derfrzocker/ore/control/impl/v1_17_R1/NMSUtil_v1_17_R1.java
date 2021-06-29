@@ -143,6 +143,9 @@ public class NMSUtil_v1_17_R1 implements NMSUtil {
         if (object == Blocks.ANCIENT_DEBRIS) {
             return Ore.ANCIENT_DEBRIS;
         }
+        if (object == Blocks.COPPER_ORE) {
+            return Ore.COPPER;
+        }
 
         return null;
     }

@@ -169,6 +169,14 @@ defaults:
         HEIGHT_RANGE: 8
         HEIGHT_CENTER: 16
         VEINS_PER_BIOME: 0
+    - ==: OreControl#OreSettings
+      ore: COPPER
+      settings:
+        VEIN_SIZE: 10
+        VEINS_PER_CHUNK: 6
+        HEIGHT_RANGE: 48
+        HEIGHT_CENTER: 48
+        VEINS_PER_BIOME: 0
   biome-ore-settings:
     - ==: OreControl#BiomeOreSettings
       biome: BASALT_DELTAS
@@ -192,4 +200,4 @@ defaults:
             HEIGHT_SUBTRACT_VALUE: 20
             VEINS_PER_BIOME: 0
 
-version: 7
+version: 8

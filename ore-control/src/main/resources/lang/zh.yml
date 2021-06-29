@@ -73,6 +73,7 @@ ore:
   NETHER_GOLD: "Nether Gold"
   ANCIENT_DEBRIS: "Ancient Debris"
   ANCIENT_DEBRIS_2: "Ancient Debris 2"
+  COPPER: "Copper"
 
 setting:
   not-found: "&4该设置 &f'&9%setting%&f' &4未能生效！"

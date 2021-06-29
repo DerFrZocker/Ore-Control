@@ -181,6 +181,9 @@ class NMSReplacer_v1_17_R1 {
         if (feature == Features.ORE_MAGMA) {
             return new ConfiguredFeature<>(new MagmaWorldGeneratorOverrider(NoneFeatureConfiguration.CODEC, biome, Ore.MAGMA, serviceSupplier, getWorldGenFeatureOreConfiguration(feature)), null);
         }
+        if (feature == Features.ORE_COPPER) {
+            return new ConfiguredFeature<>(new DepthAveragedWorldGeneratorOverrider(NoneFeatureConfiguration.CODEC, biome, Ore.COPPER, serviceSupplier, getWorldGenFeatureOreConfiguration(feature)), null);
+        }
 
         return null;
     }

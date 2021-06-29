@@ -73,6 +73,7 @@ ore:
   NETHER_GOLD: Nether Gold
   ANCIENT_DEBRIS: Ancient Debris
   ANCIENT_DEBRIS_2: Ancient Debris 2
+  COPPER: "Copper"
 setting:
   not-found: '&4The setting &f''&9%setting%&f'' &4does not exist!'
   not-valid: '&4The setting &f''&9%setting%&f'' &4is not valid with the ore &f''&9%ore%&f''&4!'

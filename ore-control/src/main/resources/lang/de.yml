@@ -76,6 +76,7 @@ ore:
   NETHER_GOLD: Nether Gold
   ANCIENT_DEBRIS: Antiker Schutt
   ANCIENT_DEBRIS_2: Antiker Schutt 2
+  COPPER: "Kupfer"
 setting:
   not-found: '&4Die Einstellung &f''&9%setting%&f'' &4existiert nicht!'
   not-valid:

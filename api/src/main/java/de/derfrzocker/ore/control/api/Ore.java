@@ -49,7 +49,8 @@ public enum Ore {
     MAGMA(Version.v1_13_R1, Material.MAGMA_BLOCK, combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_MAGMA_SETTINGS), Dimension.NETHER),
     NETHER_GOLD(Version.v1_16_R1, "NETHER_GOLD_ORE", combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_RANGE_SETTINGS), Dimension.NETHER),
     ANCIENT_DEBRIS(Version.v1_16_R1, "ANCIENT_DEBRIS", combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_RANGE_SETTINGS), Dimension.NETHER),
-    ANCIENT_DEBRIS_2(Version.v1_16_R1, "ANCIENT_DEBRIS", combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_DEPTH_AVERAGE_SETTINGS), Dimension.NETHER);
+    ANCIENT_DEBRIS_2(Version.v1_16_R1, "ANCIENT_DEBRIS", combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.NETHER_COUNT_DEPTH_AVERAGE_SETTINGS), Dimension.NETHER),
+    COPPER(Version.v1_17_R1, "COPPER_ORE", combineSettings(Setting.DEFAULT_ORE_SETTINGS, Setting.DEFAULT_COUNT_DEPTH_AVERAGE_SETTINGS), Dimension.OVERWORLD);
 
     final static Ore[] DEFAULT_OVERWORLD_ORES = new Ore[]{
             ANDESITE,
@@ -62,7 +63,8 @@ public enum Ore {
             GRAVEL,
             IRON,
             LAPIS,
-            REDSTONE
+            REDSTONE,
+            COPPER
     };
 
     final static Ore[] DEFAULT_NETHER_ORES = new Ore[]{
