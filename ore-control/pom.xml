@@ -14,8 +14,8 @@
 
     <repositories>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 
@@ -26,11 +26,10 @@
             <version>${bstats.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- TODO switch back to WesJD main branch -->
         <dependency>
-            <groupId>com.github.mastercake10</groupId>
-            <artifactId>AnvilGUI</artifactId>
-            <version>70dbe3f37d</version>
+            <groupId>net.wesjd</groupId>
+            <artifactId>anvilgui</artifactId>
+            <version>1.5.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -90,6 +89,12 @@
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-impl-v1_16_R3</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>ore-control-impl-v1_17_R1</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
