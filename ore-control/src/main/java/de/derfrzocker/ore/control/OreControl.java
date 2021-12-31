@@ -28,6 +28,7 @@ package de.derfrzocker.ore.control;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.dao.ConfigDao;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,5 +48,7 @@ public class OreControl extends JavaPlugin implements Listener {
         }
 
         nmsReplacer.hookIntoBiomes();
+
+        new Metrics(this, 4244);
     }
 }
