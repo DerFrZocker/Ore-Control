@@ -23,23 +23,18 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.api;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+import java.util.Random;
 
-    private final NamespacedKey key;
+public interface Value<V extends Value<V, T, O>, T extends ValueType<V, T, O>, O> {
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
+    T getValueType();
 
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+    O getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion);
 }

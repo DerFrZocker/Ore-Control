@@ -23,23 +23,31 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.api;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class Biome implements Keyed {
+public class Registries {
 
-    private final NamespacedKey key;
+    private final Registry<Feature<?>> featureRegistry = new Registry<>();
+    private final Registry<FeatureGenerator<?>> featureGeneratorRegistry = new Registry<>();
+    private final Registry<FeaturePlacementModifier<?>> placementModifierRegistry = new Registry<>();
+    private final Map<Class<?>, Registry<?>> valueTypeRegistry = new LinkedHashMap<>();
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    public Registry<Feature<?>> getFeatureRegistry() {
+        return featureRegistry;
     }
 
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
+    public Registry<FeatureGenerator<?>> getFeatureGeneratorRegistry() {
+        return featureGeneratorRegistry;
+    }
+
+    public Registry<FeaturePlacementModifier<?>> getPlacementModifierRegistry() {
+        return placementModifierRegistry;
+    }
+
+    public <O extends ValueType<?, O, ?>> Registry<O> getValueTypeRegistry(Class<O> clazz) {
+        return (Registry<O>) valueTypeRegistry.computeIfAbsent(clazz, aClass -> new Registry<>());
     }
 }

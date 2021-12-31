@@ -11,16 +11,7 @@
     </parent>
 
     <modules>
-        <module>v1_14_R1</module>
-        <module>v1_13_R1</module>
-        <module>v1_13_R2</module>
-        <module>v1_15_R1</module>
-        <module>v1_16_R1</module>
-        <module>yaml</module>
-        <module>service</module>
-        <module>v1_16_R2</module>
-        <module>v1_16_R3</module>
-        <module>v1_17_R1</module>
+        <module>v1_18_R1</module>
     </modules>
 
     <artifactId>ore-control-impl</artifactId>

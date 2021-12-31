@@ -23,23 +23,34 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.intprovider;
 
-import org.bukkit.Keyed;
+import com.mojang.serialization.Codec;
+import net.minecraft.util.valueproviders.IntProvider;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public class FixedIntProviderType extends IntProviderType {
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_int_provider");
+    public static final FixedIntProviderType INSTANCE = new FixedIntProviderType();
+    public static final Codec<FixedIntProviderValue> CODEC = IntProvider.CODEC.xmap(FixedIntProviderValue::new, FixedIntProviderValue::getValue);
 
-    private final NamespacedKey key;
+    private FixedIntProviderType() {
+    }
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    @Override
+    public Codec<IntProviderValue> getCodec() {
+        return CODEC.xmap(value -> value, value -> (FixedIntProviderValue) value);
+    }
+
+    @Override
+    public Class<IntProvider> getTypeClass() {
+        return IntProvider.class;
     }
 
     @NotNull
     @Override
     public NamespacedKey getKey() {
-        return key;
+        return KEY;
     }
 }

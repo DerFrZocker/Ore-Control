@@ -23,23 +23,22 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.api;
 
+import com.mojang.serialization.Codec;
 import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+import java.util.Random;
 
-    private final NamespacedKey key;
+public interface FeatureGenerator<C extends FeatureGeneratorConfiguration> extends Keyed {
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
+    Codec<FeatureGeneratorConfiguration> getCodec();
 
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+    C merge(FeatureGeneratorConfiguration first, FeatureGeneratorConfiguration second);
+
+    void place(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);
 }

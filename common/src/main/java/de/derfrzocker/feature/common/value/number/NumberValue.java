@@ -23,23 +23,9 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.common.value.number;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.api.Value;
 
-public class Biome implements Keyed {
-
-    private final NamespacedKey key;
-
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+public abstract class NumberValue<V extends NumberValue<V, T, O>, T extends NumberType<V, T, O>, O extends Number> implements Value<V, T, O> {
 }

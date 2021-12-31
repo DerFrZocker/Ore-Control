@@ -23,23 +23,10 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.api;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+public interface FeatureGeneratorConfiguration {
 
-public class Biome implements Keyed {
+    FeatureGenerator<?> getFeatureGenerator();
 
-    private final NamespacedKey key;
-
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
 }

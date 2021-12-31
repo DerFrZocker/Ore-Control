@@ -23,23 +23,10 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.target;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.api.ValueType;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 
-public class Biome implements Keyed {
-
-    private final NamespacedKey key;
-
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+public abstract class TargetType implements ValueType<TargetValue, TargetType, OreConfiguration.TargetBlockState> {
 }

@@ -23,23 +23,35 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.intprovider;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
+import net.minecraft.util.valueproviders.IntProvider;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+import java.util.Random;
 
-    private final NamespacedKey key;
+public class FixedIntProviderValue extends IntProviderValue {
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    private final IntProvider value;
+
+    public FixedIntProviderValue(IntProvider value) {
+        this.value = value;
     }
 
-    @NotNull
     @Override
-    public NamespacedKey getKey() {
-        return key;
+    public FixedIntProviderType getValueType() {
+        return FixedIntProviderType.INSTANCE;
+    }
+
+    @Override
+    public IntProvider getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
+        return value;
+    }
+
+    public IntProvider getValue() {
+        return value;
     }
 }

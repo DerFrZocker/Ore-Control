@@ -23,23 +23,28 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.placement.configuration;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
 
-public class Biome implements Keyed {
+public class RarityModifierConfiguration implements PlacementModifierConfiguration {
 
-    private final NamespacedKey key;
+    private final FeaturePlacementModifier<?> placementModifier;
+    private final IntegerValue chance;
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    public RarityModifierConfiguration(FeaturePlacementModifier<?> placementModifier, IntegerValue chance) {
+        this.placementModifier = placementModifier;
+        this.chance = chance;
     }
 
-    @NotNull
+    public IntegerValue getChance() {
+        return chance;
+    }
+
     @Override
-    public NamespacedKey getKey() {
-        return key;
+    public FeaturePlacementModifier<?> getPlacementModifier() {
+        return placementModifier;
     }
 }

@@ -25,21 +25,14 @@
 
 package de.derfrzocker.ore.control.api;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Registry;
 
-public class Biome implements Keyed {
+public class OreControlRegistries extends Registries {
 
-    private final NamespacedKey key;
+    private final Registry<Biome> biomeRegistry = new Registry<>();
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
+    public Registry<Biome> getBiomeRegistry() {
+        return biomeRegistry;
     }
 }

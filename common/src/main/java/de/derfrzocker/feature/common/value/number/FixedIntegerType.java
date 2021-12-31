@@ -23,23 +23,34 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.common.value.number;
 
-import org.bukkit.Keyed;
+import com.mojang.serialization.Codec;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public class FixedIntegerType extends IntegerType {
 
-    private final NamespacedKey key;
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_integer");
+    public static final FixedIntegerType INSTANCE = new FixedIntegerType();
+    public static final Codec<FixedIntegerValue> CODEC = Codec.INT.xmap(FixedIntegerValue::new, FixedIntegerValue::getValue);
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    private FixedIntegerType() {
+    }
+
+    @Override
+    public Codec<IntegerValue> getCodec() {
+        return CODEC.xmap(value -> value, value -> (FixedIntegerValue) value);
+    }
+
+    @Override
+    public Class<Integer> getTypeClass() {
+        return Integer.class;
     }
 
     @NotNull
     @Override
     public NamespacedKey getKey() {
-        return key;
+        return KEY;
     }
 }

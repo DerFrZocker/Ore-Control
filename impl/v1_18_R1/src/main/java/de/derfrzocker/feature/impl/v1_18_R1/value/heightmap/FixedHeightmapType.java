@@ -23,23 +23,34 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.heightmap;
 
-import org.bukkit.Keyed;
+import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public class FixedHeightmapType extends HeightmapType {
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_heightmap_type");
+    public static final FixedHeightmapType INSTANCE = new FixedHeightmapType();
+    public static final Codec<FixedHeightmapValue> CODEC = Heightmap.Types.CODEC.xmap(FixedHeightmapValue::new, FixedHeightmapValue::getValue);
 
-    private final NamespacedKey key;
+    private FixedHeightmapType() {
+    }
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    @Override
+    public Codec<HeightmapValue> getCodec() {
+        return CODEC.xmap(value -> value, value -> (FixedHeightmapValue) value);
+    }
+
+    @Override
+    public Class<Heightmap.Types> getTypeClass() {
+        return Heightmap.Types.class;
     }
 
     @NotNull
     @Override
     public NamespacedKey getKey() {
-        return key;
+        return KEY;
     }
 }

@@ -23,23 +23,14 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.api;
 
+import com.mojang.serialization.Codec;
 import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public interface ValueType<V extends Value<V, T, O>, T extends ValueType<V, T, O>, O> extends Keyed {
 
-    private final NamespacedKey key;
+    Codec<V> getCodec();
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+    Class<O> getTypeClass();
 }

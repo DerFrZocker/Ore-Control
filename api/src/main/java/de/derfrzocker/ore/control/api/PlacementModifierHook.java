@@ -25,21 +25,13 @@
 
 package de.derfrzocker.ore.control.api;
 
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public interface PlacementModifierHook<C extends PlacementModifierConfiguration> extends Keyed {
 
-    private final NamespacedKey key;
+    FeaturePlacementModifier<C> getPlacementModifier();
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+    Biome getBiome();
 }

@@ -23,23 +23,35 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.target;
 
-import org.bukkit.Keyed;
+import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public class FixedTargetType extends TargetType {
 
-    private final NamespacedKey key;
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_ore_target");
+    public static final FixedTargetType INSTANCE = new FixedTargetType();
+    public static final Codec<FixedTargetValue> CODEC = OreConfiguration.TargetBlockState.CODEC.xmap(FixedTargetValue::new, FixedTargetValue::getValue);
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    private FixedTargetType() {
+    }
+
+    @Override
+    public Codec<TargetValue> getCodec() {
+        return CODEC.xmap(value -> value, value -> (FixedTargetValue) value);
+    }
+
+    @Override
+    public Class<OreConfiguration.TargetBlockState> getTypeClass() {
+        return OreConfiguration.TargetBlockState.class;
     }
 
     @NotNull
     @Override
     public NamespacedKey getKey() {
-        return key;
+        return KEY;
     }
 }

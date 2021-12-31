@@ -23,23 +23,28 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.placement.configuration;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider.HeightProviderValue;
 
-public class Biome implements Keyed {
+public class HeightRangeModifierConfiguration implements PlacementModifierConfiguration {
 
-    private final NamespacedKey key;
+    private final FeaturePlacementModifier<?> placementModifier;
+    private final HeightProviderValue height;
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    public HeightRangeModifierConfiguration(FeaturePlacementModifier<?> placementModifier, HeightProviderValue height) {
+        this.placementModifier = placementModifier;
+        this.height = height;
     }
 
-    @NotNull
+    public HeightProviderValue getHeight() {
+        return height;
+    }
+
     @Override
-    public NamespacedKey getKey() {
-        return key;
+    public FeaturePlacementModifier<?> getPlacementModifier() {
+        return placementModifier;
     }
 }

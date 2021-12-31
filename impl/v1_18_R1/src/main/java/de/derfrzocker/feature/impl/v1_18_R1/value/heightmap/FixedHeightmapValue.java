@@ -23,23 +23,35 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.heightmap;
 
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
+import net.minecraft.world.level.levelgen.Heightmap;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
+import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+import java.util.Random;
 
-    private final NamespacedKey key;
+public class FixedHeightmapValue extends HeightmapValue {
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    private final Heightmap.Types value;
+
+    public FixedHeightmapValue(Heightmap.Types value) {
+        this.value = value;
     }
 
-    @NotNull
     @Override
-    public NamespacedKey getKey() {
-        return key;
+    public FixedHeightmapType getValueType() {
+        return FixedHeightmapType.INSTANCE;
+    }
+
+    @Override
+    public Heightmap.Types getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
+        return value;
+    }
+
+    public Heightmap.Types getValue() {
+        return value;
     }
 }

@@ -23,23 +23,34 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider;
 
-import org.bukkit.Keyed;
+import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public class Biome implements Keyed {
+public class FixedHeightProviderType extends HeightProviderType {
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_height_provider");
+    public static final FixedHeightProviderType INSTANCE = new FixedHeightProviderType();
+    public static final Codec<FixedHeightProviderValue> CODEC = HeightProvider.CODEC.xmap(FixedHeightProviderValue::new, FixedHeightProviderValue::getValue);
 
-    private final NamespacedKey key;
+    private FixedHeightProviderType() {
+    }
 
-    public Biome(NamespacedKey key) {
-        this.key = key;
+    @Override
+    public Codec<HeightProviderValue> getCodec() {
+        return CODEC.xmap(value -> value, value -> (FixedHeightProviderValue) value);
+    }
+
+    @Override
+    public Class<HeightProvider> getTypeClass() {
+        return HeightProvider.class;
     }
 
     @NotNull
     @Override
     public NamespacedKey getKey() {
-        return key;
+        return KEY;
     }
 }

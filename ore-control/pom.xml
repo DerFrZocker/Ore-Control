@@ -32,12 +32,14 @@
             <artifactId>bstats-bukkit</artifactId>
             <version>${bstats.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
             <version>1.5.2-SNAPSHOT</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
@@ -53,69 +55,16 @@
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_13_R1</artifactId>
+            <artifactId>ore-control-common</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_13_R2</artifactId>
+            <artifactId>ore-control-impl-v1_18_R1</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-yaml</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_14_R1</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_15_R1</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_16_R1</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_16_R2</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_16_R3</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-v1_17_R1</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-impl-service</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
-            <artifactId>ore-control-metrics</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
