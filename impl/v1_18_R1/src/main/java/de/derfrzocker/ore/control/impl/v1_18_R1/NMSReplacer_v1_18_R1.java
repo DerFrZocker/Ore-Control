@@ -31,6 +31,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
+import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
@@ -39,6 +40,7 @@ import de.derfrzocker.feature.common.value.number.FixedIntegerValue;
 import de.derfrzocker.feature.common.value.number.FloatType;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.OreFeatureGenerator;
+import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.configuration.OreFeatureConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.CountModifier;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.HeightRangeModifier;
@@ -59,6 +61,7 @@ import de.derfrzocker.ore.control.api.Config;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.dao.ConfigDao;
 import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.OreFeatureGeneratorHook;
+import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.ScatteredOreFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.placement.CountModifierHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.placement.HeightRangeModifierHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.placement.RarityModifierHook;
@@ -74,6 +77,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
+import net.minecraft.world.level.levelgen.feature.ScatteredOreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
@@ -134,6 +138,7 @@ public class NMSReplacer_v1_18_R1 {
 
     public void registerFeatureGenerators() {
         registries.getFeatureGeneratorRegistry().register(new OreFeatureGenerator(registries));
+        registries.getFeatureGeneratorRegistry().register(new ScatteredOreGenerator(registries));
     }
 
     public void registerPlacementModifier() {
@@ -198,7 +203,7 @@ public class NMSReplacer_v1_18_R1 {
             return;
         }
 
-        if (!(configuredFeature.feature() instanceof OreFeature)) {
+        if (!(configuredFeature.feature() instanceof OreFeature) && !(configuredFeature.feature() instanceof ScatteredOreFeature)) {
             return;
         }
 
@@ -221,7 +226,17 @@ public class NMSReplacer_v1_18_R1 {
             targetValues.add(new FixedTargetValue(state));
         }
 
-        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("ore")).get(), targetValues, new FixedIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
+        FeatureGenerator<?> featureGenerator;
+
+        if (configuredFeature.feature() instanceof OreFeature) {
+            featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("ore")).get();
+        } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
+            featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("scattered_ore")).get();
+        } else {
+            throw new RuntimeException("HOW?");
+        }
+
+        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, targetValues, new FixedIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
 
         List<PlacementModifierConfiguration> placementConfiguration = new ArrayList<>();
         for (PlacementModifier placement : feature.getPlacement()) {
@@ -320,7 +335,7 @@ public class NMSReplacer_v1_18_R1 {
             return null;
         }
 
-        if (!(configuredFeature.feature() instanceof OreFeature)) {
+        if (!(configuredFeature.feature() instanceof OreFeature) && !(configuredFeature.feature instanceof ScatteredOreFeature)) {
             return null;
         }
 
@@ -341,7 +356,13 @@ public class NMSReplacer_v1_18_R1 {
             }
         }
 
-        return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(registries, configDao, key, biome), configuredFeature.config), placementModifiers);
+        if (configuredFeature.feature() instanceof OreFeature) {
+            return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(registries, configDao, key, biome), configuredFeature.config), placementModifiers);
+        } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
+            return new PlacedFeature(() -> new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(registries, configDao, key, biome), configuredFeature.config), placementModifiers);
+        }
+
+        throw new RuntimeException("HOW?");
     }
 
     @SuppressWarnings("rawtypes")

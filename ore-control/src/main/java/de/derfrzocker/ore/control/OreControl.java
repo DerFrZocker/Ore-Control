@@ -43,9 +43,7 @@ public class OreControl extends JavaPlugin implements Listener {
         NMSReplacer_v1_18_R1 nmsReplacer = new NMSReplacer_v1_18_R1(registries, configDao);
         nmsReplacer.register();
         File defaults = new File(getDataFolder(), "data/default");
-        if (!defaults.exists()) {
-            nmsReplacer.saveDefaultValues(defaults);
-        }
+        nmsReplacer.saveDefaultValues(defaults);
 
         nmsReplacer.hookIntoBiomes();
 
