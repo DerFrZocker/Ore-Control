@@ -28,6 +28,7 @@ package de.derfrzocker.feature.impl.v1_18_R1.placement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.RarityModifierConfiguration;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class RarityModifier extends MinecraftPlacementModifier<RarityFilter, RarityModifierConfiguration> {
 
@@ -68,5 +70,15 @@ public class RarityModifier extends MinecraftPlacementModifier<RarityFilter, Rar
             chance = configuration.getChance().getValue(worldInfo, random, position, limitedRegion);
         }
         return RarityFilter.onAverageOnceEvery(chance);
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return RarityModifierConfiguration.SETTINGS;
+    }
+
+    @Override
+    public RarityModifierConfiguration createEmptyConfiguration() {
+        return new RarityModifierConfiguration(this, null);
     }
 }

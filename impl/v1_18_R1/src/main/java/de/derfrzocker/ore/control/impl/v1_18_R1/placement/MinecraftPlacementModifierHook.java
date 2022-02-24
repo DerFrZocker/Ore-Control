@@ -29,9 +29,9 @@ import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Config;
 import de.derfrzocker.ore.control.api.PlacementModifierHook;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.Config;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -57,14 +57,14 @@ public abstract class MinecraftPlacementModifierHook<M extends PlacementModifier
 
     private final Map<String, PlacementModifierConfiguration> cache = new ConcurrentHashMap<>();
     private final FeaturePlacementModifier<C> placementModifier;
-    private final ConfigDao configDao;
+    private final ConfigManager configManager;
     private final M defaultModifier;
     private final C defaultConfiguration;
     private final Biome biome;
     private final NamespacedKey namespacedKey;
 
-    public MinecraftPlacementModifierHook(@NotNull Registries registries, ConfigDao configDao, @NotNull String name, @NotNull M defaultModifier, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey) {
-        this.configDao = configDao;
+    public MinecraftPlacementModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull String name, @NotNull M defaultModifier, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey) {
+        this.configManager = configManager;
         this.placementModifier = (FeaturePlacementModifier<C>) registries.getPlacementModifierRegistry().get(NamespacedKey.minecraft(name)).get();
         this.defaultModifier = defaultModifier;
         this.defaultConfiguration = createDefaultConfiguration(defaultModifier);
@@ -109,7 +109,7 @@ public abstract class MinecraftPlacementModifierHook<M extends PlacementModifier
     }
 
     private PlacementModifierConfiguration loadConfig(String name) {
-        Config config = configDao.getConfig(name, biome, namespacedKey).orElse(null);
+        Config config = configManager.getGenerationConfig(name, biome, namespacedKey).orElse(null);
 
         if (config == null) {
             return null;
@@ -120,7 +120,7 @@ public abstract class MinecraftPlacementModifierHook<M extends PlacementModifier
         }
 
         for (PlacementModifierConfiguration configuration : config.getPlacements()) {
-            if (configuration.getPlacementModifier() == placementModifier) {
+            if (configuration.getOwner() == placementModifier) {
                 return configuration;
             }
         }

@@ -23,10 +23,21 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.intprovider;
+package de.derfrzocker.feature.api;
 
-import de.derfrzocker.feature.api.ValueType;
-import net.minecraft.util.valueproviders.IntProvider;
+import java.util.Set;
 
-public abstract class IntProviderType implements ValueType<IntProviderValue, IntProviderType, IntProvider> {
+public interface Configuration {
+
+    ConfigurationAble getOwner();
+
+    Set<Setting> getSettings();
+
+    Value<?, ?, ?> getValue(Setting setting);
+
+    void setValue(Setting setting, Value<?, ?, ?> value);
+
+    boolean isDirty();
+
+    void saved();
 }

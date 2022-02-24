@@ -27,16 +27,34 @@ package de.derfrzocker.feature.impl.v1_18_R1.placement.configuration;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.HeightmapValue;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class SurfaceRelativeThresholdModifierConfiguration implements PlacementModifierConfiguration {
+
+    private final static Setting MIN_INCLUSIVE = new Setting("min-inclusive", IntegerType.class);
+    private final static Setting MAX_INCLUSIVE = new Setting("max-inclusive", IntegerType.class);
+    public final static Set<Setting> SETTINGS;
+
+    static {
+        Set<Setting> settings = new LinkedHashSet<>();
+        settings.add(MIN_INCLUSIVE);
+        settings.add(MAX_INCLUSIVE);
+        SETTINGS = Collections.unmodifiableSet(settings);
+    }
 
     private final FeaturePlacementModifier<?> placementModifier;
     private final HeightmapValue heightmap;
-    private final IntegerValue minInclusive;
-    private final IntegerValue maxInclusive;
-
+    private IntegerValue minInclusive;
+    private IntegerValue maxInclusive;
+    private boolean dirty = false;
 
     public SurfaceRelativeThresholdModifierConfiguration(FeaturePlacementModifier<?> placementModifier, HeightmapValue heightmap, IntegerValue minInclusive, IntegerValue maxInclusive) {
         this.placementModifier = placementModifier;
@@ -46,7 +64,7 @@ public class SurfaceRelativeThresholdModifierConfiguration implements PlacementM
     }
 
     @Override
-    public FeaturePlacementModifier<?> getPlacementModifier() {
+    public FeaturePlacementModifier<?> getOwner() {
         return placementModifier;
     }
 
@@ -60,5 +78,66 @@ public class SurfaceRelativeThresholdModifierConfiguration implements PlacementM
 
     public IntegerValue getMaxInclusive() {
         return maxInclusive;
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return SETTINGS;
+    }
+
+    @Override
+    public Value<?, ?, ?> getValue(Setting setting) {
+        if (setting == MIN_INCLUSIVE) {
+            return getMinInclusive();
+        }
+
+        if (setting == MAX_INCLUSIVE) {
+            return getMaxInclusive();
+        }
+
+        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "SurfaceRelativeThresholdModifierConfiguration"));
+    }
+
+    @Override
+    public void setValue(Setting setting, Value<?, ?, ?> value) {
+        if (setting == MIN_INCLUSIVE) {
+            minInclusive = (IntegerValue) value;
+            dirty = true;
+            return;
+        }
+
+        if (setting == MAX_INCLUSIVE) {
+            maxInclusive = (IntegerValue) value;
+            dirty = true;
+            return;
+        }
+
+        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "SurfaceRelativeThresholdModifierConfiguration"));
+    }
+
+    @Override
+    public boolean isDirty() {
+        if (dirty) {
+            return true;
+        }
+
+        if (minInclusive != null && minInclusive.isDirty()) {
+            return true;
+        }
+
+        return maxInclusive != null && maxInclusive.isDirty();
+    }
+
+    @Override
+    public void saved() {
+        dirty = false;
+
+        if (minInclusive != null) {
+            minInclusive.saved();
+        }
+
+        if (maxInclusive != null) {
+            maxInclusive.saved();
+        }
     }
 }

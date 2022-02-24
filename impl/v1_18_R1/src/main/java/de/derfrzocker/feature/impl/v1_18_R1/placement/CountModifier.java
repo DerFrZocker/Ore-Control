@@ -28,11 +28,10 @@ package de.derfrzocker.feature.impl.v1_18_R1.placement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.common.value.number.IntegerType;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.CountModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R1.value.intprovider.IntProviderType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.intprovider.IntProviderValue;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -41,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class CountModifier extends MinecraftPlacementModifier<CountPlacement, CountModifierConfiguration> {
 
@@ -57,20 +57,30 @@ public class CountModifier extends MinecraftPlacementModifier<CountPlacement, Co
     @Override
     public Codec<CountModifierConfiguration> createCodec(Registries registries) {
         return RecordCodecBuilder.create((builder) -> builder.group(
-                registries.getValueTypeRegistry(IntProviderType.class).dispatch("count_type", IntProviderValue::getValueType, IntProviderType::getCodec).
+                registries.getValueTypeRegistry(IntegerType.class).dispatch("count_type", IntegerValue::getValueType, IntegerType::getCodec).
                         optionalFieldOf("count").forGetter(config -> Optional.ofNullable(config.getCount()))
         ).apply(builder, (count) -> new CountModifierConfiguration(this, count.orElse(null))));
     }
 
     @Override
     public CountPlacement createPlacementModifier(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull CountModifierConfiguration configuration) {
-        IntProvider count;
+        int count;
         if (configuration.getCount() != null) {
             count = configuration.getCount().getValue(worldInfo, random, position, limitedRegion);
         } else {
-            count = ConstantInt.of(0);
+            count = 0;
         }
 
         return CountPlacement.of(count);
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return CountModifierConfiguration.SETTINGS;
+    }
+
+    @Override
+    public CountModifierConfiguration createEmptyConfiguration() {
+        return new CountModifierConfiguration(this, null);
     }
 }

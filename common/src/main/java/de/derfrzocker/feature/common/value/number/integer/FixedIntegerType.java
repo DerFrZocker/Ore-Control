@@ -23,29 +23,31 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider;
+package de.derfrzocker.feature.common.value.number.integer;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
+import de.derfrzocker.feature.common.value.number.IntegerType;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public class FixedHeightProviderType extends HeightProviderType {
-    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_height_provider");
-    public static final FixedHeightProviderType INSTANCE = new FixedHeightProviderType();
-    public static final Codec<FixedHeightProviderValue> CODEC = HeightProvider.CODEC.xmap(FixedHeightProviderValue::new, FixedHeightProviderValue::getValue);
+public class FixedIntegerType extends IntegerType {
 
-    private FixedHeightProviderType() {
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_integer");
+    public static final FixedIntegerType INSTANCE = new FixedIntegerType();
+    public static final Codec<FixedIntegerValue> CODEC = Codec.INT.xmap(FixedIntegerValue::new, FixedIntegerValue::getValue);
+
+    private FixedIntegerType() {
     }
 
     @Override
-    public Codec<HeightProviderValue> getCodec() {
-        return CODEC.xmap(value -> value, value -> (FixedHeightProviderValue) value);
+    public Codec<IntegerValue> getCodec() {
+        return CODEC.xmap(value -> value, value -> (FixedIntegerValue) value);
     }
 
     @Override
-    public Class<HeightProvider> getTypeClass() {
-        return HeightProvider.class;
+    public Class<Integer> getTypeClass() {
+        return Integer.class;
     }
 
     @NotNull

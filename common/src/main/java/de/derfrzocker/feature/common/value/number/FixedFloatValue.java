@@ -34,7 +34,8 @@ import java.util.Random;
 
 public class FixedFloatValue extends FloatValue {
 
-    private final float value;
+    private float value;
+    private boolean dirty = false;
 
     public FixedFloatValue(float value) {
         this.value = value;
@@ -50,7 +51,27 @@ public class FixedFloatValue extends FloatValue {
         return value;
     }
 
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void saved() {
+        dirty = false;
+    }
+
     public float getValue() {
         return value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+        dirty = true;
+    }
+
+    @Override
+    public FixedFloatValue clone() {
+        return new FixedFloatValue(value);
     }
 }

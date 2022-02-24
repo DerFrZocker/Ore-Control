@@ -23,34 +23,49 @@
  *
  */
 
-package de.derfrzocker.feature.common.value.number;
+package de.derfrzocker.feature.api;
 
-import com.mojang.serialization.Codec;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+public class Setting {
 
-public class FixedIntegerType extends IntegerType {
+    private final String name;
+    private final Class<?> valueType;
 
-    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_integer");
-    public static final FixedIntegerType INSTANCE = new FixedIntegerType();
-    public static final Codec<FixedIntegerValue> CODEC = Codec.INT.xmap(FixedIntegerValue::new, FixedIntegerValue::getValue);
+    public Setting(String name, Class<?> valueType) {
+        this.name = name;
+        this.valueType = valueType;
+    }
 
-    private FixedIntegerType() {
+    public String getName() {
+        return name;
+    }
+
+    public Class<?> getValueType() {
+        return valueType;
     }
 
     @Override
-    public Codec<IntegerValue> getCodec() {
-        return CODEC.xmap(value -> value, value -> (FixedIntegerValue) value);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Setting)) return false;
+
+        Setting setting = (Setting) o;
+
+        if (!getName().equals(setting.getName())) return false;
+        return getValueType().equals(setting.getValueType());
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
+    public int hashCode() {
+        int result = getName().hashCode();
+        result = 31 * result + getValueType().hashCode();
+        return result;
     }
 
-    @NotNull
     @Override
-    public NamespacedKey getKey() {
-        return KEY;
+    public String toString() {
+        return "Setting{" +
+                "name='" + name + '\'' +
+                ", valueType=" + valueType +
+                '}';
     }
 }

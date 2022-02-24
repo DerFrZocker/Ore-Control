@@ -25,22 +25,42 @@
 
 package de.derfrzocker.ore.control;
 
+import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
+import de.derfrzocker.ore.control.gui.GuiSetting;
+import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class OreControl extends JavaPlugin implements Listener {
+
+    OreControlManager oreControlManager;
+    OreControlGuiManager guiManager;
+    List<GuiSetting> guiSettings = new ArrayList<>();
 
     @Override
     public void onEnable() {
         OreControlRegistries registries = new OreControlRegistries();
-        ConfigDao configDao = new ConfigDao(registries, new File(getDataFolder(), "data/configs"));
-        NMSReplacer_v1_18_R1 nmsReplacer = new NMSReplacer_v1_18_R1(registries, configDao);
+        ConfigDao configDao = new ConfigDao(registries);
+        ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
+        ConfigManager configManager = new ConfigManager(configDao, configInfoDao);
+        configManager.reload();
+        NMSReplacer_v1_18_R1 nmsReplacer = new NMSReplacer_v1_18_R1(registries, configManager);
         nmsReplacer.register();
         File defaults = new File(getDataFolder(), "data/default");
         nmsReplacer.saveDefaultValues(defaults);
@@ -48,5 +68,22 @@ public class OreControl extends JavaPlugin implements Listener {
         nmsReplacer.hookIntoBiomes();
 
         new Metrics(this, 4244);
+
+        oreControlManager = new OreControlManager(registries, configManager, world -> new HashSet<>());
+        guiManager = new OreControlGuiManager(this, oreControlManager, name -> {
+            GuiSetting guiSetting = new GuiSetting(() -> YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui/default/" + name)));
+            guiSettings.add(guiSetting);
+            return guiSetting;
+        });
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        Player player = (Player) sender;
+
+        guiSettings.forEach(GuiSetting::reload);
+        guiManager.openGui(player);
+
+        return true;
     }
 }

@@ -23,34 +23,12 @@
  *
  */
 
-package de.derfrzocker.feature.common.value.number;
+package de.derfrzocker.ore.control.api.config;
 
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
-import org.bukkit.util.BlockVector;
-import org.jetbrains.annotations.NotNull;
+public enum ConfigType {
 
-import java.util.Random;
+    GLOBAL,
+    WORLD,
+    TEMPLATE,
 
-public class FixedIntegerValue extends IntegerValue {
-
-    private final int value;
-
-    public FixedIntegerValue(int value) {
-        this.value = value;
-    }
-
-    @Override
-    public FixedIntegerType getValueType() {
-        return FixedIntegerType.INSTANCE;
-    }
-
-    @Override
-    public Integer getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
-        return value;
-    }
-
-    public int getValue() {
-        return value;
-    }
 }

@@ -25,8 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
-public interface FeatureGeneratorConfiguration {
+public interface FeatureGeneratorConfiguration extends Configuration {
 
-    FeatureGenerator<?> getFeatureGenerator();
-
+    FeatureGenerator<?> getOwner();
 }

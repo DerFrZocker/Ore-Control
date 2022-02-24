@@ -28,9 +28,10 @@ package de.derfrzocker.feature.impl.v1_18_R1.placement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.common.value.number.IntegerType;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.HeightRangeModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider.HeightProviderType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider.HeightProviderValue;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
@@ -42,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class HeightRangeModifier extends MinecraftPlacementModifier<HeightRangePlacement, HeightRangeModifierConfiguration> {
 
@@ -58,20 +60,30 @@ public class HeightRangeModifier extends MinecraftPlacementModifier<HeightRangeP
     @Override
     public Codec<HeightRangeModifierConfiguration> createCodec(Registries registries) {
         return RecordCodecBuilder.create((builder) -> builder.group(
-                registries.getValueTypeRegistry(HeightProviderType.class).dispatch("height_range_type", HeightProviderValue::getValueType, HeightProviderType::getCodec).
+                registries.getValueTypeRegistry(IntegerType.class).dispatch("height_range_type", IntegerValue::getValueType, IntegerType::getCodec).
                         optionalFieldOf("height").forGetter(config -> Optional.ofNullable(config.getHeight()))
-        ).apply(builder, (count) -> new HeightRangeModifierConfiguration(this, count.orElse(null))));
+        ).apply(builder, (height) -> new HeightRangeModifierConfiguration(this, height.orElse(null))));
     }
 
     @Override
     public HeightRangePlacement createPlacementModifier(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull HeightRangeModifierConfiguration configuration) {
         HeightProvider height;
         if (configuration.getHeight() != null) {
-            height = configuration.getHeight().getValue(worldInfo, random, position, limitedRegion);
+            height = ConstantHeight.of(VerticalAnchor.absolute(configuration.getHeight().getValue(worldInfo, random, position, limitedRegion)));
         } else {
             height = ConstantHeight.of(VerticalAnchor.bottom());
         }
 
         return HeightRangePlacement.of(height);
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return HeightRangeModifierConfiguration.SETTINGS;
+    }
+
+    @Override
+    public HeightRangeModifierConfiguration createEmptyConfiguration() {
+        return new HeightRangeModifierConfiguration(this, null);
     }
 }

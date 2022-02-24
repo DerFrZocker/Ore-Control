@@ -32,13 +32,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import de.derfrzocker.feature.api.FeatureGenerator;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
-import de.derfrzocker.feature.common.value.number.FixedIntegerType;
-import de.derfrzocker.feature.common.value.number.FixedIntegerValue;
 import de.derfrzocker.feature.common.value.number.FloatType;
 import de.derfrzocker.feature.common.value.number.IntegerType;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.OreFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.configuration.OreFeatureConfiguration;
@@ -49,17 +53,15 @@ import de.derfrzocker.feature.impl.v1_18_R1.placement.SurfaceRelativeThresholdMo
 import de.derfrzocker.feature.impl.v1_18_R1.placement.SurfaceWaterDepthModifier;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.FixedHeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.HeightmapType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider.FixedHeightProviderType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider.HeightProviderType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.intprovider.FixedIntProviderType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.intprovider.IntProviderType;
+import de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerType;
+import de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.FixedTargetType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.FixedTargetValue;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetValue;
-import de.derfrzocker.ore.control.api.Config;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.Config;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.OreFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.ScatteredOreFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.placement.CountModifierHook;
@@ -76,6 +78,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.ScatteredOreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
@@ -100,8 +103,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -112,27 +117,31 @@ public class NMSReplacer_v1_18_R1 {
     private final Codec<Config> configCodec;
     @NotNull
     private final OreControlRegistries registries;
-    private final ConfigDao configDao;
+    private final ConfigManager configManager;
 
-    public NMSReplacer_v1_18_R1(@NotNull OreControlRegistries registries, ConfigDao configDao) {
+    public NMSReplacer_v1_18_R1(@NotNull OreControlRegistries registries, ConfigManager configManager) {
         this.registries = registries;
-        this.configDao = configDao;
-        this.configCodec = configDao.getConfigCodec();
+        this.configManager = configManager;
+        this.configCodec = configManager.getConfigCodec();
     }
 
     public void register() {
         registerValueTypes();
         registerFeatureGenerators();
         registerPlacementModifier();
+        registerFeatures();
         registerBiomes();
     }
 
     public void registerValueTypes() {
         registries.getValueTypeRegistry(IntegerType.class).register(FixedIntegerType.INSTANCE);
+        registries.getValueTypeRegistry(IntegerType.class).register(FixedDoubleToIntegerType.INSTANCE);
+        registries.getValueTypeRegistry(IntegerType.class).register(new UniformIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new TrapezoidIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries));
         registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
         registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
-        registries.getValueTypeRegistry(IntProviderType.class).register(FixedIntProviderType.INSTANCE);
-        registries.getValueTypeRegistry(HeightProviderType.class).register(FixedHeightProviderType.INSTANCE);
         registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);
     }
 
@@ -147,6 +156,31 @@ public class NMSReplacer_v1_18_R1 {
         registries.getPlacementModifierRegistry().register(new SurfaceWaterDepthModifier(registries));
         registries.getPlacementModifierRegistry().register(new CountModifier(registries));
         registries.getPlacementModifierRegistry().register(new HeightRangeModifier(registries));
+    }
+
+    public void registerFeatures() {
+        Registry<PlacedFeature> placedFeatureRegistry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
+        Registry<Feature<?>> featureRegistry = getRegistry().registryOrThrow(Registry.FEATURE_REGISTRY);
+        Registry<PlacementModifierType<?>> placementModifierTypes = getRegistry().registryOrThrow(Registry.PLACEMENT_MODIFIER_REGISTRY);
+
+        for (PlacedFeature placedFeature : placedFeatureRegistry) {
+            Feature<?> feature = placedFeature.getFeatures().findFirst().get().feature;
+            ResourceLocation resourceLocation = featureRegistry.getKey(feature);
+            Optional<FeatureGenerator<?>> featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.fromString(resourceLocation.toString()));
+
+            if (featureGenerator.isEmpty()) {
+                continue;
+            }
+
+            List<FeaturePlacementModifier<?>> modifiers = new LinkedList<>();
+            for (PlacementModifier modifier : placedFeature.getPlacement()) {
+                ResourceLocation placementModifierType = placementModifierTypes.getKey(modifier.type());
+                Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString(placementModifierType.toString()));
+                modifierOptional.ifPresent(modifiers::add);
+            }
+
+            registries.getFeatureRegistry().register(new de.derfrzocker.feature.api.Feature<>(NamespacedKey.fromString(placedFeatureRegistry.getKey(placedFeature).toString()), featureGenerator.get(), modifiers));
+        }
     }
 
     public void registerBiomes() {
@@ -172,11 +206,15 @@ public class NMSReplacer_v1_18_R1 {
     }
 
     private void saveWorldValues(File directory) {
-        Registry<PlacedFeature> registry = BuiltinRegistries.PLACED_FEATURE;
+        Registry<PlacedFeature> registry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
         for (Map.Entry<ResourceKey<PlacedFeature>, PlacedFeature> entry : registry.entrySet()) {
             ResourceLocation key = entry.getKey().location();
             File file = new File(directory, key.getNamespace() + "/" + key.getPath() + ".json");
-            saveFeature(file, entry.getValue());
+            try {
+                saveFeature(file, null, CraftNamespacedKey.fromMinecraft(key), entry.getValue());
+            } catch (Exception e) {
+                throw new RuntimeException(String.format("Error while saving feature '%s'", key));
+            }
         }
     }
 
@@ -190,14 +228,18 @@ public class NMSReplacer_v1_18_R1 {
                     Registry<PlacedFeature> registry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
                     ResourceLocation featureKey = registry.getKey(feature);
                     File featureFile = new File(biomeFile, featureKey.getNamespace() + "/" + featureKey.getPath() + ".json");
-                    saveFeature(featureFile, feature);
+                    try {
+                        saveFeature(featureFile, registries.getBiomeRegistry().get(CraftNamespacedKey.fromMinecraft(biomeKey)).get(), CraftNamespacedKey.fromMinecraft(featureKey), feature);
+                    } catch (Exception e) {
+                        throw new RuntimeException(String.format("Error while saving feature '%s' in biome '%s'", featureKey, biomeKey));
+                    }
                 }
             }
         });
     }
 
-    private void saveFeature(File file, PlacedFeature feature) {
-        ConfiguredFeature<?, ?> configuredFeature = feature.getFeatures().findAny().orElse(null);
+    private void saveFeature(File file, de.derfrzocker.ore.control.api.Biome biome, NamespacedKey featureKey, PlacedFeature feature) {
+        ConfiguredFeature<?, ?> configuredFeature = feature.getFeatures().findFirst().orElse(null);
 
         if (configuredFeature == null) {
             return;
@@ -208,16 +250,6 @@ public class NMSReplacer_v1_18_R1 {
         }
 
         file.getParentFile().mkdirs();
-
-        if (file.exists()) {
-            return;
-        }
-
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         OreConfiguration configuration = (OreConfiguration) configuredFeature.config;
         List<TargetValue> targetValues = new ArrayList<>();
@@ -236,33 +268,49 @@ public class NMSReplacer_v1_18_R1 {
             throw new RuntimeException("HOW?");
         }
 
-        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, targetValues, new FixedIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
+        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, targetValues, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
 
         List<PlacementModifierConfiguration> placementConfiguration = new ArrayList<>();
         for (PlacementModifier placement : feature.getPlacement()) {
             if (placement.type() == PlacementModifierType.RARITY_FILTER) {
-                RarityModifierHook hook = new RarityModifierHook(registries, configDao, null, null, (RarityFilter) placement);
+                RarityModifierHook hook = new RarityModifierHook(registries, configManager, null, null, (RarityFilter) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((RarityFilter) placement));
             }
             if (placement.type() == PlacementModifierType.SURFACE_RELATIVE_THRESHOLD_FILTER) {
-                SurfaceRelativeThresholdModifierHook hook = new SurfaceRelativeThresholdModifierHook(registries, configDao, null, null, (SurfaceRelativeThresholdFilter) placement);
+                SurfaceRelativeThresholdModifierHook hook = new SurfaceRelativeThresholdModifierHook(registries, configManager, null, null, (SurfaceRelativeThresholdFilter) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((SurfaceRelativeThresholdFilter) placement));
             }
             if (placement.type() == PlacementModifierType.SURFACE_WATER_DEPTH_FILTER) {
-                SurfaceWaterDepthModifierHook hook = new SurfaceWaterDepthModifierHook(registries, configDao, null, null, (SurfaceWaterDepthFilter) placement);
+                SurfaceWaterDepthModifierHook hook = new SurfaceWaterDepthModifierHook(registries, configManager, null, null, (SurfaceWaterDepthFilter) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((SurfaceWaterDepthFilter) placement));
             }
             if (placement.type() == PlacementModifierType.COUNT) {
-                CountModifierHook hook = new CountModifierHook(registries, configDao, null, null, (CountPlacement) placement);
+                CountModifierHook hook = new CountModifierHook(registries, configManager, null, null, (CountPlacement) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((CountPlacement) placement));
             }
             if (placement.type() == PlacementModifierType.HEIGHT_RANGE) {
-                HeightRangeModifierHook hook = new HeightRangeModifierHook(registries, configDao, null, null, (HeightRangePlacement) placement);
+                HeightRangeModifierHook hook = new HeightRangeModifierHook(registries, configManager, null, null, (HeightRangePlacement) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((HeightRangePlacement) placement));
             }
         }
 
         Config config = new Config(placementConfiguration, featureConfiguration);
+
+        if (biome == null) {
+            configManager.setDefaultConfig(featureKey, config);
+        } else {
+            configManager.setDefaultConfig(biome, featureKey, config);
+        }
+
+        if (file.exists()) {
+            return;
+        }
+
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         DataResult<JsonElement> result = configCodec.encodeStart(JsonOps.INSTANCE, config);
         JsonElement element = result.get().left().get();
@@ -329,7 +377,7 @@ public class NMSReplacer_v1_18_R1 {
             return null;
         }
 
-        ConfiguredFeature<?, ?> configuredFeature = feature.getFeatures().findAny().orElse(null);
+        ConfiguredFeature<?, ?> configuredFeature = feature.getFeatures().findFirst().orElse(null);
 
         if (configuredFeature == null) {
             return null;
@@ -342,24 +390,24 @@ public class NMSReplacer_v1_18_R1 {
         List<PlacementModifier> placementModifiers = new ArrayList<>();
         for (PlacementModifier placement : feature.getPlacement()) {
             if (placement.type() == PlacementModifierType.RARITY_FILTER) {
-                placementModifiers.add(new RarityModifierHook(registries, configDao, biome, key, (RarityFilter) placement));
+                placementModifiers.add(new RarityModifierHook(registries, configManager, biome, key, (RarityFilter) placement));
             } else if (placement.type() == PlacementModifierType.SURFACE_RELATIVE_THRESHOLD_FILTER) {
-                placementModifiers.add(new SurfaceRelativeThresholdModifierHook(registries, configDao, biome, key, (SurfaceRelativeThresholdFilter) placement));
+                placementModifiers.add(new SurfaceRelativeThresholdModifierHook(registries, configManager, biome, key, (SurfaceRelativeThresholdFilter) placement));
             } else if (placement.type() == PlacementModifierType.SURFACE_WATER_DEPTH_FILTER) {
-                placementModifiers.add(new SurfaceWaterDepthModifierHook(registries, configDao, biome, key, (SurfaceWaterDepthFilter) placement));
+                placementModifiers.add(new SurfaceWaterDepthModifierHook(registries, configManager, biome, key, (SurfaceWaterDepthFilter) placement));
             } else if (placement.type() == PlacementModifierType.COUNT) {
-                placementModifiers.add(new CountModifierHook(registries, configDao, biome, key, (CountPlacement) placement));
+                placementModifiers.add(new CountModifierHook(registries, configManager, biome, key, (CountPlacement) placement));
             } else if (placement.type() == PlacementModifierType.HEIGHT_RANGE) {
-                placementModifiers.add(new HeightRangeModifierHook(registries, configDao, biome, key, (HeightRangePlacement) placement));
+                placementModifiers.add(new HeightRangeModifierHook(registries, configManager, biome, key, (HeightRangePlacement) placement));
             } else {
                 placementModifiers.add(placement);
             }
         }
 
         if (configuredFeature.feature() instanceof OreFeature) {
-            return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(registries, configDao, key, biome), configuredFeature.config), placementModifiers);
+            return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(registries, configManager, key, biome), configuredFeature.config), placementModifiers);
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
-            return new PlacedFeature(() -> new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(registries, configDao, key, biome), configuredFeature.config), placementModifiers);
+            return new PlacedFeature(() -> new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(registries, configManager, key, biome), configuredFeature.config), placementModifiers);
         }
 
         throw new RuntimeException("HOW?");

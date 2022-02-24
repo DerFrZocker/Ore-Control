@@ -23,10 +23,15 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider;
+package de.derfrzocker.feature.api;
 
-import de.derfrzocker.feature.api.Value;
-import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
+import org.bukkit.Keyed;
 
-public abstract class HeightProviderValue implements Value<HeightProviderValue, HeightProviderType, HeightProvider> {
+import java.util.Set;
+
+public interface ConfigurationAble extends Keyed {
+
+    Set<Setting> getSettings();
+
+    Configuration createEmptyConfiguration();
 }

@@ -26,7 +26,6 @@
 package de.derfrzocker.feature.api;
 
 import com.mojang.serialization.Codec;
-import org.bukkit.Keyed;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -35,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public interface FeaturePlacementModifier<C extends PlacementModifierConfiguration> extends Keyed {
+public interface FeaturePlacementModifier<C extends PlacementModifierConfiguration> extends ConfigurationAble {
 
     Codec<PlacementModifierConfiguration> getCodec();
 

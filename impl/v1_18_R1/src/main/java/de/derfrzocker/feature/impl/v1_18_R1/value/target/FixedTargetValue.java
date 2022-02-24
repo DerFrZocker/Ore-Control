@@ -36,6 +36,7 @@ import java.util.Random;
 public class FixedTargetValue extends TargetValue {
 
     private final OreConfiguration.TargetBlockState value;
+    private boolean dirty = false;
 
     public FixedTargetValue(OreConfiguration.TargetBlockState value) {
         this.value = value;
@@ -53,5 +54,20 @@ public class FixedTargetValue extends TargetValue {
 
     public OreConfiguration.TargetBlockState getValue() {
         return value;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void saved() {
+        dirty = false;
+    }
+
+    @Override
+    public FixedTargetValue clone() {
+        return new FixedTargetValue(value);
     }
 }

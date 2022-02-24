@@ -29,4 +29,7 @@ import de.derfrzocker.feature.api.Value;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public abstract class HeightmapValue implements Value<HeightmapValue, HeightmapType, Heightmap.Types> {
+
+    @Override
+    public abstract HeightmapValue clone();
 }

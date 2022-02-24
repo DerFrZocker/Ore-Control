@@ -27,12 +27,29 @@ package de.derfrzocker.feature.impl.v1_18_R1.placement.configuration;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class RarityModifierConfiguration implements PlacementModifierConfiguration {
 
+    private final static Setting CHANCE = new Setting("chance", IntegerType.class);
+    public final static Set<Setting> SETTINGS;
+
+    static {
+        Set<Setting> settings = new LinkedHashSet<>();
+        settings.add(CHANCE);
+        SETTINGS = Collections.unmodifiableSet(settings);
+    }
+
     private final FeaturePlacementModifier<?> placementModifier;
-    private final IntegerValue chance;
+    private IntegerValue chance;
+    private boolean dirty = false;
 
     public RarityModifierConfiguration(FeaturePlacementModifier<?> placementModifier, IntegerValue chance) {
         this.placementModifier = placementModifier;
@@ -44,7 +61,50 @@ public class RarityModifierConfiguration implements PlacementModifierConfigurati
     }
 
     @Override
-    public FeaturePlacementModifier<?> getPlacementModifier() {
+    public FeaturePlacementModifier<?> getOwner() {
         return placementModifier;
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return SETTINGS;
+    }
+
+    @Override
+    public Value<?, ?, ?> getValue(Setting setting) {
+        if (setting == CHANCE) {
+            return getChance();
+        }
+
+        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "PlacementModifierConfiguration"));
+    }
+
+    @Override
+    public void setValue(Setting setting, Value<?, ?, ?> value) {
+        if (setting == CHANCE) {
+            chance = (IntegerValue) value;
+            dirty = true;
+            return;
+        }
+
+        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "PlacementModifierConfiguration"));
+    }
+
+    @Override
+    public boolean isDirty() {
+        if (dirty) {
+            return true;
+        }
+
+        return chance != null && chance.isDirty();
+    }
+
+    @Override
+    public void saved() {
+        dirty = false;
+
+        if (chance != null) {
+            chance.saved();
+        }
     }
 }

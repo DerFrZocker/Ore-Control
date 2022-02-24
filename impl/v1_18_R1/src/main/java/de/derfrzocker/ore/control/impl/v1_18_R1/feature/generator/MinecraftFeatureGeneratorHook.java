@@ -30,9 +30,9 @@ import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.Config;
 import de.derfrzocker.ore.control.api.FeatureGeneratorHook;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.Config;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -57,15 +57,15 @@ public abstract class MinecraftFeatureGeneratorHook<M extends FeatureConfigurati
 
     private final Map<String, FeatureGeneratorConfiguration> cache = new ConcurrentHashMap<>();
     private final Feature<M> feature;
-    private final ConfigDao configDao;
+    private final ConfigManager configManager;
     private final FeatureGenerator<C> featureGenerator;
     private final Biome biome;
     private final NamespacedKey namespacedKey;
 
-    public MinecraftFeatureGeneratorHook(Codec<M> codec, Feature<M> feature, @NotNull Registries registries, ConfigDao configDao, @NotNull String name, Biome biome, NamespacedKey namespacedKey) {
+    public MinecraftFeatureGeneratorHook(Codec<M> codec, Feature<M> feature, @NotNull Registries registries, ConfigManager configManager, @NotNull String name, Biome biome, NamespacedKey namespacedKey) {
         super(codec);
         this.feature = feature;
-        this.configDao = configDao;
+        this.configManager = configManager;
         this.featureGenerator = (FeatureGenerator<C>) registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft(name)).get();
         this.biome = biome;
         this.namespacedKey = namespacedKey;
@@ -106,7 +106,7 @@ public abstract class MinecraftFeatureGeneratorHook<M extends FeatureConfigurati
     }
 
     private FeatureGeneratorConfiguration loadConfig(String name) {
-        Config config = configDao.getConfig(name, biome, namespacedKey).orElse(null);
+        Config config = configManager.getGenerationConfig(name, biome, namespacedKey).orElse(null);
 
         if (config == null) {
             return null;

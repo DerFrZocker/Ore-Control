@@ -29,4 +29,7 @@ import de.derfrzocker.feature.api.Value;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 
 public abstract class TargetValue implements Value<TargetValue, TargetType, OreConfiguration.TargetBlockState> {
+
+    @Override
+    public abstract TargetValue clone();
 }

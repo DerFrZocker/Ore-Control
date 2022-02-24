@@ -23,27 +23,45 @@
  *
  */
 
-package de.derfrzocker.ore.control.api;
+package de.derfrzocker.ore.control.api.config;
 
-import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
-import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import java.io.File;
 
-import java.util.List;
+public class ConfigInfo {
 
-public class Config {
-    private final List<PlacementModifierConfiguration> placements;
-    private final FeatureGeneratorConfiguration feature;
+    private final String worldName;
+    private ConfigType configType;
+    private final File dataDirectory;
+    private boolean dirty = false;
 
-    public Config(List<PlacementModifierConfiguration> placements, FeatureGeneratorConfiguration feature) {
-        this.placements = placements;
-        this.feature = feature;
+    public ConfigInfo(String worldName, ConfigType configType, File dataDirectory) {
+        this.worldName = worldName;
+        this.configType = configType;
+        this.dataDirectory = dataDirectory;
     }
 
-    public List<PlacementModifierConfiguration> getPlacements() {
-        return placements;
+    public String getWorldName() {
+        return worldName;
     }
 
-    public FeatureGeneratorConfiguration getFeature() {
-        return feature;
+    public ConfigType getConfigType() {
+        return configType;
+    }
+
+    public File getDataDirectory() {
+        return dataDirectory;
+    }
+
+    public void setConfigType(ConfigType configType) {
+        if (configType == ConfigType.GLOBAL) {
+            throw new IllegalArgumentException(String.format("Cannot set config type to '%s'", configType));
+        }
+
+        this.configType = configType;
+        dirty = true;
+    }
+
+    public boolean isDirty() {
+        return dirty;
     }
 }

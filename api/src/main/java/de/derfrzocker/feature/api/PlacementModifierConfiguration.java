@@ -25,8 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
-public interface PlacementModifierConfiguration {
+public interface PlacementModifierConfiguration extends Configuration {
 
-    FeaturePlacementModifier<?> getPlacementModifier();
-
+    FeaturePlacementModifier<?> getOwner();
 }

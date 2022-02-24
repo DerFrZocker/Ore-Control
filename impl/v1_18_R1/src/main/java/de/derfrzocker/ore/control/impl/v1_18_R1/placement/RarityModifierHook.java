@@ -26,10 +26,10 @@
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
 import de.derfrzocker.feature.api.Registries;
-import de.derfrzocker.feature.common.value.number.FixedIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.RarityModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -43,8 +43,8 @@ import java.util.Random;
 
 public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFilter, RarityModifierConfiguration> {
 
-    public RarityModifierHook(@NotNull Registries registries, ConfigDao configDao, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
-        super(registries, configDao, "rarity_filter", defaultModifier, biome, namespacedKey);
+    public RarityModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
+        super(registries, configManager, "rarity_filter", defaultModifier, biome, namespacedKey);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFil
             Field chance = RarityFilter.class.getDeclaredField("c");
             chance.setAccessible(true);
             Object value = chance.get(defaultModifier);
-            return new RarityModifierConfiguration(getPlacementModifier(), new FixedIntegerValue(NumberConversions.toInt(value)));
+            return new RarityModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

@@ -23,10 +23,9 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider;
+package de.derfrzocker.ore.control.api.util;
 
-import de.derfrzocker.feature.api.ValueType;
-import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
+public interface Reloadable {
 
-public abstract class HeightProviderType implements ValueType<HeightProviderValue, HeightProviderType, HeightProvider> {
+    void reload();
 }

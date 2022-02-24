@@ -26,7 +26,6 @@
 package de.derfrzocker.feature.api;
 
 import com.mojang.serialization.Codec;
-import org.bukkit.Keyed;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -34,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public interface FeatureGenerator<C extends FeatureGeneratorConfiguration> extends Keyed {
+public interface FeatureGenerator<C extends FeatureGeneratorConfiguration> extends ConfigurationAble {
 
     Codec<FeatureGeneratorConfiguration> getCodec();
 

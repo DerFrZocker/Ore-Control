@@ -28,6 +28,7 @@ package de.derfrzocker.feature.impl.v1_18_R1.feature.generator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.value.number.FloatType;
 import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerType;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class OreFeatureGenerator extends MinecraftFeatureGenerator<OreConfiguration, OreFeatureConfiguration> {
 
@@ -94,5 +96,15 @@ public class OreFeatureGenerator extends MinecraftFeatureGenerator<OreConfigurat
         }
 
         return new OreConfiguration(blockStates, size, discardChanceOnAirExposure);
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return OreFeatureConfiguration.SETTINGS;
+    }
+
+    @Override
+    public OreFeatureConfiguration createEmptyConfiguration() {
+        return new OreFeatureConfiguration(this, null, null, null);
     }
 }

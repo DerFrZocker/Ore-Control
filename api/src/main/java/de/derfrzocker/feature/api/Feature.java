@@ -26,12 +26,34 @@
 package de.derfrzocker.feature.api;
 
 import org.bukkit.Keyed;
+import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface Feature<C extends FeatureGeneratorConfiguration> extends Keyed {
+public class Feature<C extends FeatureGeneratorConfiguration> implements Keyed {
 
-    List<FeaturePlacementModifier> getPlacementPositions();
+    private final NamespacedKey key;
+    private final FeatureGenerator<C> generator;
+    private final List<FeaturePlacementModifier<?>> placementModifiers;
 
-    FeatureGenerator<C> getGenerator();
+    public Feature(NamespacedKey key, FeatureGenerator<C> generator, List<FeaturePlacementModifier<?>> placementModifiers) {
+        this.key = key;
+        this.generator = generator;
+        this.placementModifiers = placementModifiers;
+    }
+
+    @NotNull
+    @Override
+    public NamespacedKey getKey() {
+        return key;
+    }
+
+    public FeatureGenerator<C> getGenerator() {
+        return generator;
+    }
+
+    public List<FeaturePlacementModifier<?>> getPlacementModifiers() {
+        return placementModifiers;
+    }
 }

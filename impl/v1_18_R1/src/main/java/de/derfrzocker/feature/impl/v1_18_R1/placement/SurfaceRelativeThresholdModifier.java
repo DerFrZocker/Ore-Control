@@ -28,6 +28,7 @@ package de.derfrzocker.feature.impl.v1_18_R1.placement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.SurfaceRelativeThresholdModifierConfiguration;
@@ -42,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 public class SurfaceRelativeThresholdModifier extends MinecraftPlacementModifier<SurfaceRelativeThresholdFilter, SurfaceRelativeThresholdModifierConfiguration> {
     public SurfaceRelativeThresholdModifier(@NotNull Registries registries) {
@@ -85,5 +87,15 @@ public class SurfaceRelativeThresholdModifier extends MinecraftPlacementModifier
             maxInclusive = configuration.getMaxInclusive().getValue(worldInfo, random, position, limitedRegion);
         }
         return SurfaceRelativeThresholdFilter.of(heightmap, minInclusive, maxInclusive);
+    }
+
+    @Override
+    public Set<Setting> getSettings() {
+        return SurfaceRelativeThresholdModifierConfiguration.SETTINGS;
+    }
+
+    @Override
+    public SurfaceRelativeThresholdModifierConfiguration createEmptyConfiguration() {
+        return new SurfaceRelativeThresholdModifierConfiguration(this, null, null, null);
     }
 }

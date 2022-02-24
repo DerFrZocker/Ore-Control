@@ -23,9 +23,10 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.intprovider;
+package de.derfrzocker.feature.common.value.number.integer;
 
-import net.minecraft.util.valueproviders.IntProvider;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.spigot.utils.NumberUtil;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -33,25 +34,46 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class FixedIntProviderValue extends IntProviderValue {
+public class FixedDoubleToIntegerValue extends IntegerValue {
 
-    private final IntProvider value;
+    private double value;
+    private boolean dirty = false;
 
-    public FixedIntProviderValue(IntProvider value) {
+    public FixedDoubleToIntegerValue(double value) {
         this.value = value;
     }
 
     @Override
-    public FixedIntProviderType getValueType() {
-        return FixedIntProviderType.INSTANCE;
+    public FixedDoubleToIntegerType getValueType() {
+        return FixedDoubleToIntegerType.INSTANCE;
     }
 
     @Override
-    public IntProvider getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
+    public Integer getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
+        return NumberUtil.getInt(value, random);
+    }
+
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void saved() {
+        dirty = false;
+    }
+
+    public double getValue() {
         return value;
     }
 
-    public IntProvider getValue() {
-        return value;
+    public void setValue(double value) {
+        this.value = value;
+        dirty = true;
+    }
+
+    @Override
+    public FixedDoubleToIntegerValue clone() {
+        return new FixedDoubleToIntegerValue(value);
     }
 }

@@ -36,6 +36,7 @@ import java.util.Random;
 public class FixedHeightmapValue extends HeightmapValue {
 
     private final Heightmap.Types value;
+    private boolean dirty = false;
 
     public FixedHeightmapValue(Heightmap.Types value) {
         this.value = value;
@@ -53,5 +54,20 @@ public class FixedHeightmapValue extends HeightmapValue {
 
     public Heightmap.Types getValue() {
         return value;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void saved() {
+        dirty = false;
+    }
+
+    @Override
+    public FixedHeightmapValue clone() {
+        return new FixedHeightmapValue(value);
     }
 }

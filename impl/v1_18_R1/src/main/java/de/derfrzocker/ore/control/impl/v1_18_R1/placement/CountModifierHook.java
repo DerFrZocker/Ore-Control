@@ -26,11 +26,14 @@
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.CountModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R1.value.intprovider.FixedIntProviderValue;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviderType;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -43,8 +46,8 @@ import java.util.Random;
 
 public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlacement, CountModifierConfiguration> {
 
-    public CountModifierHook(@NotNull Registries registries, ConfigDao configDao, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull CountPlacement defaultModifier) {
-        super(registries, configDao, "count", defaultModifier, biome, namespacedKey);
+    public CountModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull CountPlacement defaultModifier) {
+        super(registries, configManager, "count", defaultModifier, biome, namespacedKey);
     }
 
     @Override
@@ -52,8 +55,16 @@ public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlace
         try {
             Field chance = CountPlacement.class.getDeclaredField("c");
             chance.setAccessible(true);
-            Object value = chance.get(defaultModifier);
-            return new CountModifierConfiguration(getPlacementModifier(), new FixedIntProviderValue((IntProvider) value));
+            IntProvider value = (IntProvider) chance.get(defaultModifier);
+            IntegerValue integerValue;
+            if (value.getType() == IntProviderType.CONSTANT) {
+                integerValue = new FixedDoubleToIntegerValue(value.getMinValue());
+            } else if (value.getType() == IntProviderType.UNIFORM) {
+                integerValue = new UniformIntegerValue(new FixedDoubleToIntegerValue(value.getMinValue()), new FixedDoubleToIntegerValue(value.getMaxValue()));
+            } else { // TODO add rest of IntProvider types
+                throw new UnsupportedOperationException(String.format("No integer value equivalent for IntProvider '%s'", value));
+            }
+            return new CountModifierConfiguration(getPlacementModifier(), integerValue);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +72,7 @@ public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlace
 
     @Override
     public CountPlacement createModifier(@NotNull CountModifierConfiguration defaultConfiguration, @NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull CountModifierConfiguration configuration) {
-        IntProvider count;
+        int count;
         if (configuration.getCount() == null) {
             count = defaultConfiguration.getCount().getValue(worldInfo, random, position, limitedRegion);
         } else {

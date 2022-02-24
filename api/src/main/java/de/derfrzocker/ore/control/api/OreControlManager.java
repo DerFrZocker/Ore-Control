@@ -23,34 +23,36 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.intprovider;
+package de.derfrzocker.ore.control.api;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.util.valueproviders.IntProvider;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
+import org.bukkit.World;
 
-public class FixedIntProviderType extends IntProviderType {
-    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_int_provider");
-    public static final FixedIntProviderType INSTANCE = new FixedIntProviderType();
-    public static final Codec<FixedIntProviderValue> CODEC = IntProvider.CODEC.xmap(FixedIntProviderValue::new, FixedIntProviderValue::getValue);
+import java.util.Set;
+import java.util.function.Function;
 
-    private FixedIntProviderType() {
+public class OreControlManager {
+
+    private final Registries registries;
+    private final ConfigManager configManager;
+    private final Function<World, Set<Biome>> biomeFunction;
+
+    public OreControlManager(Registries registries, ConfigManager configManager, Function<World, Set<Biome>> biomeFunction) {
+        this.registries = registries;
+        this.configManager = configManager;
+        this.biomeFunction = biomeFunction;
     }
 
-    @Override
-    public Codec<IntProviderValue> getCodec() {
-        return CODEC.xmap(value -> value, value -> (FixedIntProviderValue) value);
+    public Registries getRegistries() {
+        return registries;
     }
 
-    @Override
-    public Class<IntProvider> getTypeClass() {
-        return IntProvider.class;
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return KEY;
+    public Set<Biome> getBiomes(World world) {
+        return biomeFunction.apply(world);
     }
 }

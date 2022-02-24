@@ -26,11 +26,19 @@
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.HeightRangeModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R1.value.heightprovider.FixedHeightProviderValue;
+import de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerValue;
+import de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.dao.ConfigDao;
+import de.derfrzocker.ore.control.api.config.ConfigManager;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
+import net.minecraft.world.level.levelgen.heightproviders.HeightProviderType;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -43,8 +51,8 @@ import java.util.Random;
 
 public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<HeightRangePlacement, HeightRangeModifierConfiguration> {
 
-    public HeightRangeModifierHook(@NotNull Registries registries, ConfigDao configDao, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
-        super(registries, configDao, "height_range", defaultModifier, biome, namespacedKey);
+    public HeightRangeModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
+        super(registries, configManager, "height_range", defaultModifier, biome, namespacedKey);
     }
 
     @Override
@@ -52,8 +60,50 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
         try {
             Field chance = HeightRangePlacement.class.getDeclaredField("c");
             chance.setAccessible(true);
-            Object value = chance.get(defaultModifier);
-            return new HeightRangeModifierConfiguration(getPlacementModifier(), new FixedHeightProviderValue((HeightProvider) value));
+            HeightProvider value = (HeightProvider) chance.get(defaultModifier);
+
+            IntegerValue integerValue;
+            if (value.getType() == HeightProviderType.CONSTANT) {
+                integerValue = getIntegerValue(value.toString());
+            } else if (value.getType() == HeightProviderType.UNIFORM) {
+                String uniform = value.toString();
+                uniform = uniform.substring(1);
+                uniform = uniform.substring(0, uniform.length() - 1);
+                int charType = uniform.indexOf("-", 1);
+                String[] anchors = new String[]{uniform.substring(0, charType), uniform.substring(charType + 1)};
+
+                integerValue = new UniformIntegerValue(getIntegerValue(anchors[0]), getIntegerValue(anchors[1]));
+            } else if (value.getType() == HeightProviderType.TRAPEZOID) {
+                String trapezoid = value.toString();
+                if (trapezoid.startsWith("triangle")) {
+                    trapezoid = trapezoid.replace("triangle (", "");
+                    trapezoid = trapezoid.substring(0, trapezoid.length() - 1);
+                    int charType = trapezoid.indexOf("-", 1);
+                    String[] anchors = new String[]{trapezoid.substring(0, charType), trapezoid.substring(charType + 1)};
+
+                    integerValue = new TrapezoidIntegerValue(getIntegerValue(anchors[0]), getIntegerValue(anchors[1]), null);
+                } else if (trapezoid.startsWith("trapezoid")) {
+                    trapezoid = trapezoid.replace("trapezoid (", "");
+                    trapezoid = trapezoid.substring(0, trapezoid.length() - 1);
+                    String[] split = trapezoid.split("\\) in \\[");
+
+                    if (split.length != 2) {
+                        throw new IllegalStateException(String.format("Expected a split of size '2', but got '%s' for input '%s'", split.length, trapezoid));
+                    }
+
+                    int plateau = Integer.parseInt(split[0]);
+                    int charType = trapezoid.indexOf("-", 1);
+                    String[] anchors = new String[]{trapezoid.substring(0, charType), trapezoid.substring(charType + 1)};
+                    integerValue = new TrapezoidIntegerValue(getIntegerValue(anchors[0]), getIntegerValue(anchors[1]), new FixedDoubleToIntegerValue(plateau));
+                } else {
+                    throw new UnsupportedOperationException(String.format("Unknown trapezoid value '%s'", trapezoid));
+                }
+
+            } else { // TODO add rest of HeightProvider types
+                throw new UnsupportedOperationException(String.format("No integer value equivalent for HeightProvider '%s'", value));
+            }
+
+            return new HeightRangeModifierConfiguration(getPlacementModifier(), integerValue);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -61,13 +111,32 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
 
     @Override
     public HeightRangePlacement createModifier(@NotNull HeightRangeModifierConfiguration defaultConfiguration, @NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull HeightRangeModifierConfiguration configuration) {
-        HeightProvider height;
+        int height;
         if (configuration.getHeight() == null) {
             height = defaultConfiguration.getHeight().getValue(worldInfo, random, position, limitedRegion);
         } else {
             height = configuration.getHeight().getValue(worldInfo, random, position, limitedRegion);
         }
 
-        return HeightRangePlacement.of(height);
+        return HeightRangePlacement.of(ConstantHeight.of(VerticalAnchor.absolute(height)));
+    }
+
+    private IntegerValue getIntegerValue(String anchor) {
+        String[] values = anchor.split(" ");
+        int value = Integer.parseInt(values[0]);
+
+        if (values.length == 2 && values[1].equals("absolute")) {
+            return new FixedDoubleToIntegerValue(value);
+        }
+
+        if (values.length == 3 && values[1].equals("above") && values[2].equals("bottom")) {
+            return new AboveBottomOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
+        }
+
+        if (values.length == 3 && values[1].equals("below") && values[2].equals("top")) {
+            return new BelowTopOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
+        }
+
+        throw new UnsupportedOperationException(String.format("Unknown vertical anchor '%s'", anchor));
     }
 }

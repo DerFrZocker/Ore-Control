@@ -8,3 +8,8 @@ authors: [${project.authors}]
 main: de.derfrzocker.ore.control.OreControl
 api-version: "1.13"
 load: STARTUP
+commands:
+  ore-control:
+    permission: "ore.control"
+    description: "Open the ore control gui"
+    usage: "Usage: /<command>"
