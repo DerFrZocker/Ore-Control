@@ -56,9 +56,7 @@ import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.FixedTargetType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.target.FixedTargetValue;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetType;
-import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetValue;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
@@ -252,11 +250,6 @@ public class NMSReplacer_v1_18_R1 {
         file.getParentFile().mkdirs();
 
         OreConfiguration configuration = (OreConfiguration) configuredFeature.config;
-        List<TargetValue> targetValues = new ArrayList<>();
-
-        for (OreConfiguration.TargetBlockState state : configuration.targetStates) {
-            targetValues.add(new FixedTargetValue(state));
-        }
 
         FeatureGenerator<?> featureGenerator;
 
@@ -268,7 +261,7 @@ public class NMSReplacer_v1_18_R1 {
             throw new RuntimeException("HOW?");
         }
 
-        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, targetValues, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
+        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
 
         List<PlacementModifierConfiguration> placementConfiguration = new ArrayList<>();
         for (PlacementModifier placement : feature.getPlacement()) {
