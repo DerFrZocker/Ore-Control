@@ -34,7 +34,6 @@ import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
-import de.derfrzocker.ore.control.gui.GuiSetting;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.SettingWrapper;
@@ -43,6 +42,7 @@ import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.SingleInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -57,48 +57,48 @@ public class FixedDoubleToIntegerScreen {
     private static final String ADD__1 = "values.2"; // Add -1
     private static final String ADD__0_1 = "values.3"; // Add -0.1
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, GuiSetting> settingFunction) {
+    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
         return SingleInventoryGuiBuilder
-                .builder(GuiSetting.function())
+                .builder()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("value/fixed_double_to_integer_screen.yml"))
                 .addConfigDecorations()
                 .addButtonContext(ButtonContextBuilder
-                        .builder(GuiSetting.function())
+                        .builder()
                         .identifier(ADD_1)
                         .button(ButtonBuilder
-                                .builder(GuiSetting.function())
+                                .builder()
                                 .identifier(ADD_1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, 1))
                         )
                 )
                 .addButtonContext(ButtonContextBuilder
-                        .builder(GuiSetting.function())
+                        .builder()
                         .identifier(ADD_0_1)
                         .button(ButtonBuilder
-                                .builder(GuiSetting.function())
+                                .builder()
                                 .identifier(ADD_0_1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, 0.1))
                         )
                 )
                 .addButtonContext(ButtonContextBuilder
-                        .builder(GuiSetting.function())
+                        .builder()
                         .identifier(ADD__1)
                         .button(ButtonBuilder
-                                .builder(GuiSetting.function())
+                                .builder()
                                 .identifier(ADD__1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, -1))
                         )
                 )
                 .addButtonContext(ButtonContextBuilder
-                        .builder(GuiSetting.function())
+                        .builder()
                         .identifier(ADD__0_1)
                         .button(ButtonBuilder
-                                .builder(GuiSetting.function())
+                                .builder()
                                 .identifier(ADD__0_1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, -0.1))

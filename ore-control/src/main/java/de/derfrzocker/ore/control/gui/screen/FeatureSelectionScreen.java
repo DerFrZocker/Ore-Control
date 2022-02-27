@@ -30,13 +30,13 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigType;
-import de.derfrzocker.ore.control.gui.GuiSetting;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.guin.GuiInfo;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -54,9 +54,9 @@ public class FeatureSelectionScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SELECTION_SCREEN;
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, GuiSetting> settingFunction) {
+    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
         return PagedInventoryGuiBuilder
-                .builder(GuiSetting.function())
+                .builder()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_selection_screen.yml"))
@@ -64,7 +64,7 @@ public class FeatureSelectionScreen {
                 .addDefaultPreviousButton()
                 .addConfigDecorations()
                 .pageContent(PageContentBuilder
-                        .builder(GuiSetting.function(), Feature.class)
+                        .builder(Feature.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
                         .itemStack((setting, guiInfo, feature) -> {
                             String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();

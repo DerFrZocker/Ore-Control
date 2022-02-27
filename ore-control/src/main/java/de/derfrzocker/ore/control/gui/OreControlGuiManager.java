@@ -35,6 +35,7 @@ import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.value.FixedDoubleToIntegerScreen;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
+import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -65,7 +66,7 @@ public class OreControlGuiManager implements Listener {
     private final InventoryGui featureSettingsScreen;
     private boolean openOther = false;
 
-    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, Function<String, GuiSetting> settingFunction) {
+    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, Function<String, ConfigSetting> settingFunction) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
         this.configInfosScreen = ConfigInfosScreen.getGui(this, settingFunction, oreControlManager.getConfigManager());

@@ -27,11 +27,11 @@ package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
-import de.derfrzocker.ore.control.gui.GuiSetting;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -43,9 +43,9 @@ public class ConfigInfosScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFOS_SCREEN;
 
-    public static InventoryGui getGui(OreControlGuiManager guiManager, Function<String, GuiSetting> settingFunction, ConfigManager configManager) {
+    public static InventoryGui getGui(OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
         return PagedInventoryGuiBuilder
-                .builder(GuiSetting.function())
+                .builder()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("config_infos_screen.yml"))
@@ -53,7 +53,7 @@ public class ConfigInfosScreen {
                 .addDefaultPreviousButton()
                 .addConfigDecorations()
                 .pageContent(PageContentBuilder
-                        .builder(GuiSetting.function(), ConfigInfo.class)
+                        .builder(ConfigInfo.class)
                         .data((setting, guiInfo) -> new LinkedList<>(configManager.getConfigInfos()))
                         .itemStack((setting, guiInfo, configInfo) -> {
                             return setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone();

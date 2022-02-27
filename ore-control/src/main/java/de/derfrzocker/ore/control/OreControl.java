@@ -30,9 +30,9 @@ import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
-import de.derfrzocker.ore.control.gui.GuiSetting;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
+import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -51,7 +51,7 @@ public class OreControl extends JavaPlugin implements Listener {
 
     OreControlManager oreControlManager;
     OreControlGuiManager guiManager;
-    List<GuiSetting> guiSettings = new ArrayList<>();
+    List<ConfigSetting> guiSettings = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -71,7 +71,7 @@ public class OreControl extends JavaPlugin implements Listener {
 
         oreControlManager = new OreControlManager(registries, configManager, world -> new HashSet<>());
         guiManager = new OreControlGuiManager(this, oreControlManager, name -> {
-            GuiSetting guiSetting = new GuiSetting(() -> YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui/default/" + name)));
+            ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui/default/" + name)));
             guiSettings.add(guiSetting);
             return guiSetting;
         });
@@ -81,7 +81,7 @@ public class OreControl extends JavaPlugin implements Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Player player = (Player) sender;
 
-        guiSettings.forEach(GuiSetting::reload);
+        guiSettings.forEach(ConfigSetting::reload);
         guiManager.openGui(player);
 
         return true;

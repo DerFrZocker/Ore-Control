@@ -34,7 +34,6 @@ import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
-import de.derfrzocker.ore.control.gui.GuiSetting;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.SettingWrapper;
@@ -42,6 +41,8 @@ import de.derfrzocker.spigot.utils.guin.GuiInfo;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -56,9 +57,9 @@ public class FeatureSettingsScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SETTINGS_SCREEN;
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, GuiSetting> settingFunction) {
+    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
         return PagedInventoryGuiBuilder
-                .builder(GuiSetting.function())
+                .builder()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_settings_screen.yml"))
@@ -66,10 +67,10 @@ public class FeatureSettingsScreen {
                 .addDefaultPreviousButton()
                 .addConfigDecorations()
                 .pageContent(PageContentBuilder
-                        .builder(GuiSetting.function(), SettingWrapper.class)
+                        .builder(SettingWrapper.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
                         .itemStack((setting, guiInfo, settingWrapper) -> {
-                            return setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
+                            return MessageUtil.replaceItemStack(plugin, setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone());
                         })
                         .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, settingWrapper) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).setSettingWrapper(settingWrapper))
