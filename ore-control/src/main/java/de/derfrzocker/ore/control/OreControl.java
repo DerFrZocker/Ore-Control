@@ -31,7 +31,7 @@ import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
-import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
+import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
@@ -60,7 +60,7 @@ public class OreControl extends JavaPlugin implements Listener {
         ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
         ConfigManager configManager = new ConfigManager(configDao, configInfoDao);
         configManager.reload();
-        NMSReplacer_v1_18_R1 nmsReplacer = new NMSReplacer_v1_18_R1(registries, configManager);
+        NMSReplacer_v1_18_R2 nmsReplacer = new NMSReplacer_v1_18_R2(registries, configManager);
         nmsReplacer.register();
         File defaults = new File(getDataFolder(), "data/default");
         nmsReplacer.saveDefaultValues(defaults);
