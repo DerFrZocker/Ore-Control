@@ -31,10 +31,13 @@ import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.LinkedList;
 import java.util.function.Function;
@@ -43,7 +46,7 @@ public class ConfigInfosScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFOS_SCREEN;
 
-    public static InventoryGui getGui(OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
+    public static InventoryGui getGui(Plugin plugin, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
         return PagedInventoryGuiBuilder
                 .builder()
                 .identifier(IDENTIFIER)
@@ -56,7 +59,7 @@ public class ConfigInfosScreen {
                         .builder(ConfigInfo.class)
                         .data((setting, guiInfo) -> new LinkedList<>(configManager.getConfigInfos()))
                         .itemStack((setting, guiInfo, configInfo) -> {
-                            return setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone();
+                            return MessageUtil.replaceItemStack(plugin, setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone(), new MessageValue("world-name", configInfo.getWorldName()));
                         })
                         .withAction((clickAction, configInfo) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, configInfo) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).setConfigInfo(configInfo))

@@ -42,6 +42,7 @@ import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -70,7 +71,7 @@ public class FeatureSettingsScreen {
                         .builder(SettingWrapper.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
                         .itemStack((setting, guiInfo, settingWrapper) -> {
-                            return MessageUtil.replaceItemStack(plugin, setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone());
+                            return MessageUtil.replaceItemStack(plugin, setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone(), new MessageValue("setting-name", settingWrapper.getSetting().getName()));
                         })
                         .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, settingWrapper) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).setSettingWrapper(settingWrapper))

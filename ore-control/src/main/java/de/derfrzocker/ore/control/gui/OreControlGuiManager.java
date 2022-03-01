@@ -69,7 +69,7 @@ public class OreControlGuiManager implements Listener {
     public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, Function<String, ConfigSetting> settingFunction) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
-        this.configInfosScreen = ConfigInfosScreen.getGui(this, settingFunction, oreControlManager.getConfigManager());
+        this.configInfosScreen = ConfigInfosScreen.getGui(plugin, this, settingFunction, oreControlManager.getConfigManager());
         this.configInfoScreen = ConfigInfoScreen.getGui(this, settingFunction, oreControlManager.getConfigManager());
         this.featureSelectionScreen = FeatureSelectionScreen.getGui(plugin, oreControlManager, this, settingFunction);
         this.featureSettingsScreen = FeatureSettingsScreen.getGui(plugin, oreControlManager, this, settingFunction);

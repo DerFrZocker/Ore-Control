@@ -36,6 +36,8 @@ import de.derfrzocker.spigot.utils.guin.GuiInfo;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -85,7 +87,7 @@ public class FeatureSelectionScreen {
                             } else {
                                 icon = icon.clone();
                             }
-                            return icon;
+                            return MessageUtil.replaceItemStack(plugin, icon, new MessageValue("feature-name", feature.getKey()));
                         })
                         .withAction((clickAction, feature) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, feature) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).setFeature(feature))
