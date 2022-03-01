@@ -61,6 +61,7 @@ public class FeatureSelectionScreen {
                 .builder()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
+                .withSetting(settingFunction.apply("feature_icons.yml"))
                 .withSetting(settingFunction.apply("feature_selection_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()

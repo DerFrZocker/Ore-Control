@@ -27,6 +27,7 @@ package de.derfrzocker.ore.control.gui.screen.value;
 
 import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.ConfigurationAble;
+import de.derfrzocker.feature.api.Feature;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
@@ -42,8 +43,12 @@ import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.SingleInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
@@ -56,12 +61,14 @@ public class FixedDoubleToIntegerScreen {
     private static final String ADD_0_1 = "values.1"; // Add 0.1
     private static final String ADD__1 = "values.2"; // Add -1
     private static final String ADD__0_1 = "values.3"; // Add -0.1
+    private static final String DEFAULT_ICON = "default-icon"; // Add -0.1
 
     public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
         return SingleInventoryGuiBuilder
                 .builder()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
+                .withSetting(settingFunction.apply("feature_icons.yml"))
                 .withSetting(settingFunction.apply("value/fixed_double_to_integer_screen.yml"))
                 .addConfigDecorations()
                 .addButtonContext(ButtonContextBuilder
@@ -72,6 +79,7 @@ public class FixedDoubleToIntegerScreen {
                                 .identifier(ADD_1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, 1))
+                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
                         )
                 )
                 .addButtonContext(ButtonContextBuilder
@@ -82,6 +90,7 @@ public class FixedDoubleToIntegerScreen {
                                 .identifier(ADD_0_1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, 0.1))
+                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
                         )
                 )
                 .addButtonContext(ButtonContextBuilder
@@ -92,6 +101,7 @@ public class FixedDoubleToIntegerScreen {
                                 .identifier(ADD__1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, -1))
+                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
                         )
                 )
                 .addButtonContext(ButtonContextBuilder
@@ -102,6 +112,43 @@ public class FixedDoubleToIntegerScreen {
                                 .identifier(ADD__0_1)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, -0.1))
+                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
+                        )
+                )
+                .addButtonContext(ButtonContextBuilder
+                        .builder()
+                        .identifier(DEFAULT_ICON)
+                        .button(ButtonBuilder
+                                .builder()
+                                .identifier(DEFAULT_ICON)
+                                .itemStack((setting, guiInfo) -> {
+                                    PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
+                                    Feature<?> feature = playerGuiData.getFeature();
+                                    String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
+                                    ItemStack icon = setting.get(IDENTIFIER, key + ".item-stack", null);
+                                    if (icon == null) {
+                                        icon = setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
+                                        String type = setting.get(IDENTIFIER, key + ".type", null);
+                                        if (type == null) {
+                                            plugin.getLogger().info(String.format("No item stack or type found for feature '%s' using default item stack", feature.getKey()));
+                                        } else {
+                                            try {
+                                                Material material = Material.valueOf(type.toUpperCase());
+                                                icon.setType(material);
+                                            } catch (IllegalArgumentException e) {
+                                                plugin.getLogger().warning(String.format("Material '%s' for feature '%s' not found", type, feature.getKey()));
+                                            }
+                                        }
+                                    } else {
+                                        icon = icon.clone();
+                                    }
+                                    return MessageUtil.replaceItemStack(plugin, icon,
+                                            new MessageValue("feature-name", feature.getKey()),
+                                            new MessageValue("setting-name", playerGuiData.getSettingWrapper().getSetting().getName()),
+                                            new MessageValue("current-value", ((FixedDoubleToIntegerValue) playerGuiData.getToEditValue()).getValue())
+                                    );
+                                })
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         )
                 )
                 .build();
