@@ -44,7 +44,7 @@ public class Config {
     }
 
     public Config(List<PlacementModifierConfiguration> placements, FeatureGeneratorConfiguration feature) {
-        this.placements = placements;
+        this.placements = new ArrayList<>(placements);
         this.feature = feature;
     }
 
