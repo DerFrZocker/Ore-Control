@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control;
 
+import com.google.common.base.Charsets;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
@@ -43,6 +44,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -71,7 +73,7 @@ public class OreControl extends JavaPlugin implements Listener {
 
         oreControlManager = new OreControlManager(registries, configManager, world -> new HashSet<>());
         guiManager = new OreControlGuiManager(this, oreControlManager, name -> {
-            ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new File(getDataFolder(), "gui/default/" + name)));
+            ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
             return guiSetting;
         });

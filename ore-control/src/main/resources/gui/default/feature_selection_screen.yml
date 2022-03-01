@@ -1,0 +1,13 @@
+name: "Choose A Feature!"
+default-icon:
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§f%feature-name%'
+      lore:
+        - "   "
+        - '§7>> §bClick to select this feature! §7<<' 

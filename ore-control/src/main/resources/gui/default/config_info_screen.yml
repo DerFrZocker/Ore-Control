@@ -1,0 +1,14 @@
+name: "Choose A Type!"
+whole-world:
+  slot: 23
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: STONE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§fWhole World'
+      lore:
+        - "   "
+        - "§7>> §bClick to edit the whole world! §7<<"

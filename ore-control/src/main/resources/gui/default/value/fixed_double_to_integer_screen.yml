@@ -1,0 +1,67 @@
+name: "Set A Value!"
+default-icon:
+  slot: 22
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§f%setting-name%'
+      lore:
+        - "   "
+        - " &7> &fCurrently: &d%current-value%"
+values:
+  0:
+    slot: 24
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1519
+      type: LIME_TERRACOTTA
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '§fAdd 1'
+        lore:
+          - "   "
+          - '§7>> §bClick to add 1! §7<<'
+  1:
+    slot: 23
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1519
+      type: LIME_TERRACOTTA
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '§fAdd 0.1'
+        lore:
+          - "   "
+          - '§7>> §bClick to add 0.1! §7<<'
+  2:
+    slot: 20
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1519
+      type: RED_TERRACOTTA
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '§fSubtract 1'
+        lore:
+          - "   "
+          - '§7>> §bClick to subtract 1! §7<<'
+  3:
+    slot: 21
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1519
+      type: RED_TERRACOTTA
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '§fSubtract 0.1'
+        lore:
+          - "   "
+          - '§7>> §bClick to subtract 0.1! §7<<'

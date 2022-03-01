@@ -1,0 +1,80 @@
+icons:
+  minecraft:
+    ore_magma:
+      type: MAGMA_BLOCK
+    ore_soul_sand:
+      type: SOUL_SAND
+    ore_gold_deltas:
+      type: NETHER_GOLD_ORE
+    ore_quartz_deltas:
+      type: NETHER_QUARTZ_ORE
+    ore_gold_nether:
+      type: NETHER_GOLD_ORE
+    ore_quartz_nether:
+      type: NETHER_QUARTZ_ORE
+    ore_gravel_nether:
+      type: GRAVEL
+    ore_blackstone:
+      type: BLACKSTONE
+    ore_dirt:
+      type: DIRT
+    ore_gravel:
+      type: GRAVEL
+    ore_granite_upper:
+      type: GRANITE
+    ore_granite_lower:
+      type: GRANITE
+    ore_diorite_upper:
+      type: DIORITE
+    ore_diorite_lower:
+      type: DIORITE
+    ore_andesite_upper:
+      type: ANDESITE
+    ore_andesite_lower:
+      type: ANDESITE
+    ore_tuff:
+      type: TUFF
+    ore_coal_upper:
+      type: COAL_ORE
+    ore_coal_lower:
+      type: COAL_ORE
+    ore_iron_upper:
+      type: IRON_ORE
+    ore_iron_middle:
+      type: IRON_ORE
+    ore_iron_small:
+      type: IRON_ORE
+    ore_gold_extra:
+      type: GOLD_ORE
+    ore_gold:
+      type: GOLD_ORE
+    ore_gold_lower:
+      type: GOLD_ORE
+    ore_redstone:
+      type: REDSTONE_ORE
+    ore_redstone_lower:
+      type: REDSTONE_ORE
+    ore_diamond:
+      type: DIAMOND_ORE
+    ore_diamond_large:
+      type: DIAMOND_ORE
+    ore_diamond_buried:
+      type: DIAMOND_ORE
+    ore_lapis:
+      type: LAPIS_ORE
+    ore_lapis_buried:
+      type: LAPIS_ORE
+    ore_infested:
+      type: INFESTED_STONE
+    ore_emerald:
+      type: EMERALD_ORE
+    ore_ancient_debris_large:
+      type: ANCIENT_DEBRIS
+    ore_debris_small:
+      type: ANCIENT_DEBRIS
+    ore_copper:
+      type: COPPER_ORE
+    ore_copper_large:
+      type: COPPER_ORE
+    ore_clay:
+      type: CLAY
