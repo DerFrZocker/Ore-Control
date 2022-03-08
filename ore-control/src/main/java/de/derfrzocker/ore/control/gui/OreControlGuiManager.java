@@ -31,7 +31,6 @@ import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
-import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;

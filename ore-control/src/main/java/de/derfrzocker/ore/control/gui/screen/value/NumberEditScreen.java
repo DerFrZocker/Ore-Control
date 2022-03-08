@@ -25,21 +25,12 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
-import de.derfrzocker.feature.api.Configuration;
-import de.derfrzocker.feature.api.ConfigurationAble;
 import de.derfrzocker.feature.api.Feature;
-import de.derfrzocker.feature.api.FeatureGenerator;
-import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
-import de.derfrzocker.feature.api.FeaturePlacementModifier;
-import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
-import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
-import de.derfrzocker.ore.control.gui.SettingWrapper;
-import de.derfrzocker.spigot.utils.guin.ClickAction;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
@@ -54,7 +45,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.NumberConversions;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
