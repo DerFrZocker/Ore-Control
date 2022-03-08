@@ -102,7 +102,7 @@ public class NumberEditScreen {
                         .identifier("values")
                         .withAction((clickAction, value) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, value) -> numberConsumer.accept(guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()), NumberConversions.toDouble(value)))
-                        .withAction((clickAction, value) -> add(plugin, oreControlManager, guiManager, clickAction))
+                        .withAction((clickAction, value) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).apply(plugin, oreControlManager))
                         .withAction((clickAction, value) -> clickAction.getInventoryGui().updatedSoft())
                 )
                 .addButtonContext(ButtonContextBuilder
@@ -141,58 +141,5 @@ public class NumberEditScreen {
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         )
                 );
-    }
-
-    private static void add(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, ClickAction clickAction) {
-        PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked());
-
-        if (!playerGuiData.isApplied()) {
-            Config config;
-            if (playerGuiData.getBiome() == null) {
-                config = oreControlManager.getConfigManager().getOrCreateConfig(playerGuiData.getConfigInfo(), playerGuiData.getFeature().getKey());
-            } else {
-                config = oreControlManager.getConfigManager().getOrCreateConfig(playerGuiData.getConfigInfo(), playerGuiData.getBiome(), playerGuiData.getFeature().getKey());
-            }
-
-            SettingWrapper settingWrapper = playerGuiData.getSettingWrapper();
-            Configuration configuration;
-            if (settingWrapper.getSettingOwner() instanceof FeatureGenerator) {
-                if (config.getFeature() == null) {
-                    config.setFeature((FeatureGeneratorConfiguration) settingWrapper.getSettingOwner().createEmptyConfiguration());
-                } else if (config.getFeature().getOwner() != settingWrapper.getSettingOwner()) {
-                    plugin.getLogger().warning(String.format("Expected a setting owner of type '%s' but got one of type '%s', this is a bug!", settingWrapper.getSettingOwner().getClass(), config.getFeature().getOwner()));
-                    return;
-                }
-
-                configuration = config.getFeature();
-            } else if (settingWrapper.getSettingOwner() instanceof FeaturePlacementModifier) {
-                configuration = getPlacementConfiguration(config.getPlacements(), settingWrapper.getSettingOwner());
-
-                if (configuration == null) {
-                    configuration = settingWrapper.getSettingOwner().createEmptyConfiguration();
-                    config.setPlacement((PlacementModifierConfiguration) configuration);
-                }
-            } else {
-                plugin.getLogger().warning(String.format("Expected a setting owner of type '%s' or '%s' but got '%s', this is a bug!", FeatureGenerator.class, FeaturePlacementModifier.class, settingWrapper.getSettingOwner().getClass()));
-                return;
-            }
-
-            configuration.setValue(settingWrapper.getSetting(), playerGuiData.getOriginalValue());
-            playerGuiData.setApplied(true);
-        }
-    }
-
-    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
-        if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
-            return null;
-        }
-
-        for (PlacementModifierConfiguration configuration : placementModifierConfigurations) {
-            if (configuration.getOwner() == owner) {
-                return configuration;
-            }
-        }
-
-        return null;
     }
 }

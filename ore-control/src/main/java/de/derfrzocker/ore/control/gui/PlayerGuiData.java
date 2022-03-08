@@ -25,10 +25,22 @@
 
 package de.derfrzocker.ore.control.gui;
 
+import de.derfrzocker.feature.api.Configuration;
+import de.derfrzocker.feature.api.ConfigurationAble;
 import de.derfrzocker.feature.api.Feature;
+import de.derfrzocker.feature.api.FeatureGenerator;
+import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.ore.control.OreControl;
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.OreControlManager;
+import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
+import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 public class PlayerGuiData {
 
@@ -94,5 +106,57 @@ public class PlayerGuiData {
 
     public void setToEditValue(Value<?, ?, ?> toEditValue) {
         this.toEditValue = toEditValue;
+    }
+
+    // TODO move to better location
+    public void apply(Plugin plugin, OreControlManager oreControlManager) {
+        if (!isApplied()) {
+            Config config;
+            if (getBiome() == null) {
+                config = oreControlManager.getConfigManager().getOrCreateConfig(getConfigInfo(), getFeature().getKey());
+            } else {
+                config = oreControlManager.getConfigManager().getOrCreateConfig(getConfigInfo(), getBiome(), getFeature().getKey());
+            }
+
+            SettingWrapper settingWrapper = getSettingWrapper();
+            Configuration configuration;
+            if (settingWrapper.getSettingOwner() instanceof FeatureGenerator) {
+                if (config.getFeature() == null) {
+                    config.setFeature((FeatureGeneratorConfiguration) settingWrapper.getSettingOwner().createEmptyConfiguration());
+                } else if (config.getFeature().getOwner() != settingWrapper.getSettingOwner()) {
+                    plugin.getLogger().warning(String.format("Expected a setting owner of type '%s' but got one of type '%s', this is a bug!", settingWrapper.getSettingOwner().getClass(), config.getFeature().getOwner()));
+                    return;
+                }
+
+                configuration = config.getFeature();
+            } else if (settingWrapper.getSettingOwner() instanceof FeaturePlacementModifier) {
+                configuration = getPlacementConfiguration(config.getPlacements(), settingWrapper.getSettingOwner());
+
+                if (configuration == null) {
+                    configuration = settingWrapper.getSettingOwner().createEmptyConfiguration();
+                    config.setPlacement((PlacementModifierConfiguration) configuration);
+                }
+            } else {
+                plugin.getLogger().warning(String.format("Expected a setting owner of type '%s' or '%s' but got '%s', this is a bug!", FeatureGenerator.class, FeaturePlacementModifier.class, settingWrapper.getSettingOwner().getClass()));
+                return;
+            }
+
+            configuration.setValue(settingWrapper.getSetting(), getOriginalValue());
+            setApplied(true);
+        }
+    }
+
+    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
+        if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
+            return null;
+        }
+
+        for (PlacementModifierConfiguration configuration : placementModifierConfigurations) {
+            if (configuration.getOwner() == owner) {
+                return configuration;
+            }
+        }
+
+        return null;
     }
 }

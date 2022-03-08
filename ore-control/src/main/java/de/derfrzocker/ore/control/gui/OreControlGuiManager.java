@@ -29,12 +29,15 @@ import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
+import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
@@ -77,6 +80,7 @@ public class OreControlGuiManager implements Listener {
 
         this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(plugin, oreControlManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(plugin, oreControlManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
