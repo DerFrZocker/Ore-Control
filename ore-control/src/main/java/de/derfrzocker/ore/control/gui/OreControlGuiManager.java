@@ -32,12 +32,14 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerTy
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerType;
+import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.value.AboveBottomOffsetIntegerScreen;
+import de.derfrzocker.ore.control.gui.screen.value.BelowTopOffsetIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
@@ -86,6 +88,7 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
