@@ -70,7 +70,6 @@ public class FixedDoubleToIntegerScreen {
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_icons.yml"))
                 .withSetting(settingFunction.apply("value/fixed_double_to_integer_screen.yml"))
-                .addConfigDecorations()
                 .addButtonContext(ButtonContextBuilder
                         .builder()
                         .identifier(ADD_1)

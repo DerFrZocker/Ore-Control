@@ -54,7 +54,6 @@ public class ConfigInfosScreen {
                 .withSetting(settingFunction.apply("config_infos_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
-                .addConfigDecorations()
                 .pageContent(PageContentBuilder
                         .builder(ConfigInfo.class)
                         .data((setting, guiInfo) -> new LinkedList<>(configManager.getConfigInfos()))

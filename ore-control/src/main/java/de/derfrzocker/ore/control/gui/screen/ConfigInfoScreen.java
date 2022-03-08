@@ -47,7 +47,6 @@ public class ConfigInfoScreen {
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("config_info_screen.yml"))
-                .addConfigDecorations()
                 .addButtonContext(ButtonContextBuilder
                         .builder()
                         .identifier(WHOLE_WORLD)

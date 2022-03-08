@@ -66,7 +66,6 @@ public class FeatureSettingsScreen {
                 .withSetting(settingFunction.apply("feature_settings_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
-                .addConfigDecorations()
                 .pageContent(PageContentBuilder
                         .builder(SettingWrapper.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
