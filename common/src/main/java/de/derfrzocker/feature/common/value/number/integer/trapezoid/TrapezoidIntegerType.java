@@ -57,7 +57,7 @@ public class TrapezoidIntegerType extends IntegerType {
                 registries.getValueTypeRegistry(IntegerType.class).dispatch("max_inclusive_type", IntegerValue::getValueType, IntegerType::getCodec).
                         optionalFieldOf("max_inclusive").forGetter(config -> Optional.ofNullable(config.getMaxInclusive())),
                 registries.getValueTypeRegistry(IntegerType.class).dispatch("plateau_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("plateau").forGetter(config -> Optional.ofNullable(config.getMaxInclusive()))
+                        optionalFieldOf("plateau").forGetter(config -> Optional.ofNullable(config.getPlateau()))
         ).apply(builder, (minInclusive, maxInclusive, plateau) -> new TrapezoidIntegerValue(minInclusive.orElse(null), maxInclusive.orElse(null), plateau.orElse(null))));
 
         type = this;
