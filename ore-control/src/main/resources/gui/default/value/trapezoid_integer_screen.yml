@@ -1,0 +1,40 @@
+name: "Choose A Type!"
+min-inclusive:
+  slot: 20
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§fMin Inclusive'
+      lore:
+        - "   "
+        - "§7>> §bClick to edit min inclusive! §7<<"
+max-inclusive:
+  slot: 24
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§fMax Inclusive'
+      lore:
+        - "   "
+        - "§7>> §bClick to edit max inclusive! §7<<"
+plateau:
+  slot: 22
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '§fPlateau'
+      lore:
+        - "   "
+        - "§7>> §bClick to edit plateau! §7<<"
