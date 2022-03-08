@@ -32,6 +32,7 @@ import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
@@ -42,6 +43,7 @@ import de.derfrzocker.spigot.utils.guin.ClickAction;
 import de.derfrzocker.spigot.utils.guin.InventoryGui;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
+import de.derfrzocker.spigot.utils.guin.builders.ListButtonBuilder;
 import de.derfrzocker.spigot.utils.guin.builders.SingleInventoryGuiBuilder;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -50,69 +52,58 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.NumberConversions;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class FixedDoubleToIntegerScreen {
+public class NumberEditScreen {
 
-    private static final String IDENTIFIER = "value.fixed_double_to_integer_screen";
-    private static final String ADD_1 = "values.0"; // Add 1
-    private static final String ADD_0_1 = "values.1"; // Add 0.1
-    private static final String ADD__1 = "values.2"; // Add -1
-    private static final String ADD__0_1 = "values.3"; // Add -0.1
-    private static final String DEFAULT_ICON = "default-icon"; // Add -0.1
+    private static final String DEFAULT_ICON = "default-icon";
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+    public static InventoryGui getFixedDoubleToIntegerGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+        return getGui(plugin, oreControlManager, guiManager, settingFunction,
+                playerGuiData -> ((FixedDoubleToIntegerValue) playerGuiData.getToEditValue()).getValue(),
+                (playerGuiData, number) -> {
+                    if (!(playerGuiData.getToEditValue() instanceof FixedDoubleToIntegerValue value)) {
+                        plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedDoubleToIntegerValue.class, playerGuiData.getToEditValue() != null ? playerGuiData.getToEditValue().getClass() : "null"));
+                        return;
+                    }
+                    value.setValue(value.getValue() + number.doubleValue());
+                })
+                .identifier("value.fixed_double_to_integer_screen")
+                .withSetting(settingFunction.apply("value/fixed_double_to_integer_screen.yml"))
+                .build();
+    }
+
+    public static InventoryGui getFixedFloatGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+        return getGui(plugin, oreControlManager, guiManager, settingFunction,
+                playerGuiData -> ((FixedFloatValue) playerGuiData.getToEditValue()).getValue(),
+                (playerGuiData, number) -> {
+                    if (!(playerGuiData.getToEditValue() instanceof FixedFloatValue value)) {
+                        plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedFloatValue.class, playerGuiData.getToEditValue() != null ? playerGuiData.getToEditValue().getClass() : "null"));
+                        return;
+                    }
+                    value.setValue(value.getValue() + number.floatValue());
+                })
+                .identifier("value.fixed_float_screen")
+                .withSetting(settingFunction.apply("value/fixed_float_screen.yml"))
+                .build();
+    }
+
+    private static SingleInventoryGuiBuilder getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, Function<PlayerGuiData, Number> numberSupplier, BiConsumer<PlayerGuiData, Number> numberConsumer) {
         return SingleInventoryGuiBuilder
                 .builder()
-                .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_icons.yml"))
-                .withSetting(settingFunction.apply("value/fixed_double_to_integer_screen.yml"))
-                .addButtonContext(ButtonContextBuilder
+                .addListButton(ListButtonBuilder
                         .builder()
-                        .identifier(ADD_1)
-                        .button(ButtonBuilder
-                                .builder()
-                                .identifier(ADD_1)
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, 1))
-                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
-                        )
-                )
-                .addButtonContext(ButtonContextBuilder
-                        .builder()
-                        .identifier(ADD_0_1)
-                        .button(ButtonBuilder
-                                .builder()
-                                .identifier(ADD_0_1)
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, 0.1))
-                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
-                        )
-                )
-                .addButtonContext(ButtonContextBuilder
-                        .builder()
-                        .identifier(ADD__1)
-                        .button(ButtonBuilder
-                                .builder()
-                                .identifier(ADD__1)
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, -1))
-                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
-                        )
-                )
-                .addButtonContext(ButtonContextBuilder
-                        .builder()
-                        .identifier(ADD__0_1)
-                        .button(ButtonBuilder
-                                .builder()
-                                .identifier(ADD__0_1)
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> add(plugin, oreControlManager, guiManager, clickAction, -0.1))
-                                .withAction(clickAction -> clickAction.getInventoryGui().updatedSoft())
-                        )
+                        .identifier("values")
+                        .withAction((clickAction, value) -> clickAction.getClickEvent().setCancelled(true))
+                        .withAction((clickAction, value) -> numberConsumer.accept(guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()), NumberConversions.toDouble(value)))
+                        .withAction((clickAction, value) -> add(plugin, oreControlManager, guiManager, clickAction))
+                        .withAction((clickAction, value) -> clickAction.getInventoryGui().updatedSoft())
                 )
                 .addButtonContext(ButtonContextBuilder
                         .builder()
@@ -124,10 +115,10 @@ public class FixedDoubleToIntegerScreen {
                                     PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
                                     Feature<?> feature = playerGuiData.getFeature();
                                     String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
-                                    ItemStack icon = setting.get(IDENTIFIER, key + ".item-stack", null);
+                                    ItemStack icon = setting.get(key + ".item-stack", null);
                                     if (icon == null) {
-                                        icon = setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
-                                        String type = setting.get(IDENTIFIER, key + ".type", null);
+                                        icon = setting.get("default-icon.item-stack", new ItemStack(Material.STONE)).clone();
+                                        String type = setting.get(key + ".type", null);
                                         if (type == null) {
                                             plugin.getLogger().info(String.format("No item stack or type found for feature '%s' using default item stack", feature.getKey()));
                                         } else {
@@ -144,25 +135,16 @@ public class FixedDoubleToIntegerScreen {
                                     return MessageUtil.replaceItemStack(plugin, icon,
                                             new MessageValue("feature-name", feature.getKey()),
                                             new MessageValue("setting-name", playerGuiData.getSettingWrapper().getSetting().getName()),
-                                            new MessageValue("current-value", ((FixedDoubleToIntegerValue) playerGuiData.getToEditValue()).getValue())
+                                            new MessageValue("current-value", numberSupplier.apply(playerGuiData))
                                     );
                                 })
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         )
-                )
-                .build();
+                );
     }
 
-    private static void add(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, ClickAction clickAction, double amount) {
+    private static void add(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, ClickAction clickAction) {
         PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked());
-
-        if (!(playerGuiData.getToEditValue() instanceof FixedDoubleToIntegerValue)) {
-            plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedDoubleToIntegerValue.class, playerGuiData.getToEditValue() != null ? playerGuiData.getToEditValue().getClass() : "null"));
-            return;
-        }
-
-        FixedDoubleToIntegerValue value = (FixedDoubleToIntegerValue) playerGuiData.getToEditValue();
-        value.setValue(value.getValue() + amount);
 
         if (!playerGuiData.isApplied()) {
             Config config;

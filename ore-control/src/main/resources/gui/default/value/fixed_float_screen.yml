@@ -15,20 +15,6 @@ default-icon:
 values:
   0:
     slot: 24
-    value: 1
-    item-stack:
-      ==: org.bukkit.inventory.ItemStack
-      v: 1519
-      type: LIME_TERRACOTTA
-      meta:
-        ==: ItemMeta
-        meta-type: UNSPECIFIC
-        display-name: '§fAdd 1'
-        lore:
-          - "   "
-          - '§7>> §bClick to add 1! §7<<'
-  1:
-    slot: 23
     value: 0.1
     item-stack:
       ==: org.bukkit.inventory.ItemStack
@@ -41,22 +27,22 @@ values:
         lore:
           - "   "
           - '§7>> §bClick to add 0.1! §7<<'
-  2:
-    slot: 20
-    value: -1
+  1:
+    slot: 23
+    value: 0.01
     item-stack:
       ==: org.bukkit.inventory.ItemStack
       v: 1519
-      type: RED_TERRACOTTA
+      type: LIME_TERRACOTTA
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '§fSubtract 1'
+        display-name: '§fAdd 0.01'
         lore:
           - "   "
-          - '§7>> §bClick to subtract 1! §7<<'
-  3:
-    slot: 21
+          - '§7>> §bClick to add 0.01! §7<<'
+  2:
+    slot: 20
     value: -0.1
     item-stack:
       ==: org.bukkit.inventory.ItemStack
@@ -69,3 +55,17 @@ values:
         lore:
           - "   "
           - '§7>> §bClick to subtract 0.1! §7<<'
+  3:
+    slot: 21
+    value: -0.01
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1519
+      type: RED_TERRACOTTA
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '§fSubtract 0.01'
+        lore:
+          - "   "
+          - '§7>> §bClick to subtract 0.01! §7<<'
