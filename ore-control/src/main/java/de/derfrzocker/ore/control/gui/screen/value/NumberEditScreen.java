@@ -31,12 +31,9 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerVa
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
-import de.derfrzocker.spigot.utils.guin.InventoryGui;
-import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.ListButtonBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.SingleInventoryGuiBuilder;
-import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.gui.builders.SingleInventoryGuiBuilder;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
@@ -83,24 +80,27 @@ public class NumberEditScreen {
     }
 
     private static SingleInventoryGuiBuilder getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, Function<PlayerGuiData, Number> numberSupplier, BiConsumer<PlayerGuiData, Number> numberConsumer) {
-        return SingleInventoryGuiBuilder
-                .builder()
+        return Builders
+                .single()
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_icons.yml"))
-                .addListButton(ListButtonBuilder
-                        .builder()
+                .addListButton(Builders
+                        .listButton()
                         .identifier("values")
                         .withAction((clickAction, value) -> clickAction.getClickEvent().setCancelled(true))
-                        .withAction((clickAction, value) -> numberConsumer.accept(guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()), NumberConversions.toDouble(value)))
-                        .withAction((clickAction, value) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).apply(plugin, oreControlManager))
+                        .withAction((clickAction, value) -> numberConsumer.accept(guiManager.getPlayerGuiData(clickAction.getPlayer()), NumberConversions.toDouble(value)))
+                        .withAction((clickAction, value) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).apply(plugin, oreControlManager))
                         .withAction((clickAction, value) -> clickAction.getInventoryGui().updatedSoft())
                 )
-                .addButtonContext(ButtonContextBuilder
-                        .builder()
+                .addButtonContext(Builders
+                        .buttonContext()
                         .identifier(DEFAULT_ICON)
-                        .button(ButtonBuilder
-                                .builder()
+                        .button(Builders
+                                .button()
                                 .identifier(DEFAULT_ICON)
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("feature-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().getKey()))
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("setting-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getSettingWrapper().getSetting().getName()))
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("current-value", numberSupplier.apply(guiManager.getPlayerGuiData((Player) guiInfo.getEntity()))))
                                 .itemStack((setting, guiInfo) -> {
                                     PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
                                     Feature<?> feature = playerGuiData.getFeature();
@@ -122,11 +122,7 @@ public class NumberEditScreen {
                                     } else {
                                         icon = icon.clone();
                                     }
-                                    return MessageUtil.replaceItemStack(plugin, icon,
-                                            new MessageValue("feature-name", feature.getKey()),
-                                            new MessageValue("setting-name", playerGuiData.getSettingWrapper().getSetting().getName()),
-                                            new MessageValue("current-value", numberSupplier.apply(playerGuiData))
-                                    );
+                                    return icon;
                                 })
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         )

@@ -29,12 +29,9 @@ import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntege
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
-import de.derfrzocker.spigot.utils.guin.InventoryGui;
-import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.SingleInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.function.Function;
@@ -42,21 +39,20 @@ import java.util.function.Function;
 public class AboveBottomOffsetIntegerScreen {
 
     public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
-        return SingleInventoryGuiBuilder
-                .builder()
+        return Builders
+                .single()
                 .identifier("value.above_bottom_offset_integer_screen")
                 .withSetting(settingFunction.apply("design.yml"))
-                .withSetting(settingFunction.apply("feature_icons.yml"))
                 .withSetting(settingFunction.apply("value/above_bottom_offset_integer_screen.yml"))
-                .addButtonContext(ButtonContextBuilder
-                        .builder()
+                .addButtonContext(Builders
+                        .buttonContext()
                         .identifier("base")
-                        .button(ButtonBuilder
-                                .builder()
+                        .button(Builders
+                                .button()
                                 .identifier("base")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> {
-                                    PlayerGuiData guiData = guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked());
+                                    PlayerGuiData guiData = guiManager.getPlayerGuiData(clickAction.getPlayer());
                                     if (!(guiData.getToEditValue() instanceof AboveBottomOffsetIntegerValue value)) {
                                         plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", AboveBottomOffsetIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                                         return;
@@ -64,7 +60,7 @@ public class AboveBottomOffsetIntegerScreen {
 
                                     guiData.setToEditValue(value.getBase());
 
-                                    guiManager.openValueScreen((Player) clickAction.getClickEvent().getWhoClicked(), value.getBase());
+                                    guiManager.openValueScreen(clickAction.getPlayer(), value.getBase());
                                 })
                         )
                 ).build();

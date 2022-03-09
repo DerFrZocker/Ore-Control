@@ -43,7 +43,7 @@ import de.derfrzocker.ore.control.gui.screen.value.BelowTopOffsetIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
-import de.derfrzocker.spigot.utils.guin.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

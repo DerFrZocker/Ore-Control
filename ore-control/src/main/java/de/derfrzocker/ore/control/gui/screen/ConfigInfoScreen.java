@@ -27,12 +27,9 @@ package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
-import de.derfrzocker.spigot.utils.guin.InventoryGui;
-import de.derfrzocker.spigot.utils.guin.builders.ButtonBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.ButtonContextBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.SingleInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
-import org.bukkit.entity.Player;
 
 import java.util.function.Function;
 
@@ -42,19 +39,19 @@ public class ConfigInfoScreen {
     private static final String WHOLE_WORLD = "whole-world";
 
     public static InventoryGui getGui(OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
-        return SingleInventoryGuiBuilder
-                .builder()
+        return Builders
+                .single()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("config_info_screen.yml"))
-                .addButtonContext(ButtonContextBuilder
-                        .builder()
+                .addButtonContext(Builders
+                        .buttonContext()
                         .identifier(WHOLE_WORLD)
-                        .button(ButtonBuilder
-                                .builder()
+                        .button(Builders
+                                .button()
                                 .identifier(WHOLE_WORLD)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiManager.openFeatureSelectionScreen((Player) clickAction.getClickEvent().getWhoClicked()))
+                                .withAction(clickAction -> guiManager.openFeatureSelectionScreen(clickAction.getPlayer()))
                         )
                 )
                 .build();

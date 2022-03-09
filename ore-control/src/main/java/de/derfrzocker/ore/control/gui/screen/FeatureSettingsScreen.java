@@ -37,11 +37,9 @@ import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.SettingWrapper;
-import de.derfrzocker.spigot.utils.guin.GuiInfo;
-import de.derfrzocker.spigot.utils.guin.InventoryGui;
-import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
-import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.gui.GuiInfo;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
@@ -59,23 +57,22 @@ public class FeatureSettingsScreen {
     private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SETTINGS_SCREEN;
 
     public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
-        return PagedInventoryGuiBuilder
-                .builder()
+        return Builders
+                .paged()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_settings_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
-                .pageContent(PageContentBuilder
-                        .builder(SettingWrapper.class)
+                .pageContent(Builders
+                        .pageContent(SettingWrapper.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
-                        .itemStack((setting, guiInfo, settingWrapper) -> {
-                            return MessageUtil.replaceItemStack(plugin, setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone(), new MessageValue("setting-name", settingWrapper.getSetting().getName()));
-                        })
+                        .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting-name", settingWrapper.getSetting().getName()))
+                        .itemStack((setting, guiInfo, settingWrapper) -> setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
-                        .withAction((clickAction, settingWrapper) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).setSettingWrapper(settingWrapper))
+                        .withAction((clickAction, settingWrapper) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setSettingWrapper(settingWrapper))
                         .withAction((clickAction, settingWrapper) -> {
-                            PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked());
+                            PlayerGuiData playerGuiData = guiManager.getPlayerGuiData(clickAction.getPlayer());
                             Setting setting = settingWrapper.getSetting();
                             ConfigurationAble settingOwner = settingWrapper.getSettingOwner();
 
@@ -121,7 +118,7 @@ public class FeatureSettingsScreen {
                             playerGuiData.setOriginalValue(value);
                             playerGuiData.setToEditValue(value);
                             playerGuiData.setApplied(false);
-                            guiManager.openValueScreen((Player) clickAction.getClickEvent().getWhoClicked(), value);
+                            guiManager.openValueScreen(clickAction.getPlayer(), value);
                         })
                 )
                 .build();

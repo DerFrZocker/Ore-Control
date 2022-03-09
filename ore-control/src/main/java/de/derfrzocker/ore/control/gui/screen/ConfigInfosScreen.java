@@ -28,14 +28,11 @@ package de.derfrzocker.ore.control.gui.screen;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
-import de.derfrzocker.spigot.utils.guin.InventoryGui;
-import de.derfrzocker.spigot.utils.guin.builders.PageContentBuilder;
-import de.derfrzocker.spigot.utils.guin.builders.PagedInventoryGuiBuilder;
-import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -47,24 +44,22 @@ public class ConfigInfosScreen {
     private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFOS_SCREEN;
 
     public static InventoryGui getGui(Plugin plugin, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
-        return PagedInventoryGuiBuilder
-                .builder()
+        return Builders
+                .paged()
                 .identifier(IDENTIFIER)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("config_infos_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
-                .pageContent(PageContentBuilder
-                        .builder(ConfigInfo.class)
+                .pageContent(Builders
+                        .pageContent(ConfigInfo.class)
                         .data((setting, guiInfo) -> new LinkedList<>(configManager.getConfigInfos()))
-                        .itemStack((setting, guiInfo, configInfo) -> {
-                            return MessageUtil.replaceItemStack(plugin, setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone(), new MessageValue("world-name", configInfo.getWorldName()));
-                        })
+                        .withMessageValue((setting, guiInfo, configInfo) -> new MessageValue("world-name", configInfo.getWorldName()))
+                        .itemStack((setting, guiInfo, configInfo) -> setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, configInfo) -> clickAction.getClickEvent().setCancelled(true))
-                        .withAction((clickAction, configInfo) -> guiManager.getPlayerGuiData((Player) clickAction.getClickEvent().getWhoClicked()).setConfigInfo(configInfo))
-                        .withAction((clickAction, configInfo) -> guiManager.openConfigInfoScreen((Player) clickAction.getClickEvent().getWhoClicked()))
+                        .withAction((clickAction, configInfo) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setConfigInfo(configInfo))
+                        .withAction((clickAction, configInfo) -> guiManager.openConfigInfoScreen(clickAction.getPlayer()))
                 )
                 .build();
     }
-
 }
