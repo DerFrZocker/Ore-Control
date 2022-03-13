@@ -44,6 +44,7 @@ import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -75,20 +76,20 @@ public class OreControlGuiManager implements Listener {
     private final InventoryGui featureSettingsScreen;
     private boolean openOther = false;
 
-    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, Function<String, ConfigSetting> settingFunction) {
+    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
-        this.configInfosScreen = ConfigInfosScreen.getGui(plugin, this, settingFunction, oreControlManager.getConfigManager());
-        this.configInfoScreen = ConfigInfoScreen.getGui(this, settingFunction, oreControlManager.getConfigManager());
-        this.featureSelectionScreen = FeatureSelectionScreen.getGui(plugin, oreControlManager, this, settingFunction);
-        this.featureSettingsScreen = FeatureSettingsScreen.getGui(plugin, oreControlManager, this, settingFunction);
+        this.configInfosScreen = ConfigInfosScreen.getGui(plugin, languageManager, this, settingFunction, oreControlManager.getConfigManager());
+        this.configInfoScreen = ConfigInfoScreen.getGui(languageManager, this, settingFunction, oreControlManager.getConfigManager());
+        this.featureSelectionScreen = FeatureSelectionScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
+        this.featureSettingsScreen = FeatureSettingsScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
 
-        this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(plugin, oreControlManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(plugin, oreControlManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

@@ -1,0 +1,30 @@
+design:
+  next:
+    name: "Next Page"
+    lore: "Click to go to the next page!"
+  previous:
+    name: "Previous Page"
+    lore: "Click to go to the previous page!"
+config_info_screen:
+  name: "Choose A Type!"
+  whole-world:
+    name: "Whole World"
+    lore: "Click to edit the whole world!"
+config_infos_screen:
+  name: "Choose A Config"
+  default-icons:
+    global:
+      name: "Global Config"
+      lore: "Click to select the global config!"
+    template:
+      lore: "Click to select this template!"
+    world:
+      lore: "Click to select this world!"
+feature_selection_screen:
+  name: "Choose A Feature!"
+  default-icon:
+    lore: "Click to select this feature!"
+feature_settings_screen:
+  name: "Choose A Setting!"
+  default-icon:
+    lore: "Click to edit this setting!"

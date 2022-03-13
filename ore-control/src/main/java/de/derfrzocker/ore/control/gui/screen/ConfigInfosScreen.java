@@ -30,6 +30,7 @@ import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
@@ -43,10 +44,11 @@ public class ConfigInfosScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFOS_SCREEN;
 
-    public static InventoryGui getGui(Plugin plugin, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
+    public static InventoryGui getGui(Plugin plugin, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
         return Builders
                 .paged()
                 .identifier(IDENTIFIER)
+                .languageManager(languageManager)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("config_infos_screen.yml"))
                 .addDefaultNextButton()

@@ -29,7 +29,7 @@
         <project.authors>Pings</project.authors>
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
-        <spigot-utils.version>69</spigot-utils.version>
+        <spigot-utils.version>71</spigot-utils.version>
         <bstats.version>1.7</bstats.version>
     </properties>
 

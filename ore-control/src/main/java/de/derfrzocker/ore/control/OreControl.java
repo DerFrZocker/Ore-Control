@@ -33,6 +33,9 @@ import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
+import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
+import de.derfrzocker.spigot.utils.language.manager.DirectLanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
@@ -52,6 +55,7 @@ import java.util.List;
 public class OreControl extends JavaPlugin implements Listener {
 
     OreControlManager oreControlManager;
+    LanguageManager languageManager;
     OreControlGuiManager guiManager;
     List<ConfigSetting> guiSettings = new ArrayList<>();
 
@@ -72,7 +76,8 @@ public class OreControl extends JavaPlugin implements Listener {
         new Metrics(this, 4244);
 
         oreControlManager = new OreControlManager(registries, configManager, world -> new HashSet<>());
-        guiManager = new OreControlGuiManager(this, oreControlManager, name -> {
+        languageManager = new DirectLanguageManager(this, new PluginLanguageLoader(this), "en");
+        guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
             return guiSetting;

@@ -31,6 +31,7 @@ import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.plugin.Plugin;
 
@@ -38,10 +39,11 @@ import java.util.function.Function;
 
 public class UniformIntegerScreen {
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
         return Builders
                 .single()
                 .identifier("value.uniform_integer_screen")
+                .languageManager(languageManager)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("value/uniform_integer_screen.yml"))
                 .addButtonContext(Builders

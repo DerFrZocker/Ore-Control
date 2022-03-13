@@ -34,6 +34,7 @@ import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.SingleInventoryGuiBuilder;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Material;
@@ -49,8 +50,8 @@ public class NumberEditScreen {
 
     private static final String DEFAULT_ICON = "default-icon";
 
-    public static InventoryGui getFixedDoubleToIntegerGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
-        return getGui(plugin, oreControlManager, guiManager, settingFunction,
+    public static InventoryGui getFixedDoubleToIntegerGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+        return getGui(plugin, oreControlManager, languageManager, guiManager, settingFunction,
                 playerGuiData -> ((FixedDoubleToIntegerValue) playerGuiData.getToEditValue()).getValue(),
                 (playerGuiData, number) -> {
                     if (!(playerGuiData.getToEditValue() instanceof FixedDoubleToIntegerValue value)) {
@@ -64,8 +65,8 @@ public class NumberEditScreen {
                 .build();
     }
 
-    public static InventoryGui getFixedFloatGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
-        return getGui(plugin, oreControlManager, guiManager, settingFunction,
+    public static InventoryGui getFixedFloatGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+        return getGui(plugin, oreControlManager, languageManager, guiManager, settingFunction,
                 playerGuiData -> ((FixedFloatValue) playerGuiData.getToEditValue()).getValue(),
                 (playerGuiData, number) -> {
                     if (!(playerGuiData.getToEditValue() instanceof FixedFloatValue value)) {
@@ -79,9 +80,10 @@ public class NumberEditScreen {
                 .build();
     }
 
-    private static SingleInventoryGuiBuilder getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, Function<PlayerGuiData, Number> numberSupplier, BiConsumer<PlayerGuiData, Number> numberConsumer) {
+    private static SingleInventoryGuiBuilder getGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, Function<PlayerGuiData, Number> numberSupplier, BiConsumer<PlayerGuiData, Number> numberConsumer) {
         return Builders
                 .single()
+                .languageManager(languageManager)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_icons.yml"))
                 .addListButton(Builders

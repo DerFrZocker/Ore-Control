@@ -29,6 +29,7 @@ import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 
 import java.util.function.Function;
@@ -38,10 +39,11 @@ public class ConfigInfoScreen {
     private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFO_SCREEN;
     private static final String WHOLE_WORLD = "whole-world";
 
-    public static InventoryGui getGui(OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
+    public static InventoryGui getGui(LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
         return Builders
                 .single()
                 .identifier(IDENTIFIER)
+                .languageManager(languageManager)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("config_info_screen.yml"))
                 .addButtonContext(Builders

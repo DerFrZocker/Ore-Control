@@ -1,0 +1,83 @@
+namespaces:
+  minecraft:
+    name: "Minecraft"
+features:
+  minecraft:
+    ore_magma:
+      name: "Magma"
+    ore_soul_sand:
+      name: "Soul Sand"
+    ore_gold_deltas:
+      name: "Gold Deltas"
+    ore_quartz_deltas:
+      name: "Quartz Deltas"
+    ore_gold_nether:
+      name: "Gold Nether"
+    ore_quartz_nether:
+      name: "Quartz Nether"
+    ore_gravel_nether:
+      name: "Gravel Nether"
+    ore_blackstone:
+      name: "Blackstone"
+    ore_dirt:
+      name: "Dirt"
+    ore_gravel:
+      name: "Gravel"
+    ore_granite_upper:
+      name: "Granite Upper"
+    ore_granite_lower:
+      name: "Granite Lower"
+    ore_diorite_upper:
+      name: "Diorite Upper"
+    ore_diorite_lower:
+      name: "Diorite Lower"
+    ore_andesite_upper:
+      name: "Andesite Upper"
+    ore_andesite_lower:
+      name: "Andesite Lower"
+    ore_tuff:
+      name: "Tuff"
+    ore_coal_upper:
+      name: "Coal Upper"
+    ore_coal_lower:
+      name: "Coal Lower"
+    ore_iron_upper:
+      name: "Iron Upper"
+    ore_iron_middle:
+      name: "Iron Middle"
+    ore_iron_small:
+      name: "Iron Small"
+    ore_gold_extra:
+      name: "Gold Extra"
+    ore_gold:
+      name: "Gold"
+    ore_gold_lower:
+      name: "Gold Lower"
+    ore_redstone:
+      name: "Redstone"
+    ore_redstone_lower:
+      name: "Redstone Lower"
+    ore_diamond:
+      name: "Diamond"
+    ore_diamond_large:
+      name: "Diamon Large"
+    ore_diamond_buried:
+      name: "Diamond Buried"
+    ore_lapis:
+      name: "Lapis"
+    ore_lapis_buried:
+      name: "Lapis Buried"
+    ore_infested:
+      name: "Infested"
+    ore_emerald:
+      name: "Emerald"
+    ore_ancient_debris_large:
+      name: "Ancient Debris Large"
+    ore_debris_small:
+      name: "Ancient Debris Small"
+    ore_copper:
+      name: "Copper"
+    ore_copper_large:
+      name: "Copper Large"
+    ore_clay:
+      name: "Clay"

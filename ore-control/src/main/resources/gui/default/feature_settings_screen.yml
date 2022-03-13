@@ -1,4 +1,4 @@
-name: "Choose A Setting!"
+name: "%%translation:[feature_settings_screen.name]%"
 default-icon:
   item-stack:
     ==: org.bukkit.inventory.ItemStack
@@ -7,7 +7,7 @@ default-icon:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§f%setting-name%'
+      display-name: "&f%setting-name%"
       lore:
         - "   "
-        - "§7>> §bClick to edit this setting! §7<<"
+        - "&7>> &b%%translation:[feature_settings_screen.default-icon.lore]% &7<<"

@@ -37,27 +37,27 @@ next:
   slot: 8
   item-stack:
     ==: org.bukkit.inventory.ItemStack
-    v: 1519
+    v: 2975
     type: OAK_SIGN
     meta:
       ==: ItemMeta
       meta-type: TILE_ENTITY
-      display-name: '§fNext Page'
+      display-name: "&f%%translation:[design.next.name]%"
       blockMaterial: OAK_SIGN
       lore:
         - "  "
-        - "§7>> §bClick to go to the next page! §7<<"
+        - "&7>> &b%%translation:[design.next.lore]% &7<<"
 previous:
   slot: 0
   item-stack:
     ==: org.bukkit.inventory.ItemStack
-    v: 1519
+    v: 2975
     type: OAK_SIGN
     meta:
       ==: ItemMeta
       meta-type: TILE_ENTITY
-      display-name: '§fPrevious Page'
+      display-name: "&f%%translation:[design.previous.name]%"
       blockMaterial: OAK_SIGN
       lore:
         - "  "
-        - "§7>> §bClick to go to the previous page! §7<<"
+        - "&7>> &b%%translation:[design.previous.lore]% &7<<"

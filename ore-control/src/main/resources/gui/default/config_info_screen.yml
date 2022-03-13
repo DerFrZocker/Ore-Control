@@ -1,4 +1,4 @@
-name: "Choose A Type!"
+name: "%%translation:[config_info_screen.name]%"
 whole-world:
   slot: 23
   item-stack:
@@ -8,7 +8,7 @@ whole-world:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fWhole World'
+      display-name: "&f%%translation:[config_info_screen.whole-world.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit the whole world! §7<<"
+        - "&7>> &b%%translation:[config_info_screen.whole-world.lore]% &7<<"

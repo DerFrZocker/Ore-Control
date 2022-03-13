@@ -35,6 +35,7 @@ import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
@@ -54,10 +55,11 @@ public class FeatureSelectionScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SELECTION_SCREEN;
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
         return Builders
                 .paged()
                 .identifier(IDENTIFIER)
+                .languageManager(languageManager)
                 .withSetting(settingFunction.apply("design.yml"))
                 .withSetting(settingFunction.apply("feature_icons.yml"))
                 .withSetting(settingFunction.apply("feature_selection_screen.yml"))
@@ -66,7 +68,8 @@ public class FeatureSelectionScreen {
                 .pageContent(Builders
                         .pageContent(Feature.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
-                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-name", feature.getKey()))
+                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("key", feature.getKey().getKey()))
+                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("namespace", feature.getKey().getNamespace()))
                         .itemStack((setting, guiInfo, feature) -> {
                             String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
                             ItemStack icon = setting.get(IDENTIFIER, key + ".item-stack", null);
