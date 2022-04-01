@@ -89,6 +89,7 @@ public class NumberEditScreen {
                 .addListButton(Builders
                         .listButton()
                         .identifier("values")
+                        .withMessageValue(((setting, guiInfo, value) -> new MessageValue("value", value)))
                         .withAction((clickAction, value) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, value) -> numberConsumer.accept(guiManager.getPlayerGuiData(clickAction.getPlayer()), NumberConversions.toDouble(value)))
                         .withAction((clickAction, value) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).apply(plugin, oreControlManager))

@@ -7,7 +7,7 @@ default-icon:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: "&f%setting-name%"
+      display-name: "&f%%translation:[settings.%setting%.name]%"
       lore:
         - "   "
-        - "&7>> &b%%translation:[feature_settings_screen.default-icon.lore]% &7<<"
+        - "&7>> &b%%translation:[feature_settings_screen.default-icon.lore.left-click]% &7<<"

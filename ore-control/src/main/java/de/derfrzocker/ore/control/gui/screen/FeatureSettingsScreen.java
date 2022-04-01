@@ -69,7 +69,7 @@ public class FeatureSettingsScreen {
                 .pageContent(Builders
                         .pageContent(SettingWrapper.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
-                        .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting-name", settingWrapper.getSetting().getName()))
+                        .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting", settingWrapper.getSetting().getName()))
                         .itemStack((setting, guiInfo, settingWrapper) -> setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, settingWrapper) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setSettingWrapper(settingWrapper))

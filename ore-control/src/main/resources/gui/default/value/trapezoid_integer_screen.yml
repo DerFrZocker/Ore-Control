@@ -1,4 +1,4 @@
-name: "Choose A Type!"
+name: "%%translation:[trapezoid_integer_screen.name]%"
 min-inclusive:
   slot: 20
   item-stack:
@@ -8,10 +8,10 @@ min-inclusive:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fMin Inclusive'
+      display-name: "&f%%translation:[trapezoid_integer_screen.min-inclusive.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit min inclusive! §7<<"
+        - "&7>> &b%%translation:[trapezoid_integer_screen.min-inclusive.lore.left-click]% &7<<"
 max-inclusive:
   slot: 24
   item-stack:
@@ -21,10 +21,10 @@ max-inclusive:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fMax Inclusive'
+      display-name: "&f%%translation:[trapezoid_integer_screen.max-inclusive.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit max inclusive! §7<<"
+        - "&7>> &b%%translation:[trapezoid_integer_screen.max-inclusive.lore.left-click]% &7<<"
 plateau:
   slot: 22
   item-stack:
@@ -34,7 +34,7 @@ plateau:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fPlateau'
+      display-name: "&f%%translation:[trapezoid_integer_screen.plateau.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit plateau! §7<<"
+        - "&7>> &b%%translation:[trapezoid_integer_screen.plateau.lore.left-click]% &7<<"

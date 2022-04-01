@@ -1,30 +1,87 @@
 design:
   next:
     name: "Next Page"
-    lore: "Click to go to the next page!"
+    lore:
+      left-click: "Click to go to the next page!"
   previous:
     name: "Previous Page"
-    lore: "Click to go to the previous page!"
+    lore:
+      left-click: "Click to go to the previous page!"
 config_info_screen:
   name: "Choose A Type!"
   whole-world:
     name: "Whole World"
-    lore: "Click to edit the whole world!"
+    lore:
+      left-click: "Click to edit the whole world!"
 config_infos_screen:
   name: "Choose A Config"
   default-icons:
     global:
       name: "Global Config"
-      lore: "Click to select the global config!"
+      lore:
+        left-click: "Click to select the global config!"
     template:
-      lore: "Click to select this template!"
+      lore:
+        left-click: "Click to select this template!"
     world:
-      lore: "Click to select this world!"
+      lore:
+        left-click: "Click to select this world!"
 feature_selection_screen:
   name: "Choose A Feature!"
   default-icon:
-    lore: "Click to select this feature!"
+    lore:
+      left-click: "Click to select this feature!"
 feature_settings_screen:
   name: "Choose A Setting!"
   default-icon:
-    lore: "Click to edit this setting!"
+    lore:
+      left-click: "Click to edit this setting!"
+above_bottom_offset_integer_screen:
+  name: "Below Top Offset"
+  base:
+    name: "Base"
+    lore:
+      left-click: "Click to edit the base value!"
+below_top_offset_integer_screen:
+  name: "Below Top Offset"
+  base:
+    name: "Base"
+    lore:
+      left-click: "Click to edit the base value!"
+number_edit_screen:
+  name: "Set A Value!"
+  default-icon:
+    lore:
+      current: "Currently: &d%current-value%"
+  add:
+    name: "Add %value%"
+    lore:
+      left-click: "Click to add %value%!"
+  subtract:
+    name: "Subtract %value%"
+    lore:
+      left-click: "Click to subtract %value%!"
+trapezoid_integer_screen:
+  name: "Trapezoid Distribution"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
+  plateau:
+    name: "Plateau"
+    lore:
+      left-click: "Click to edit plateau!"
+uniform_integer_screen:
+  name: "Uniform Distribution"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"

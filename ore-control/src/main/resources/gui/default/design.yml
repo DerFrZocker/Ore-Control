@@ -46,7 +46,7 @@ next:
       blockMaterial: OAK_SIGN
       lore:
         - "  "
-        - "&7>> &b%%translation:[design.next.lore]% &7<<"
+        - "&7>> &b%%translation:[design.next.lore.left-click]% &7<<"
 previous:
   slot: 0
   item-stack:
@@ -60,4 +60,4 @@ previous:
       blockMaterial: OAK_SIGN
       lore:
         - "  "
-        - "&7>> &b%%translation:[design.previous.lore]% &7<<"
+        - "&7>> &b%%translation:[design.previous.lore.left-click]% &7<<"

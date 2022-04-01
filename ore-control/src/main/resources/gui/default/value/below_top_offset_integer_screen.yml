@@ -1,4 +1,4 @@
-name: "Choose A Type!"
+name: "%%translation:[below_top_offset_integer_screen.name]%"
 base:
   slot: 22
   item-stack:
@@ -8,7 +8,7 @@ base:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fBase'
+      display-name: "&f%%translation:[below_top_offset_integer_screen.base.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit base! §7<<"
+        - "&7>> &b%%translation:[below_top_offset_integer_screen.base.lore.left-click]% &7<<"

@@ -68,8 +68,8 @@ public class FeatureSelectionScreen {
                 .pageContent(Builders
                         .pageContent(Feature.class)
                         .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
-                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("key", feature.getKey().getKey()))
-                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("namespace", feature.getKey().getNamespace()))
+                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-key", feature.getKey().getKey()))
+                        .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-namespace", feature.getKey().getNamespace()))
                         .itemStack((setting, guiInfo, feature) -> {
                             String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
                             ItemStack icon = setting.get(IDENTIFIER, key + ".item-stack", null);

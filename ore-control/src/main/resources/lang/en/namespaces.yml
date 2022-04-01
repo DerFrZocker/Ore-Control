@@ -1,0 +1,5 @@
+namespaces:
+  minecraft:
+    name: "Minecraft"
+  feature:
+    name: "Feature"

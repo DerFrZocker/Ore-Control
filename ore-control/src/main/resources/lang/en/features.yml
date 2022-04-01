@@ -1,6 +1,3 @@
-namespaces:
-  minecraft:
-    name: "Minecraft"
 features:
   minecraft:
     ore_magma:

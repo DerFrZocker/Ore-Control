@@ -1,0 +1,16 @@
+value-types:
+  feature:
+    fixed_integer:
+      name: "Fixed Integer"
+    fixed_double_to_integer:
+      name: "Fixed Double"
+    uniform_integer:
+      name: "Uniform"
+    trapezoid_integer:
+      name: "Trapezoid"
+    above_bottom_offset_integer:
+      name: "Above Bottom Offset"
+    below_top_offset_integer:
+      name: "Below Top Offset"
+    fixed_float:
+      name: "Fixed Float"

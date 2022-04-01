@@ -11,4 +11,4 @@ whole-world:
       display-name: "&f%%translation:[config_info_screen.whole-world.name]%"
       lore:
         - "   "
-        - "&7>> &b%%translation:[config_info_screen.whole-world.lore]% &7<<"
+        - "&7>> &b%%translation:[config_info_screen.whole-world.lore.left-click]% &7<<"

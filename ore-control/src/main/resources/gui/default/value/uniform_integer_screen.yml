@@ -1,4 +1,4 @@
-name: "Choose A Type!"
+name: "%%translation:[uniform_integer_screen.name]%"
 min-inclusive:
   slot: 21
   item-stack:
@@ -8,10 +8,10 @@ min-inclusive:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fMin Inclusive'
+      display-name: "&f%%translation:[uniform_integer_screen.min-inclusive.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit min inclusive! §7<<"
+        - "&7>> &b%%translation:[uniform_integer_screen.min-inclusive.lore.left-click]% &7<<"
 max-inclusive:
   slot: 23
   item-stack:
@@ -21,7 +21,7 @@ max-inclusive:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§fMax Inclusive'
+      display-name: "&f%%translation:[uniform_integer_screen.max-inclusive.name]%"
       lore:
         - "   "
-        - "§7>> §bClick to edit max inclusive! §7<<"
+        - "&7>> &b%%translation:[uniform_integer_screen.max-inclusive.lore.left-click]% &7<<"

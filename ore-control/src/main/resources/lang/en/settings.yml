@@ -1,0 +1,17 @@
+settings:
+  size:
+    name: "Size"
+  discard-chance-on-air-exposure:
+    name: "Discard Chance On Air Exposure"
+  count:
+    name: "Count"
+  height:
+    name: "Height"
+  chance:
+    name: "Chance"
+  min-inclusive:
+    name: "Min Inclusive"
+  max-inclusive:
+    name: "Max Inclusive"
+  max-water-depth:
+    name: "Max Water Depth"

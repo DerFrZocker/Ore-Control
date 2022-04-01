@@ -1,4 +1,4 @@
-name: "Set A Value!"
+name: "%%translation:[number_edit_screen.name]%"
 default-icon:
   slot: 22
   item-stack:
@@ -8,10 +8,10 @@ default-icon:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: '§f%setting-name%'
+      display-name: "&f%%translation:[settings.%setting%.name]%"
       lore:
         - "   "
-        - " &7> &fCurrently: &d%current-value%"
+        - " &7> &f%%translation:[number_edit_screen.default-icon.lore.current]%"
 values:
   0:
     slot: 24
@@ -23,10 +23,10 @@ values:
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '§fAdd 1'
+        display-name: "&f%%translation:[number_edit_screen.add.name]%"
         lore:
           - "   "
-          - '§7>> §bClick to add 1! §7<<'
+          - "&7>> &b%%translation:[number_edit_screen.add.lore.left-click]% &7<<"
   1:
     slot: 23
     value: 0.1
@@ -37,10 +37,10 @@ values:
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '§fAdd 0.1'
+        display-name: "&f%%translation:[number_edit_screen.add.name]%"
         lore:
           - "   "
-          - '§7>> §bClick to add 0.1! §7<<'
+          - "&7>> &b%%translation:[number_edit_screen.add.lore.left-click]% &7<<"
   2:
     slot: 20
     value: -1
@@ -51,10 +51,10 @@ values:
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '§fSubtract 1'
+        display-name: "&f%%translation:[number_edit_screen.subtract.name]%"
         lore:
           - "   "
-          - '§7>> §bClick to subtract 1! §7<<'
+          - "&7>> &b%%translation:[number_edit_screen.subtract.lore.left-click]% &7<<"
   3:
     slot: 21
     value: -0.1
@@ -65,7 +65,7 @@ values:
       meta:
         ==: ItemMeta
         meta-type: UNSPECIFIC
-        display-name: '§fSubtract 0.1'
+        display-name: "&f%%translation:[number_edit_screen.subtract.name]%"
         lore:
           - "   "
-          - '§7>> §bClick to subtract 0.1! §7<<'
+          - "&7>> &b%%translation:[number_edit_screen.subtract.lore.left-click]% &7<<"
