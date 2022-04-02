@@ -105,6 +105,28 @@ public class TrapezoidIntegerScreen {
                                     guiManager.openValueScreen(clickAction.getPlayer(), value.getPlateau());
                                 })
                         )
-                ).build();
+                )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier("back")
+                        .button(Builders
+                                .button()
+                                .identifier("back")
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> {
+                                            PlayerGuiData data = guiManager.getPlayerGuiData(clickAction.getPlayer());
+                                            data.setPreviousToEditValue();
+
+                                            if (data.getToEditValue() == null) {
+                                                data.setOriginalValue(null);
+                                                guiManager.openFeatureSettingsScreen(clickAction.getPlayer());
+                                            } else {
+                                                guiManager.openValueScreen(clickAction.getPlayer(), data.getToEditValue());
+                                            }
+                                        }
+                                )
+                        )
+                )
+                .build();
     }
 }

@@ -32,6 +32,7 @@ import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import org.bukkit.plugin.Plugin;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class PlayerGuiData {
@@ -40,6 +41,7 @@ public class PlayerGuiData {
     private Biome biome = null;
     private Feature<?> feature = null;
     private SettingWrapper settingWrapper = null;
+    private LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
     private Value<?, ?, ?> originalValue = null;
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
@@ -96,7 +98,15 @@ public class PlayerGuiData {
         return toEditValue;
     }
 
+    public void setPreviousToEditValue() {
+        this.toEditValue = valueTree.pollLast();
+    }
+
     public void setToEditValue(Value<?, ?, ?> toEditValue) {
+        if (this.toEditValue != null) {
+            valueTree.add(this.toEditValue);
+        }
+
         this.toEditValue = toEditValue;
     }
 
