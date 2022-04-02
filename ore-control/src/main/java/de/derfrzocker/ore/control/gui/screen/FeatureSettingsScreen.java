@@ -25,13 +25,7 @@
 
 package de.derfrzocker.ore.control.gui.screen;
 
-import de.derfrzocker.feature.api.Configuration;
-import de.derfrzocker.feature.api.ConfigurationAble;
-import de.derfrzocker.feature.api.Feature;
-import de.derfrzocker.feature.api.FeaturePlacementModifier;
-import de.derfrzocker.feature.api.PlacementModifierConfiguration;
-import de.derfrzocker.feature.api.Setting;
-import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.*;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;

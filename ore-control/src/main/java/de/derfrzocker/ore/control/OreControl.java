@@ -28,7 +28,9 @@ package de.derfrzocker.ore.control;
 import com.google.common.base.Charsets;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
+import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
@@ -42,7 +44,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,13 +79,22 @@ public class OreControl extends JavaPlugin implements Listener {
 
         new Metrics(this, 4244);
 
-        oreControlManager = new OreControlManager(registries, configManager, world -> new HashSet<>());
+        oreControlManager = new OreControlManager(registries, configManager, nmsReplacer::getBiomes);
         languageManager = new DirectLanguageManager(this, new PluginLanguageLoader(this), "en");
         guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
             return guiSetting;
         });
+
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    @Override
+    public void onDisable() {
+        if (oreControlManager != null) {
+            oreControlManager.getConfigManager().save();
+        }
     }
 
     @Override
@@ -92,5 +105,14 @@ public class OreControl extends JavaPlugin implements Listener {
         guiManager.openGui(player);
 
         return true;
+    }
+
+    @EventHandler
+    public void onWorldInit(WorldInitEvent event) {
+        ConfigInfo configInfo = oreControlManager.getConfigManager().getOrCreateConfigInfo(event.getWorld().getName());
+        if (configInfo.getConfigType() != ConfigType.WORLD) {
+            configInfo.setConfigType(ConfigType.WORLD);
+            oreControlManager.getConfigManager().saveAndReload();
+        }
     }
 }

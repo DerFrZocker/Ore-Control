@@ -34,13 +34,7 @@ import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.api.util.Reloadable;
 import org.bukkit.NamespacedKey;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigManager implements Reloadable {
@@ -82,7 +76,15 @@ public class ConfigManager implements Reloadable {
         generationConfigCache.clear();
     }
 
-    public void saveAndReload() {
+    public void save() {
+        // saving config infos
+        for (ConfigInfo configInfo : configInfos) {
+            if (configInfo.isDirty()) {
+                configInfoDao.save(configInfo);
+                configInfo.saved();
+            }
+        }
+
         // saving world specific values
         for (Map.Entry<ConfigInfo, Map<NamespacedKey, Optional<Config>>> configInfoEntry : configCache.entrySet()) {
             ConfigInfo configInfo = configInfoEntry.getKey();
@@ -119,7 +121,10 @@ public class ConfigManager implements Reloadable {
                 }
             }
         }
+    }
 
+    public void saveAndReload() {
+        save();
         reload();
     }
 
@@ -139,6 +144,17 @@ public class ConfigManager implements Reloadable {
         configInfos.addAll(tmpConfigInfos);
 
         return configInfos;
+    }
+
+    public ConfigInfo getOrCreateConfigInfo(String worldName) {
+        ConfigInfo configInfo = worldNames.get(worldName);
+        if (configInfo == null) {
+            configInfo = configInfoDao.createConfigInfo(worldName);
+            configInfos.add(configInfo);
+            worldNames.put(worldName, configInfo);
+        }
+
+        return configInfo;
     }
 
     public Optional<Config> getConfig(ConfigInfo configInfo, NamespacedKey key) {

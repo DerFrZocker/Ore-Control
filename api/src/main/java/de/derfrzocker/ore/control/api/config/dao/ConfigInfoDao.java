@@ -50,6 +50,21 @@ public class ConfigInfoDao {
         this.globalConfigs = globalConfigs;
     }
 
+    public ConfigInfo createConfigInfo(String worldName) {
+        File file = new File(normalConfigs, worldName);
+
+        if (file.exists()) {
+            int i = 0;
+
+            do {
+                file = new File(normalConfigs, worldName + "_" + i);
+                i++;
+            } while (file.exists());
+        }
+
+        return new ConfigInfo(worldName, ConfigType.TEMPLATE, file);
+    }
+
     public ConfigInfo getGlobalConfig() {
         if (!globalConfigs.exists()) {
             globalConfigs.mkdirs();

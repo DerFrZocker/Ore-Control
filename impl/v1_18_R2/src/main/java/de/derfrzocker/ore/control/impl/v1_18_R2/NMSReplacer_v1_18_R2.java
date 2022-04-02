@@ -47,11 +47,7 @@ import de.derfrzocker.feature.common.value.number.integer.uniform.UniformInteger
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.OreFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.configuration.OreFeatureConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.CountModifier;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.HeightRangeModifier;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.RarityModifier;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.SurfaceRelativeThresholdModifier;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.SurfaceWaterDepthModifier;
+import de.derfrzocker.feature.impl.v1_18_R2.placement.*;
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.FixedHeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerType;
@@ -63,11 +59,7 @@ import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.impl.v1_18_R2.feature.generator.OreFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R2.feature.generator.ScatteredOreFeatureGeneratorHook;
-import de.derfrzocker.ore.control.impl.v1_18_R2.placement.CountModifierHook;
-import de.derfrzocker.ore.control.impl.v1_18_R2.placement.HeightRangeModifierHook;
-import de.derfrzocker.ore.control.impl.v1_18_R2.placement.RarityModifierHook;
-import de.derfrzocker.ore.control.impl.v1_18_R2.placement.SurfaceRelativeThresholdModifierHook;
-import de.derfrzocker.ore.control.impl.v1_18_R2.placement.SurfaceWaterDepthModifierHook;
+import de.derfrzocker.ore.control.impl.v1_18_R2.placement.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -76,6 +68,7 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -83,17 +76,12 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.ScatteredOreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
-import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
-import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
+import net.minecraft.world.level.levelgen.placement.*;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.util.CraftNamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,11 +90,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -184,7 +168,20 @@ public class NMSReplacer_v1_18_R2 {
     }
 
     public void registerBiomes() {
-        forEachBiome((biome, resourceLocation) -> registries.getBiomeRegistry().register(new de.derfrzocker.ore.control.api.Biome(CraftNamespacedKey.fromMinecraft(resourceLocation))));
+        Registry<PlacedFeature> placedFeatureRegistry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
+        forEachBiome((biome, resourceLocation) -> {
+            de.derfrzocker.ore.control.api.Biome bio = new de.derfrzocker.ore.control.api.Biome(CraftNamespacedKey.fromMinecraft(resourceLocation));
+
+            biome.getGenerationSettings().features().forEach(featureSet -> {
+                featureSet.forEach(holder -> {
+                    PlacedFeature feature = holder.value();
+                    ResourceLocation featureKey = placedFeatureRegistry.getKey(feature);
+                    registries.getFeatureRegistry().get(CraftNamespacedKey.fromMinecraft(featureKey)).ifPresent(value -> bio.getFeatures().add(value));
+                });
+            });
+
+            registries.getBiomeRegistry().register(bio);
+        });
     }
 
     public void saveDefaultValues(File directory) {
@@ -203,6 +200,22 @@ public class NMSReplacer_v1_18_R2 {
                 throw new RuntimeException("Unexpected error while hooking in NMS for Biome: " + biome, e);
             }
         });
+    }
+
+    public Set<de.derfrzocker.ore.control.api.Biome> getBiomes(World world) {
+        Set<de.derfrzocker.ore.control.api.Biome> biomes = new LinkedHashSet<>();
+        ServerLevel level = ((CraftWorld) world).getHandle();
+        Registry<Biome> registry = getRegistry().registryOrThrow(Registry.BIOME_REGISTRY);
+
+        for (Holder<Biome> biomeHolder : level.getChunkSource().chunkMap.generator.getBiomeSource().possibleBiomes()) {
+            Biome biome = biomeHolder.value();
+
+            ResourceLocation key = registry.getKey(biome);
+
+            biomes.add(registries.getBiomeRegistry().get(CraftNamespacedKey.fromMinecraft(key)).get());
+        }
+
+        return biomes;
     }
 
     private void saveWorldValues(File directory) {

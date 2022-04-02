@@ -80,7 +80,7 @@ public class ConfigDao {
 
     public void saveConfig(ConfigInfo configInfo, NamespacedKey key, Config config) {
         if (config == null) {
-            configInfo.getDataDirectory().delete();
+            getConfigFile(configInfo, key).delete();
             return;
         }
 
@@ -89,7 +89,7 @@ public class ConfigDao {
 
     public void saveConfig(ConfigInfo configInfo, Biome biome, NamespacedKey key, Config config) {
         if (config == null) {
-            configInfo.getDataDirectory().delete();
+            getConfigFile(configInfo, biome, key).delete();
             return;
         }
 

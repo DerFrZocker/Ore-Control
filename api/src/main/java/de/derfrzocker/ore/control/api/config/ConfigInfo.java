@@ -64,4 +64,8 @@ public class ConfigInfo {
     public boolean isDirty() {
         return dirty;
     }
+
+    public void saved() {
+        dirty = false;
+    }
 }
