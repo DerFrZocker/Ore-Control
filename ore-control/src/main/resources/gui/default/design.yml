@@ -61,3 +61,16 @@ previous:
       lore:
         - "  "
         - "&7>> &b%%translation:[design.previous.lore.left-click]% &7<<"
+back:
+  slot: 3
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2975
+    type: IRON_DOOR
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '&f%%translation:[design.back.name]%'
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[design.back.lore.left-click]% &7<<"

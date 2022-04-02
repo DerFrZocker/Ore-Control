@@ -56,6 +56,16 @@ public class ConfigInfoScreen {
                                 .withAction(clickAction -> guiManager.openFeatureSelectionScreen(clickAction.getPlayer()))
                         )
                 )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier("back")
+                        .button(Builders
+                                .button()
+                                .identifier("back")
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> guiManager.openGui(clickAction.getPlayer()))
+                        )
+                )
                 .build();
     }
 }

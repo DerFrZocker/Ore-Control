@@ -117,6 +117,17 @@ public class FeatureSettingsScreen {
                             guiManager.openValueScreen(clickAction.getPlayer(), value);
                         })
                 )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier("back")
+                        .button(Builders
+                                .button()
+                                .identifier("back")
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setFeature(null))
+                                .withAction(clickAction -> guiManager.openFeatureSelectionScreen(clickAction.getPlayer()))
+                        )
+                )
                 .build();
     }
 

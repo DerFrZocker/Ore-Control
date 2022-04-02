@@ -7,6 +7,10 @@ design:
     name: "Previous Page"
     lore:
       left-click: "Click to go to the previous page!"
+  back:
+    name: "Back"
+    lore:
+      left-click: "Click to go a step back!"
 config_info_screen:
   name: "Choose A Type!"
   whole-world:
