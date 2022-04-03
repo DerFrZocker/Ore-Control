@@ -1,0 +1,13 @@
+name: "%%translation:[biome_screen.name]%"
+default-icon:
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1519
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[namespaces.%biome-namespace%.name]%: %%translation:[biomes.%biome-namespace%.%biome-key%.name]%"
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[biome_screen.default-icon.lore.left-click]% &7<<"

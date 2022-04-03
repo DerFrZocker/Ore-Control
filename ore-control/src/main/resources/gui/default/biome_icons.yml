@@ -1,0 +1,122 @@
+icons:
+  minecraft:
+    mushroom_fields:
+      type: "RED_MUSHROOM_BLOCK"
+    deep_frozen_ocean:
+      type: "WATER_BUCKET"
+    frozen_ocean:
+      type: "WATER_BUCKET"
+    deep_cold_ocean:
+      type: "WATER_BUCKET"
+    cold_ocean:
+      type: "WATER_BUCKET"
+    deep_ocean:
+      type: "WATER_BUCKET"
+    ocean:
+      type: "WATER_BUCKET"
+    deep_lukewarm_ocean:
+      type: "WATER_BUCKET"
+    lukewarm_ocean:
+      type: "WATER_BUCKET"
+    warm_ocean:
+      type: "WATER_BUCKET"
+    stony_shore:
+      type: "STONE"
+    swamp:
+      type: "BROWN_MUSHROOM"
+    snowy_slopes:
+      type: "POWDER_SNOW_BUCKET"
+    snowy_plains:
+      type: "POWDER_SNOW_BUCKET"
+    snowy_beach:
+      type: "POWDER_SNOW_BUCKET"
+    windswept_gravelly_hills:
+      type: "STONE"
+    grove:
+      type: "POWDER_SNOW_BUCKET"
+    windswept_hills:
+      type: "STONE"
+    snowy_taiga:
+      type: "SNOW"
+    windswept_forest:
+      type: "SPRUCE_LOG"
+    taiga:
+      type: "SPRUCE_LOG"
+    plains:
+      type: "GRASS_BLOCK"
+    meadow:
+      type: "DANDELION"
+    beach:
+      type: "SAND"
+    forest:
+      type: "OAK_LOG"
+    old_growth_spruce_taiga:
+      type: "SPRUCE_LOG"
+    flower_forest:
+      type: "DANDELION"
+    birch_forest:
+      type: "BIRCH_LOG"
+    dark_forest:
+      type: "DARK_OAK_LOG"
+    savanna_plateau:
+      type: "ACACIA_LOG"
+    savanna:
+      type: "ACACIA_LOG"
+    jungle:
+      type: "JUNGLE_LOG"
+    badlands:
+      type: "TERRACOTTA"
+    eroded_badlands:
+      type: "TERRACOTTA"
+    desert:
+      type: "SAND"
+    wooded_badlands:
+      type: "TERRACOTTA"
+    jagged_peaks:
+      type: "SNOW_BLOCK"
+    stony_peaks:
+      type: "STONE"
+    frozen_river:
+      type: "ICE"
+    river:
+      type: "WATER_BUCKET"
+    ice_spikes:
+      type: "ICE"
+    old_growth_pine_taiga:
+      type: "SPRUCE_LOG"
+    sunflower_plains:
+      type: "SUNFLOWER"
+    old_growth_birch_forest:
+      type: "BIRCH_LOG"
+    sparse_jungle:
+      type: "JUNGLE_LOG"
+    bamboo_jungle:
+      type: "BAMBOO"
+    windswept_savanna:
+      type: "ACACIA_LOG"
+    frozen_peaks:
+      type: "SNOW_BLOCK"
+    dripstone_caves:
+      type: "DRIPSTONE_BLOCK"
+    lush_caves:
+      type: "FLOWERING_AZALEA"
+    nether_wastes:
+      type: "NETHERRACK"
+    soul_sand_valley:
+      type: "SOUL_SAND"
+    crimson_forest:
+      type: "CRIMSON_NYLIUM"
+    warped_forest:
+      type: "WARPED_NYLIUM"
+    basalt_deltas:
+      type: "BASALT"
+    the_end:
+      type: "END_STONE"
+    end_highlands:
+      type: "END_STONE"
+    end_midlands:
+      type: "END_STONE"
+    small_end_islands:
+      type: "END_STONE"
+    end_barrens:
+      type: "END_STONE"

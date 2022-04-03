@@ -109,7 +109,7 @@ public class FeatureSelectionScreen {
                                         guiManager.openConfigInfoScreen(clickAction.getPlayer());
                                     } else {
                                         playerGuiData.setBiome(null);
-                                        // TODO open biome gui
+                                        guiManager.openBiomeScreen(clickAction.getPlayer());
                                     }
                                 })
                         )

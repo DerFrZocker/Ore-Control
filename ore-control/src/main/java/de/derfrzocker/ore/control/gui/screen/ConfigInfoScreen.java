@@ -38,6 +38,7 @@ public class ConfigInfoScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFO_SCREEN;
     private static final String WHOLE_WORLD = "whole-world";
+    private static final String BIOME = "biome";
 
     public static InventoryGui getGui(LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction, ConfigManager configManager) {
         return Builders
@@ -54,6 +55,16 @@ public class ConfigInfoScreen {
                                 .identifier(WHOLE_WORLD)
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> guiManager.openFeatureSelectionScreen(clickAction.getPlayer()))
+                        )
+                )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier(BIOME)
+                        .button(Builders
+                                .button()
+                                .identifier(BIOME)
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> guiManager.openBiomeScreen(clickAction.getPlayer()))
                         )
                 )
                 .addButtonContext(Builders

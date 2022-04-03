@@ -34,10 +34,7 @@ import de.derfrzocker.feature.common.value.number.integer.uniform.UniformInteger
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.ore.control.api.OreControlManager;
-import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
-import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
-import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
-import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
+import de.derfrzocker.ore.control.gui.screen.*;
 import de.derfrzocker.ore.control.gui.screen.value.*;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
@@ -70,6 +67,7 @@ public class OreControlGuiManager implements Listener {
     private final InventoryGui configInfoScreen;
     private final InventoryGui featureSelectionScreen;
     private final InventoryGui featureSettingsScreen;
+    private final InventoryGui biomeScreen;
     private boolean openOther = false;
 
     public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
@@ -79,6 +77,7 @@ public class OreControlGuiManager implements Listener {
         this.configInfoScreen = ConfigInfoScreen.getGui(languageManager, this, settingFunction, oreControlManager.getConfigManager());
         this.featureSelectionScreen = FeatureSelectionScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
         this.featureSettingsScreen = FeatureSettingsScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
+        this.biomeScreen = BiomeScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
 
         this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(plugin, oreControlManager, languageManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(plugin, oreControlManager, languageManager, this, settingFunction));
@@ -109,6 +108,10 @@ public class OreControlGuiManager implements Listener {
 
     public void openFeatureSettingsScreen(Player player) {
         openGui(featureSettingsScreen, player);
+    }
+
+    public void openBiomeScreen(Player player) {
+        openGui(biomeScreen, player);
     }
 
     public void openValueScreen(Player player, Value<?, ?, ?> value) {

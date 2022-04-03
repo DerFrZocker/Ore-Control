@@ -34,17 +34,17 @@ import java.util.function.Function;
 
 public class OreControlManager {
 
-    private final Registries registries;
+    private final OreControlRegistries registries;
     private final ConfigManager configManager;
     private final Function<World, Set<Biome>> biomeFunction;
 
-    public OreControlManager(Registries registries, ConfigManager configManager, Function<World, Set<Biome>> biomeFunction) {
+    public OreControlManager(OreControlRegistries registries, ConfigManager configManager, Function<World, Set<Biome>> biomeFunction) {
         this.registries = registries;
         this.configManager = configManager;
         this.biomeFunction = biomeFunction;
     }
 
-    public Registries getRegistries() {
+    public OreControlRegistries getRegistries() {
         return registries;
     }
 

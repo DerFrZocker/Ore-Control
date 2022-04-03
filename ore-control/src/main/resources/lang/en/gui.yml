@@ -17,6 +17,15 @@ config_info_screen:
     name: "Whole World"
     lore:
       left-click: "Click to edit the whole world!"
+  biome:
+    name: "Biome Specific"
+    lore:
+      left-click: "Click to edit a specific biome!"
+biome_screen:
+  name: "Choose A Biome!"
+  default-icon:
+    lore:
+      left-click: "Click to select this biome!"
 config_infos_screen:
   name: "Choose A Config"
   default-icons:
