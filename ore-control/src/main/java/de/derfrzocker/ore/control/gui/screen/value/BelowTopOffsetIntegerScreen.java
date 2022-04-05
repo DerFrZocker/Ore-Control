@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
+import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
@@ -55,14 +56,21 @@ public class BelowTopOffsetIntegerScreen {
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> {
                                     PlayerGuiData guiData = guiManager.getPlayerGuiData(clickAction.getPlayer());
-                                    if (!(guiData.getToEditValue() instanceof BelowTopOffsetIntegerValue value)) {
-                                        plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", BelowTopOffsetIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
+                                    if ((guiData.getToEditValue() instanceof BelowTopOffsetIntegerValue value)) {
+                                        guiData.setToEditValue(value.getBase());
+
+                                        guiManager.openValueScreen(clickAction.getPlayer(), value.getBase());
                                         return;
                                     }
 
-                                    guiData.setToEditValue(value.getBase());
+                                    if ((guiData.getToEditValue() instanceof de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerValue value)) {
+                                        guiData.setToEditValue(value.getBase());
 
-                                    guiManager.openValueScreen(clickAction.getPlayer(), value.getBase());
+                                        guiManager.openValueScreen(clickAction.getPlayer(), value.getBase());
+                                        return;
+                                    }
+
+                                    plugin.getLogger().warning(String.format("Expected a value of type '%s' or of type '%s' but got one of type '%s', this is a bug!", BelowTopOffsetIntegerValue.class, de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                                 })
                         )
                 )

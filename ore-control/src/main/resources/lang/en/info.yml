@@ -1,7 +1,7 @@
 authors: [DerFrZocker]
 icon:
   ==: org.bukkit.inventory.ItemStack
-  v: 2975
+  v: 2865
   type: PLAYER_HEAD
   meta:
     ==: ItemMeta

@@ -36,6 +36,7 @@ import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerTy
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.*;
 import de.derfrzocker.ore.control.gui.screen.value.*;
+import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
@@ -83,8 +84,13 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(plugin, oreControlManager, languageManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        if (Version.v1_18_R2 == Version.getServerVersion(plugin.getServer())) {
+            this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+            this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        } else {
+            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        }
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

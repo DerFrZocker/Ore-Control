@@ -6,6 +6,9 @@
 /common/target/
 /common/.flattened-pom.xml
 /common/ore-control-common.iml
+/impl/v1_18_R1/target/
+/impl/v1_18_R1/.flattened-pom.xml
+/impl/v1_18_R1/ore-control-impl-v1_18_R1.iml
 /impl/v1_18_R2/target/
 /impl/v1_18_R2/.flattened-pom.xml
 /impl/v1_18_R2/ore-control-impl-v1_18_R2.iml

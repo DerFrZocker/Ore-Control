@@ -11,6 +11,7 @@
     </parent>
 
     <modules>
+        <module>v1_18_R1</module>
         <module>v1_18_R2</module>
     </modules>
 

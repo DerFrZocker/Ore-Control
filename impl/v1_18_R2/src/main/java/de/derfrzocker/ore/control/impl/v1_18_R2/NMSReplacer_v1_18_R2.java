@@ -54,6 +54,7 @@ import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntege
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.target.FixedTargetType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.target.TargetType;
+import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
@@ -95,7 +96,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class NMSReplacer_v1_18_R2 {
+public class NMSReplacer_v1_18_R2 implements NMSReplacer {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final Codec<Config> configCodec;
@@ -109,6 +110,7 @@ public class NMSReplacer_v1_18_R2 {
         this.configCodec = configManager.getConfigCodec();
     }
 
+    @Override
     public void register() {
         registerValueTypes();
         registerFeatureGenerators();
@@ -184,6 +186,7 @@ public class NMSReplacer_v1_18_R2 {
         });
     }
 
+    @Override
     public void saveDefaultValues(File directory) {
         File world = new File(directory, "world");
         File biomes = new File(directory, "biome");
@@ -192,6 +195,7 @@ public class NMSReplacer_v1_18_R2 {
         saveBiomeValues(biomes);
     }
 
+    @Override
     public void hookIntoBiomes() {
         forEachBiome((biome, resourceLocation) -> {
             try {
@@ -202,6 +206,7 @@ public class NMSReplacer_v1_18_R2 {
         });
     }
 
+    @Override
     public Set<de.derfrzocker.ore.control.api.Biome> getBiomes(World world) {
         Set<de.derfrzocker.ore.control.api.Biome> biomes = new LinkedHashSet<>();
         ServerLevel level = ((CraftWorld) world).getHandle();

@@ -26,6 +26,7 @@
 package de.derfrzocker.ore.control;
 
 import com.google.common.base.Charsets;
+import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
@@ -34,7 +35,9 @@ import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
+import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
+import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
 import de.derfrzocker.spigot.utils.language.manager.DirectLanguageManager;
@@ -53,7 +56,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class OreControl extends JavaPlugin implements Listener {
@@ -70,7 +72,16 @@ public class OreControl extends JavaPlugin implements Listener {
         ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
         ConfigManager configManager = new ConfigManager(configDao, configInfoDao);
         configManager.reload();
-        NMSReplacer_v1_18_R2 nmsReplacer = new NMSReplacer_v1_18_R2(registries, configManager);
+        Version version = Version.getServerVersion(getServer());
+        NMSReplacer nmsReplacer;
+        if (version == Version.v1_18_R1) {
+            nmsReplacer = new NMSReplacer_v1_18_R1(registries, configManager);
+        } else if (version == Version.v1_18_R2) {
+            nmsReplacer = new NMSReplacer_v1_18_R2(registries, configManager);
+        } else {
+            throw new IllegalStateException(String.format("Server version '%s' is not supported by this plugin version!", version));
+        }
+
         nmsReplacer.register();
         File defaults = new File(getDataFolder(), "data/default");
         nmsReplacer.saveDefaultValues(defaults);

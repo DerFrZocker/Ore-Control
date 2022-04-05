@@ -3,7 +3,7 @@ min-inclusive:
   slot: 21
   item-stack:
     ==: org.bukkit.inventory.ItemStack
-    v: 1519
+    v: 2865
     type: COAL
     meta:
       ==: ItemMeta
@@ -16,7 +16,7 @@ max-inclusive:
   slot: 23
   item-stack:
     ==: org.bukkit.inventory.ItemStack
-    v: 1519
+    v: 2865
     type: COAL
     meta:
       ==: ItemMeta

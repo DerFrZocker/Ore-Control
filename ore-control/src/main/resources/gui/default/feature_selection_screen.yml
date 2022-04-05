@@ -2,7 +2,7 @@ name: "%%translation:[feature_selection_screen.name]%"
 default-icon:
   item-stack:
     ==: org.bukkit.inventory.ItemStack
-    v: 1519
+    v: 2865
     type: BARRIER
     meta:
       ==: ItemMeta
