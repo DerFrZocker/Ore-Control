@@ -44,6 +44,7 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerVa
 import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.OreFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.configuration.OreFeatureConfiguration;
@@ -126,6 +127,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         registries.getValueTypeRegistry(IntegerType.class).register(new TrapezoidIntegerType(registries));
         registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries));
         registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new WeightedListIntegerType(registries));
         registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
         registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
         registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);

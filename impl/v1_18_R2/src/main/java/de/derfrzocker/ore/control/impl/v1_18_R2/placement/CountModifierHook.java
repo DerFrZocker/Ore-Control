@@ -27,13 +27,11 @@ package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
-import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.CountModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.impl.v1_18_R2.ConversionUtil;
 import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.IntProviderType;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -56,14 +54,7 @@ public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlace
             Field chance = CountPlacement.class.getDeclaredField("c");
             chance.setAccessible(true);
             IntProvider value = (IntProvider) chance.get(defaultModifier);
-            IntegerValue integerValue;
-            if (value.getType() == IntProviderType.CONSTANT) {
-                integerValue = new FixedDoubleToIntegerValue(value.getMinValue());
-            } else if (value.getType() == IntProviderType.UNIFORM) {
-                integerValue = new UniformIntegerValue(new FixedDoubleToIntegerValue(value.getMinValue()), new FixedDoubleToIntegerValue(value.getMaxValue()));
-            } else { // TODO add rest of IntProvider types
-                throw new UnsupportedOperationException(String.format("No integer value equivalent for IntProvider '%s'", value));
-            }
+            IntegerValue integerValue = ConversionUtil.convert(value);
             return new CountModifierConfiguration(getPlacementModifier(), integerValue);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
