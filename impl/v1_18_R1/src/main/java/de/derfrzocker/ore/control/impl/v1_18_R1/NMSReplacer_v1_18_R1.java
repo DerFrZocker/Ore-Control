@@ -227,7 +227,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
             try {
                 saveFeature(file, null, CraftNamespacedKey.fromMinecraft(key), entry.getValue());
             } catch (Exception e) {
-                throw new RuntimeException(String.format("Error while saving feature '%s'", key));
+                throw new RuntimeException(String.format("Error while saving feature '%s'", key), e);
             }
         }
     }
@@ -245,7 +245,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
                     try {
                         saveFeature(featureFile, registries.getBiomeRegistry().get(CraftNamespacedKey.fromMinecraft(biomeKey)).get(), CraftNamespacedKey.fromMinecraft(featureKey), feature);
                     } catch (Exception e) {
-                        throw new RuntimeException(String.format("Error while saving feature '%s' in biome '%s'", featureKey, biomeKey));
+                        throw new RuntimeException(String.format("Error while saving feature '%s' in biome '%s'", featureKey, biomeKey), e);
                     }
                 }
             }
