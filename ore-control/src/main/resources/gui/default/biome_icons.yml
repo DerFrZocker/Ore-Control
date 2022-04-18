@@ -1,5 +1,7 @@
 icons:
   minecraft:
+    the_void:
+      type: "BLACK_CONCRETE"
     mushroom_fields:
       type: "RED_MUSHROOM_BLOCK"
     deep_frozen_ocean:

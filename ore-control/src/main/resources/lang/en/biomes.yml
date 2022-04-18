@@ -1,5 +1,7 @@
 biomes:
   minecraft:
+    the_void:
+      name: "The Void"
     mushroom_fields:
       name: "Mushroom Fields"
     deep_frozen_ocean:
