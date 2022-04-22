@@ -8,7 +8,7 @@ default-icon:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: "&f%%translation:[settings.%setting%.name]%"
+      display-name: "&f%%translation:[settings.%setting-name%.name]%"
       lore:
         - "   "
         - " &7> &f%%translation:[number_edit_screen.default-icon.lore.current]%"
