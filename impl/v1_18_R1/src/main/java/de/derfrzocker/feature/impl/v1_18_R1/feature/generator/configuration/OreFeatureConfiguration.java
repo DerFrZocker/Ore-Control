@@ -42,9 +42,9 @@ import java.util.Set;
 
 public class OreFeatureConfiguration implements FeatureGeneratorConfiguration {
 
+    public final static Set<Setting> SETTINGS;
     private final static Setting SIZE = new Setting("size", IntegerType.class);
     private final static Setting DISCARD_CHANCE_ON_AIR_EXPOSURE = new Setting("discard-chance-on-air-exposure", FloatType.class);
-    public final static Set<Setting> SETTINGS;
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();

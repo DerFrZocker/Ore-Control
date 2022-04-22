@@ -39,11 +39,6 @@ public class TrapezoidIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:trapezoid_integer");
     private static TrapezoidIntegerType type = null;
-
-    public static TrapezoidIntegerType type() {
-        return type;
-    }
-
     private final Codec<TrapezoidIntegerValue> codec;
 
     public TrapezoidIntegerType(Registries registries) {
@@ -61,6 +56,10 @@ public class TrapezoidIntegerType extends IntegerType {
         ).apply(builder, (minInclusive, maxInclusive, plateau) -> new TrapezoidIntegerValue(minInclusive.orElse(null), maxInclusive.orElse(null), plateau.orElse(null))));
 
         type = this;
+    }
+
+    public static TrapezoidIntegerType type() {
+        return type;
     }
 
     @Override

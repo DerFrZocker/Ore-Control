@@ -41,7 +41,6 @@ public class ConfigManager implements Reloadable {
 
     private final ConfigDao configDao;
     private final ConfigInfoDao configInfoDao;
-    private ConfigInfo globalConfigInfo;
     private final Set<ConfigInfo> configInfos = new HashSet<>();
     private final Map<String, ConfigInfo> worldNames = new ConcurrentHashMap<>();
     // TODO clean up
@@ -52,6 +51,7 @@ public class ConfigManager implements Reloadable {
     private final Map<NamespacedKey, Optional<Config>> defaultConfigCache = new ConcurrentHashMap<>();
     private final Map<Biome, Map<NamespacedKey, Optional<Config>>> defaultBiomeConfigCache = new ConcurrentHashMap<>();
     private final Map<String, Map<Biome, Map<NamespacedKey, Optional<Config>>>> generationConfigCache = new ConcurrentHashMap<>();
+    private ConfigInfo globalConfigInfo;
 
     public ConfigManager(ConfigDao configDao, ConfigInfoDao configInfoDao) {
         this.configDao = configDao;

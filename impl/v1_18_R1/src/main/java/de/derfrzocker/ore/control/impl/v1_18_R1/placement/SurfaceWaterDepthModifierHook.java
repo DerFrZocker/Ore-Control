@@ -45,6 +45,10 @@ import java.util.Random;
 
 public class SurfaceWaterDepthModifierHook extends MinecraftPlacementModifierHook<SurfaceWaterDepthFilter, SurfaceWaterDepthModifierConfiguration> {
 
+    public SurfaceWaterDepthModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceWaterDepthFilter defaultModifier) {
+        super(registries, configManager, "surface_water_depth_filter", defaultModifier, biome, namespacedKey);
+    }
+
     public static SurfaceWaterDepthModifierConfiguration createDefaultConfiguration(@NotNull SurfaceWaterDepthFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
             Field maxWaterDepth = SurfaceWaterDepthFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH);
@@ -54,10 +58,6 @@ public class SurfaceWaterDepthModifierHook extends MinecraftPlacementModifierHoo
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public SurfaceWaterDepthModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceWaterDepthFilter defaultModifier) {
-        super(registries, configManager, "surface_water_depth_filter", defaultModifier, biome, namespacedKey);
     }
 
     @Override

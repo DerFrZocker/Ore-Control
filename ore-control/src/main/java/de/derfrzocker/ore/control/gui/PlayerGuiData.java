@@ -46,6 +46,20 @@ public class PlayerGuiData {
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
 
+    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
+        if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
+            return null;
+        }
+
+        for (PlacementModifierConfiguration configuration : placementModifierConfigurations) {
+            if (configuration.getOwner() == owner) {
+                return configuration;
+            }
+        }
+
+        return null;
+    }
+
     public ConfigInfo getConfigInfo() {
         return configInfo;
     }
@@ -98,16 +112,16 @@ public class PlayerGuiData {
         return toEditValue;
     }
 
-    public void setPreviousToEditValue() {
-        this.toEditValue = valueTree.pollLast();
-    }
-
     public void setToEditValue(Value<?, ?, ?> toEditValue) {
         if (this.toEditValue != null) {
             valueTree.add(this.toEditValue);
         }
 
         this.toEditValue = toEditValue;
+    }
+
+    public void setPreviousToEditValue() {
+        this.toEditValue = valueTree.pollLast();
     }
 
     // TODO move to better location
@@ -146,19 +160,5 @@ public class PlayerGuiData {
             configuration.setValue(settingWrapper.getSetting(), getOriginalValue());
             setApplied(true);
         }
-    }
-
-    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
-        if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
-            return null;
-        }
-
-        for (PlacementModifierConfiguration configuration : placementModifierConfigurations) {
-            if (configuration.getOwner() == owner) {
-                return configuration;
-            }
-        }
-
-        return null;
     }
 }

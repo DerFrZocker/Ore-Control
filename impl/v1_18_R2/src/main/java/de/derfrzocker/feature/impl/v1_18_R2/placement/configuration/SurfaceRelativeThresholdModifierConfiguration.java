@@ -39,9 +39,9 @@ import java.util.Set;
 
 public class SurfaceRelativeThresholdModifierConfiguration implements PlacementModifierConfiguration {
 
+    public final static Set<Setting> SETTINGS;
     private final static Setting MIN_INCLUSIVE = new Setting("min-inclusive", IntegerType.class);
     private final static Setting MAX_INCLUSIVE = new Setting("max-inclusive", IntegerType.class);
-    public final static Set<Setting> SETTINGS;
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();

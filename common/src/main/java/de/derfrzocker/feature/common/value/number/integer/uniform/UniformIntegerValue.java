@@ -92,13 +92,13 @@ public class UniformIntegerValue extends IntegerValue {
         return minInclusive;
     }
 
-    public IntegerValue getMaxInclusive() {
-        return maxInclusive;
-    }
-
     public void setMinInclusive(IntegerValue integerValue) {
         this.minInclusive = integerValue;
         dirty = true;
+    }
+
+    public IntegerValue getMaxInclusive() {
+        return maxInclusive;
     }
 
     public void setMaxInclusive(IntegerValue integerValue) {

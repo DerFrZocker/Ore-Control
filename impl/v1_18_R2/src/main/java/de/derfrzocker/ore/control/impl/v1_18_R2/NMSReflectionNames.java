@@ -13,6 +13,6 @@ public final class NMSReflectionNames {
     public final static String SURFACE_RELATIVE_THRESHOLD_FILTER_MAX_INCLUSIVE = "e";
     public final static String SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH = "c";
 
-    private NMSReflectionNames(){
+    private NMSReflectionNames() {
     }
 }

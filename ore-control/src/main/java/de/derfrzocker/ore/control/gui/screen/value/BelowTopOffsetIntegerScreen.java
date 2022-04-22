@@ -25,7 +25,6 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
-import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;

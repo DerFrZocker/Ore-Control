@@ -38,8 +38,8 @@ import java.util.Set;
 
 public class RarityModifierConfiguration implements PlacementModifierConfiguration {
 
-    private final static Setting CHANCE = new Setting("chance", IntegerType.class);
     public final static Set<Setting> SETTINGS;
+    private final static Setting CHANCE = new Setting("chance", IntegerType.class);
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();

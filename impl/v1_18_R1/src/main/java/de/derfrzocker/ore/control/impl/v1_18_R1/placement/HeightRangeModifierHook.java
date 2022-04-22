@@ -53,6 +53,10 @@ import java.util.Random;
 
 public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<HeightRangePlacement, HeightRangeModifierConfiguration> {
 
+    public HeightRangeModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
+        super(registries, configManager, "height_range", defaultModifier, biome, namespacedKey);
+    }
+
     public static HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
             Field height = HeightRangePlacement.class.getDeclaredField(NMSReflectionNames.HEIGHT_RANGE_PLACEMENT_HEIGHT);
@@ -123,10 +127,6 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
         }
 
         throw new UnsupportedOperationException(String.format("Unknown vertical anchor '%s'", anchor));
-    }
-
-    public HeightRangeModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
-        super(registries, configManager, "height_range", defaultModifier, biome, namespacedKey);
     }
 
     @Override

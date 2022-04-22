@@ -47,6 +47,10 @@ import java.util.Random;
 
 public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModifierHook<SurfaceRelativeThresholdFilter, SurfaceRelativeThresholdModifierConfiguration> {
 
+    public SurfaceRelativeThresholdModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceRelativeThresholdFilter defaultModifier) {
+        super(registries, configManager, "surface_relative_threshold_filter", defaultModifier, biome, namespacedKey);
+    }
+
     public static SurfaceRelativeThresholdModifierConfiguration createDefaultConfiguration(@NotNull SurfaceRelativeThresholdFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
             Field heightmap = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_HEIGHTMAP);
@@ -65,10 +69,6 @@ public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModi
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public SurfaceRelativeThresholdModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceRelativeThresholdFilter defaultModifier) {
-        super(registries, configManager, "surface_relative_threshold_filter", defaultModifier, biome, namespacedKey);
     }
 
     @Override

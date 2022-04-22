@@ -39,11 +39,6 @@ public class BelowTopOffsetIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:below_top_offset_integer");
     private static BelowTopOffsetIntegerType type = null;
-
-    public static BelowTopOffsetIntegerType type() {
-        return type;
-    }
-
     private final Codec<BelowTopOffsetIntegerValue> codec;
 
     public BelowTopOffsetIntegerType(Registries registries) {
@@ -57,6 +52,10 @@ public class BelowTopOffsetIntegerType extends IntegerType {
         ).apply(builder, base -> new BelowTopOffsetIntegerValue(base.orElse(null))));
 
         type = this;
+    }
+
+    public static BelowTopOffsetIntegerType type() {
+        return type;
     }
 
     @Override

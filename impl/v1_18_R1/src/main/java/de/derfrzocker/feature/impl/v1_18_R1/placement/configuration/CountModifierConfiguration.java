@@ -38,8 +38,8 @@ import java.util.Set;
 
 public class CountModifierConfiguration implements PlacementModifierConfiguration {
 
-    private final static Setting COUNT = new Setting("count", IntegerType.class);
     public final static Set<Setting> SETTINGS;
+    private final static Setting COUNT = new Setting("count", IntegerType.class);
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();

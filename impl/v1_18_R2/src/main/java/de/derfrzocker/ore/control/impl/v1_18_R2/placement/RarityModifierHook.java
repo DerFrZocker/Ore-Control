@@ -45,6 +45,10 @@ import java.util.Random;
 
 public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFilter, RarityModifierConfiguration> {
 
+    public RarityModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
+        super(registries, configManager, "rarity_filter", defaultModifier, biome, namespacedKey);
+    }
+
     public static RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
             Field chance = RarityFilter.class.getDeclaredField(NMSReflectionNames.RARITY_FILTER_CHANCE);
@@ -54,10 +58,6 @@ public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFil
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public RarityModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
-        super(registries, configManager, "rarity_filter", defaultModifier, biome, namespacedKey);
     }
 
     @Override

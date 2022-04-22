@@ -15,11 +15,6 @@ public class WeightedListIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:weighted_list_integer");
     private static WeightedListIntegerType type = null;
-
-    public static WeightedListIntegerType type() {
-        return type;
-    }
-
     private final Codec<WeightedListIntegerValue> codec;
 
     public WeightedListIntegerType(Registries registries) {
@@ -53,6 +48,10 @@ public class WeightedListIntegerType extends IntegerType {
         }));
 
         type = this;
+    }
+
+    public static WeightedListIntegerType type() {
+        return type;
     }
 
     @Override

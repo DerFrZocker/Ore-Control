@@ -38,8 +38,8 @@ import java.util.Set;
 
 public class HeightRangeModifierConfiguration implements PlacementModifierConfiguration {
 
-    private final static Setting HEIGHT = new Setting("height", IntegerType.class);
     public final static Set<Setting> SETTINGS;
+    private final static Setting HEIGHT = new Setting("height", IntegerType.class);
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();

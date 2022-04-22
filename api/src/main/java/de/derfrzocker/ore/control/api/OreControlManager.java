@@ -25,7 +25,6 @@
 
 package de.derfrzocker.ore.control.api;
 
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import org.bukkit.World;
 

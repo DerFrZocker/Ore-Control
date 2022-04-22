@@ -46,6 +46,10 @@ import java.util.Random;
 
 public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlacement, CountModifierConfiguration> {
 
+    public CountModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull CountPlacement defaultModifier) {
+        super(registries, configManager, "count", defaultModifier, biome, namespacedKey);
+    }
+
     public static CountModifierConfiguration createDefaultConfiguration(@NotNull CountPlacement defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
             Field count = CountPlacement.class.getDeclaredField(NMSReflectionNames.COUNT_PLACEMENT_COUNT);
@@ -56,10 +60,6 @@ public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlace
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public CountModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull CountPlacement defaultModifier) {
-        super(registries, configManager, "count", defaultModifier, biome, namespacedKey);
     }
 
     @Override

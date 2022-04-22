@@ -38,8 +38,8 @@ import java.util.Set;
 
 public class SurfaceWaterDepthModifierConfiguration implements PlacementModifierConfiguration {
 
-    private final static Setting MAX_WATER_DEPTH = new Setting("max-water-depth", IntegerType.class);
     public final static Set<Setting> SETTINGS;
+    private final static Setting MAX_WATER_DEPTH = new Setting("max-water-depth", IntegerType.class);
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();
