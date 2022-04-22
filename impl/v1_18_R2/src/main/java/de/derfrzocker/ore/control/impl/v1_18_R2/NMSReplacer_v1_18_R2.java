@@ -49,6 +49,7 @@ import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.OreFeatureGenerato
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.configuration.OreFeatureConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R2.placement.*;
+import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.CountModifierConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.FixedHeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerType;
@@ -160,10 +161,19 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
                 continue;
             }
 
+            boolean hasCount = false;
             List<FeaturePlacementModifier<?>> modifiers = new LinkedList<>();
             for (PlacementModifier modifier : placedFeature.placement()) {
+                if (modifier.type() == PlacementModifierType.COUNT) {
+                    hasCount = true;
+                }
                 ResourceLocation placementModifierType = placementModifierTypes.getKey(modifier.type());
                 Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString(placementModifierType.toString()));
+                modifierOptional.ifPresent(modifiers::add);
+            }
+
+            if (!hasCount) {
+                Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString("minecraft:count"));
                 modifierOptional.ifPresent(modifiers::add);
             }
 
@@ -285,6 +295,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
 
         OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
 
+        boolean hasCount = false;
         List<PlacementModifierConfiguration> placementConfiguration = new ArrayList<>();
         for (PlacementModifier placement : feature.placement()) {
             if (placement.type() == PlacementModifierType.RARITY_FILTER) {
@@ -300,6 +311,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
                 placementConfiguration.add(hook.createDefaultConfiguration((SurfaceWaterDepthFilter) placement));
             }
             if (placement.type() == PlacementModifierType.COUNT) {
+                hasCount = true;
                 CountModifierHook hook = new CountModifierHook(registries, configManager, null, null, (CountPlacement) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((CountPlacement) placement));
             }
@@ -307,6 +319,12 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
                 HeightRangeModifierHook hook = new HeightRangeModifierHook(registries, configManager, null, null, (HeightRangePlacement) placement);
                 placementConfiguration.add(hook.createDefaultConfiguration((HeightRangePlacement) placement));
             }
+        }
+
+        if (!hasCount) {
+            // TODO make better implementation
+            CountModifierHook hook = new CountModifierHook(registries, configManager, null, null, CountPlacement.of(1));
+            placementConfiguration.add(0, new CountModifierConfiguration(hook.getPlacementModifier(), new FixedDoubleToIntegerValue(1)));
         }
 
         Config config = new Config(placementConfiguration, featureConfiguration);
@@ -403,6 +421,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
             return null;
         }
 
+        boolean hasCount = false;
         List<PlacementModifier> placementModifiers = new ArrayList<>();
         for (PlacementModifier placement : feature.placement()) {
             if (placement.type() == PlacementModifierType.RARITY_FILTER) {
@@ -412,12 +431,17 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
             } else if (placement.type() == PlacementModifierType.SURFACE_WATER_DEPTH_FILTER) {
                 placementModifiers.add(new SurfaceWaterDepthModifierHook(registries, configManager, biome, key, (SurfaceWaterDepthFilter) placement));
             } else if (placement.type() == PlacementModifierType.COUNT) {
+                hasCount = true;
                 placementModifiers.add(new CountModifierHook(registries, configManager, biome, key, (CountPlacement) placement));
             } else if (placement.type() == PlacementModifierType.HEIGHT_RANGE) {
                 placementModifiers.add(new HeightRangeModifierHook(registries, configManager, biome, key, (HeightRangePlacement) placement));
             } else {
                 placementModifiers.add(placement);
             }
+        }
+
+        if (!hasCount) {
+            placementModifiers.add(0, new CountModifierHook(registries, configManager, biome, key, CountPlacement.of(1)));
         }
 
         if (configuredFeature.feature() instanceof OreFeature) {
