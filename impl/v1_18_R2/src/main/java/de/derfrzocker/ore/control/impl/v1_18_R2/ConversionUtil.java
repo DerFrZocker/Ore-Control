@@ -26,7 +26,7 @@ public final class ConversionUtil {
             } else if (intProvider.getType() == IntProviderType.UNIFORM) {
                 return new UniformIntegerValue(new FixedDoubleToIntegerValue(intProvider.getMinValue()), new FixedDoubleToIntegerValue(intProvider.getMaxValue()));
             } else if (intProvider.getType() == IntProviderType.WEIGHTED_LIST) {
-                Field distributionField = WeightedListInt.class.getDeclaredField("b");
+                Field distributionField = WeightedListInt.class.getDeclaredField(NMSReflectionNames.WEIGHTED_LIST_INT_DISTRIBUTION);
                 distributionField.setAccessible(true);
                 SimpleWeightedRandomList<IntProvider> distribution = (SimpleWeightedRandomList<IntProvider>) distributionField.get(intProvider);
 

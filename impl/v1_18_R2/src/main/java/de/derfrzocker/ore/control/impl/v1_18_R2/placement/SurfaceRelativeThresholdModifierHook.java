@@ -31,6 +31,7 @@ import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.SurfaceRelat
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.FixedHeightmapValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
 import org.bukkit.NamespacedKey;
@@ -77,13 +78,13 @@ public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModi
     @Override
     public SurfaceRelativeThresholdModifierConfiguration createDefaultConfiguration(SurfaceRelativeThresholdFilter defaultModifier) {
         try {
-            Field heightmap = SurfaceRelativeThresholdFilter.class.getDeclaredField("c");
+            Field heightmap = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_HEIGHTMAP);
             heightmap.setAccessible(true);
 
-            Field minInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField("d");
+            Field minInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_MIN_INCLUSIVE);
             minInclusive.setAccessible(true);
 
-            Field maxInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField("e");
+            Field maxInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_MAX_INCLUSIVE);
             maxInclusive.setAccessible(true);
 
             Object heightmapValue = heightmap.get(defaultModifier);

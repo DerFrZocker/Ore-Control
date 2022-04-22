@@ -30,6 +30,7 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerVa
 import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.RarityModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -50,7 +51,7 @@ public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFil
     @Override
     public RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier) {
         try {
-            Field chance = RarityFilter.class.getDeclaredField("c");
+            Field chance = RarityFilter.class.getDeclaredField(NMSReflectionNames.RARITY_FILTER_CHANCE);
             chance.setAccessible(true);
             Object value = chance.get(defaultModifier);
             return new RarityModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));

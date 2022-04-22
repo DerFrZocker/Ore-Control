@@ -35,6 +35,7 @@ import de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntege
 import de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
@@ -58,9 +59,9 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
     @Override
     public HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier) {
         try {
-            Field chance = HeightRangePlacement.class.getDeclaredField("c");
-            chance.setAccessible(true);
-            HeightProvider value = (HeightProvider) chance.get(defaultModifier);
+            Field height = HeightRangePlacement.class.getDeclaredField(NMSReflectionNames.HEIGHT_RANGE_PLACEMENT_HEIGHT);
+            height.setAccessible(true);
+            HeightProvider value = (HeightProvider) height.get(defaultModifier);
 
             IntegerValue integerValue;
             if (value.getType() == HeightProviderType.CONSTANT) {

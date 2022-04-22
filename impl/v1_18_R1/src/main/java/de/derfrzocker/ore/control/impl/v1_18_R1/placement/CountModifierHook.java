@@ -31,6 +31,7 @@ import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.CountModifie
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.ConversionUtil;
+import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReflectionNames;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import org.bukkit.NamespacedKey;
@@ -51,9 +52,9 @@ public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlace
     @Override
     public CountModifierConfiguration createDefaultConfiguration(@NotNull CountPlacement defaultModifier) {
         try {
-            Field chance = CountPlacement.class.getDeclaredField("c");
-            chance.setAccessible(true);
-            IntProvider value = (IntProvider) chance.get(defaultModifier);
+            Field count = CountPlacement.class.getDeclaredField(NMSReflectionNames.COUNT_PLACEMENT_COUNT);
+            count.setAccessible(true);
+            IntProvider value = (IntProvider) count.get(defaultModifier);
             IntegerValue integerValue = ConversionUtil.convert(value);
             return new CountModifierConfiguration(getPlacementModifier(), integerValue);
         } catch (NoSuchFieldException | IllegalAccessException e) {

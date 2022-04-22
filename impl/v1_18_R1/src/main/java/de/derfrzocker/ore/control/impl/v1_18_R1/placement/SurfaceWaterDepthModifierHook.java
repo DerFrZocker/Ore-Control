@@ -30,6 +30,7 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerVa
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -50,9 +51,9 @@ public class SurfaceWaterDepthModifierHook extends MinecraftPlacementModifierHoo
     @Override
     public SurfaceWaterDepthModifierConfiguration createDefaultConfiguration(@NotNull SurfaceWaterDepthFilter defaultModifier) {
         try {
-            Field chance = SurfaceWaterDepthFilter.class.getDeclaredField("c");
-            chance.setAccessible(true);
-            Object value = chance.get(defaultModifier);
+            Field maxWaterDepth = SurfaceWaterDepthFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH);
+            maxWaterDepth.setAccessible(true);
+            Object value = maxWaterDepth.get(defaultModifier);
             return new SurfaceWaterDepthModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);

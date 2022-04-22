@@ -384,12 +384,12 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         }
 
         {
-            final Field field = getField(BiomeGenerationSettings.class, "e");
+            final Field field = getField(BiomeGenerationSettings.class, NMSReflectionNames.BIOME_GENERATION_SETTINGS_FEATURES);
             field.setAccessible(true);
             field.set(biome.getGenerationSettings(), newDecorations);
         }
         {
-            final Field field = getField(BiomeGenerationSettings.class, "g");
+            final Field field = getField(BiomeGenerationSettings.class, NMSReflectionNames.BIOME_GENERATION_SETTINGS_FEATURE_SET);
             field.setAccessible(true);
             field.set(biome.getGenerationSettings(), Suppliers.memoize(() -> newDecorations.stream().flatMap(HolderSet::stream).map(Holder::value).collect(Collectors.toSet())));
         }
