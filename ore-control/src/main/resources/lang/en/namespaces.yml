@@ -3,3 +3,5 @@ namespaces:
     name: "Minecraft"
   feature:
     name: "Feature"
+  terralith:
+    name: "Terralith"
