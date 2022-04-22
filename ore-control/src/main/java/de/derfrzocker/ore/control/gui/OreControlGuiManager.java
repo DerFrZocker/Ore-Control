@@ -148,6 +148,7 @@ public class OreControlGuiManager implements Listener {
             if (type == InventoryType.CRAFTING || type == InventoryType.CREATIVE) {
                 playerGuiDatas.remove(event.getPlayer());
                 oreControlManager.getConfigManager().saveAndReload();
+                oreControlManager.onValueChange();
             }
         });
     }

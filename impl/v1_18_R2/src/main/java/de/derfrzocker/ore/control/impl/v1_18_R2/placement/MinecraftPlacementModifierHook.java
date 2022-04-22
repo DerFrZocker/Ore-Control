@@ -27,8 +27,8 @@ package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.ore.control.api.Biome;
+import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.PlacementModifierHook;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
@@ -63,13 +63,15 @@ public abstract class MinecraftPlacementModifierHook<M extends PlacementModifier
     private final Biome biome;
     private final NamespacedKey namespacedKey;
 
-    public MinecraftPlacementModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull String name, @NotNull M defaultModifier, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey) {
-        this.configManager = configManager;
-        this.placementModifier = (FeaturePlacementModifier<C>) registries.getPlacementModifierRegistry().get(NamespacedKey.minecraft(name)).get();
+    public MinecraftPlacementModifierHook(@NotNull OreControlManager oreControlManager, @NotNull String name, @NotNull M defaultModifier, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey) {
+        this.configManager = oreControlManager.getConfigManager();
+        this.placementModifier = (FeaturePlacementModifier<C>) oreControlManager.getRegistries().getPlacementModifierRegistry().get(NamespacedKey.minecraft(name)).get();
         this.defaultModifier = defaultModifier;
         this.defaultConfiguration = createDefaultConfiguration(defaultModifier);
         this.biome = biome;
         this.namespacedKey = namespacedKey;
+
+        oreControlManager.addValueChangeListener(cache::clear);
     }
 
     public abstract M createModifier(@NotNull C defaultConfiguration, @NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);

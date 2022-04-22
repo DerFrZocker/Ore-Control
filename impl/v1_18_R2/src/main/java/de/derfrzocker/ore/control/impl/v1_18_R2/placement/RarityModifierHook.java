@@ -26,11 +26,10 @@
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.RarityModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.bukkit.NamespacedKey;
@@ -45,8 +44,8 @@ import java.util.Random;
 
 public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFilter, RarityModifierConfiguration> {
 
-    public RarityModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
-        super(registries, configManager, "rarity_filter", defaultModifier, biome, namespacedKey);
+    public RarityModifierHook(@NotNull OreControlManager oreControlManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
+        super(oreControlManager, "rarity_filter", defaultModifier, biome, namespacedKey);
     }
 
     public static RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {

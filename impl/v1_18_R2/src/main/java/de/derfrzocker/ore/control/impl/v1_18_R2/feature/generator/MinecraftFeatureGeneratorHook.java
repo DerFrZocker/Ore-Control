@@ -28,9 +28,9 @@ package de.derfrzocker.ore.control.impl.v1_18_R2.feature.generator;
 import com.mojang.serialization.Codec;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.FeatureGeneratorHook;
+import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import net.minecraft.core.BlockPos;
@@ -62,13 +62,15 @@ public abstract class MinecraftFeatureGeneratorHook<M extends FeatureConfigurati
     private final Biome biome;
     private final NamespacedKey namespacedKey;
 
-    public MinecraftFeatureGeneratorHook(Codec<M> codec, Feature<M> feature, @NotNull Registries registries, ConfigManager configManager, @NotNull String name, Biome biome, NamespacedKey namespacedKey) {
+    public MinecraftFeatureGeneratorHook(Codec<M> codec, Feature<M> feature, @NotNull OreControlManager oreControlManager, @NotNull String name, Biome biome, NamespacedKey namespacedKey) {
         super(codec);
         this.feature = feature;
-        this.configManager = configManager;
-        this.featureGenerator = (FeatureGenerator<C>) registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft(name)).get();
+        this.configManager = oreControlManager.getConfigManager();
+        this.featureGenerator = (FeatureGenerator<C>) oreControlManager.getRegistries().getFeatureGeneratorRegistry().get(NamespacedKey.minecraft(name)).get();
         this.biome = biome;
         this.namespacedKey = namespacedKey;
+
+        oreControlManager.addValueChangeListener(cache::clear);
     }
 
     public abstract M createConfig(@NotNull M defaultConfiguration, @NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);

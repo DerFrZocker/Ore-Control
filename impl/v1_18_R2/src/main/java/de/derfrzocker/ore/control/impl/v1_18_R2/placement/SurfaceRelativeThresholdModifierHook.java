@@ -26,12 +26,11 @@
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.SurfaceRelativeThresholdModifierConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.FixedHeightmapValue;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
@@ -47,8 +46,8 @@ import java.util.Random;
 
 public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModifierHook<SurfaceRelativeThresholdFilter, SurfaceRelativeThresholdModifierConfiguration> {
 
-    public SurfaceRelativeThresholdModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceRelativeThresholdFilter defaultModifier) {
-        super(registries, configManager, "surface_relative_threshold_filter", defaultModifier, biome, namespacedKey);
+    public SurfaceRelativeThresholdModifierHook(@NotNull OreControlManager oreControlManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceRelativeThresholdFilter defaultModifier) {
+        super(oreControlManager, "surface_relative_threshold_filter", defaultModifier, biome, namespacedKey);
     }
 
     public static SurfaceRelativeThresholdModifierConfiguration createDefaultConfiguration(@NotNull SurfaceRelativeThresholdFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {

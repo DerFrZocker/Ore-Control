@@ -55,6 +55,7 @@ import de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerTy
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.FixedTargetType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetType;
 import de.derfrzocker.ore.control.api.NMSReplacer;
+import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
@@ -98,13 +99,15 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final Codec<Config> configCodec;
+    private final OreControlManager oreControlManager;
     @NotNull
     private final OreControlRegistries registries;
     private final ConfigManager configManager;
 
-    public NMSReplacer_v1_18_R1(@NotNull OreControlRegistries registries, ConfigManager configManager) {
-        this.registries = registries;
-        this.configManager = configManager;
+    public NMSReplacer_v1_18_R1(@NotNull OreControlManager oreControlManager) {
+        this.oreControlManager = oreControlManager;
+        this.registries = oreControlManager.getRegistries();
+        this.configManager = oreControlManager.getConfigManager();
         this.configCodec = configManager.getConfigCodec();
     }
 
@@ -422,29 +425,29 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
         List<PlacementModifier> placementModifiers = new ArrayList<>();
         for (PlacementModifier placement : feature.getPlacement()) {
             if (placement.type() == PlacementModifierType.RARITY_FILTER) {
-                placementModifiers.add(new RarityModifierHook(registries, configManager, biome, key, (RarityFilter) placement));
+                placementModifiers.add(new RarityModifierHook(oreControlManager, biome, key, (RarityFilter) placement));
             } else if (placement.type() == PlacementModifierType.SURFACE_RELATIVE_THRESHOLD_FILTER) {
-                placementModifiers.add(new SurfaceRelativeThresholdModifierHook(registries, configManager, biome, key, (SurfaceRelativeThresholdFilter) placement));
+                placementModifiers.add(new SurfaceRelativeThresholdModifierHook(oreControlManager, biome, key, (SurfaceRelativeThresholdFilter) placement));
             } else if (placement.type() == PlacementModifierType.SURFACE_WATER_DEPTH_FILTER) {
-                placementModifiers.add(new SurfaceWaterDepthModifierHook(registries, configManager, biome, key, (SurfaceWaterDepthFilter) placement));
+                placementModifiers.add(new SurfaceWaterDepthModifierHook(oreControlManager, biome, key, (SurfaceWaterDepthFilter) placement));
             } else if (placement.type() == PlacementModifierType.COUNT) {
                 hasCount = true;
-                placementModifiers.add(new CountModifierHook(registries, configManager, biome, key, (CountPlacement) placement));
+                placementModifiers.add(new CountModifierHook(oreControlManager, biome, key, (CountPlacement) placement));
             } else if (placement.type() == PlacementModifierType.HEIGHT_RANGE) {
-                placementModifiers.add(new HeightRangeModifierHook(registries, configManager, biome, key, (HeightRangePlacement) placement));
+                placementModifiers.add(new HeightRangeModifierHook(oreControlManager, biome, key, (HeightRangePlacement) placement));
             } else {
                 placementModifiers.add(placement);
             }
         }
 
         if (!hasCount) {
-            placementModifiers.add(0, new CountModifierHook(registries, configManager, biome, key, CountPlacement.of(1)));
+            placementModifiers.add(0, new CountModifierHook(oreControlManager, biome, key, CountPlacement.of(1)));
         }
 
         if (configuredFeature.feature() instanceof OreFeature) {
-            return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(registries, configManager, key, biome), configuredFeature.config()), placementModifiers);
+            return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config()), placementModifiers);
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
-            return new PlacedFeature(() -> new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(registries, configManager, key, biome), configuredFeature.config()), placementModifiers);
+            return new PlacedFeature(() -> new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config()), placementModifiers);
         }
 
         throw new RuntimeException("HOW?");
