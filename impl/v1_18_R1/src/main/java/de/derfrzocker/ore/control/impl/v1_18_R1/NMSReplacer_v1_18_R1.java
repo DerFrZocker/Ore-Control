@@ -25,7 +25,6 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R1;
 
-import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -49,7 +48,6 @@ import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.OreFeatureGenerato
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.configuration.OreFeatureConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.*;
-import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.CountModifierConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.FixedHeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerType;
@@ -299,7 +297,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
             Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString(placementModifierType.toString()));
 
             if (modifierOptional.isEmpty()) {
-                return;
+                continue;
             }
 
             if (placement.type() == PlacementModifierType.RARITY_FILTER && placement instanceof RarityFilter) {
@@ -323,11 +321,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
         if (!hasCount) {
             Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString("minecraft:count"));
 
-            if (modifierOptional.isEmpty()) {
-                return;
-            }
-
-            placementConfiguration.add(0, CountModifierHook.createDefaultConfiguration(CountPlacement.of(1), modifierOptional.get()));
+            modifierOptional.ifPresent(modifier -> placementConfiguration.add(0, CountModifierHook.createDefaultConfiguration(CountPlacement.of(1), modifier)));
         }
 
         Config config = new Config(placementConfiguration, featureConfiguration);

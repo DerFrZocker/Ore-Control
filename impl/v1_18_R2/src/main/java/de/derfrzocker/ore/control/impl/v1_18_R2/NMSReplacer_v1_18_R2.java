@@ -302,7 +302,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
             Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString(placementModifierType.toString()));
 
             if (modifierOptional.isEmpty()) {
-                return;
+                continue;
             }
 
             if (placement.type() == PlacementModifierType.RARITY_FILTER && placement instanceof RarityFilter) {
@@ -326,11 +326,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         if (!hasCount) {
             Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString("minecraft:count"));
 
-            if (modifierOptional.isEmpty()) {
-                return;
-            }
-
-            placementConfiguration.add(0, CountModifierHook.createDefaultConfiguration(CountPlacement.of(1), modifierOptional.get()));
+            modifierOptional.ifPresent(modifier -> placementConfiguration.add(0, CountModifierHook.createDefaultConfiguration(CountPlacement.of(1), modifier)));
         }
 
         Config config = new Config(placementConfiguration, featureConfiguration);
