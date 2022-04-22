@@ -293,34 +293,41 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
 
         boolean hasCount = false;
         List<PlacementModifierConfiguration> placementConfiguration = new ArrayList<>();
+        Registry<PlacementModifierType<?>> placementModifierTypes = getRegistry().registryOrThrow(Registry.PLACEMENT_MODIFIER_REGISTRY);
         for (PlacementModifier placement : feature.getPlacement()) {
-            if (placement.type() == PlacementModifierType.RARITY_FILTER) {
-                RarityModifierHook hook = new RarityModifierHook(registries, configManager, null, null, (RarityFilter) placement);
-                placementConfiguration.add(hook.createDefaultConfiguration((RarityFilter) placement));
+            ResourceLocation placementModifierType = placementModifierTypes.getKey(placement.type());
+            Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString(placementModifierType.toString()));
+
+            if (modifierOptional.isEmpty()) {
+                return;
             }
-            if (placement.type() == PlacementModifierType.SURFACE_RELATIVE_THRESHOLD_FILTER) {
-                SurfaceRelativeThresholdModifierHook hook = new SurfaceRelativeThresholdModifierHook(registries, configManager, null, null, (SurfaceRelativeThresholdFilter) placement);
-                placementConfiguration.add(hook.createDefaultConfiguration((SurfaceRelativeThresholdFilter) placement));
+
+            if (placement.type() == PlacementModifierType.RARITY_FILTER && placement instanceof RarityFilter) {
+                placementConfiguration.add(RarityModifierHook.createDefaultConfiguration((RarityFilter) placement, modifierOptional.get()));
             }
-            if (placement.type() == PlacementModifierType.SURFACE_WATER_DEPTH_FILTER) {
-                SurfaceWaterDepthModifierHook hook = new SurfaceWaterDepthModifierHook(registries, configManager, null, null, (SurfaceWaterDepthFilter) placement);
-                placementConfiguration.add(hook.createDefaultConfiguration((SurfaceWaterDepthFilter) placement));
+            if (placement.type() == PlacementModifierType.SURFACE_RELATIVE_THRESHOLD_FILTER && placement instanceof SurfaceRelativeThresholdFilter) {
+                placementConfiguration.add(SurfaceRelativeThresholdModifierHook.createDefaultConfiguration((SurfaceRelativeThresholdFilter) placement, modifierOptional.get()));
             }
-            if (placement.type() == PlacementModifierType.COUNT) {
+            if (placement.type() == PlacementModifierType.SURFACE_WATER_DEPTH_FILTER && placement instanceof SurfaceWaterDepthFilter) {
+                placementConfiguration.add(SurfaceWaterDepthModifierHook.createDefaultConfiguration((SurfaceWaterDepthFilter) placement, modifierOptional.get()));
+            }
+            if (placement.type() == PlacementModifierType.COUNT && placement instanceof CountPlacement) {
+                placementConfiguration.add(CountModifierHook.createDefaultConfiguration((CountPlacement) placement, modifierOptional.get()));
                 hasCount = true;
-                CountModifierHook hook = new CountModifierHook(registries, configManager, null, null, (CountPlacement) placement);
-                placementConfiguration.add(hook.createDefaultConfiguration((CountPlacement) placement));
             }
-            if (placement.type() == PlacementModifierType.HEIGHT_RANGE) {
-                HeightRangeModifierHook hook = new HeightRangeModifierHook(registries, configManager, null, null, (HeightRangePlacement) placement);
-                placementConfiguration.add(hook.createDefaultConfiguration((HeightRangePlacement) placement));
+            if (placement.type() == PlacementModifierType.HEIGHT_RANGE && placement instanceof HeightRangePlacement) {
+                placementConfiguration.add(HeightRangeModifierHook.createDefaultConfiguration((HeightRangePlacement) placement, modifierOptional.get()));
             }
         }
 
         if (!hasCount) {
-            // TODO make better implementation
-            CountModifierHook hook = new CountModifierHook(registries, configManager, null, null, CountPlacement.of(1));
-            placementConfiguration.add(0, new CountModifierConfiguration(hook.getPlacementModifier(), new FixedDoubleToIntegerValue(1)));
+            Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString("minecraft:count"));
+
+            if (modifierOptional.isEmpty()) {
+                return;
+            }
+
+            placementConfiguration.add(0, CountModifierHook.createDefaultConfiguration(CountPlacement.of(1), modifierOptional.get()));
         }
 
         Config config = new Config(placementConfiguration, featureConfiguration);

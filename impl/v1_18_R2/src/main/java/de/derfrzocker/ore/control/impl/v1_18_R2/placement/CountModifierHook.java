@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.CountModifierConfiguration;
@@ -45,21 +46,25 @@ import java.util.Random;
 
 public class CountModifierHook extends MinecraftPlacementModifierHook<CountPlacement, CountModifierConfiguration> {
 
+    public static CountModifierConfiguration createDefaultConfiguration(@NotNull CountPlacement defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
+        try {
+            Field count = CountPlacement.class.getDeclaredField(NMSReflectionNames.COUNT_PLACEMENT_COUNT);
+            count.setAccessible(true);
+            IntProvider value = (IntProvider) count.get(defaultModifier);
+            IntegerValue integerValue = ConversionUtil.convert(value);
+            return new CountModifierConfiguration(modifier, integerValue);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public CountModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull CountPlacement defaultModifier) {
         super(registries, configManager, "count", defaultModifier, biome, namespacedKey);
     }
 
     @Override
     public CountModifierConfiguration createDefaultConfiguration(@NotNull CountPlacement defaultModifier) {
-        try {
-            Field count = CountPlacement.class.getDeclaredField(NMSReflectionNames.COUNT_PLACEMENT_COUNT);
-            count.setAccessible(true);
-            IntProvider value = (IntProvider) count.get(defaultModifier);
-            IntegerValue integerValue = ConversionUtil.convert(value);
-            return new CountModifierConfiguration(getPlacementModifier(), integerValue);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 
     @Override

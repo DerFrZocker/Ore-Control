@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.SurfaceWaterDepthModifierConfiguration;
@@ -44,20 +45,24 @@ import java.util.Random;
 
 public class SurfaceWaterDepthModifierHook extends MinecraftPlacementModifierHook<SurfaceWaterDepthFilter, SurfaceWaterDepthModifierConfiguration> {
 
+    public static SurfaceWaterDepthModifierConfiguration createDefaultConfiguration(@NotNull SurfaceWaterDepthFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
+        try {
+            Field maxWaterDepth = SurfaceWaterDepthFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH);
+            maxWaterDepth.setAccessible(true);
+            Object value = maxWaterDepth.get(defaultModifier);
+            return new SurfaceWaterDepthModifierConfiguration(modifier, new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public SurfaceWaterDepthModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceWaterDepthFilter defaultModifier) {
         super(registries, configManager, "surface_water_depth_filter", defaultModifier, biome, namespacedKey);
     }
 
     @Override
     public SurfaceWaterDepthModifierConfiguration createDefaultConfiguration(@NotNull SurfaceWaterDepthFilter defaultModifier) {
-        try {
-            Field maxWaterDepth = SurfaceWaterDepthFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH);
-            maxWaterDepth.setAccessible(true);
-            Object value = maxWaterDepth.get(defaultModifier);
-            return new SurfaceWaterDepthModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 
     @Override

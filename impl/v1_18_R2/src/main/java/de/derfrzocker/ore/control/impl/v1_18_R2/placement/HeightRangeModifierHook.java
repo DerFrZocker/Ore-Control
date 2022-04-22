@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
@@ -52,12 +53,7 @@ import java.util.Random;
 
 public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<HeightRangePlacement, HeightRangeModifierConfiguration> {
 
-    public HeightRangeModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
-        super(registries, configManager, "height_range", defaultModifier, biome, namespacedKey);
-    }
-
-    @Override
-    public HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier) {
+    public static HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
             Field height = HeightRangePlacement.class.getDeclaredField(NMSReflectionNames.HEIGHT_RANGE_PLACEMENT_HEIGHT);
             height.setAccessible(true);
@@ -104,25 +100,13 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
                 throw new UnsupportedOperationException(String.format("No integer value equivalent for HeightProvider '%s'", value));
             }
 
-            return new HeightRangeModifierConfiguration(getPlacementModifier(), integerValue);
+            return new HeightRangeModifierConfiguration(modifier, integerValue);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public HeightRangePlacement createModifier(@NotNull HeightRangeModifierConfiguration defaultConfiguration, @NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull HeightRangeModifierConfiguration configuration) {
-        int height;
-        if (configuration.getHeight() == null) {
-            height = defaultConfiguration.getHeight().getValue(worldInfo, random, position, limitedRegion);
-        } else {
-            height = configuration.getHeight().getValue(worldInfo, random, position, limitedRegion);
-        }
-
-        return HeightRangePlacement.of(ConstantHeight.of(VerticalAnchor.absolute(height)));
-    }
-
-    private IntegerValue getIntegerValue(String anchor) {
+    private static IntegerValue getIntegerValue(String anchor) {
         String[] values = anchor.split(" ");
         int value = Integer.parseInt(values[0]);
 
@@ -139,5 +123,26 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
         }
 
         throw new UnsupportedOperationException(String.format("Unknown vertical anchor '%s'", anchor));
+    }
+
+    public HeightRangeModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
+        super(registries, configManager, "height_range", defaultModifier, biome, namespacedKey);
+    }
+
+    @Override
+    public HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier) {
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
+    }
+
+    @Override
+    public HeightRangePlacement createModifier(@NotNull HeightRangeModifierConfiguration defaultConfiguration, @NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull HeightRangeModifierConfiguration configuration) {
+        int height;
+        if (configuration.getHeight() == null) {
+            height = defaultConfiguration.getHeight().getValue(worldInfo, random, position, limitedRegion);
+        } else {
+            height = configuration.getHeight().getValue(worldInfo, random, position, limitedRegion);
+        }
+
+        return HeightRangePlacement.of(ConstantHeight.of(VerticalAnchor.absolute(height)));
     }
 }

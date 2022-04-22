@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.RarityModifierConfiguration;
@@ -44,20 +45,24 @@ import java.util.Random;
 
 public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFilter, RarityModifierConfiguration> {
 
+    public static RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
+        try {
+            Field chance = RarityFilter.class.getDeclaredField(NMSReflectionNames.RARITY_FILTER_CHANCE);
+            chance.setAccessible(true);
+            Object value = chance.get(defaultModifier);
+            return new RarityModifierConfiguration(modifier, new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public RarityModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
         super(registries, configManager, "rarity_filter", defaultModifier, biome, namespacedKey);
     }
 
     @Override
     public RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier) {
-        try {
-            Field chance = RarityFilter.class.getDeclaredField(NMSReflectionNames.RARITY_FILTER_CHANCE);
-            chance.setAccessible(true);
-            Object value = chance.get(defaultModifier);
-            return new RarityModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 
     @Override
