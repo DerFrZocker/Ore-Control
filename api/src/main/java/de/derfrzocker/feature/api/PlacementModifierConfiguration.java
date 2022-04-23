@@ -25,7 +25,10 @@
 
 package de.derfrzocker.feature.api;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface PlacementModifierConfiguration extends Configuration {
 
+    @NotNull
     FeaturePlacementModifier<?> getOwner();
 }

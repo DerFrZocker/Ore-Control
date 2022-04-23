@@ -32,6 +32,7 @@ import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.HeightmapValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -63,6 +64,7 @@ public class SurfaceRelativeThresholdModifierConfiguration implements PlacementM
         this.maxInclusive = maxInclusive;
     }
 
+    @NotNull
     @Override
     public FeaturePlacementModifier<?> getOwner() {
         return placementModifier;
@@ -80,13 +82,14 @@ public class SurfaceRelativeThresholdModifierConfiguration implements PlacementM
         return maxInclusive;
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SETTINGS;
     }
 
     @Override
-    public Value<?, ?, ?> getValue(Setting setting) {
+    public Value<?, ?, ?> getValue(@NotNull Setting setting) {
         if (setting == MIN_INCLUSIVE) {
             return getMinInclusive();
         }
@@ -99,7 +102,7 @@ public class SurfaceRelativeThresholdModifierConfiguration implements PlacementM
     }
 
     @Override
-    public void setValue(Setting setting, Value<?, ?, ?> value) {
+    public void setValue(@NotNull Setting setting, Value<?, ?, ?> value) {
         if (setting == MIN_INCLUSIVE) {
             minInclusive = (IntegerValue) value;
             dirty = true;

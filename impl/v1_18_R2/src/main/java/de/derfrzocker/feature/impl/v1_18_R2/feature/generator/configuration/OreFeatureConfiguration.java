@@ -34,6 +34,7 @@ import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.value.target.TargetValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -78,18 +79,20 @@ public class OreFeatureConfiguration implements FeatureGeneratorConfiguration {
         return discardChanceOnAirExposure;
     }
 
+    @NotNull
     @Override
     public FeatureGenerator<?> getOwner() {
         return featureGenerator;
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SETTINGS;
     }
 
     @Override
-    public Value<?, ?, ?> getValue(Setting setting) {
+    public Value<?, ?, ?> getValue(@NotNull Setting setting) {
         if (setting == SIZE) {
             return getSize();
         }
@@ -102,7 +105,7 @@ public class OreFeatureConfiguration implements FeatureGeneratorConfiguration {
     }
 
     @Override
-    public void setValue(Setting setting, Value<?, ?, ?> value) {
+    public void setValue(@NotNull Setting setting, Value<?, ?, ?> value) {
         if (setting == SIZE) {
             size = (IntegerValue) value;
             dirty = true;

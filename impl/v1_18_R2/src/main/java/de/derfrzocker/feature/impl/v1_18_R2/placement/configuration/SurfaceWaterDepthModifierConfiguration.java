@@ -31,6 +31,7 @@ import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -60,18 +61,20 @@ public class SurfaceWaterDepthModifierConfiguration implements PlacementModifier
         return maxWaterDepth;
     }
 
+    @NotNull
     @Override
     public FeaturePlacementModifier<?> getOwner() {
         return placementModifier;
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SETTINGS;
     }
 
     @Override
-    public Value<?, ?, ?> getValue(Setting setting) {
+    public Value<?, ?, ?> getValue(@NotNull Setting setting) {
         if (setting == MAX_WATER_DEPTH) {
             return getMaxWaterDepth();
         }
@@ -80,7 +83,7 @@ public class SurfaceWaterDepthModifierConfiguration implements PlacementModifier
     }
 
     @Override
-    public void setValue(Setting setting, Value<?, ?, ?> value) {
+    public void setValue(@NotNull Setting setting, Value<?, ?, ?> value) {
         if (setting == MAX_WATER_DEPTH) {
             maxWaterDepth = (IntegerValue) value;
             dirty = true;
