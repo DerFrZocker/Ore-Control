@@ -342,4 +342,12 @@ public class ConfigManager implements Reloadable {
                 computeIfAbsent(biome, bio -> new ConcurrentHashMap<>()).
                 put(feature, Optional.ofNullable(config));
     }
+
+    public void clearGuiConfigCache(ConfigInfo configInfo, NamespacedKey key) {
+        guiConfigCache.get(configInfo).remove(key);
+    }
+
+    public void clearGuiConfigCache(ConfigInfo configInfo, Biome biome, NamespacedKey key) {
+        guiBiomeConfigCache.get(configInfo).get(biome).remove(key);
+    }
 }

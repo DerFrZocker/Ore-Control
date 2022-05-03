@@ -159,6 +159,13 @@ public class PlayerGuiData {
 
             configuration.setValue(settingWrapper.getSetting(), getOriginalValue());
             setApplied(true);
+
+            // clear gui config cache
+            if (getBiome() == null) {
+                oreControlManager.getConfigManager().clearGuiConfigCache(getConfigInfo(), getFeature().getKey());
+            } else {
+                oreControlManager.getConfigManager().clearGuiConfigCache(getConfigInfo(), getBiome(), getFeature().getKey());
+            }
         }
     }
 }
