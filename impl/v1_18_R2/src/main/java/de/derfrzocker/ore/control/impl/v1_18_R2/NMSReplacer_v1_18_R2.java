@@ -35,6 +35,8 @@ import com.mojang.serialization.JsonOps;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.common.value.bool.BooleanType;
+import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.FloatType;
@@ -134,6 +136,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
         registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
         registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);
+        registries.getValueTypeRegistry(BooleanType.class).register(FixedBooleanType.INSTANCE);
     }
 
     public void registerFeatureGenerators() {
