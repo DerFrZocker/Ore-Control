@@ -35,8 +35,11 @@ import com.mojang.serialization.JsonOps;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
+import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
 import de.derfrzocker.feature.common.value.bool.BooleanType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
+import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.FloatType;
@@ -150,6 +153,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         registries.getPlacementModifierRegistry().register(new SurfaceWaterDepthModifier(registries));
         registries.getPlacementModifierRegistry().register(new CountModifier(registries));
         registries.getPlacementModifierRegistry().register(new HeightRangeModifier(registries));
+        registries.getPlacementModifierRegistry().register(new ActivationModifier(registries));
     }
 
     public void registerFeatures() {
@@ -181,6 +185,10 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
                 Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(NamespacedKey.fromString("minecraft:count"));
                 modifierOptional.ifPresent(modifiers::add);
             }
+
+            // inject activation / deactivation logic
+            Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(ActivationModifier.KEY);
+            modifierOptional.ifPresent(modifiers::add);
 
             registries.getFeatureRegistry().register(new de.derfrzocker.feature.api.Feature<>(NamespacedKey.fromString(placedFeatureRegistry.getKey(placedFeature).toString()), featureGenerator.get(), modifiers));
         }
@@ -335,6 +343,10 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
             modifierOptional.ifPresent(modifier -> placementConfiguration.add(0, CountModifierHook.createDefaultConfiguration(CountPlacement.of(1), modifier)));
         }
 
+        // inject activation / deactivation logic
+        Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(ActivationModifier.KEY);
+        modifierOptional.ifPresent(modifier -> placementConfiguration.add(0, new ActivationConfiguration(modifier, new FixedBooleanValue(true))));
+
         Config config = new Config(placementConfiguration, featureConfiguration);
 
         if (biome == null) {
@@ -451,6 +463,10 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         if (!hasCount) {
             placementModifiers.add(0, new CountModifierHook(oreControlManager, biome, key, CountPlacement.of(1)));
         }
+
+        // inject activation / deactivation logic
+        Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(ActivationModifier.KEY);
+        modifierOptional.ifPresent(modifier -> placementModifiers.add(0, new ActivationModifierHook(oreControlManager, biome, key)));
 
         if (configuredFeature.feature() instanceof OreFeature) {
             return new PlacedFeature(Holder.direct(new ConfiguredFeature(new OreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config())), placementModifiers);
