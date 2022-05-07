@@ -290,11 +290,11 @@ public class ConfigManager implements Reloadable {
         List<PlacementModifierConfiguration> placements = new ArrayList<>();
 
         if (primary.getPlacements() != null) {
-            primaryPlacements.addAll(primary.getPlacements());
+            primaryPlacements.addAll(primary.getPlacements().values());
         }
 
         if (secondary.getPlacements() != null) {
-            secondaryPlacements.addAll(secondary.getPlacements());
+            secondaryPlacements.addAll(secondary.getPlacements().values());
         }
 
         for (PlacementModifierConfiguration first : primaryPlacements) {

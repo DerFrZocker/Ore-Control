@@ -42,6 +42,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +95,7 @@ public class FeatureSettingsScreen {
                             Configuration configuration = config.getFeature();
 
                             if (configuration == null || configuration.getOwner() != settingOwner) {
-                                configuration = getPlacementConfiguration(config.getPlacements(), settingOwner);
+                                configuration = getPlacementConfiguration(config.getPlacements().values(), settingOwner);
                             }
 
                             if (configuration == null || configuration.getOwner() != settingOwner) {
@@ -149,7 +150,7 @@ public class FeatureSettingsScreen {
         return settingWrappers;
     }
 
-    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
+    private static PlacementModifierConfiguration getPlacementConfiguration(Collection<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
         if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
             return null;
         }

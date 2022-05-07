@@ -117,17 +117,7 @@ public abstract class MinecraftPlacementModifierHook<M extends PlacementModifier
             return null;
         }
 
-        if (config.getPlacements() == null) {
-            return null;
-        }
-
-        for (PlacementModifierConfiguration configuration : config.getPlacements()) {
-            if (configuration.getOwner() == placementModifier) {
-                return configuration;
-            }
-        }
-
-        return null;
+        return config.getPlacements().get(placementModifier);
     }
 
     @Override

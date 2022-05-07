@@ -86,13 +86,7 @@ public class ActivationModifierHook extends PlacementModifier implements Placeme
             return null;
         }
 
-        for (PlacementModifierConfiguration configuration : config.getPlacements()) {
-            if (configuration.getOwner() == activationModifier) {
-                return configuration;
-            }
-        }
-
-        return null;
+        return config.getPlacements().get(activationModifier);
     }
 
     @Override

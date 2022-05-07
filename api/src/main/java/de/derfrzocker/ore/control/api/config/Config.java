@@ -26,30 +26,33 @@
 package de.derfrzocker.ore.control.api.config;
 
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Config {
-    private List<PlacementModifierConfiguration> placements;
+
+    private final Map<FeaturePlacementModifier<?>, PlacementModifierConfiguration> placements = new LinkedHashMap<>();
     private FeatureGeneratorConfiguration feature;
     private boolean dirty = false;
 
     public Config() {
-        placements = new ArrayList<>();
         feature = null;
     }
 
     public Config(List<PlacementModifierConfiguration> placements, FeatureGeneratorConfiguration feature) {
-        this.placements = new ArrayList<>(placements);
         this.feature = feature;
+
+        if (placements != null) {
+            for (PlacementModifierConfiguration configuration : placements) {
+                this.placements.put(configuration.getOwner(), configuration);
+            }
+        }
     }
 
-    public List<PlacementModifierConfiguration> getPlacements() {
-        return Collections.unmodifiableList(placements);
+    public Map<FeaturePlacementModifier<?>, PlacementModifierConfiguration> getPlacements() {
+        return Collections.unmodifiableMap(placements);
     }
 
     public FeatureGeneratorConfiguration getFeature() {
@@ -62,32 +65,7 @@ public class Config {
     }
 
     public void setPlacement(PlacementModifierConfiguration configuration) {
-        if (placements == null) {
-            placements = new LinkedList<>();
-            placements.add(configuration);
-            dirty = true;
-            return;
-        }
-
-        if (placements.isEmpty()) {
-            placements.add(configuration);
-            dirty = true;
-            return;
-        }
-
-        PlacementModifierConfiguration toRemove = null;
-        for (PlacementModifierConfiguration toCheck : placements) {
-            if (toCheck.getOwner() == configuration.getOwner()) {
-                toRemove = toCheck;
-                break;
-            }
-        }
-
-        if (toRemove != null) {
-            placements.remove(toRemove);
-        }
-
-        placements.add(configuration);
+        placements.put(configuration.getOwner(), configuration);
         dirty = true;
     }
 
@@ -100,11 +78,7 @@ public class Config {
             return true;
         }
 
-        if (placements == null) {
-            return false;
-        }
-
-        for (PlacementModifierConfiguration configuration : placements) {
+        for (PlacementModifierConfiguration configuration : placements.values()) {
             if (configuration.isDirty()) {
                 return true;
             }
@@ -120,11 +94,7 @@ public class Config {
             feature.saved();
         }
 
-        if (placements == null) {
-            return;
-        }
-
-        for (PlacementModifierConfiguration configuration : placements) {
+        for (PlacementModifierConfiguration configuration : placements.values()) {
             configuration.saved();
         }
     }

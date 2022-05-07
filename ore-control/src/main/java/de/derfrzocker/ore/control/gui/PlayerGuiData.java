@@ -32,8 +32,8 @@ import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 public class PlayerGuiData {
 
@@ -46,7 +46,7 @@ public class PlayerGuiData {
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
 
-    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
+    private static PlacementModifierConfiguration getPlacementConfiguration(Collection<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
         if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
             return null;
         }
@@ -146,7 +146,7 @@ public class PlayerGuiData {
 
                 configuration = config.getFeature();
             } else if (settingWrapper.getSettingOwner() instanceof FeaturePlacementModifier) {
-                configuration = getPlacementConfiguration(config.getPlacements(), settingWrapper.getSettingOwner());
+                configuration = getPlacementConfiguration(config.getPlacements().values(), settingWrapper.getSettingOwner());
 
                 if (configuration == null) {
                     configuration = settingWrapper.getSettingOwner().createEmptyConfiguration();

@@ -47,6 +47,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.LinkedList;
 import java.util.Optional;
 
 public class ConfigDao {
@@ -59,7 +60,7 @@ public class ConfigDao {
                 Codec.list(registries.getPlacementModifierRegistry().
                                 dispatch("placement_modifier_type", PlacementModifierConfiguration::getOwner, FeaturePlacementModifier::getCodec)).
                         optionalFieldOf("placement_modifier_configurations").
-                        forGetter(config -> Optional.ofNullable(config.getPlacements())),
+                        forGetter(config -> Optional.of(config.getPlacements().values()).map(LinkedList::new)),
                 registries.getFeatureGeneratorRegistry().dispatch("feature_generator_type", FeatureGeneratorConfiguration::getOwner, FeatureGenerator::getCodec).
                         optionalFieldOf("feature_generator_configuration").
                         forGetter(config -> Optional.ofNullable(config.getFeature()))
