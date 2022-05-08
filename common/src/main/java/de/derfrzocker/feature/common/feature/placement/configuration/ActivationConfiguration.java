@@ -14,7 +14,7 @@ import java.util.Set;
 public class ActivationConfiguration implements PlacementModifierConfiguration {
 
     public final static Set<Setting> SETTINGS;
-    private final static Setting ACTIVATE = new Setting("activate", BooleanType.class);
+    public final static Setting ACTIVATE = new Setting("activate", BooleanType.class);
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();
