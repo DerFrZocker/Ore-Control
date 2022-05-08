@@ -74,11 +74,13 @@ public class CountModifier extends MinecraftPlacementModifier<CountPlacement, Co
         return CountPlacement.of(count);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return CountModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public CountModifierConfiguration createEmptyConfiguration() {
         return new CountModifierConfiguration(this, null);

@@ -71,11 +71,13 @@ public class SurfaceWaterDepthModifier extends MinecraftPlacementModifier<Surfac
         return SurfaceWaterDepthFilter.forMaxDepth(maxWaterDepth);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SurfaceWaterDepthModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public SurfaceWaterDepthModifierConfiguration createEmptyConfiguration() {
         return new SurfaceWaterDepthModifierConfiguration(this, null);

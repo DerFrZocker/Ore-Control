@@ -72,11 +72,13 @@ public class RarityModifier extends MinecraftPlacementModifier<RarityFilter, Rar
         return RarityFilter.onAverageOnceEvery(chance);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return RarityModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public RarityModifierConfiguration createEmptyConfiguration() {
         return new RarityModifierConfiguration(this, null);

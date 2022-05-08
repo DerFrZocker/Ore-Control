@@ -45,7 +45,7 @@ public interface Configuration {
 
     /**
      * Returns an unmodifiable set containing the allowed
-     * settings for this configuration.
+     * {@link Setting settings} for this configuration.
      *
      * @return the allowed settings.
      */
