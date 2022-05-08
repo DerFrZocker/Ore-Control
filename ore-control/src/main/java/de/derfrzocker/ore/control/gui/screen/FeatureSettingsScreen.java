@@ -127,7 +127,7 @@ public class FeatureSettingsScreen {
                         .buttonContext()
                         .withCondition((setting, guiInfo) -> {
                             PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
-                            Feature<?> feature = playerGuiData.getFeature();
+                            Feature feature = playerGuiData.getFeature();
 
                             if (feature == null) {
                                 return false;
@@ -259,7 +259,7 @@ public class FeatureSettingsScreen {
 
     private static List<SettingWrapper> buildList(OreControlManager oreControlManager, OreControlGuiManager guiManager, GuiInfo guiInfo) {
         PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
-        Feature<?> feature = playerGuiData.getFeature();
+        Feature feature = playerGuiData.getFeature();
         List<SettingWrapper> settingWrappers = new LinkedList<>();
 
         for (Setting setting : feature.getGenerator().getSettings()) {

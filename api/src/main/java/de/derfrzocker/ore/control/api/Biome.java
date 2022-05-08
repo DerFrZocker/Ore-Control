@@ -36,7 +36,7 @@ import java.util.Set;
 public class Biome implements Keyed {
 
     private final NamespacedKey key;
-    private final Set<Feature<?>> features = new LinkedHashSet<>();
+    private final Set<Feature> features = new LinkedHashSet<>();
 
     public Biome(NamespacedKey key) {
         this.key = key;
@@ -48,7 +48,7 @@ public class Biome implements Keyed {
         return key;
     }
 
-    public Set<Feature<?>> getFeatures() {
+    public Set<Feature> getFeatures() {
         return features;
     }
 }

@@ -106,7 +106,7 @@ public class NumberEditScreen {
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("current-value", numberSupplier.apply(guiManager.getPlayerGuiData((Player) guiInfo.getEntity()))))
                                 .itemStack((setting, guiInfo) -> {
                                     PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
-                                    Feature<?> feature = playerGuiData.getFeature();
+                                    Feature feature = playerGuiData.getFeature();
                                     String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
                                     ItemStack icon = setting.get(key + ".item-stack", null);
                                     if (icon == null) {

@@ -39,7 +39,7 @@ public class PlayerGuiData {
 
     private ConfigInfo configInfo = null;
     private Biome biome = null;
-    private Feature<?> feature = null;
+    private Feature feature = null;
     private SettingWrapper settingWrapper = null;
     private LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
     private Value<?, ?, ?> originalValue = null;
@@ -76,11 +76,11 @@ public class PlayerGuiData {
         this.biome = biome;
     }
 
-    public Feature<?> getFeature() {
+    public Feature getFeature() {
         return feature;
     }
 
-    public void setFeature(Feature<?> feature) {
+    public void setFeature(Feature feature) {
         this.feature = feature;
     }
 

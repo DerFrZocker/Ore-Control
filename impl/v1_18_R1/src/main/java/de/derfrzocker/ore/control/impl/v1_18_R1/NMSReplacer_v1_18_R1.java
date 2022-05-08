@@ -179,7 +179,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
                 modifierOptional.ifPresent(modifiers::add);
             }
 
-            registries.getFeatureRegistry().register(new de.derfrzocker.feature.api.Feature<>(NamespacedKey.fromString(placedFeatureRegistry.getKey(placedFeature).toString()), featureGenerator.get(), modifiers));
+            registries.getFeatureRegistry().register(new de.derfrzocker.feature.api.Feature(NamespacedKey.fromString(placedFeatureRegistry.getKey(placedFeature).toString()), featureGenerator.get(), modifiers));
         }
     }
 

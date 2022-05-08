@@ -31,13 +31,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class Feature<C extends FeatureGeneratorConfiguration> implements Keyed {
+public class Feature implements Keyed {
 
     private final NamespacedKey key;
-    private final FeatureGenerator<C> generator;
+    private final FeatureGenerator<?> generator;
     private final List<FeaturePlacementModifier<?>> placementModifiers;
 
-    public Feature(NamespacedKey key, FeatureGenerator<C> generator, List<FeaturePlacementModifier<?>> placementModifiers) {
+    public Feature(NamespacedKey key, FeatureGenerator<?> generator, List<FeaturePlacementModifier<?>> placementModifiers) {
         this.key = key;
         this.generator = generator;
         this.placementModifiers = placementModifiers;
@@ -49,7 +49,7 @@ public class Feature<C extends FeatureGeneratorConfiguration> implements Keyed {
         return key;
     }
 
-    public FeatureGenerator<C> getGenerator() {
+    public FeatureGenerator<?> getGenerator() {
         return generator;
     }
 

@@ -127,7 +127,7 @@ public class FeatureSelectionScreen {
             if (configInfo.getConfigType() == ConfigType.WORLD) {
                 World world = Bukkit.getWorld(configInfo.getWorldName());
                 if (world != null) {
-                    Set<Feature<?>> features = new LinkedHashSet<>();
+                    Set<Feature> features = new LinkedHashSet<>();
                     for (Biome biome : oreControlManager.getBiomes(world)) {
                         features.addAll(biome.getFeatures());
                     }

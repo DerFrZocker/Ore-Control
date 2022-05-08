@@ -30,12 +30,12 @@ import java.util.Map;
 
 public class Registries {
 
-    private final Registry<Feature<?>> featureRegistry = new Registry<>();
+    private final Registry<Feature> featureRegistry = new Registry<>();
     private final Registry<FeatureGenerator<?>> featureGeneratorRegistry = new Registry<>();
     private final Registry<FeaturePlacementModifier<?>> placementModifierRegistry = new Registry<>();
     private final Map<Class<?>, Registry<?>> valueTypeRegistry = new LinkedHashMap<>();
 
-    public Registry<Feature<?>> getFeatureRegistry() {
+    public Registry<Feature> getFeatureRegistry() {
         return featureRegistry;
     }
 
