@@ -26,9 +26,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.build.timestamp.format>yyyy.MM.d</maven.build.timestamp.format>
         <project.author>DerFrZocker</project.author>
-        <project.authors>Pings</project.authors>
-        <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
-        <version.non-maven1>1.0.0</version.non-maven1>
         <spigot-utils.version>71</spigot-utils.version>
         <bstats.version>1.7</bstats.version>
     </properties>
@@ -79,7 +76,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>13.0</version>
+            <version>23.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -89,10 +86,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
-                        <phase>install</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -102,7 +99,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>1.2.2</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                 </configuration>
