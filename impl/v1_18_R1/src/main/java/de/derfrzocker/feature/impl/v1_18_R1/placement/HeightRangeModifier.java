@@ -77,11 +77,13 @@ public class HeightRangeModifier extends MinecraftPlacementModifier<HeightRangeP
         return HeightRangePlacement.of(height);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return HeightRangeModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public HeightRangeModifierConfiguration createEmptyConfiguration() {
         return new HeightRangeModifierConfiguration(this, null);

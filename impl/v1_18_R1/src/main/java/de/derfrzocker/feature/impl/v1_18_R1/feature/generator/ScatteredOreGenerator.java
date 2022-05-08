@@ -94,11 +94,13 @@ public class ScatteredOreGenerator extends MinecraftFeatureGenerator<OreConfigur
         return new OreConfiguration(blockStates, size, discardChanceOnAirExposure);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return OreFeatureConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public OreFeatureConfiguration createEmptyConfiguration() {
         return new OreFeatureConfiguration(this, null, null, null);

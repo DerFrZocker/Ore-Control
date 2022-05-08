@@ -62,8 +62,9 @@ public abstract class MinecraftFeatureGenerator<M extends FeatureConfiguration, 
 
     public abstract M createConfiguration(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);
 
+    @NotNull
     @Override
-    public C merge(FeatureGeneratorConfiguration first, FeatureGeneratorConfiguration second) {
+    public C merge(@NotNull FeatureGeneratorConfiguration first, @NotNull FeatureGeneratorConfiguration second) {
         return mergeConfig((C) first, (C) second);
     }
 
@@ -74,6 +75,7 @@ public abstract class MinecraftFeatureGenerator<M extends FeatureConfiguration, 
         feature.place(new FeaturePlaceContext<>(Optional.empty(), level, level.getMinecraftWorld().getChunkSource().getGenerator(), random, new BlockPos(position.getBlockX(), position.getBlockY(), position.getBlockZ()), config));
     }
 
+    @NotNull
     @Override
     public Codec<FeatureGeneratorConfiguration> getCodec() {
         return codec;

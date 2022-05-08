@@ -31,6 +31,7 @@ import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -60,18 +61,20 @@ public class CountModifierConfiguration implements PlacementModifierConfiguratio
         return count;
     }
 
+    @NotNull
     @Override
     public FeaturePlacementModifier<?> getOwner() {
         return placementModifier;
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SETTINGS;
     }
 
     @Override
-    public Value<?, ?, ?> getValue(Setting setting) {
+    public Value<?, ?, ?> getValue(@NotNull Setting setting) {
         if (setting == COUNT) {
             return getCount();
         }
@@ -80,7 +83,7 @@ public class CountModifierConfiguration implements PlacementModifierConfiguratio
     }
 
     @Override
-    public void setValue(Setting setting, Value<?, ?, ?> value) {
+    public void setValue(@NotNull Setting setting, Value<?, ?, ?> value) {
         if (setting == COUNT) {
             count = (IntegerValue) value;
             dirty = true;

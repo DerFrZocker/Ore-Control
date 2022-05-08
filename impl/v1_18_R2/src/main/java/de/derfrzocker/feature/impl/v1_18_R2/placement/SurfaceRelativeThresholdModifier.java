@@ -89,11 +89,13 @@ public class SurfaceRelativeThresholdModifier extends MinecraftPlacementModifier
         return SurfaceRelativeThresholdFilter.of(heightmap, minInclusive, maxInclusive);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SurfaceRelativeThresholdModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public SurfaceRelativeThresholdModifierConfiguration createEmptyConfiguration() {
         return new SurfaceRelativeThresholdModifierConfiguration(this, null, null, null);
