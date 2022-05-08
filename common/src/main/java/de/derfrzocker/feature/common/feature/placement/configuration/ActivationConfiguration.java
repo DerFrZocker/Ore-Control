@@ -6,6 +6,7 @@ import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.common.value.bool.BooleanType;
 import de.derfrzocker.feature.common.value.bool.BooleanValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -35,18 +36,20 @@ public class ActivationConfiguration implements PlacementModifierConfiguration {
         return activate;
     }
 
+    @NotNull
     @Override
     public FeaturePlacementModifier<?> getOwner() {
         return placementModifier;
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SETTINGS;
     }
 
     @Override
-    public Value<?, ?, ?> getValue(Setting setting) {
+    public Value<?, ?, ?> getValue(@NotNull Setting setting) {
         if (setting == ACTIVATE) {
             return getActivate();
         }
@@ -55,7 +58,7 @@ public class ActivationConfiguration implements PlacementModifierConfiguration {
     }
 
     @Override
-    public void setValue(Setting setting, Value<?, ?, ?> value) {
+    public void setValue(@NotNull Setting setting, Value<?, ?, ?> value) {
         if (setting == ACTIVATE) {
             activate = (BooleanValue) value;
             dirty = true;

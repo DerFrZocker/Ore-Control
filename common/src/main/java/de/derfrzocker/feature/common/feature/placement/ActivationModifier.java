@@ -30,27 +30,32 @@ public class ActivationModifier implements FeaturePlacementModifier<ActivationCo
         ).apply(builder, (activate) -> new ActivationConfiguration(this, activate.orElse(null))));
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return ActivationConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public Configuration createEmptyConfiguration() {
         return new ActivationConfiguration(this, null);
     }
 
+    @NotNull
     @Override
     public Codec<PlacementModifierConfiguration> getCodec() {
         return codec;
     }
 
+    @NotNull
     @Override
-    public ActivationConfiguration merge(PlacementModifierConfiguration first, PlacementModifierConfiguration second) {
+    public ActivationConfiguration merge(@NotNull PlacementModifierConfiguration first, @NotNull PlacementModifierConfiguration second) {
         return new ActivationConfiguration(this,
                 ((ActivationConfiguration) first).getActivate() != null ? ((ActivationConfiguration) first).getActivate() : ((ActivationConfiguration) second).getActivate());
     }
 
+    @NotNull
     @Override
     public Stream<BlockVector> getPositions(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull ActivationConfiguration configuration) {
         if (configuration.getActivate() == null || configuration.getActivate().getValue(worldInfo, random, position, limitedRegion)) {
