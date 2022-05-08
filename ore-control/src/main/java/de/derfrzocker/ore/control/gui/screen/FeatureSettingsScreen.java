@@ -133,7 +133,7 @@ public class FeatureSettingsScreen {
                                 return false;
                             }
 
-                            return oreControlManager.getRegistries().getPlacementModifierRegistry().get(ActivationModifier.KEY).map(modifier -> feature.getPlacementModifiers().contains(modifier)).orElse(false);
+                            return oreControlManager.getRegistries().getPlacementModifierRegistry().get(ActivationModifier.KEY).map(modifier -> feature.placementModifiers().contains(modifier)).orElse(false);
                         })
                         .slot((setting, guiInfo) -> setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.slot",4))
                         .identifier("activation")
@@ -262,11 +262,11 @@ public class FeatureSettingsScreen {
         Feature feature = playerGuiData.getFeature();
         List<SettingWrapper> settingWrappers = new LinkedList<>();
 
-        for (Setting setting : feature.getGenerator().getSettings()) {
-            settingWrappers.add(new SettingWrapper(setting, feature.getGenerator()));
+        for (Setting setting : feature.generator().getSettings()) {
+            settingWrappers.add(new SettingWrapper(setting, feature.generator()));
         }
 
-        for (FeaturePlacementModifier<?> placementModifier : feature.getPlacementModifiers()) {
+        for (FeaturePlacementModifier<?> placementModifier : feature.placementModifiers()) {
             if (placementModifier.getKey().equals(ActivationModifier.KEY)) {
                 continue;
             }
