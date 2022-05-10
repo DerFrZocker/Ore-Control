@@ -35,7 +35,7 @@ import java.util.*;
 
 public class WeightedListIntegerValue extends IntegerValue {
 
-    private Map<IntegerValue, IntegerValue> distribution = new LinkedHashMap<>();
+    private final Map<IntegerValue, IntegerValue> distribution = new LinkedHashMap<>();
     private boolean dirty = false;
 
     public WeightedListIntegerValue(Map<IntegerValue, IntegerValue> distribution) {

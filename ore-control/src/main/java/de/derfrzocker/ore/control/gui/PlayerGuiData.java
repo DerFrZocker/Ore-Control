@@ -41,7 +41,7 @@ public class PlayerGuiData {
     private Biome biome = null;
     private Feature feature = null;
     private SettingWrapper settingWrapper = null;
-    private LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
+    private final LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
     private Value<?, ?, ?> originalValue = null;
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;

@@ -188,13 +188,11 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
         forEachBiome((biome, resourceLocation) -> {
             de.derfrzocker.ore.control.api.Biome bio = new de.derfrzocker.ore.control.api.Biome(CraftNamespacedKey.fromMinecraft(resourceLocation));
 
-            biome.getGenerationSettings().features().forEach(featureSet -> {
-                featureSet.forEach(holder -> {
-                    PlacedFeature feature = holder.get();
-                    ResourceLocation featureKey = placedFeatureRegistry.getKey(feature);
-                    registries.getFeatureRegistry().get(CraftNamespacedKey.fromMinecraft(featureKey)).ifPresent(value -> bio.getFeatures().add(value));
-                });
-            });
+            biome.getGenerationSettings().features().forEach(featureSet -> featureSet.forEach(holder -> {
+                PlacedFeature feature = holder.get();
+                ResourceLocation featureKey = placedFeatureRegistry.getKey(feature);
+                registries.getFeatureRegistry().get(CraftNamespacedKey.fromMinecraft(featureKey)).ifPresent(value -> bio.getFeatures().add(value));
+            }));
 
             registries.getBiomeRegistry().register(bio);
         });

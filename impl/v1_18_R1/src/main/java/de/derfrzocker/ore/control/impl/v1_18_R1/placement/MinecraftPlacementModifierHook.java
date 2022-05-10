@@ -96,18 +96,16 @@ public abstract class MinecraftPlacementModifierHook<M extends PlacementModifier
 
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos blockPos) {
-        BlockPos origin = blockPos;
-
         PlacementModifierConfiguration configuration = cache.computeIfAbsent(context.getLevel().getMinecraftWorld().getWorld().getName(), this::loadConfig);
 
         M modifier = defaultModifier;
         if (configuration != null) {
-            CraftLimitedRegion limitedRegion = new CraftLimitedRegion(context.getLevel(), new ChunkPos(origin));
-            modifier = createModifier(defaultConfiguration, context.getLevel().getMinecraftWorld().getWorld(), random, new BlockVector(origin.getX(), origin.getY(), origin.getZ()), limitedRegion, (C) configuration);
+            CraftLimitedRegion limitedRegion = new CraftLimitedRegion(context.getLevel(), new ChunkPos(blockPos));
+            modifier = createModifier(defaultConfiguration, context.getLevel().getMinecraftWorld().getWorld(), random, new BlockVector(blockPos.getX(), blockPos.getY(), blockPos.getZ()), limitedRegion, (C) configuration);
             limitedRegion.breakLink();
         }
 
-        return getPositions(context.topFeature(), context.getLevel(), context.generator(), random, origin, modifier);
+        return getPositions(context.topFeature(), context.getLevel(), context.generator(), random, blockPos, modifier);
     }
 
     private PlacementModifierConfiguration loadConfig(String name) {

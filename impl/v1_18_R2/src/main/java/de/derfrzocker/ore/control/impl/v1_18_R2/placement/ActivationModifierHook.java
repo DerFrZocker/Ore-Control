@@ -85,15 +85,13 @@ public class ActivationModifierHook extends PlacementModifier implements Placeme
 
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos blockPos) {
-        BlockPos origin = blockPos;
-
         PlacementModifierConfiguration configuration = cache.computeIfAbsent(context.getLevel().getMinecraftWorld().getWorld().getName(), this::loadConfig);
         if (configuration == null) {
             return Stream.of(blockPos);
         }
 
-        CraftLimitedRegion limitedRegion = new CraftLimitedRegion(context.getLevel(), new ChunkPos(origin));
-        Stream<BlockVector> pos = activationModifier.getPositions(context.getLevel().getMinecraftWorld().getWorld(), random, new BlockVector(origin.getX(), origin.getY(), origin.getZ()), limitedRegion, (ActivationConfiguration) configuration);
+        CraftLimitedRegion limitedRegion = new CraftLimitedRegion(context.getLevel(), new ChunkPos(blockPos));
+        Stream<BlockVector> pos = activationModifier.getPositions(context.getLevel().getMinecraftWorld().getWorld(), random, new BlockVector(blockPos.getX(), blockPos.getY(), blockPos.getZ()), limitedRegion, (ActivationConfiguration) configuration);
 
         limitedRegion.breakLink();
 

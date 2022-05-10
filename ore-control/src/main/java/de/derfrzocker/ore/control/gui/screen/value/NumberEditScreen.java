@@ -102,7 +102,7 @@ public class NumberEditScreen {
                                 .button()
                                 .identifier(DEFAULT_ICON)
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("feature-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().getKey()))
-                                .withMessageValue((setting, guiInfo) -> new MessageValue("setting-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getSettingWrapper().getSetting().getName()))
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("setting-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getSettingWrapper().getSetting().name()))
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("current-value", numberSupplier.apply(guiManager.getPlayerGuiData((Player) guiInfo.getEntity()))))
                                 .itemStack((setting, guiInfo) -> {
                                     PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
