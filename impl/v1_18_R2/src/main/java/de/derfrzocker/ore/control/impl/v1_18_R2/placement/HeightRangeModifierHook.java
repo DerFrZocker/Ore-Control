@@ -26,11 +26,11 @@
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.common.feature.placement.configuration.HeightRangeModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.HeightRangeModifierConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.Biome;

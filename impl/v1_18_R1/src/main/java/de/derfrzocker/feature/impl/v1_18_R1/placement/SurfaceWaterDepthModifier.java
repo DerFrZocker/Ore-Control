@@ -31,7 +31,7 @@ import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.SurfaceWaterDepthModifierConfiguration;
+import de.derfrzocker.feature.common.feature.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;

@@ -26,8 +26,8 @@
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.common.feature.placement.configuration.RarityModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.RarityModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;

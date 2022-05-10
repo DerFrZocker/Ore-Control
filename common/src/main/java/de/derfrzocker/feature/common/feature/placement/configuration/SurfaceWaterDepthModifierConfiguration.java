@@ -23,7 +23,7 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R2.placement.configuration;
+package de.derfrzocker.feature.common.feature.placement.configuration;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;

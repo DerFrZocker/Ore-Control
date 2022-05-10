@@ -23,7 +23,7 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R2.placement.configuration;
+package de.derfrzocker.feature.common.feature.placement.configuration;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
@@ -37,28 +37,28 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class CountModifierConfiguration implements PlacementModifierConfiguration {
+public class HeightRangeModifierConfiguration implements PlacementModifierConfiguration {
 
     public final static Set<Setting> SETTINGS;
-    private final static Setting COUNT = new Setting("count", IntegerType.class);
+    private final static Setting HEIGHT = new Setting("height", IntegerType.class);
 
     static {
         Set<Setting> settings = new LinkedHashSet<>();
-        settings.add(COUNT);
+        settings.add(HEIGHT);
         SETTINGS = Collections.unmodifiableSet(settings);
     }
 
     private final FeaturePlacementModifier<?> placementModifier;
-    private IntegerValue count;
+    private IntegerValue height;
     private boolean dirty = false;
 
-    public CountModifierConfiguration(FeaturePlacementModifier<?> placementModifier, IntegerValue count) {
+    public HeightRangeModifierConfiguration(FeaturePlacementModifier<?> placementModifier, IntegerValue height) {
         this.placementModifier = placementModifier;
-        this.count = count;
+        this.height = height;
     }
 
-    public IntegerValue getCount() {
-        return count;
+    public IntegerValue getHeight() {
+        return height;
     }
 
     @NotNull
@@ -75,22 +75,22 @@ public class CountModifierConfiguration implements PlacementModifierConfiguratio
 
     @Override
     public Value<?, ?, ?> getValue(@NotNull Setting setting) {
-        if (setting == COUNT) {
-            return getCount();
+        if (setting == HEIGHT) {
+            return getHeight();
         }
 
-        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "CountModifierConfiguration"));
+        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "HeightRangeModifierConfiguration"));
     }
 
     @Override
     public void setValue(@NotNull Setting setting, Value<?, ?, ?> value) {
-        if (setting == COUNT) {
-            count = (IntegerValue) value;
+        if (setting == HEIGHT) {
+            height = (IntegerValue) value;
             dirty = true;
             return;
         }
 
-        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "CountModifierConfiguration"));
+        throw new IllegalArgumentException(String.format("Setting '%s' is not in the configuration '%s'", setting, "HeightRangeModifierConfiguration"));
     }
 
     @Override
@@ -99,15 +99,15 @@ public class CountModifierConfiguration implements PlacementModifierConfiguratio
             return true;
         }
 
-        return count != null && count.isDirty();
+        return height != null && height.isDirty();
     }
 
     @Override
     public void saved() {
         dirty = false;
 
-        if (count != null) {
-            count.saved();
+        if (height != null) {
+            height.saved();
         }
     }
 }

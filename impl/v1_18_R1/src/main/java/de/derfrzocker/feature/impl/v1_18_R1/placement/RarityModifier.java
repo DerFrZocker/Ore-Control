@@ -31,7 +31,7 @@ import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.RarityModifierConfiguration;
+import de.derfrzocker.feature.common.feature.placement.configuration.RarityModifierConfiguration;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
