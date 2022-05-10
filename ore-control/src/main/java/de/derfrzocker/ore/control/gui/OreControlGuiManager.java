@@ -60,7 +60,7 @@ public class OreControlGuiManager implements Listener {
     public static final String FEATURE_SELECTION_SCREEN = "feature_selection_screen";
     public static final String FEATURE_SETTINGS_SCREEN = "feature_settings_screen";
 
-    private final Map<Player, PlayerGuiData> playerGuiDatas = new ConcurrentHashMap<>();
+    private final Map<Player, PlayerGuiData> playerGuiData = new ConcurrentHashMap<>();
     private final Map<ValueType<?, ?, ?>, InventoryGui> valueTypeInventoryGuis = new ConcurrentHashMap<>();
 
     private final Plugin plugin;
@@ -98,11 +98,11 @@ public class OreControlGuiManager implements Listener {
     }
 
     public PlayerGuiData getPlayerGuiData(Player player) {
-        return playerGuiDatas.computeIfAbsent(player, player1 -> new PlayerGuiData());
+        return playerGuiData.computeIfAbsent(player, player1 -> new PlayerGuiData());
     }
 
     public void openGui(Player player) {
-        playerGuiDatas.remove(player);
+        playerGuiData.remove(player);
         configInfosScreen.openGui(plugin, player, true);
     }
 
@@ -148,7 +148,7 @@ public class OreControlGuiManager implements Listener {
         Bukkit.getScheduler().runTask(plugin, () -> {
             InventoryType type = event.getPlayer().getOpenInventory().getType();
             if (type == InventoryType.CRAFTING || type == InventoryType.CREATIVE) {
-                playerGuiDatas.remove(event.getPlayer());
+                playerGuiData.remove(event.getPlayer());
                 oreControlManager.getConfigManager().saveAndReload();
                 oreControlManager.onValueChange();
             }

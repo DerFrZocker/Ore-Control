@@ -39,7 +39,7 @@ import java.util.Optional;
 
 public class Registry<V extends Keyed> implements Codec<V> {
 
-    public static final Codec<NamespacedKey> KEY_GODEC = Codec.STRING.comapFlatMap(value -> {
+    public static final Codec<NamespacedKey> KEY_CODEC = Codec.STRING.comapFlatMap(value -> {
         if (value == null || value.isEmpty()) {
             return DataResult.error("Value is null or empty");
         }
@@ -67,11 +67,11 @@ public class Registry<V extends Keyed> implements Codec<V> {
 
     @Override
     public <T> DataResult<Pair<V, T>> decode(DynamicOps<T> ops, T input) {
-        return KEY_GODEC.
+        return KEY_CODEC.
                 decode(ops, input).
                 flatMap(result -> get(result.getFirst()).
                         map(v -> DataResult.success(Pair.of(v, result.getSecond()), Lifecycle.experimental())).
-                        orElseGet(() -> DataResult.error("No value for key " + result.getFirst() + " registerd")));
+                        orElseGet(() -> DataResult.error("No value for key " + result.getFirst() + " registered")));
     }
 
     @Override
