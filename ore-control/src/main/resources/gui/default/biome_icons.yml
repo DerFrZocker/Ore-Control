@@ -127,3 +127,203 @@ icons:
       type: "MANGROVE_LOG"
     deep_dark:
       type: "SCULK"
+    # from terralith
+    deep_warm_ocean:
+      type: "WATER_BUCKET"
+  terralith:
+    frozen_cliffs:
+      type: "PACKED_ICE"
+    fractured_savanna:
+      type: "DRIPSTONE_BLOCK"
+    cave/thermal_caves:
+      type: "MAGMA_BLOCK"
+    rocky_shrubland:
+      type: "STONE"
+    steppe:
+      type: "GRASS_BLOCK"
+    volcanic_peaks:
+      type: "SMOOTH_BASALT"
+    rocky_jungle:
+      type: "JUNGLE_LOG"
+    forested_highlands:
+      type: "DARK_OAK_LOG"
+    glacial_chasm:
+      type: "ICE"
+    arid_highlands:
+      type: "ROOTED_DIRT"
+    cave/deep_caves:
+      type: "DEEPSLATE"
+    sakura_valley:
+      type: "ALLIUM"
+    scarlet_mountains:
+      type: "NETHERRACK"
+    granite_cliffs:
+      type: "GRANITE"
+    red_oasis:
+      type: "RED_TERRACOTTA"
+    alpha_islands:
+      type: "GRASS_BLOCK"
+    stony_spires:
+      type: "POINTED_DRIPSTONE"
+    lavender_forest:
+      type: "WHITE_TULIP"
+    siberian_grove:
+      type: "SNOW_BLOCK"
+    blooming_plateau:
+      type: "DANDELION"
+    white_cliffs:
+      type: "CALCITE"
+    volcanic_crater:
+      type: "LAVA_BUCKET"
+    yellowstone:
+      type: "COARSE_DIRT"
+    alpha_islands_winter:
+      type: "SNOW"
+    cave/crystal_caves:
+      type: "BARRIER" # Not Found
+    cave/desert_caves:
+      type: "BARRIER" # Not Found
+    windswept_spires:
+      type: "GRASS_BLOCK"
+    savanna_badlands:
+      type: "WHITE_TERRACOTTA"
+    skylands:
+      type: "BARRIER" # Not Found
+    cave/mantle_caves:
+      type: "TUFF"
+    skylands_winter:
+      type: "WATER_BUCKET"
+    snowy_badlands:
+      type: "SNOW"
+    alpine_highlands:
+      type: "COARSE_DIRT"
+    moonlight_grove:
+      type: "CORNFLOWER"
+    skylands_autumn:
+      type: "WATER_BUCKET"
+    temperate_highlands:
+      type: "GRASS_BLOCK"
+    basalt_cliffs:
+      type: "BASALT"
+    cave/diorite_caves:
+      type: "DIORITE"
+    rocky_mountains:
+      type: "COBBLESTONE"
+    warped_mesa:
+      type: "LIGHT_BLUE_TERRACOTTA"
+    painted_mountains:
+      type: "MAGENTA_TERRACOTTA"
+    yosemite_cliffs:
+      type: "DIORITE"
+    cave/frostfire_caves:
+      type: "BLUE_ICE"
+    mirage_isles:
+      type: "STRIPPED_WARPED_STEM"
+    cave/infested_caves:
+      type: "COBWEB"
+    birch_taiga:
+      type: "BIRCH_LOG"
+    snowy_shield:
+      type: "SPRUCE_LOG"
+    highlands:
+      type: "ALLIUM"
+    skylands_summer:
+      type: "WATER_BUCKET"
+    sakura_grove:
+      type: "PODZOL"
+    jungle_mountains:
+      type: "JUNGLE_LOG"
+    wintry_forest:
+      type: "SPRUCE_LOG"
+    shield:
+      type: "STONE"
+    cloud_forest:
+      type: "OXEYE_DAISY"
+    savanna_slopes:
+      type: "ACACIA_LOG"
+    siberian_taiga:
+      type: "SPRUCE_LOG"
+    orchid_swamp:
+      type: "BLUE_ORCHID"
+    amethyst_rainforest:
+      type: "ACACIA_LOG"
+    ancient_sands:
+      type: "RED_SAND"
+    desert_canyon:
+      type: "SAND"
+    sandstone_valley:
+      type: "SMALL_DRIPLEAF"
+    bryce_canyon:
+      type: "ORANGE_TERRACOTTA"
+    gravel_beach:
+      type: "GRAVEL"
+    brushland:
+      type: "OAK_LEAVES"
+    cold_shrubland:
+      type: "SNOW"
+    wintry_lowlands:
+      type: "SNOW"
+    yosemite_lowlands:
+      type: "GRASS_BLOCK"
+    cave/granite_caves:
+      type: "GRANITE"
+    cave/andesite_caves:
+      type: "ANDESITE"
+    skylands_spring:
+      type: "WATER_BUCKET"
+    gravel_desert:
+      type: "GRAVEL"
+    shield_clearing:
+      type: "STONE"
+    snowy_maple_forest:
+      type: "SNOW"
+    moonlight_valley:
+      type: "BLUE_ORCHID"
+    alpine_grove:
+      type: "SNOW_BLOCK"
+    desert_oasis:
+      type: "SMALL_DRIPLEAF"
+    shrubland:
+      type: "TUFF"
+    white_mesa:
+      type: "WHITE_TERRACOTTA"
+    hot_shrubland:
+      type: "STONE"
+    caldera:
+      type: "COBBLED_DEEPSLATE"
+    cave/fungal_caves:
+      type: "RED_MUSHROOM"
+    ashen_savanna:
+      type: "SMOOTH_BASALT"
+    cave/ice_caves:
+      type: "BARRIER" # Not Found
+    emerald_peaks:
+      type: "EMERALD_ORE"
+    warm_river:
+      type: "WATER_BUCKET"
+    blooming_valley:
+      type: "PINK_TULIP"
+    lavender_valley:
+      type: "GRASS_BLOCK"
+    amethyst_canyon:
+      type: "CALCITE"
+    tropical_jungle:
+      type: "JUNGLE_LOG"
+    valley_clearing:
+      type: "WATER_BUCKET"
+    desert_spires:
+      type: "SAND"
+    mountain_steppe:
+      type: "BARRIER" # Not Found
+    haze_mountain:
+      type: "STONE"
+    ice_marsh:
+      type: "SNOW"
+    lush_valley:
+      type: "GLOW_BERRIES"
+    cave/tuff_caves:
+      type: "TUFF"
+    lush_desert:
+      type: "GLOW_BERRIES"
+    cave/underground_jungle:
+      type: "MANGROVE_LEAVES"

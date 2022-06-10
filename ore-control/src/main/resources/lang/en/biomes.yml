@@ -323,3 +323,7 @@ biomes:
       name: "Lush Valley"
     cave/tuff_caves:
       name: "Tuff Caves"
+    lush_desert:
+      name: "Lush Desert"
+    cave/underground_jungle:
+      name: "Underground Jungle Cave"
