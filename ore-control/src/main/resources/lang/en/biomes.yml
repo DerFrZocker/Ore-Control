@@ -122,3 +122,8 @@ biomes:
       name: "Small End Islands"
     end_barrens:
       name: "End Barrens"
+    # 1.19 biomes
+    mangrove_swamp:
+      name: "Mangrove Swamp"
+    deep_dark:
+      name: "Deep Dark"
