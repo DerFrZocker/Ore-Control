@@ -23,7 +23,7 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.offset;
+package de.derfrzocker.feature.common.value.offset;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -34,33 +34,34 @@ import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.Function;
 
-public class AboveBottomOffsetIntegerType extends IntegerType {
+public class BelowTopOffsetIntegerType extends IntegerType {
 
-    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:above_bottom_offset_integer");
-    private static AboveBottomOffsetIntegerType type = null;
-    private final Codec<AboveBottomOffsetIntegerValue> codec;
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:below_top_offset_integer");
+    private static BelowTopOffsetIntegerType type = null;
+    private final Codec<BelowTopOffsetIntegerValue> codec;
 
-    public AboveBottomOffsetIntegerType(Registries registries) {
+    public BelowTopOffsetIntegerType(Registries registries, Function<IntegerValue, BelowTopOffsetIntegerValue> newValue) {
         if (type != null) {
-            throw new IllegalStateException("AboveBottomOffsetIntegerType was already created!");
+            throw new IllegalStateException("BelowTopOffsetIntegerType was already created!");
         }
 
         codec = RecordCodecBuilder.create((builder) -> builder.group(
                 registries.getValueTypeRegistry(IntegerType.class).dispatch("base_type", IntegerValue::getValueType, IntegerType::getCodec).
                         optionalFieldOf("base").forGetter(config -> Optional.ofNullable(config.getBase()))
-        ).apply(builder, base -> new AboveBottomOffsetIntegerValue(base.orElse(null))));
+        ).apply(builder, base -> newValue.apply(base.orElse(null))));
 
         type = this;
     }
 
-    public static AboveBottomOffsetIntegerType type() {
+    public static BelowTopOffsetIntegerType type() {
         return type;
     }
 
     @Override
     public Codec<IntegerValue> getCodec() {
-        return codec.xmap(value -> value, value -> (AboveBottomOffsetIntegerValue) value);
+        return codec.xmap(value -> value, value -> (BelowTopOffsetIntegerValue) value);
     }
 
     @Override

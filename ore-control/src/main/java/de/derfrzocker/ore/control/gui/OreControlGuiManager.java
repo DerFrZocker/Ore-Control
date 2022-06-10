@@ -32,12 +32,20 @@ import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
-import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerType;
-import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerType;
+import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
+import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.ore.control.api.OreControlManager;
-import de.derfrzocker.ore.control.gui.screen.*;
-import de.derfrzocker.ore.control.gui.screen.value.*;
-import de.derfrzocker.spigot.utils.Version;
+import de.derfrzocker.ore.control.gui.screen.BiomeScreen;
+import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
+import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
+import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
+import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
+import de.derfrzocker.ore.control.gui.screen.value.AboveBottomOffsetIntegerScreen;
+import de.derfrzocker.ore.control.gui.screen.value.BelowTopOffsetIntegerScreen;
+import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
+import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
+import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
+import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
@@ -86,16 +94,8 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
         this.valueTypeInventoryGuis.put(FixedBooleanType.INSTANCE, BooleanScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        if (Version.v1_18_R2 == Version.getServerVersion(plugin.getServer())) {
-            this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-            this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        } else if (Version.v1_18_R1 == Version.getServerVersion(plugin.getServer())) {
-            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        } else if (Version.v1_19_R1 == Version.getServerVersion(plugin.getServer())) {
-            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_19_R1.value.offset.AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_19_R1.value.offset.BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        }
+        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

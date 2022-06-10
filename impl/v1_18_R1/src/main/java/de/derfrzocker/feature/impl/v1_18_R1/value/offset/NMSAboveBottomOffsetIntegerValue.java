@@ -23,11 +23,12 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_19_R1.value.offset;
+package de.derfrzocker.feature.impl.v1_18_R1.value.offset;
 
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerValue;
 import net.minecraft.world.level.WorldGenLevel;
-import org.bukkit.craftbukkit.v1_19_R1.generator.CraftLimitedRegion;
+import org.bukkit.craftbukkit.v1_18_R1.generator.CraftLimitedRegion;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -35,23 +36,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class AboveBottomOffsetIntegerValue extends IntegerValue {
+public class NMSAboveBottomOffsetIntegerValue extends AboveBottomOffsetIntegerValue {
 
-    private IntegerValue base;
-    private boolean dirty = false;
-
-    public AboveBottomOffsetIntegerValue(IntegerValue base) {
-        this.base = base;
-    }
-
-    @Override
-    public AboveBottomOffsetIntegerType getValueType() {
-        return AboveBottomOffsetIntegerType.type();
+    public NMSAboveBottomOffsetIntegerValue(IntegerValue base) {
+        super(base);
     }
 
     @Override
     public Integer getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
-        int baseValue = base == null ? 0 : base.getValue(worldInfo, random, position, limitedRegion);
+        int baseValue = getBase() == null ? 0 : getBase().getValue(worldInfo, random, position, limitedRegion);
 
         WorldGenLevel level = ((CraftLimitedRegion) limitedRegion).getHandle();
 
@@ -59,34 +52,7 @@ public class AboveBottomOffsetIntegerValue extends IntegerValue {
     }
 
     @Override
-    public boolean isDirty() {
-        if (dirty) {
-            return true;
-        }
-
-        return base != null && base.isDirty();
-    }
-
-    @Override
-    public void saved() {
-        dirty = false;
-
-        if (base != null) {
-            base.saved();
-        }
-    }
-
-    public IntegerValue getBase() {
-        return base;
-    }
-
-    public void setBase(IntegerValue integerValue) {
-        this.base = integerValue;
-        dirty = true;
-    }
-
-    @Override
     public AboveBottomOffsetIntegerValue clone() {
-        return new AboveBottomOffsetIntegerValue(base == null ? null : base.clone());
+        return new NMSAboveBottomOffsetIntegerValue(getBase() == null ? null : getBase().clone());
     }
 }

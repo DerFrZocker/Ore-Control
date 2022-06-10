@@ -23,39 +23,22 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.offset;
+package de.derfrzocker.feature.common.value.offset;
 
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import net.minecraft.world.level.WorldGenLevel;
-import org.bukkit.craftbukkit.v1_18_R1.generator.CraftLimitedRegion;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
-import org.bukkit.util.BlockVector;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
-public class AboveBottomOffsetIntegerValue extends IntegerValue {
+public abstract class BelowTopOffsetIntegerValue extends IntegerValue {
 
     private IntegerValue base;
     private boolean dirty = false;
 
-    public AboveBottomOffsetIntegerValue(IntegerValue base) {
+    public BelowTopOffsetIntegerValue(IntegerValue base) {
         this.base = base;
     }
 
     @Override
-    public AboveBottomOffsetIntegerType getValueType() {
-        return AboveBottomOffsetIntegerType.type();
-    }
-
-    @Override
-    public Integer getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
-        int baseValue = base == null ? 0 : base.getValue(worldInfo, random, position, limitedRegion);
-
-        WorldGenLevel level = ((CraftLimitedRegion) limitedRegion).getHandle();
-
-        return Math.max(level.getMinBuildHeight(), level.getLevel().getChunkSource().chunkMap.generator.getMinY()) + baseValue;
+    public BelowTopOffsetIntegerType getValueType() {
+        return BelowTopOffsetIntegerType.type();
     }
 
     @Override
@@ -83,10 +66,5 @@ public class AboveBottomOffsetIntegerValue extends IntegerValue {
     public void setBase(IntegerValue integerValue) {
         this.base = integerValue;
         dirty = true;
-    }
-
-    @Override
-    public AboveBottomOffsetIntegerValue clone() {
-        return new AboveBottomOffsetIntegerValue(base == null ? null : base.clone());
     }
 }

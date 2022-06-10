@@ -26,13 +26,13 @@
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.common.feature.placement.configuration.HeightRangeModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
-import de.derfrzocker.feature.common.feature.placement.configuration.HeightRangeModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerValue;
+import de.derfrzocker.feature.impl.v1_18_R1.value.offset.NMSAboveBottomOffsetIntegerValue;
+import de.derfrzocker.feature.impl.v1_18_R1.value.offset.NMSBelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReflectionNames;
@@ -118,11 +118,11 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
         }
 
         if (values.length == 3 && values[1].equals("above") && values[2].equals("bottom")) {
-            return new AboveBottomOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
+            return new NMSAboveBottomOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
         }
 
         if (values.length == 3 && values[1].equals("below") && values[2].equals("top")) {
-            return new BelowTopOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
+            return new NMSBelowTopOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
         }
 
         throw new UnsupportedOperationException(String.format("Unknown vertical anchor '%s'", anchor));

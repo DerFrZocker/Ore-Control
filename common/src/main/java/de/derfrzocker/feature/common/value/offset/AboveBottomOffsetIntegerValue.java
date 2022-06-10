@@ -23,41 +23,22 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_19_R1.value.offset;
+package de.derfrzocker.feature.common.value.offset;
 
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import org.bukkit.craftbukkit.v1_19_R1.generator.CraftLimitedRegion;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
-import org.bukkit.util.BlockVector;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
-public class BelowTopOffsetIntegerValue extends IntegerValue {
+public abstract class AboveBottomOffsetIntegerValue extends IntegerValue {
 
     private IntegerValue base;
     private boolean dirty = false;
 
-    public BelowTopOffsetIntegerValue(IntegerValue base) {
+    public AboveBottomOffsetIntegerValue(IntegerValue base) {
         this.base = base;
     }
 
     @Override
-    public BelowTopOffsetIntegerType getValueType() {
-        return BelowTopOffsetIntegerType.type();
-    }
-
-    @Override
-    public Integer getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
-        int baseValue = base == null ? 0 : base.getValue(worldInfo, random, position, limitedRegion);
-
-        WorldGenLevel level = ((CraftLimitedRegion) limitedRegion).getHandle();
-        ChunkGenerator chunkGenerator = level.getLevel().getChunkSource().chunkMap.generator;
-
-        return Math.min(level.getHeight(), chunkGenerator.getGenDepth()) - 1 + Math.max(level.getMinBuildHeight(), chunkGenerator.getMinY()) - baseValue;
+    public AboveBottomOffsetIntegerType getValueType() {
+        return AboveBottomOffsetIntegerType.type();
     }
 
     @Override
@@ -85,10 +66,5 @@ public class BelowTopOffsetIntegerValue extends IntegerValue {
     public void setBase(IntegerValue integerValue) {
         this.base = integerValue;
         dirty = true;
-    }
-
-    @Override
-    public BelowTopOffsetIntegerValue clone() {
-        return new BelowTopOffsetIntegerValue(base == null ? null : base.clone());
     }
 }
