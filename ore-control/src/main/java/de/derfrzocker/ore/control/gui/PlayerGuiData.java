@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,19 +32,33 @@ import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 public class PlayerGuiData {
 
     private ConfigInfo configInfo = null;
     private Biome biome = null;
-    private Feature<?> feature = null;
+    private Feature feature = null;
     private SettingWrapper settingWrapper = null;
-    private LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
+    private final LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
     private Value<?, ?, ?> originalValue = null;
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
+
+    private static PlacementModifierConfiguration getPlacementConfiguration(Collection<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
+        if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
+            return null;
+        }
+
+        for (PlacementModifierConfiguration configuration : placementModifierConfigurations) {
+            if (configuration.getOwner() == owner) {
+                return configuration;
+            }
+        }
+
+        return null;
+    }
 
     public ConfigInfo getConfigInfo() {
         return configInfo;
@@ -62,11 +76,11 @@ public class PlayerGuiData {
         this.biome = biome;
     }
 
-    public Feature<?> getFeature() {
+    public Feature getFeature() {
         return feature;
     }
 
-    public void setFeature(Feature<?> feature) {
+    public void setFeature(Feature feature) {
         this.feature = feature;
     }
 
@@ -98,16 +112,16 @@ public class PlayerGuiData {
         return toEditValue;
     }
 
-    public void setPreviousToEditValue() {
-        this.toEditValue = valueTree.pollLast();
-    }
-
     public void setToEditValue(Value<?, ?, ?> toEditValue) {
         if (this.toEditValue != null) {
             valueTree.add(this.toEditValue);
         }
 
         this.toEditValue = toEditValue;
+    }
+
+    public void setPreviousToEditValue() {
+        this.toEditValue = valueTree.pollLast();
     }
 
     // TODO move to better location
@@ -132,7 +146,7 @@ public class PlayerGuiData {
 
                 configuration = config.getFeature();
             } else if (settingWrapper.getSettingOwner() instanceof FeaturePlacementModifier) {
-                configuration = getPlacementConfiguration(config.getPlacements(), settingWrapper.getSettingOwner());
+                configuration = getPlacementConfiguration(config.getPlacements().values(), settingWrapper.getSettingOwner());
 
                 if (configuration == null) {
                     configuration = settingWrapper.getSettingOwner().createEmptyConfiguration();
@@ -145,20 +159,13 @@ public class PlayerGuiData {
 
             configuration.setValue(settingWrapper.getSetting(), getOriginalValue());
             setApplied(true);
-        }
-    }
 
-    private static PlacementModifierConfiguration getPlacementConfiguration(List<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
-        if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
-            return null;
-        }
-
-        for (PlacementModifierConfiguration configuration : placementModifierConfigurations) {
-            if (configuration.getOwner() == owner) {
-                return configuration;
+            // clear gui config cache
+            if (getBiome() == null) {
+                oreControlManager.getConfigManager().clearGuiConfigCache(getConfigInfo(), getFeature().getKey());
+            } else {
+                oreControlManager.getConfigManager().clearGuiConfigCache(getConfigInfo(), getBiome(), getFeature().getKey());
             }
         }
-
-        return null;
     }
 }

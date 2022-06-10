@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.common.feature.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -71,11 +71,13 @@ public class SurfaceWaterDepthModifier extends MinecraftPlacementModifier<Surfac
         return SurfaceWaterDepthFilter.forMaxDepth(maxWaterDepth);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SurfaceWaterDepthModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public SurfaceWaterDepthModifierConfiguration createEmptyConfiguration() {
         return new SurfaceWaterDepthModifierConfiguration(this, null);

@@ -2,9 +2,6 @@ name: ${parent.name}
 version: ${project.version}
 description: ${project.description}
 author: ${project.author}
-# @formatter:off  # IntelliJ formats this part in a way, that maven don't recognize it
-authors: [${project.authors}]
-# @formatter:on
 main: de.derfrzocker.ore.control.OreControl
 api-version: "1.13"
 load: STARTUP

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.common.feature.placement.configuration.HeightRangeModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.HeightRangeModifierConfiguration;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
@@ -77,11 +77,13 @@ public class HeightRangeModifier extends MinecraftPlacementModifier<HeightRangeP
         return HeightRangePlacement.of(height);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return HeightRangeModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public HeightRangeModifierConfiguration createEmptyConfiguration() {
         return new HeightRangeModifierConfiguration(this, null);

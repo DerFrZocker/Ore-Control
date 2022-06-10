@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -94,11 +94,13 @@ public class OreFeatureGenerator extends MinecraftFeatureGenerator<OreConfigurat
         return new OreConfiguration(blockStates, size, discardChanceOnAirExposure);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return OreFeatureConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public OreFeatureConfiguration createEmptyConfiguration() {
         return new OreFeatureConfiguration(this, null, null, null);

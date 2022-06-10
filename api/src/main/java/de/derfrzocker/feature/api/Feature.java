@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,29 +31,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class Feature<C extends FeatureGeneratorConfiguration> implements Keyed {
-
-    private final NamespacedKey key;
-    private final FeatureGenerator<C> generator;
-    private final List<FeaturePlacementModifier<?>> placementModifiers;
-
-    public Feature(NamespacedKey key, FeatureGenerator<C> generator, List<FeaturePlacementModifier<?>> placementModifiers) {
-        this.key = key;
-        this.generator = generator;
-        this.placementModifiers = placementModifiers;
-    }
+/**
+ * Represents a Feature which can generate in a world.
+ * Each Feature contains one generator and can have multiple placement modifiers.
+ * The order of the placement modifiers is important. A list which preserves its order should be used.
+ *
+ * @param key The unique key of this feature.
+ * @param generator The generator which generates the blocks.
+ * @param placementModifiers The placement modifiers which determine the positions to generate the feature.
+ */
+public record Feature(@NotNull NamespacedKey key, @NotNull FeatureGenerator<?> generator,
+                      @NotNull List<FeaturePlacementModifier<?>> placementModifiers) implements Keyed {
 
     @NotNull
     @Override
     public NamespacedKey getKey() {
-        return key;
-    }
-
-    public FeatureGenerator<C> getGenerator() {
-        return generator;
-    }
-
-    public List<FeaturePlacementModifier<?>> getPlacementModifiers() {
-        return placementModifiers;
+        return key();
     }
 }

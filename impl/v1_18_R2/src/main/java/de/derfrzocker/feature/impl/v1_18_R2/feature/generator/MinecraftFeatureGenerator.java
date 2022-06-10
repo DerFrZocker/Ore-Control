@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,8 +62,9 @@ public abstract class MinecraftFeatureGenerator<M extends FeatureConfiguration, 
 
     public abstract M createConfiguration(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);
 
+    @NotNull
     @Override
-    public C merge(FeatureGeneratorConfiguration first, FeatureGeneratorConfiguration second) {
+    public C merge(@NotNull FeatureGeneratorConfiguration first, @NotNull FeatureGeneratorConfiguration second) {
         return mergeConfig((C) first, (C) second);
     }
 
@@ -74,6 +75,7 @@ public abstract class MinecraftFeatureGenerator<M extends FeatureConfiguration, 
         feature.place(new FeaturePlaceContext<>(Optional.empty(), level, level.getMinecraftWorld().getChunkSource().getGenerator(), random, new BlockPos(position.getBlockX(), position.getBlockY(), position.getBlockZ()), config));
     }
 
+    @NotNull
     @Override
     public Codec<FeatureGeneratorConfiguration> getCodec() {
         return codec;

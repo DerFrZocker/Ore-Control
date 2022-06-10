@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,11 +60,13 @@ public abstract class MinecraftPlacementModifier<M extends PlacementModifier, C 
 
     public abstract M createPlacementModifier(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);
 
+    @NotNull
     @Override
-    public C merge(PlacementModifierConfiguration first, PlacementModifierConfiguration second) {
+    public C merge(@NotNull PlacementModifierConfiguration first, @NotNull PlacementModifierConfiguration second) {
         return mergeConfig((C) first, (C) second);
     }
 
+    @NotNull
     @Override
     public Stream<BlockVector> getPositions(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration) {
         WorldGenLevel level = ((CraftLimitedRegion) limitedRegion).getHandle();
@@ -73,6 +75,7 @@ public abstract class MinecraftPlacementModifier<M extends PlacementModifier, C 
                 map(pos -> new BlockVector(pos.getX(), pos.getY(), pos.getZ()));
     }
 
+    @NotNull
     @Override
     public Codec<PlacementModifierConfiguration> getCodec() {
         return codec;

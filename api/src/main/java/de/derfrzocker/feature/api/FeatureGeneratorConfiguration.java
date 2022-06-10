@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,18 @@
 
 package de.derfrzocker.feature.api;
 
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Represents a configuration which has a {@link FeatureGenerator} as owner.
+ */
 public interface FeatureGeneratorConfiguration extends Configuration {
 
+    /**
+     * Returns the owner of this configuration.
+     *
+     * @return the owner of this Configuration.
+     */
+    @NotNull
     FeatureGenerator<?> getOwner();
 }

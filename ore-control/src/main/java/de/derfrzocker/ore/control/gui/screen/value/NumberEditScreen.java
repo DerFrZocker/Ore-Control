@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -102,11 +102,11 @@ public class NumberEditScreen {
                                 .button()
                                 .identifier(DEFAULT_ICON)
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("feature-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().getKey()))
-                                .withMessageValue((setting, guiInfo) -> new MessageValue("setting-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getSettingWrapper().getSetting().getName()))
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("setting-name", guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).getSettingWrapper().getSetting().name()))
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("current-value", numberSupplier.apply(guiManager.getPlayerGuiData((Player) guiInfo.getEntity()))))
                                 .itemStack((setting, guiInfo) -> {
                                     PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
-                                    Feature<?> feature = playerGuiData.getFeature();
+                                    Feature feature = playerGuiData.getFeature();
                                     String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
                                     ItemStack icon = setting.get(key + ".item-stack", null);
                                     if (icon == null) {

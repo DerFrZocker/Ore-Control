@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,12 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
-import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.common.feature.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
+import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -43,20 +44,24 @@ import java.util.Random;
 
 public class SurfaceWaterDepthModifierHook extends MinecraftPlacementModifierHook<SurfaceWaterDepthFilter, SurfaceWaterDepthModifierConfiguration> {
 
-    public SurfaceWaterDepthModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceWaterDepthFilter defaultModifier) {
-        super(registries, configManager, "surface_water_depth_filter", defaultModifier, biome, namespacedKey);
+    public SurfaceWaterDepthModifierHook(@NotNull OreControlManager oreControlManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceWaterDepthFilter defaultModifier) {
+        super(oreControlManager, "surface_water_depth_filter", defaultModifier, biome, namespacedKey);
+    }
+
+    public static SurfaceWaterDepthModifierConfiguration createDefaultConfiguration(@NotNull SurfaceWaterDepthFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
+        try {
+            Field maxWaterDepth = SurfaceWaterDepthFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH);
+            maxWaterDepth.setAccessible(true);
+            Object value = maxWaterDepth.get(defaultModifier);
+            return new SurfaceWaterDepthModifierConfiguration(modifier, new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public SurfaceWaterDepthModifierConfiguration createDefaultConfiguration(@NotNull SurfaceWaterDepthFilter defaultModifier) {
-        try {
-            Field chance = SurfaceWaterDepthFilter.class.getDeclaredField("c");
-            chance.setAccessible(true);
-            Object value = chance.get(defaultModifier);
-            return new SurfaceWaterDepthModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 
     @Override

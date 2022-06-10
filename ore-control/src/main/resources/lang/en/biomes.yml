@@ -122,7 +122,13 @@ biomes:
       name: "Small End Islands"
     end_barrens:
       name: "End Barrens"
-    deep_warm_ocean: # from terralith
+    # 1.19 biomes
+    mangrove_swamp:
+      name: "Mangrove Swamp"
+    deep_dark:
+      name: "Deep Dark"
+    # from terralith
+    deep_warm_ocean:
       name: "Deep Warm Ocean"
   terralith:
     frozen_cliffs:

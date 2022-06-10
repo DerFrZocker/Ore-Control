@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +25,72 @@
 
 package de.derfrzocker.feature.api;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Set;
 
+/**
+ * Holds values for features.
+ */
 public interface Configuration {
 
+    /**
+     * Returns the owner of this configuration.
+     *
+     * @return the owner of this Configuration.
+     */
+    @NotNull
     ConfigurationAble getOwner();
 
+    /**
+     * Returns an unmodifiable set containing the allowed
+     * {@link Setting settings} for this configuration.
+     *
+     * @return the allowed settings.
+     */
+    @NotNull
     Set<Setting> getSettings();
 
-    Value<?, ?, ?> getValue(Setting setting);
+    /**
+     * Returns the value associated with the given setting.
+     * If this configuration allows but does not have a value set,
+     * it will return null.
+     * <br>
+     * If this configuration does not allow the given setting,
+     * an exception will be thrown. Use {@link #getSettings()}
+     * for a set of allowed settings.
+     *
+     * @param setting The setting to get the value from.
+     * @return the value associated with the setting.
+     * @throws IllegalArgumentException if the given setting is not allowed in this configuration.
+     */
+    @Nullable
+    Value<?, ?, ?> getValue(@NotNull Setting setting);
 
-    void setValue(Setting setting, Value<?, ?, ?> value);
+    /**
+     * Sets the value for the given setting to the given value.
+     * An exception is thrown when the given setting is not allowed by
+     * this configuration or when the given value is not of the right type.
+     * Use {@link #getSettings()} for a set of allowed settings.
+     *
+     * @param setting The setting which should get the new value.
+     * @param value The new value for the given setting.
+     * @throws IllegalArgumentException if the given setting is not allowed in this configuration.
+     * @throws IllegalArgumentException if the given value is not the right type for the setting.
+     */
+    void setValue(@NotNull Setting setting, @Nullable Value<?, ?, ?> value);
 
+    /**
+     * Checks and returns true if this configuration or any value in this configuration
+     * is dirty.
+     *
+     * @return true if this configuration is dirty otherwise false.
+     */
     boolean isDirty();
 
+    /**
+     * Marks this configuration and any value this configuration holds as saved and not dirty.
+     */
     void saved();
 }

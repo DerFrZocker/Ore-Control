@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
-import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerValue;
+import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
@@ -62,14 +62,7 @@ public class AboveBottomOffsetIntegerScreen {
                                         return;
                                     }
 
-                                    if ((guiData.getToEditValue() instanceof de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerValue value)) {
-                                        guiData.setToEditValue(value.getBase());
-
-                                        guiManager.openValueScreen(clickAction.getPlayer(), value.getBase());
-                                        return;
-                                    }
-
-                                    plugin.getLogger().warning(String.format("Expected a value of type '%s' or of type '%s' but got one of type '%s', this is a bug!", AboveBottomOffsetIntegerValue.class, de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
+                                    plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", AboveBottomOffsetIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                                 })
                         )
                 )

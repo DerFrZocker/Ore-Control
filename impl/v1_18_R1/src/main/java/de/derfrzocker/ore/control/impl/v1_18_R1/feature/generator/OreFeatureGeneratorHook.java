@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,10 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator;
 
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.configuration.OreFeatureConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetValue;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import org.bukkit.NamespacedKey;
@@ -44,8 +43,8 @@ import java.util.Random;
 
 public class OreFeatureGeneratorHook extends MinecraftFeatureGeneratorHook<OreConfiguration, OreFeatureConfiguration> {
 
-    public OreFeatureGeneratorHook(@NotNull Registries registries, ConfigManager configManager, @NotNull NamespacedKey namespacedKey, @NotNull Biome biome) {
-        super(OreConfiguration.CODEC, Feature.ORE, registries, configManager, "ore", biome, namespacedKey);
+    public OreFeatureGeneratorHook(@NotNull OreControlManager oreControlManager, @NotNull NamespacedKey namespacedKey, @NotNull Biome biome) {
+        super(OreConfiguration.CODEC, Feature.ORE, oreControlManager, "ore", biome, namespacedKey);
     }
 
     @Override

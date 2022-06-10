@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +25,17 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
-import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.common.feature.placement.configuration.HeightRangeModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.HeightRangeModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R2.value.offset.AboveBottomOffsetIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R2.value.offset.BelowTopOffsetIntegerValue;
+import de.derfrzocker.feature.impl.v1_18_R2.value.offset.NMSAboveBottomOffsetIntegerValue;
+import de.derfrzocker.feature.impl.v1_18_R2.value.offset.NMSBelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
+import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
@@ -51,16 +52,15 @@ import java.util.Random;
 
 public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<HeightRangePlacement, HeightRangeModifierConfiguration> {
 
-    public HeightRangeModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
-        super(registries, configManager, "height_range", defaultModifier, biome, namespacedKey);
+    public HeightRangeModifierHook(@NotNull OreControlManager oreControlManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull HeightRangePlacement defaultModifier) {
+        super(oreControlManager, "height_range", defaultModifier, biome, namespacedKey);
     }
 
-    @Override
-    public HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier) {
+    public static HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
         try {
-            Field chance = HeightRangePlacement.class.getDeclaredField("c");
-            chance.setAccessible(true);
-            HeightProvider value = (HeightProvider) chance.get(defaultModifier);
+            Field height = HeightRangePlacement.class.getDeclaredField(NMSReflectionNames.HEIGHT_RANGE_PLACEMENT_HEIGHT);
+            height.setAccessible(true);
+            HeightProvider value = (HeightProvider) height.get(defaultModifier);
 
             IntegerValue integerValue;
             if (value.getType() == HeightProviderType.CONSTANT) {
@@ -103,10 +103,34 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
                 throw new UnsupportedOperationException(String.format("No integer value equivalent for HeightProvider '%s'", value));
             }
 
-            return new HeightRangeModifierConfiguration(getPlacementModifier(), integerValue);
+            return new HeightRangeModifierConfiguration(modifier, integerValue);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static IntegerValue getIntegerValue(String anchor) {
+        String[] values = anchor.split(" ");
+        int value = Integer.parseInt(values[0]);
+
+        if (values.length == 2 && values[1].equals("absolute")) {
+            return new FixedDoubleToIntegerValue(value);
+        }
+
+        if (values.length == 3 && values[1].equals("above") && values[2].equals("bottom")) {
+            return new NMSAboveBottomOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
+        }
+
+        if (values.length == 3 && values[1].equals("below") && values[2].equals("top")) {
+            return new NMSBelowTopOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
+        }
+
+        throw new UnsupportedOperationException(String.format("Unknown vertical anchor '%s'", anchor));
+    }
+
+    @Override
+    public HeightRangeModifierConfiguration createDefaultConfiguration(@NotNull HeightRangePlacement defaultModifier) {
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 
     @Override
@@ -119,24 +143,5 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
         }
 
         return HeightRangePlacement.of(ConstantHeight.of(VerticalAnchor.absolute(height)));
-    }
-
-    private IntegerValue getIntegerValue(String anchor) {
-        String[] values = anchor.split(" ");
-        int value = Integer.parseInt(values[0]);
-
-        if (values.length == 2 && values[1].equals("absolute")) {
-            return new FixedDoubleToIntegerValue(value);
-        }
-
-        if (values.length == 3 && values[1].equals("above") && values[2].equals("bottom")) {
-            return new AboveBottomOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
-        }
-
-        if (values.length == 3 && values[1].equals("below") && values[2].equals("top")) {
-            return new BelowTopOffsetIntegerValue(new FixedDoubleToIntegerValue(value));
-        }
-
-        throw new UnsupportedOperationException(String.format("Unknown vertical anchor '%s'", anchor));
     }
 }

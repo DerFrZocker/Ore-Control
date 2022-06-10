@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,12 +30,12 @@ import java.util.Map;
 
 public class Registries {
 
-    private final Registry<Feature<?>> featureRegistry = new Registry<>();
+    private final Registry<Feature> featureRegistry = new Registry<>();
     private final Registry<FeatureGenerator<?>> featureGeneratorRegistry = new Registry<>();
     private final Registry<FeaturePlacementModifier<?>> placementModifierRegistry = new Registry<>();
     private final Map<Class<?>, Registry<?>> valueTypeRegistry = new LinkedHashMap<>();
 
-    public Registry<Feature<?>> getFeatureRegistry() {
+    public Registry<Feature> getFeatureRegistry() {
         return featureRegistry;
     }
 

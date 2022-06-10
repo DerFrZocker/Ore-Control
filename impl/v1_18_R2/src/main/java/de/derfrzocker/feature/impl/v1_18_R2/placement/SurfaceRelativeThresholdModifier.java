@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -89,11 +89,13 @@ public class SurfaceRelativeThresholdModifier extends MinecraftPlacementModifier
         return SurfaceRelativeThresholdFilter.of(heightmap, minInclusive, maxInclusive);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return SurfaceRelativeThresholdModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public SurfaceRelativeThresholdModifierConfiguration createEmptyConfiguration() {
         return new SurfaceRelativeThresholdModifierConfiguration(this, null, null, null);

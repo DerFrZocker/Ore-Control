@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,47 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
-public class Setting {
+import org.jetbrains.annotations.NotNull;
 
-    private final String name;
-    private final Class<?> valueType;
-
-    public Setting(String name, Class<?> valueType) {
-        this.name = name;
-        this.valueType = valueType;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Class<?> getValueType() {
-        return valueType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Setting)) return false;
-
-        Setting setting = (Setting) o;
-
-        if (!getName().equals(setting.getName())) return false;
-        return getValueType().equals(setting.getValueType());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getName().hashCode();
-        result = 31 * result + getValueType().hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Setting{" +
-                "name='" + name + '\'' +
-                ", valueType=" + valueType +
-                '}';
-    }
+public record Setting(@NotNull String name, @NotNull Class<?> valueType) {
 }

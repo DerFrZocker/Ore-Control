@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
+import de.derfrzocker.ore.control.impl.v1_19_R1.NMSReplacer_v1_19_R1;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
@@ -58,12 +59,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
 
     OreControlManager oreControlManager;
     LanguageManager languageManager;
     OreControlGuiManager guiManager;
     List<ConfigSetting> guiSettings = new ArrayList<>();
+    NMSReplacer nmsReplacer;
 
     @Override
     public void onEnable() {
@@ -73,11 +76,13 @@ public class OreControl extends JavaPlugin implements Listener {
         ConfigManager configManager = new ConfigManager(configDao, configInfoDao);
         configManager.reload();
         Version version = Version.getServerVersion(getServer());
-        NMSReplacer nmsReplacer;
+        oreControlManager = new OreControlManager(registries, configManager, world -> nmsReplacer.getBiomes(world));
         if (version == Version.v1_18_R1) {
-            nmsReplacer = new NMSReplacer_v1_18_R1(registries, configManager);
+            nmsReplacer = new NMSReplacer_v1_18_R1(oreControlManager);
         } else if (version == Version.v1_18_R2) {
-            nmsReplacer = new NMSReplacer_v1_18_R2(registries, configManager);
+            nmsReplacer = new NMSReplacer_v1_18_R2(oreControlManager);
+        } else if (version == Version.v1_19_R1) {
+            nmsReplacer = new NMSReplacer_v1_19_R1(oreControlManager);
         } else {
             throw new IllegalStateException(String.format("Server version '%s' is not supported by this plugin version!", version));
         }
@@ -90,7 +95,6 @@ public class OreControl extends JavaPlugin implements Listener {
 
         new Metrics(this, 4244);
 
-        oreControlManager = new OreControlManager(registries, configManager, nmsReplacer::getBiomes);
         languageManager = new DirectLanguageManager(this, new PluginLanguageLoader(this), "en");
         guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -127,7 +127,7 @@ public class FeatureSelectionScreen {
             if (configInfo.getConfigType() == ConfigType.WORLD) {
                 World world = Bukkit.getWorld(configInfo.getWorldName());
                 if (world != null) {
-                    Set<Feature<?>> features = new LinkedHashSet<>();
+                    Set<Feature> features = new LinkedHashSet<>();
                     for (Biome biome : oreControlManager.getBiomes(world)) {
                         features.addAll(biome.getFeatures());
                     }

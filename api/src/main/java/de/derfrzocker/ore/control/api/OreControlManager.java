@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,11 @@
 
 package de.derfrzocker.ore.control.api;
 
-import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import org.bukkit.World;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -37,6 +38,7 @@ public class OreControlManager {
     private final OreControlRegistries registries;
     private final ConfigManager configManager;
     private final Function<World, Set<Biome>> biomeFunction;
+    private final List<Runnable> valueChangeListener = new LinkedList<>();
 
     public OreControlManager(OreControlRegistries registries, ConfigManager configManager, Function<World, Set<Biome>> biomeFunction) {
         this.registries = registries;
@@ -54,5 +56,13 @@ public class OreControlManager {
 
     public Set<Biome> getBiomes(World world) {
         return biomeFunction.apply(world);
+    }
+
+    public void addValueChangeListener(Runnable listener) {
+        valueChangeListener.add(listener);
+    }
+
+    public void onValueChange() {
+        valueChangeListener.forEach(Runnable::run);
     }
 }

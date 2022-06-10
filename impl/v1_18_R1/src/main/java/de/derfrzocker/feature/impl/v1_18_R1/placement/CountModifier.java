@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.CountModifierConfiguration;
+import de.derfrzocker.feature.common.feature.placement.configuration.CountModifierConfiguration;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -74,11 +74,13 @@ public class CountModifier extends MinecraftPlacementModifier<CountPlacement, Co
         return CountPlacement.of(count);
     }
 
+    @NotNull
     @Override
     public Set<Setting> getSettings() {
         return CountModifierConfiguration.SETTINGS;
     }
 
+    @NotNull
     @Override
     public CountModifierConfiguration createEmptyConfiguration() {
         return new CountModifierConfiguration(this, null);

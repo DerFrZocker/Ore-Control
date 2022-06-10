@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,13 +92,13 @@ public class UniformIntegerValue extends IntegerValue {
         return minInclusive;
     }
 
-    public IntegerValue getMaxInclusive() {
-        return maxInclusive;
-    }
-
     public void setMinInclusive(IntegerValue integerValue) {
         this.minInclusive = integerValue;
         dirty = true;
+    }
+
+    public IntegerValue getMaxInclusive() {
+        return maxInclusive;
     }
 
     public void setMaxInclusive(IntegerValue integerValue) {

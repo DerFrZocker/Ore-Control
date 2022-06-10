@@ -61,6 +61,16 @@ below_top_offset_integer_screen:
     name: "Base"
     lore:
       left-click: "Click to edit the base value!"
+boolean_screen:
+  name: "Set The Status!"
+  true:
+    name: "True"
+    lore:
+      left-click: "Click to set the status to true"
+  false:
+    name: "False"
+    lore:
+      left-click: "Click to set the status to false"
 number_edit_screen:
   name: "Set A Value!"
   default-icon:

@@ -122,3 +122,8 @@ icons:
       type: "END_STONE"
     end_barrens:
       type: "END_STONE"
+    # 1.19 biomes
+    mangrove_swamp:
+      type: "MANGROVE_LOG"
+    deep_dark:
+      type: "SCULK"

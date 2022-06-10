@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,11 +39,6 @@ public class UniformIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:uniform_integer");
     private static UniformIntegerType type = null;
-
-    public static UniformIntegerType type() {
-        return type;
-    }
-
     private final Codec<UniformIntegerValue> codec;
 
     public UniformIntegerType(Registries registries) {
@@ -59,6 +54,10 @@ public class UniformIntegerType extends IntegerType {
         ).apply(builder, (minInclusive, maxInclusive) -> new UniformIntegerValue(minInclusive.orElse(null), maxInclusive.orElse(null))));
 
         type = this;
+    }
+
+    public static UniformIntegerType type() {
+        return type;
     }
 
     @Override

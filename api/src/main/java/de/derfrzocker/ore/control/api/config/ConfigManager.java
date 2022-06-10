@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ public class ConfigManager implements Reloadable {
 
     private final ConfigDao configDao;
     private final ConfigInfoDao configInfoDao;
-    private ConfigInfo globalConfigInfo;
     private final Set<ConfigInfo> configInfos = new HashSet<>();
     private final Map<String, ConfigInfo> worldNames = new ConcurrentHashMap<>();
     // TODO clean up
@@ -52,6 +51,7 @@ public class ConfigManager implements Reloadable {
     private final Map<NamespacedKey, Optional<Config>> defaultConfigCache = new ConcurrentHashMap<>();
     private final Map<Biome, Map<NamespacedKey, Optional<Config>>> defaultBiomeConfigCache = new ConcurrentHashMap<>();
     private final Map<String, Map<Biome, Map<NamespacedKey, Optional<Config>>>> generationConfigCache = new ConcurrentHashMap<>();
+    private ConfigInfo globalConfigInfo;
 
     public ConfigManager(ConfigDao configDao, ConfigInfoDao configInfoDao) {
         this.configDao = configDao;
@@ -290,11 +290,11 @@ public class ConfigManager implements Reloadable {
         List<PlacementModifierConfiguration> placements = new ArrayList<>();
 
         if (primary.getPlacements() != null) {
-            primaryPlacements.addAll(primary.getPlacements());
+            primaryPlacements.addAll(primary.getPlacements().values());
         }
 
         if (secondary.getPlacements() != null) {
-            secondaryPlacements.addAll(secondary.getPlacements());
+            secondaryPlacements.addAll(secondary.getPlacements().values());
         }
 
         for (PlacementModifierConfiguration first : primaryPlacements) {
@@ -341,5 +341,13 @@ public class ConfigManager implements Reloadable {
         defaultBiomeConfigCache.
                 computeIfAbsent(biome, bio -> new ConcurrentHashMap<>()).
                 put(feature, Optional.ofNullable(config));
+    }
+
+    public void clearGuiConfigCache(ConfigInfo configInfo, NamespacedKey key) {
+        guiConfigCache.get(configInfo).remove(key);
+    }
+
+    public void clearGuiConfigCache(ConfigInfo configInfo, Biome biome, NamespacedKey key) {
+        guiBiomeConfigCache.get(configInfo).get(biome).remove(key);
     }
 }

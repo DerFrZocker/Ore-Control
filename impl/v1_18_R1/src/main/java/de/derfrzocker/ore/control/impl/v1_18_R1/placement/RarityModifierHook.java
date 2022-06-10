@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,12 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R1.placement;
 
-import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R1.placement.configuration.RarityModifierConfiguration;
+import de.derfrzocker.feature.common.feature.placement.configuration.RarityModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
+import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -43,20 +44,24 @@ import java.util.Random;
 
 public class RarityModifierHook extends MinecraftPlacementModifierHook<RarityFilter, RarityModifierConfiguration> {
 
-    public RarityModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
-        super(registries, configManager, "rarity_filter", defaultModifier, biome, namespacedKey);
+    public RarityModifierHook(@NotNull OreControlManager oreControlManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull RarityFilter defaultModifier) {
+        super(oreControlManager, "rarity_filter", defaultModifier, biome, namespacedKey);
+    }
+
+    public static RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
+        try {
+            Field chance = RarityFilter.class.getDeclaredField(NMSReflectionNames.RARITY_FILTER_CHANCE);
+            chance.setAccessible(true);
+            Object value = chance.get(defaultModifier);
+            return new RarityModifierConfiguration(modifier, new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public RarityModifierConfiguration createDefaultConfiguration(@NotNull RarityFilter defaultModifier) {
-        try {
-            Field chance = RarityFilter.class.getDeclaredField("c");
-            chance.setAccessible(true);
-            Object value = chance.get(defaultModifier);
-            return new RarityModifierConfiguration(getPlacementModifier(), new FixedDoubleToIntegerValue(NumberConversions.toInt(value)));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 
     @Override

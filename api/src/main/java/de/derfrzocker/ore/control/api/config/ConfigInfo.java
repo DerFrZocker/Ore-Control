@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@ import java.io.File;
 public class ConfigInfo {
 
     private final String worldName;
-    private ConfigType configType;
     private final File dataDirectory;
+    private ConfigType configType;
     private boolean dirty = false;
 
     public ConfigInfo(String worldName, ConfigType configType, File dataDirectory) {
@@ -48,10 +48,6 @@ public class ConfigInfo {
         return configType;
     }
 
-    public File getDataDirectory() {
-        return dataDirectory;
-    }
-
     public void setConfigType(ConfigType configType) {
         if (configType == ConfigType.GLOBAL) {
             throw new IllegalArgumentException(String.format("Cannot set config type to '%s'", configType));
@@ -59,6 +55,10 @@ public class ConfigInfo {
 
         this.configType = configType;
         dirty = true;
+    }
+
+    public File getDataDirectory() {
+        return dataDirectory;
     }
 
     public boolean isDirty() {

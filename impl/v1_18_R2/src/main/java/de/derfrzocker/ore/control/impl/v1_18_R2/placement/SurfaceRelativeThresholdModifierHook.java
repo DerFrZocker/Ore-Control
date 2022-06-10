@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 - 2021 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,13 @@
 
 package de.derfrzocker.ore.control.impl.v1_18_R2.placement;
 
-import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.placement.configuration.SurfaceRelativeThresholdModifierConfiguration;
 import de.derfrzocker.feature.impl.v1_18_R2.value.heightmap.FixedHeightmapValue;
 import de.derfrzocker.ore.control.api.Biome;
-import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.api.OreControlManager;
+import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
 import org.bukkit.NamespacedKey;
@@ -44,8 +45,29 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModifierHook<SurfaceRelativeThresholdFilter, SurfaceRelativeThresholdModifierConfiguration> {
-    public SurfaceRelativeThresholdModifierHook(@NotNull Registries registries, ConfigManager configManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceRelativeThresholdFilter defaultModifier) {
-        super(registries, configManager, "surface_relative_threshold_filter", defaultModifier, biome, namespacedKey);
+
+    public SurfaceRelativeThresholdModifierHook(@NotNull OreControlManager oreControlManager, @NotNull Biome biome, @NotNull NamespacedKey namespacedKey, @NotNull SurfaceRelativeThresholdFilter defaultModifier) {
+        super(oreControlManager, "surface_relative_threshold_filter", defaultModifier, biome, namespacedKey);
+    }
+
+    public static SurfaceRelativeThresholdModifierConfiguration createDefaultConfiguration(@NotNull SurfaceRelativeThresholdFilter defaultModifier, @NotNull FeaturePlacementModifier<?> modifier) {
+        try {
+            Field heightmap = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_HEIGHTMAP);
+            heightmap.setAccessible(true);
+
+            Field minInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_MIN_INCLUSIVE);
+            minInclusive.setAccessible(true);
+
+            Field maxInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField(NMSReflectionNames.SURFACE_RELATIVE_THRESHOLD_FILTER_MAX_INCLUSIVE);
+            maxInclusive.setAccessible(true);
+
+            Object heightmapValue = heightmap.get(defaultModifier);
+            Object minInclusiveValue = minInclusive.get(defaultModifier);
+            Object maxInclusiveValue = maxInclusive.get(defaultModifier);
+            return new SurfaceRelativeThresholdModifierConfiguration(modifier, new FixedHeightmapValue((Heightmap.Types) heightmapValue), new FixedDoubleToIntegerValue(NumberConversions.toInt(minInclusiveValue)), new FixedDoubleToIntegerValue(NumberConversions.toInt(maxInclusiveValue)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -76,22 +98,6 @@ public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModi
 
     @Override
     public SurfaceRelativeThresholdModifierConfiguration createDefaultConfiguration(SurfaceRelativeThresholdFilter defaultModifier) {
-        try {
-            Field heightmap = SurfaceRelativeThresholdFilter.class.getDeclaredField("c");
-            heightmap.setAccessible(true);
-
-            Field minInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField("d");
-            minInclusive.setAccessible(true);
-
-            Field maxInclusive = SurfaceRelativeThresholdFilter.class.getDeclaredField("e");
-            maxInclusive.setAccessible(true);
-
-            Object heightmapValue = heightmap.get(defaultModifier);
-            Object minInclusiveValue = minInclusive.get(defaultModifier);
-            Object maxInclusiveValue = maxInclusive.get(defaultModifier);
-            return new SurfaceRelativeThresholdModifierConfiguration(getPlacementModifier(), new FixedHeightmapValue((Heightmap.Types) heightmapValue), new FixedDoubleToIntegerValue(NumberConversions.toInt(minInclusiveValue)), new FixedDoubleToIntegerValue(NumberConversions.toInt(maxInclusiveValue)));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return createDefaultConfiguration(defaultModifier, getPlacementModifier());
     }
 }
