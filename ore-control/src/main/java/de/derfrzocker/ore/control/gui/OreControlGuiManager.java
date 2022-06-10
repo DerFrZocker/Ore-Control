@@ -89,9 +89,12 @@ public class OreControlGuiManager implements Listener {
         if (Version.v1_18_R2 == Version.getServerVersion(plugin.getServer())) {
             this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
             this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        } else {
+        } else if (Version.v1_18_R1 == Version.getServerVersion(plugin.getServer())) {
             this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
             this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_18_R1.value.offset.BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        } else if (Version.v1_19_R1 == Version.getServerVersion(plugin.getServer())) {
+            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_19_R1.value.offset.AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+            this.valueTypeInventoryGuis.put(de.derfrzocker.feature.impl.v1_19_R1.value.offset.BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
         }
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

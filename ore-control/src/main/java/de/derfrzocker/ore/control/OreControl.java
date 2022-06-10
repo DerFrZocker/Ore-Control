@@ -37,6 +37,7 @@ import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
+import de.derfrzocker.ore.control.impl.v1_19_R1.NMSReplacer_v1_19_R1;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
@@ -80,6 +81,8 @@ public class OreControl extends JavaPlugin implements Listener {
             nmsReplacer = new NMSReplacer_v1_18_R1(oreControlManager);
         } else if (version == Version.v1_18_R2) {
             nmsReplacer = new NMSReplacer_v1_18_R2(oreControlManager);
+        } else if (version == Version.v1_19_R1) {
+            nmsReplacer = new NMSReplacer_v1_19_R1(oreControlManager);
         } else {
             throw new IllegalStateException(String.format("Server version '%s' is not supported by this plugin version!", version));
         }

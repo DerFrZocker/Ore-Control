@@ -69,6 +69,13 @@ public class AboveBottomOffsetIntegerScreen {
                                         return;
                                     }
 
+                                    if ((guiData.getToEditValue() instanceof de.derfrzocker.feature.impl.v1_19_R1.value.offset.AboveBottomOffsetIntegerValue value)) {
+                                        guiData.setToEditValue(value.getBase());
+
+                                        guiManager.openValueScreen(clickAction.getPlayer(), value.getBase());
+                                        return;
+                                    }
+
                                     plugin.getLogger().warning(String.format("Expected a value of type '%s' or of type '%s' but got one of type '%s', this is a bug!", AboveBottomOffsetIntegerValue.class, de.derfrzocker.feature.impl.v1_18_R1.value.offset.AboveBottomOffsetIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                                 })
                         )
