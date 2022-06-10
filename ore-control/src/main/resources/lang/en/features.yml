@@ -78,3 +78,83 @@ features:
       name: "Copper Large"
     ore_clay:
       name: "Clay"
+  # from terralith
+  terralith:
+    desert/sandstone:
+      name: "Desert Sandstone"
+    cave/generic/noise_reducer:
+      name: "Cave Noise Reducer"
+    cave/generic/noise_reducer_small:
+      name: "Cave Noise Reducer Small"
+    cave/desert/noise_reducer:
+      name: "Desert Cave Noise Reducer"
+    cave/desert/noise_reducer_small:
+      name: "Desert Cave Noise Reducer Small"
+    cave/mantle/replacer:
+      name: "Mantle Cave Replacer"
+    canyon/sandstone/sandstone:
+      name: "Sandstone Canyon"
+    cliffs/granite/granitifier:
+      name: "Granite Cliffs"
+    cliffs/white/calcitifier:
+      name: "Cliffs Calcitifier"
+    cliffs/white/diorite_crack:
+      name: "Cliffs Diorite Crack"
+    cliffs/white/andesite_crack:
+      name: "Cliffs Andesite Crack"
+    yosemite/calcite:
+      name: "Yosemite Calcite"
+    yosemite/diorite:
+      name: "Yosemite Diorite"
+    alpha/clay_patch:
+      name: "Alpha Clay Patch"
+    alpha/sand_beaches:
+      name: "Alpha Sand Beaches"
+    cliffs/frozen/blue_ice:
+      name: "Frozen Cliffs Blue Ice"
+    mountains/misty/tuff:
+      name: "Mountains Tuff"
+    cliffs/basalt/basaltifier:
+      name: "Cliffs Basaltifier"
+    cliffs/basalt/crack:
+      name: "Cliffs Basalt Crack"
+    cliffs/basalt/crack_deepslate:
+      name: "Cliffs Crack Deepslate"
+    cave/infested/cobble_vein:
+      name: "Infested Cave Cobble Vein"
+    caldera/crater_fixer:
+      name: "Caldera Crater Fixer"
+    cave/generic/ds_reducer:
+      name: "Cave Ds Reducer"
+    cave/generic/ds_reducer_small:
+      name: "Cave Ds Reducer Small"
+    shrubland/patch_granite:
+      name: "Shrubland Granite Patch"
+    cliffs/white/diorite_crack3:
+      name: "Cliffs Diorite Crack 3"
+    shrubland/hot/patch_terracotta:
+      name: "Shrubland Terracotta Patch"
+    mountains/scarlet2/snow_spread:
+      name: "Mountains Scarlet 2 Snow Spread"
+    canyon/red_sandstone/red_sandstone:
+      name: "Canyon Red Sandstone"
+    cave/mantle/blackstone:
+      name: "Cave Mantle Blackstone"
+    canyon/glacial/special_ice:
+      name: "Canyon Special Ice"
+    alpha/clay_patch_beach:
+      name: "Alpha Beach Clay Patch"
+    cliffs/white/diorite_crack2:
+      name: "Cliffs Diorite Crack 2"
+    canyon/glacial/special_ice_upper:
+      name: "Canyon Special Ice Upper"
+    mountains/emerald/emeralds:
+      name: "Mountains Emeralds"
+    cliffs/white/diorite_crack4:
+      name: "Cliffs Diorite Crack 4"
+    mountains/scarlet/snow_spread:
+      name: "Mountains Scarlet Snow Spread"
+    flower/blue/nylium:
+      name: "Nylium Flower"
+    shrubland/hot/patch_granite:
+      name: "Shrubland Granite Patch"

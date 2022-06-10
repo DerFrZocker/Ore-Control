@@ -78,3 +78,83 @@ icons:
       type: COPPER_ORE
     ore_clay:
       type: CLAY
+  # from terralith
+  terralith:
+    desert/sandstone:
+      type: "SANDSTONE"
+    cave/generic/noise_reducer:
+      type: "STONE"
+    cave/generic/noise_reducer_small:
+      type: "STONE"
+    cave/desert/noise_reducer:
+      type: "ANDESITE"
+    cave/desert/noise_reducer_small:
+      type: "ANDESITE"
+    cave/mantle/replacer:
+      type: "BLACKSTONE"
+    canyon/sandstone/sandstone:
+      type: "SANDSTONE"
+    cliffs/granite/granitifier:
+      type: "GRANITE"
+    cliffs/white/calcitifier:
+      type: "CALCITE"
+    cliffs/white/diorite_crack:
+      type: "DIORITE"
+    cliffs/white/andesite_crack:
+      type: "ANDESITE"
+    yosemite/calcite:
+      type: "CALCITE"
+    yosemite/diorite:
+      type: "DIORITE"
+    alpha/clay_patch:
+      type: "CLAY"
+    alpha/sand_beaches:
+      type: "SAND"
+    cliffs/frozen/blue_ice:
+      type: "BLUE_ICE"
+    mountains/misty/tuff:
+      type: "TUFF"
+    cliffs/basalt/basaltifier:
+      type: "BASALT"
+    cliffs/basalt/crack:
+      type: "SMOOTH_BASALT"
+    cliffs/basalt/crack_deepslate:
+     type: "COBBLED_DEEPSLATE"
+    cave/infested/cobble_vein:
+      type: "MOSSY_COBBLESTONE"
+    caldera/crater_fixer:
+      type: "COBBLED_DEEPSLATE"
+    cave/generic/ds_reducer:
+      type: "DEEPSLATE"
+    cave/generic/ds_reducer_small:
+      type: "DEEPSLATE"
+    shrubland/patch_granite:
+      type: "GRANITE"
+    cliffs/white/diorite_crack3:
+      type: "DIORITE"
+    shrubland/hot/patch_terracotta:
+      type: "TERRACOTTA"
+    mountains/scarlet2/snow_spread:
+      type: "SNOW_BLOCK"
+    canyon/red_sandstone/red_sandstone:
+      type: "RED_SANDSTONE"
+    cave/mantle/blackstone:
+      type: "BLACKSTONE"
+    canyon/glacial/special_ice:
+      type: "ICE"
+    alpha/clay_patch_beach:
+      type: "CLAY"
+    cliffs/white/diorite_crack2:
+      type: "DIORITE"
+    canyon/glacial/special_ice_upper:
+      type: "ICE"
+    mountains/emerald/emeralds:
+      type: "EMERALD_ORE"
+    cliffs/white/diorite_crack4:
+      type: "DIORITE"
+    mountains/scarlet/snow_spread:
+      type: "SNOW_BLOCK"
+    flower/blue/nylium:
+      type: "WARPED_NYLIUM"
+    shrubland/hot/patch_granite:
+      type: "GRANITE"
