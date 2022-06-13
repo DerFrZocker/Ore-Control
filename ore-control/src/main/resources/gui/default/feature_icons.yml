@@ -119,7 +119,7 @@ icons:
     cliffs/basalt/crack:
       type: "SMOOTH_BASALT"
     cliffs/basalt/crack_deepslate:
-     type: "COBBLED_DEEPSLATE"
+      type: "COBBLED_DEEPSLATE"
     cave/infested/cobble_vein:
       type: "MOSSY_COBBLESTONE"
     caldera/crater_fixer:

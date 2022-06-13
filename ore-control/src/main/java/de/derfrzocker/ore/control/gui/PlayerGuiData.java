@@ -25,23 +25,33 @@
 
 package de.derfrzocker.ore.control.gui;
 
-import de.derfrzocker.feature.api.*;
+import de.derfrzocker.feature.api.Configuration;
+import de.derfrzocker.feature.api.ConfigurationAble;
+import de.derfrzocker.feature.api.Feature;
+import de.derfrzocker.feature.api.FeatureGenerator;
+import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
+import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Deque;
 
 public class PlayerGuiData {
 
+    private final Deque<InventoryGui> guiTree = new ArrayDeque<>();
+    private final Deque<Value<?, ?, ?>> valueTree = new ArrayDeque<>();
     private ConfigInfo configInfo = null;
     private Biome biome = null;
     private Feature feature = null;
     private SettingWrapper settingWrapper = null;
-    private final LinkedList<Value<?, ?, ?>> valueTree = new LinkedList<>();
     private Value<?, ?, ?> originalValue = null;
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
@@ -100,6 +110,14 @@ public class PlayerGuiData {
         this.originalValue = originalValue;
     }
 
+    public void addGui(InventoryGui gui) {
+        guiTree.addFirst(gui);
+    }
+
+    public InventoryGui pollFirstInventory() {
+        return guiTree.pollFirst();
+    }
+
     public boolean isApplied() {
         return applied;
     }
@@ -121,7 +139,10 @@ public class PlayerGuiData {
     }
 
     public void setPreviousToEditValue() {
-        this.toEditValue = valueTree.pollLast();
+        this.toEditValue = valueTree.pollFirst();
+        if (toEditValue == null) {
+            originalValue = null;
+        }
     }
 
     // TODO move to better location

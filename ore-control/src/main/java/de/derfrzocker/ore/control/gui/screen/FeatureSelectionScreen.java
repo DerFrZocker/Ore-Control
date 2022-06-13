@@ -95,25 +95,8 @@ public class FeatureSelectionScreen {
                         .withAction((clickAction, feature) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setFeature(feature))
                         .withAction((clickAction, feature) -> guiManager.openFeatureSettingsScreen(clickAction.getPlayer()))
                 )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("back")
-                        .button(Builders
-                                .button()
-                                .identifier("back")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> {
-                                    PlayerGuiData playerGuiData = guiManager.getPlayerGuiData(clickAction.getPlayer());
-
-                                    if (playerGuiData.getBiome() == null) {
-                                        guiManager.openConfigInfoScreen(clickAction.getPlayer());
-                                    } else {
-                                        playerGuiData.setBiome(null);
-                                        guiManager.openBiomeScreen(clickAction.getPlayer());
-                                    }
-                                })
-                        )
-                )
+                .withBackAction((setting, guiInfo) -> guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).setBiome(null))
+                .addButtonContext(guiManager.getBackButton())
                 .build();
     }
 

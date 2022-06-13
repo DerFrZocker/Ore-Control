@@ -92,16 +92,7 @@ public class BiomeScreen {
                         .withAction((clickAction, biome) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setBiome(biome))
                         .withAction((clickAction, biome) -> guiManager.openFeatureSelectionScreen(clickAction.getPlayer()))
                 )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("back")
-                        .button(Builders
-                                .button()
-                                .identifier("back")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiManager.openConfigInfoScreen(clickAction.getPlayer()))
-                        )
-                )
+                .addButtonContext(guiManager.getBackButton())
                 .build();
     }
 

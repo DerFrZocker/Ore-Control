@@ -25,7 +25,13 @@
 
 package de.derfrzocker.ore.control.gui.screen;
 
-import de.derfrzocker.feature.api.*;
+import de.derfrzocker.feature.api.Configuration;
+import de.derfrzocker.feature.api.ConfigurationAble;
+import de.derfrzocker.feature.api.Feature;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
 import de.derfrzocker.feature.common.value.bool.BooleanValue;
@@ -135,7 +141,7 @@ public class FeatureSettingsScreen {
 
                             return oreControlManager.getRegistries().getPlacementModifierRegistry().get(ActivationModifier.KEY).map(modifier -> feature.placementModifiers().contains(modifier)).orElse(false);
                         })
-                        .slot((setting, guiInfo) -> setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.slot",4))
+                        .slot((setting, guiInfo) -> setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.slot", 4))
                         .identifier("activation")
                         .button(Builders
                                 .button()
@@ -243,17 +249,8 @@ public class FeatureSettingsScreen {
                                 })
                         )
                 )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("back")
-                        .button(Builders
-                                .button()
-                                .identifier("back")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setFeature(null))
-                                .withAction(clickAction -> guiManager.openFeatureSelectionScreen(clickAction.getPlayer()))
-                        )
-                )
+                .withBackAction((setting, guiInfo) -> guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).setFeature(null))
+                .addButtonContext(guiManager.getBackButton())
                 .build();
     }
 

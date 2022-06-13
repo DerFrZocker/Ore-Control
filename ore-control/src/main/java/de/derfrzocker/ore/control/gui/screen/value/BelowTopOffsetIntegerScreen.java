@@ -33,6 +33,7 @@ import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.function.Function;
@@ -66,27 +67,8 @@ public class BelowTopOffsetIntegerScreen {
                                 })
                         )
                 )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("back")
-                        .button(Builders
-                                .button()
-                                .identifier("back")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> {
-                                            PlayerGuiData data = guiManager.getPlayerGuiData(clickAction.getPlayer());
-                                            data.setPreviousToEditValue();
-
-                                            if (data.getToEditValue() == null) {
-                                                data.setOriginalValue(null);
-                                                guiManager.openFeatureSettingsScreen(clickAction.getPlayer());
-                                            } else {
-                                                guiManager.openValueScreen(clickAction.getPlayer(), data.getToEditValue());
-                                            }
-                                        }
-                                )
-                        )
-                )
+                .withBackAction((setting, guiInfo) -> guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
+                .addButtonContext(guiManager.getBackButton())
                 .build();
     }
 }

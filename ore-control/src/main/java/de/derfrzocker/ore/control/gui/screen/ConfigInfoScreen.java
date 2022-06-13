@@ -67,16 +67,7 @@ public class ConfigInfoScreen {
                                 .withAction(clickAction -> guiManager.openBiomeScreen(clickAction.getPlayer()))
                         )
                 )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("back")
-                        .button(Builders
-                                .button()
-                                .identifier("back")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiManager.openGui(clickAction.getPlayer()))
-                        )
-                )
+                .addButtonContext(guiManager.getBackButton())
                 .build();
     }
 }

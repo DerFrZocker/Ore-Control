@@ -47,6 +47,8 @@ import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
+import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
@@ -106,7 +108,7 @@ public class OreControlGuiManager implements Listener {
 
     public void openGui(Player player) {
         playerGuiData.remove(player);
-        configInfosScreen.openGui(plugin, player, true);
+        openGui(configInfosScreen, player);
     }
 
     public void openConfigInfoScreen(Player player) {
@@ -138,7 +140,9 @@ public class OreControlGuiManager implements Listener {
 
     private void openGui(InventoryGui inventoryGui, Player player) {
         openOther = true;
+        PlayerGuiData data = getPlayerGuiData(player);
         inventoryGui.openGui(plugin, player, true);
+        data.addGui(inventoryGui);
         openOther = false;
     }
 
@@ -156,5 +160,18 @@ public class OreControlGuiManager implements Listener {
                 oreControlManager.onValueChange();
             }
         });
+    }
+
+    public ButtonContextBuilder getBackButton() {
+        return Builders
+                .buttonContext()
+                .identifier("back")
+                .button(Builders
+                        .button()
+                        .identifier("back")
+                        .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                        .withAction(clickAction -> getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory().onBack(clickAction.getPlayer()))
+                        .withAction(clickAction -> openGui(getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory(), clickAction.getPlayer()))
+                );
     }
 }
