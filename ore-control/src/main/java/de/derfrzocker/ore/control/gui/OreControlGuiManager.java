@@ -40,10 +40,9 @@ import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
-import de.derfrzocker.ore.control.gui.screen.value.AboveBottomOffsetIntegerScreen;
-import de.derfrzocker.ore.control.gui.screen.value.BelowTopOffsetIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
+import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
@@ -97,8 +96,8 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(FixedBooleanType.INSTANCE, BooleanScreen.getGui(guiValuesHolder));
-        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(guiValuesHolder));
-        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), OffsetIntegerScreens.getAboveBottomOffsetGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), OffsetIntegerScreens.getBelowTopOffsetGui(guiValuesHolder));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

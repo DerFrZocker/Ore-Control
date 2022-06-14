@@ -25,15 +25,29 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
+import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import org.bukkit.entity.Player;
 
-public class BelowTopOffsetIntegerScreen {
+public class OffsetIntegerScreens {
 
-    public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
+    public static InventoryGui getAboveBottomOffsetGui(GuiValuesHolder guiValuesHolder) {
+        return Builders
+                .single()
+                .identifier("value.above_bottom_offset_integer_screen")
+                .languageManager(guiValuesHolder.languageManager())
+                .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("value/above_bottom_offset_integer_screen.yml"))
+                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "base", AboveBottomOffsetIntegerValue.class, AboveBottomOffsetIntegerValue::getBase))
+                .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
+                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .build();
+    }
+
+    public static InventoryGui getBelowTopOffsetGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .single()
                 .identifier("value.below_top_offset_integer_screen")
