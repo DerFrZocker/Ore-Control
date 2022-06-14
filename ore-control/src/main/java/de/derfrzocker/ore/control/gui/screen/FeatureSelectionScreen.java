@@ -30,44 +30,41 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigType;
+import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
-import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 public class FeatureSelectionScreen {
 
     private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SELECTION_SCREEN;
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+    public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .paged()
                 .identifier(IDENTIFIER)
-                .languageManager(languageManager)
-                .withSetting(settingFunction.apply("design.yml"))
-                .withSetting(settingFunction.apply("feature_icons.yml"))
-                .withSetting(settingFunction.apply("feature_selection_screen.yml"))
+                .languageManager(guiValuesHolder.languageManager())
+                .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("feature_icons.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("feature_selection_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
                 .pageContent(Builders
                         .pageContent(Feature.class)
-                        .data((setting, guiInfo) -> buildList(oreControlManager, guiManager, guiInfo))
+                        .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-key", feature.getKey().getKey()))
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-namespace", feature.getKey().getNamespace()))
                         .itemStack((setting, guiInfo, feature) -> {
@@ -77,13 +74,13 @@ public class FeatureSelectionScreen {
                                 icon = setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
                                 String type = setting.get(IDENTIFIER, key + ".type", null);
                                 if (type == null) {
-                                    plugin.getLogger().info(String.format("No item stack or type found for feature '%s' using default item stack", feature.getKey()));
+                                    guiValuesHolder.plugin().getLogger().info(String.format("No item stack or type found for feature '%s' using default item stack", feature.getKey()));
                                 } else {
                                     try {
                                         Material material = Material.valueOf(type.toUpperCase());
                                         icon.setType(material);
                                     } catch (IllegalArgumentException e) {
-                                        plugin.getLogger().warning(String.format("Material '%s' for feature '%s' not found", type, feature.getKey()));
+                                        guiValuesHolder.plugin().getLogger().warning(String.format("Material '%s' for feature '%s' not found", type, feature.getKey()));
                                     }
                                 }
                             } else {
@@ -92,11 +89,11 @@ public class FeatureSelectionScreen {
                             return icon;
                         })
                         .withAction((clickAction, feature) -> clickAction.getClickEvent().setCancelled(true))
-                        .withAction((clickAction, feature) -> guiManager.getPlayerGuiData(clickAction.getPlayer()).setFeature(feature))
-                        .withAction((clickAction, feature) -> guiManager.openFeatureSettingsScreen(clickAction.getPlayer()))
+                        .withAction((clickAction, feature) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setFeature(feature))
+                        .withAction((clickAction, feature) -> guiValuesHolder.guiManager().openFeatureSettingsScreen(clickAction.getPlayer()))
                 )
-                .withBackAction((setting, guiInfo) -> guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).setBiome(null))
-                .addButtonContext(guiManager.getBackButton())
+                .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setBiome(null))
+                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
                 .build();
     }
 

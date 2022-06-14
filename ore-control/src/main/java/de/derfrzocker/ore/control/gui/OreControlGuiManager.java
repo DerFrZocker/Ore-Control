@@ -85,19 +85,20 @@ public class OreControlGuiManager implements Listener {
     public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
-        this.configInfosScreen = ConfigInfosScreen.getGui(plugin, languageManager, this, settingFunction, oreControlManager.getConfigManager());
-        this.configInfoScreen = ConfigInfoScreen.getGui(languageManager, this, settingFunction, oreControlManager.getConfigManager());
-        this.featureSelectionScreen = FeatureSelectionScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
-        this.featureSettingsScreen = FeatureSettingsScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
-        this.biomeScreen = BiomeScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction);
+        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction);
+        this.configInfosScreen = ConfigInfosScreen.getGui(guiValuesHolder);
+        this.configInfoScreen = ConfigInfoScreen.getGui(guiValuesHolder);
+        this.featureSelectionScreen = FeatureSelectionScreen.getGui(guiValuesHolder);
+        this.featureSettingsScreen = FeatureSettingsScreen.getGui(guiValuesHolder);
+        this.biomeScreen = BiomeScreen.getGui(guiValuesHolder);
 
-        this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(FixedBooleanType.INSTANCE, BooleanScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
-        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(plugin, oreControlManager, languageManager, this, settingFunction));
+        this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(UniformIntegerType.type(), UniformIntegerScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(FixedBooleanType.INSTANCE, BooleanScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), AboveBottomOffsetIntegerScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), BelowTopOffsetIntegerScreen.getGui(guiValuesHolder));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

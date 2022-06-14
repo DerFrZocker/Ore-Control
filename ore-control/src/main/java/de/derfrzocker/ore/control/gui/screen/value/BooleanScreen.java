@@ -26,27 +26,21 @@
 package de.derfrzocker.ore.control.gui.screen.value;
 
 import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
-import de.derfrzocker.ore.control.api.OreControlManager;
-import de.derfrzocker.ore.control.gui.OreControlGuiManager;
+import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
-import de.derfrzocker.spigot.utils.language.LanguageManager;
-import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import java.util.function.Function;
 
 public class BooleanScreen {
 
-    public static InventoryGui getGui(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, OreControlGuiManager guiManager, Function<String, ConfigSetting> settingFunction) {
+    public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .single()
                 .identifier("value.boolean_screen")
-                .languageManager(languageManager)
-                .withSetting(settingFunction.apply("design.yml"))
-                .withSetting(settingFunction.apply("value/boolean_screen.yml"))
+                .languageManager(guiValuesHolder.languageManager())
+                .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("value/boolean_screen.yml"))
                 .addButtonContext(Builders
                         .buttonContext()
                         .identifier("true")
@@ -55,15 +49,15 @@ public class BooleanScreen {
                                 .identifier("true")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> {
-                                    PlayerGuiData guiData = guiManager.getPlayerGuiData(clickAction.getPlayer());
+                                    PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
                                     if (!(guiData.getToEditValue() instanceof FixedBooleanValue value)) {
-                                        plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedBooleanValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
+                                        guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedBooleanValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                                         return;
                                     }
 
                                     value.setValue(true);
                                 })
-                                .withAction(clickAction -> guiManager.getPlayerGuiData(clickAction.getPlayer()).apply(plugin, oreControlManager))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).apply(guiValuesHolder.plugin(), guiValuesHolder.oreControlManager()))
                         )
                 )
                 .addButtonContext(Builders
@@ -74,19 +68,19 @@ public class BooleanScreen {
                                 .identifier("false")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> {
-                                    PlayerGuiData guiData = guiManager.getPlayerGuiData(clickAction.getPlayer());
+                                    PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
                                     if (!(guiData.getToEditValue() instanceof FixedBooleanValue value)) {
-                                        plugin.getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedBooleanValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
+                                        guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", FixedBooleanValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                                         return;
                                     }
 
                                     value.setValue(false);
                                 })
-                                .withAction(clickAction -> guiManager.getPlayerGuiData(clickAction.getPlayer()).apply(plugin, oreControlManager))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).apply(guiValuesHolder.plugin(), guiValuesHolder.oreControlManager()))
                         )
                 )
-                .withBackAction((setting, guiInfo) -> guiManager.getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
-                .addButtonContext(guiManager.getBackButton())
+                .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
+                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
                 .build();
     }
 }
