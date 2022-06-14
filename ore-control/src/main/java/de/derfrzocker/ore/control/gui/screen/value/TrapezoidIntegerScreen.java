@@ -27,7 +27,6 @@ package de.derfrzocker.ore.control.gui.screen.value;
 
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
-import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import org.bukkit.entity.Player;
@@ -41,66 +40,9 @@ public class TrapezoidIntegerScreen {
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("value/trapezoid_integer_screen.yml"))
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("min-inclusive")
-                        .button(Builders
-                                .button()
-                                .identifier("min-inclusive")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> {
-                                    PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
-                                    if (!(guiData.getToEditValue() instanceof TrapezoidIntegerValue value)) {
-                                        guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", TrapezoidIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
-                                        return;
-                                    }
-
-                                    guiData.setToEditValue(value.getMinInclusive());
-
-                                    guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), value.getMinInclusive());
-                                })
-                        )
-                )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("max-inclusive")
-                        .button(Builders
-                                .button()
-                                .identifier("max-inclusive")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> {
-                                    PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
-                                    if (!(guiData.getToEditValue() instanceof TrapezoidIntegerValue value)) {
-                                        guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", TrapezoidIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
-                                        return;
-                                    }
-
-                                    guiData.setToEditValue(value.getMaxInclusive());
-
-                                    guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), value.getMaxInclusive());
-                                })
-                        )
-                )
-                .addButtonContext(Builders
-                        .buttonContext()
-                        .identifier("plateau")
-                        .button(Builders
-                                .button()
-                                .identifier("plateau")
-                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> {
-                                    PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
-                                    if (!(guiData.getToEditValue() instanceof TrapezoidIntegerValue value)) {
-                                        guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", TrapezoidIntegerValue.class, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
-                                        return;
-                                    }
-
-                                    guiData.setToEditValue(value.getPlateau());
-
-                                    guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), value.getPlateau());
-                                })
-                        )
-                )
+                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "min-inclusive", TrapezoidIntegerValue.class, TrapezoidIntegerValue::getMinInclusive))
+                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "max-inclusive", TrapezoidIntegerValue.class, TrapezoidIntegerValue::getMaxInclusive))
+                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "plateau", TrapezoidIntegerValue.class, TrapezoidIntegerValue::getPlateau))
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
                 .addButtonContext(guiValuesHolder.guiManager().getBackButton())
                 .build();
