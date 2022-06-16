@@ -43,11 +43,14 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerGuiData {
 
     private final Deque<InventoryGui> guiTree = new ArrayDeque<>();
     private final Deque<Value<?, ?, ?>> valueTree = new ArrayDeque<>();
+    private final Map<String, Object> data = new HashMap<>();
     private ConfigInfo configInfo = null;
     private Biome biome = null;
     private Feature feature = null;
@@ -143,6 +146,18 @@ public class PlayerGuiData {
         if (toEditValue == null) {
             originalValue = null;
         }
+    }
+
+    public void addData(String key, Object value) {
+        data.put(key, value);
+    }
+
+    public void removeData(String key) {
+        data.remove(key);
+    }
+
+    public Object getData(String key) {
+        return data.get(key);
     }
 
     // TODO move to better location

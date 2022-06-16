@@ -58,4 +58,25 @@ public final class ValueUtil {
                         })
                 );
     }
+
+    public static <T> ButtonContextBuilder getPassthroughButton(GuiValuesHolder guiValuesHolder, String identifier, String dataKey, Class<T> valueClass, Function<T, Value<?, ?, ?>> toEditFunction) {
+        return Builders
+                .buttonContext()
+                .identifier(identifier)
+                .button(Builders
+                        .button()
+                        .identifier(identifier)
+                        .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                        .withAction(clickAction -> {
+                            PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
+                            Object currently = guiData.getData(dataKey);
+                            if (!valueClass.isAssignableFrom(currently.getClass())) {
+                                guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, currently.getClass()));
+                            }
+                            Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
+                            guiData.setToEditValue(toEdit);
+                            guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), toEdit);
+                        })
+                );
+    }
 }

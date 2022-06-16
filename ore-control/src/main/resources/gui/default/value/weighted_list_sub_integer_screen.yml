@@ -1,0 +1,27 @@
+name: "%%translation:[weighted_list_sub_integer_screen.name]%"
+data:
+  slot: 21
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[weighted_list_sub_integer_screen.data.name]%"
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[weighted_list_sub_integer_screen.data.lore.left-click]% &7<<"
+weight:
+  slot: 23
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[weighted_list_sub_integer_screen.weight.name]%"
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[weighted_list_sub_integer_screen.weight.lore.left-click]% &7<<"

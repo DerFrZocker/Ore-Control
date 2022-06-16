@@ -108,3 +108,19 @@ uniform_integer_screen:
     name: "Max Inclusive"
     lore:
       left-click: "Click to edit max inclusive!"
+weighted_list_integer_screen:
+  name: "Weighted List"
+  default-icon:
+    name: "Weight Data Pair"
+    lore:
+      left-click: "Click to edit this weight data pair!"
+weighted_list_sub_integer_screen:
+  name: "Weight Data Pair"
+  data:
+    name: "Data"
+    lore:
+      left-click: "Click to edit the data!"
+  weight:
+    name: "Weight"
+    lore:
+      left-click: "Click to edit the weight!"

@@ -32,6 +32,7 @@ import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.ore.control.api.OreControlManager;
@@ -45,6 +46,7 @@ import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
+import de.derfrzocker.ore.control.gui.screen.value.WeightedListIntegerScreen;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
@@ -98,6 +100,7 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(FixedBooleanType.INSTANCE, BooleanScreen.getGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), OffsetIntegerScreens.getAboveBottomOffsetGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), OffsetIntegerScreens.getBelowTopOffsetGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(WeightedListIntegerType.type(), WeightedListIntegerScreen.getGui(guiValuesHolder));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -138,7 +141,7 @@ public class OreControlGuiManager implements Listener {
         openGui(inventoryGui, player);
     }
 
-    private void openGui(InventoryGui inventoryGui, Player player) {
+    public void openGui(InventoryGui inventoryGui, Player player) {
         openOther = true;
         PlayerGuiData data = getPlayerGuiData(player);
         inventoryGui.openGui(plugin, player, true);
