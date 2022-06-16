@@ -25,7 +25,7 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
-import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -40,8 +40,8 @@ public class BiasedToBottomIntegerScreen {
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("value/biased_to_bottom_integer_screen.yml"))
-                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "min-inclusive", UniformIntegerValue.class, UniformIntegerValue::getMinInclusive))
-                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "max-inclusive", UniformIntegerValue.class, UniformIntegerValue::getMaxInclusive))
+                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "min-inclusive", BiasedToBottomIntegerValue.class, BiasedToBottomIntegerValue::getMinInclusive))
+                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "max-inclusive", BiasedToBottomIntegerValue.class, BiasedToBottomIntegerValue::getMaxInclusive))
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
                 .addButtonContext(guiValuesHolder.guiManager().getBackButton())
                 .build();
