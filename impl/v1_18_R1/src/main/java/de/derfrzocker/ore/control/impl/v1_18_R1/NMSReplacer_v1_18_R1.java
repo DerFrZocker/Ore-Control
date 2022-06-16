@@ -43,6 +43,7 @@ import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
@@ -154,6 +155,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
         registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries, NMSAboveBottomOffsetIntegerValue::new));
         registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries, NMSBelowTopOffsetIntegerValue::new));
         registries.getValueTypeRegistry(IntegerType.class).register(new WeightedListIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new BiasedToBottomIntegerType(registries));
         registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
         registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
         registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);

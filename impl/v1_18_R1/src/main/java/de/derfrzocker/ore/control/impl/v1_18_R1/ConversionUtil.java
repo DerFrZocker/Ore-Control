@@ -27,6 +27,7 @@ package de.derfrzocker.ore.control.impl.v1_18_R1;
 
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerValue;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -50,6 +51,8 @@ public final class ConversionUtil {
                 return new FixedDoubleToIntegerValue(intProvider.getMinValue());
             } else if (intProvider.getType() == IntProviderType.UNIFORM) {
                 return new UniformIntegerValue(new FixedDoubleToIntegerValue(intProvider.getMinValue()), new FixedDoubleToIntegerValue(intProvider.getMaxValue()));
+            } else if (intProvider.getType() == IntProviderType.BIASED_TO_BOTTOM) {
+                return new BiasedToBottomIntegerValue(new FixedDoubleToIntegerValue(intProvider.getMinValue()), new FixedDoubleToIntegerValue(intProvider.getMaxValue()));
             } else if (intProvider.getType() == IntProviderType.WEIGHTED_LIST) {
                 Field distributionField = WeightedListInt.class.getDeclaredField(NMSReflectionNames.WEIGHTED_LIST_INT_DISTRIBUTION);
                 distributionField.setAccessible(true);

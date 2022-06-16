@@ -30,6 +30,7 @@ import de.derfrzocker.feature.api.ValueType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
@@ -41,6 +42,7 @@ import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
+import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
@@ -101,6 +103,7 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(AboveBottomOffsetIntegerType.type(), OffsetIntegerScreens.getAboveBottomOffsetGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), OffsetIntegerScreens.getBelowTopOffsetGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(WeightedListIntegerType.type(), WeightedListIntegerScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(BiasedToBottomIntegerType.type(), BiasedToBottomIntegerScreen.getGui(guiValuesHolder));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

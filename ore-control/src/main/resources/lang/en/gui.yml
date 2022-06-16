@@ -61,6 +61,16 @@ below_top_offset_integer_screen:
     name: "Base"
     lore:
       left-click: "Click to edit the base value!"
+biased_to_bottom_integer_screen:
+  name: "Biased To Bottom Distribution"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
 boolean_screen:
   name: "Set The Status!"
   true:
