@@ -37,20 +37,10 @@ import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
-import de.derfrzocker.feature.common.value.bool.BooleanType;
-import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
-import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
-import de.derfrzocker.feature.common.value.number.FloatType;
 import de.derfrzocker.feature.common.value.number.IntegerType;
-import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
-import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
-import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerType;
-import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
-import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
-import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.OreFeatureGenerator;
@@ -153,36 +143,27 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         registerBiomes();
     }
 
-    public void registerValueTypes() {
-        registries.getValueTypeRegistry(IntegerType.class).register(FixedIntegerType.INSTANCE);
-        registries.getValueTypeRegistry(IntegerType.class).register(FixedDoubleToIntegerType.INSTANCE);
-        registries.getValueTypeRegistry(IntegerType.class).register(new UniformIntegerType(registries));
-        registries.getValueTypeRegistry(IntegerType.class).register(new TrapezoidIntegerType(registries));
+    private void registerValueTypes() {
         registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries, NMSAboveBottomOffsetIntegerValue::new));
         registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries, NMSBelowTopOffsetIntegerValue::new));
-        registries.getValueTypeRegistry(IntegerType.class).register(new WeightedListIntegerType(registries));
-        registries.getValueTypeRegistry(IntegerType.class).register(new BiasedToBottomIntegerType(registries));
         registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
         registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
-        registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);
-        registries.getValueTypeRegistry(BooleanType.class).register(FixedBooleanType.INSTANCE);
     }
 
-    public void registerFeatureGenerators() {
+    private void registerFeatureGenerators() {
         registries.getFeatureGeneratorRegistry().register(new OreFeatureGenerator(registries));
         registries.getFeatureGeneratorRegistry().register(new ScatteredOreGenerator(registries));
     }
 
-    public void registerPlacementModifier() {
+    private void registerPlacementModifier() {
         registries.getPlacementModifierRegistry().register(new RarityModifier(registries));
         registries.getPlacementModifierRegistry().register(new SurfaceRelativeThresholdModifier(registries));
         registries.getPlacementModifierRegistry().register(new SurfaceWaterDepthModifier(registries));
         registries.getPlacementModifierRegistry().register(new CountModifier(registries));
         registries.getPlacementModifierRegistry().register(new HeightRangeModifier(registries));
-        registries.getPlacementModifierRegistry().register(new ActivationModifier(registries));
     }
 
-    public void registerFeatures() {
+    private void registerFeatures() {
         Registry<PlacedFeature> placedFeatureRegistry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
         Registry<Feature<?>> featureRegistry = getRegistry().registryOrThrow(Registry.FEATURE_REGISTRY);
         Registry<PlacementModifierType<?>> placementModifierTypes = getRegistry().registryOrThrow(Registry.PLACEMENT_MODIFIER_REGISTRY);
@@ -220,7 +201,7 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         }
     }
 
-    public void registerBiomes() {
+    private void registerBiomes() {
         Registry<PlacedFeature> placedFeatureRegistry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
         forEachBiome((biome, resourceLocation) -> {
             de.derfrzocker.ore.control.api.Biome bio = new de.derfrzocker.ore.control.api.Biome(CraftNamespacedKey.fromMinecraft(resourceLocation));

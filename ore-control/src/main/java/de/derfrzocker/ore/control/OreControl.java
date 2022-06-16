@@ -26,6 +26,18 @@
 package de.derfrzocker.ore.control;
 
 import com.google.common.base.Charsets;
+import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
+import de.derfrzocker.feature.common.value.bool.BooleanType;
+import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
+import de.derfrzocker.feature.common.value.number.FixedFloatType;
+import de.derfrzocker.feature.common.value.number.FloatType;
+import de.derfrzocker.feature.common.value.number.IntegerType;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
@@ -62,32 +74,26 @@ import java.util.List;
 // TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
 
-    OreControlManager oreControlManager;
-    LanguageManager languageManager;
-    OreControlGuiManager guiManager;
-    List<ConfigSetting> guiSettings = new ArrayList<>();
-    NMSReplacer nmsReplacer;
+    private OreControlManager oreControlManager;
+    private LanguageManager languageManager;
+    private OreControlGuiManager guiManager;
+    private List<ConfigSetting> guiSettings = new ArrayList<>();
+    private NMSReplacer nmsReplacer;
 
     @Override
     public void onEnable() {
+        Version version = Version.getServerVersion(getServer());
+
         OreControlRegistries registries = new OreControlRegistries();
         ConfigDao configDao = new ConfigDao(registries);
         ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
         ConfigManager configManager = new ConfigManager(configDao, configInfoDao);
         configManager.reload();
-        Version version = Version.getServerVersion(getServer());
         oreControlManager = new OreControlManager(registries, configManager, world -> nmsReplacer.getBiomes(world));
-        if (version == Version.v1_18_R1) {
-            nmsReplacer = new NMSReplacer_v1_18_R1(oreControlManager);
-        } else if (version == Version.v1_18_R2) {
-            nmsReplacer = new NMSReplacer_v1_18_R2(oreControlManager);
-        } else if (version == Version.v1_19_R1) {
-            nmsReplacer = new NMSReplacer_v1_19_R1(oreControlManager);
-        } else {
-            throw new IllegalStateException(String.format("Server version '%s' is not supported by this plugin version!", version));
-        }
 
-        nmsReplacer.register();
+        nmsReplacer = getNmsReplacer(version);
+
+        register(registries);
         File defaults = new File(getDataFolder(), "data/default");
         nmsReplacer.saveDefaultValues(defaults);
 
@@ -112,7 +118,44 @@ public class OreControl extends JavaPlugin implements Listener {
         }
     }
 
-    @Override
+    private NMSReplacer getNmsReplacer(Version version) {
+        if (version == Version.v1_18_R1) {
+            return new NMSReplacer_v1_18_R1(oreControlManager);
+        } else if (version == Version.v1_18_R2) {
+            return  new NMSReplacer_v1_18_R2(oreControlManager);
+        } else if (version == Version.v1_19_R1) {
+            return new NMSReplacer_v1_19_R1(oreControlManager);
+        } else {
+            throw new IllegalStateException(String.format("Server version '%s' is not supported by this plugin version!", version));
+        }
+    }
+
+    private void register(OreControlRegistries registries) {
+        registerValueTypes(registries);
+        registerFeatureGenerators(registries);
+        registerPlacementModifier(registries);
+        nmsReplacer.register();
+    }
+
+    private void registerValueTypes(OreControlRegistries registries) {
+        registries.getValueTypeRegistry(IntegerType.class).register(FixedIntegerType.INSTANCE);
+        registries.getValueTypeRegistry(IntegerType.class).register(FixedDoubleToIntegerType.INSTANCE);
+        registries.getValueTypeRegistry(IntegerType.class).register(new UniformIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new TrapezoidIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new WeightedListIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new BiasedToBottomIntegerType(registries));
+        registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);
+        registries.getValueTypeRegistry(BooleanType.class).register(FixedBooleanType.INSTANCE);
+    }
+
+    private void registerFeatureGenerators(OreControlRegistries registries) {
+    }
+
+    private void registerPlacementModifier(OreControlRegistries registries) {
+        registries.getPlacementModifierRegistry().register(new ActivationModifier(registries));
+    }
+
+    @Override // TODO move to own class
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Player player = (Player) sender;
 
@@ -122,7 +165,7 @@ public class OreControl extends JavaPlugin implements Listener {
         return true;
     }
 
-    @EventHandler
+    @EventHandler // TODO move to own class
     public void onWorldInit(WorldInitEvent event) {
         ConfigInfo configInfo = oreControlManager.getConfigManager().getOrCreateConfigInfo(event.getWorld().getName());
         if (configInfo.getConfigType() != ConfigType.WORLD) {
