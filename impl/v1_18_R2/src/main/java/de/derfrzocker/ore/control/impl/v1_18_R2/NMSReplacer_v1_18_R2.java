@@ -446,6 +446,13 @@ public class NMSReplacer_v1_18_R2 implements NMSReplacer {
         // Not the best method to do this, but hey it works
         final Registry<PlacedFeature> registry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
         ResourceLocation featureKey = registry.getKey(feature);
+
+        // Return if the featureKey is null, this can happen when plugins are adding placed features to the biome without registering them
+        if (featureKey == null) {
+            // TODO add debug message
+            return null;
+        }
+
         NamespacedKey key = CraftNamespacedKey.fromMinecraft(featureKey);
         feature = BuiltinRegistries.PLACED_FEATURE.get(featureKey);
 
