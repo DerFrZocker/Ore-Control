@@ -74,6 +74,10 @@ import java.util.List;
 // TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
 
+    private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
+
+    private Version version = Version.UNKNOWN;
+    private boolean loaded = false;
     private OreControlManager oreControlManager;
     private LanguageManager languageManager;
     private OreControlGuiManager guiManager;
@@ -81,8 +85,21 @@ public class OreControl extends JavaPlugin implements Listener {
     private NMSReplacer nmsReplacer;
 
     @Override
+    public void onLoad() {
+        version = Version.getServerVersion(getServer());
+        if (!Version.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
+            return;
+        }
+
+        loaded = true;
+    }
+
+    @Override
     public void onEnable() {
-        Version version = Version.getServerVersion(getServer());
+        if (!loaded) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         OreControlRegistries registries = new OreControlRegistries();
         ConfigDao configDao = new ConfigDao(registries);
@@ -91,7 +108,7 @@ public class OreControl extends JavaPlugin implements Listener {
         configManager.reload();
         oreControlManager = new OreControlManager(registries, configManager, world -> nmsReplacer.getBiomes(world));
 
-        nmsReplacer = getNmsReplacer(version);
+        nmsReplacer = getNmsReplacer();
 
         register(registries);
         File defaults = new File(getDataFolder(), "data/default");
@@ -118,15 +135,15 @@ public class OreControl extends JavaPlugin implements Listener {
         }
     }
 
-    private NMSReplacer getNmsReplacer(Version version) {
+    private NMSReplacer getNmsReplacer() {
         if (version == Version.v1_18_R1) {
             return new NMSReplacer_v1_18_R1(oreControlManager);
         } else if (version == Version.v1_18_R2) {
-            return  new NMSReplacer_v1_18_R2(oreControlManager);
+            return new NMSReplacer_v1_18_R2(oreControlManager);
         } else if (version == Version.v1_19_R1) {
             return new NMSReplacer_v1_19_R1(oreControlManager);
         } else {
-            throw new IllegalStateException(String.format("Server version '%s' is not supported by this plugin version!", version));
+            throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
         }
     }
 
