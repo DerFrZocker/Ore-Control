@@ -30,6 +30,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +42,7 @@ public class BelowTopOffsetIntegerType extends IntegerType {
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:below_top_offset_integer");
     private static BelowTopOffsetIntegerType type = null;
     private final Codec<BelowTopOffsetIntegerValue> codec;
+    private final Function<IntegerValue, BelowTopOffsetIntegerValue> newValue;
 
     public BelowTopOffsetIntegerType(Registries registries, Function<IntegerValue, BelowTopOffsetIntegerValue> newValue) {
         if (type != null) {
@@ -51,6 +53,7 @@ public class BelowTopOffsetIntegerType extends IntegerType {
                 registries.getValueTypeRegistry(IntegerType.class).dispatch("base_type", IntegerValue::getValueType, IntegerType::getCodec).
                         optionalFieldOf("base").forGetter(config -> Optional.ofNullable(config.getBase()))
         ).apply(builder, base -> newValue.apply(base.orElse(null))));
+        this.newValue = newValue;
 
         type = this;
     }
@@ -67,6 +70,11 @@ public class BelowTopOffsetIntegerType extends IntegerType {
     @Override
     public Class<Integer> getTypeClass() {
         return Integer.class;
+    }
+
+    @Override
+    public BelowTopOffsetIntegerValue createNewValue() {
+        return newValue.apply(new FixedDoubleToIntegerValue(0));
     }
 
     @NotNull

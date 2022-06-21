@@ -48,6 +48,11 @@ public class FixedBooleanType extends BooleanType {
         return Boolean.class;
     }
 
+    @Override
+    public FixedBooleanValue createNewValue() {
+        return new FixedBooleanValue(false);
+    }
+
     @NotNull
     @Override
     public NamespacedKey getKey() {

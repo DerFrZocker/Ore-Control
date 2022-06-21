@@ -48,6 +48,11 @@ public class FixedFloatType extends FloatType {
         return Float.class;
     }
 
+    @Override
+    public FixedFloatValue createNewValue() {
+        return new FixedFloatValue(0);
+    }
+
     @NotNull
     @Override
     public NamespacedKey getKey() {

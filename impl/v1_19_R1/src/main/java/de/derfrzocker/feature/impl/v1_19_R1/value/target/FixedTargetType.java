@@ -49,6 +49,11 @@ public class FixedTargetType extends TargetType {
         return OreConfiguration.TargetBlockState.class;
     }
 
+    @Override
+    public TargetValue createNewValue() {
+        throw new UnsupportedOperationException("Not supported");
+    }
+
     @NotNull
     @Override
     public NamespacedKey getKey() {

@@ -30,6 +30,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,6 +69,11 @@ public class BiasedToBottomIntegerType extends IntegerType {
     @Override
     public Class<Integer> getTypeClass() {
         return Integer.class;
+    }
+
+    @Override
+    public BiasedToBottomIntegerValue createNewValue() {
+        return new BiasedToBottomIntegerValue(new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(1));
     }
 
     @NotNull

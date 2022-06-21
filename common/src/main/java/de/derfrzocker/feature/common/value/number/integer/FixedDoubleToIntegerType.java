@@ -50,6 +50,11 @@ public class FixedDoubleToIntegerType extends IntegerType {
         return Integer.class;
     }
 
+    @Override
+    public FixedDoubleToIntegerValue createNewValue() {
+        return new FixedDoubleToIntegerValue(0);
+    }
+
     @NotNull
     @Override
     public NamespacedKey getKey() {

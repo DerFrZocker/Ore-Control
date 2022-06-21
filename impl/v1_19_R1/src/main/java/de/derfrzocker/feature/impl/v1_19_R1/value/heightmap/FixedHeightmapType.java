@@ -48,6 +48,11 @@ public class FixedHeightmapType extends HeightmapType {
         return Heightmap.Types.class;
     }
 
+    @Override
+    public HeightmapValue createNewValue() {
+        throw new UnsupportedOperationException("Not supported");
+    }
+
     @NotNull
     @Override
     public NamespacedKey getKey() {
