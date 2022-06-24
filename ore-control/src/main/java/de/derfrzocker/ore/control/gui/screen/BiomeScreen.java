@@ -38,10 +38,8 @@ import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,27 +63,7 @@ public class BiomeScreen {
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
                         .withMessageValue((setting, guiInfo, biome) -> new MessageValue("biome-key", biome.getKey().getKey()))
                         .withMessageValue((setting, guiInfo, biome) -> new MessageValue("biome-namespace", biome.getKey().getNamespace()))
-                        .itemStack((setting, guiInfo, biome) -> {
-                            String key = "icons." + biome.getKey().getNamespace() + "." + biome.getKey().getKey();
-                            ItemStack icon = setting.get(IDENTIFIER, key + ".item-stack", null);
-                            if (icon == null) {
-                                icon = setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
-                                String type = setting.get(IDENTIFIER, key + ".type", null);
-                                if (type == null) {
-                                    guiValuesHolder.plugin().getLogger().info(String.format("No item stack or type found for biome '%s' using default item stack", biome.getKey()));
-                                } else {
-                                    try {
-                                        Material material = Material.valueOf(type.toUpperCase());
-                                        icon.setType(material);
-                                    } catch (IllegalArgumentException e) {
-                                        guiValuesHolder.plugin().getLogger().warning(String.format("Material '%s' for biome '%s' not found", type, biome.getKey()));
-                                    }
-                                }
-                            } else {
-                                icon = icon.clone();
-                            }
-                            return icon;
-                        })
+                        .itemStack((setting, guiInfo, biome) -> ScreenUtil.getIcon(guiValuesHolder, setting, IDENTIFIER, biome))
                         .withAction((clickAction, biome) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, biome) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setBiome(biome))
                         .withAction((clickAction, biome) -> guiValuesHolder.guiManager().openFeatureSelectionScreen(clickAction.getPlayer()))

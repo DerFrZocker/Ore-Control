@@ -28,12 +28,38 @@ package de.derfrzocker.ore.control.gui;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
+import de.derfrzocker.spigot.utils.setting.Setting;
+import org.bukkit.Keyed;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Function;
 
 public final class ScreenUtil {
 
     private ScreenUtil() {
+    }
+
+    public static ItemStack getIcon(GuiValuesHolder guiValuesHolder, Setting setting, String identifier, Keyed keyed) {
+        String key = "icons." + keyed.getKey().getNamespace() + "." + keyed.getKey().getKey();
+        ItemStack icon = setting.get(identifier, key + ".item-stack", null);
+        if (icon == null) {
+            icon = setting.get(identifier, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
+            String type = setting.get(identifier, key + ".type", null);
+            if (type == null) {
+                guiValuesHolder.plugin().getLogger().info(String.format("No item stack or type found for '%s' using default item stack", keyed.getKey()));
+            } else {
+                try {
+                    Material material = Material.valueOf(type.toUpperCase());
+                    icon.setType(material);
+                } catch (IllegalArgumentException e) {
+                    guiValuesHolder.plugin().getLogger().warning(String.format("Material '%s' for '%s' not found", type, keyed.getKey()));
+                }
+            }
+        } else {
+            icon = icon.clone();
+        }
+        return icon;
     }
 
     public static ButtonContextBuilder getBackButton(OreControlGuiManager guiManager) {

@@ -25,7 +25,6 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
-import de.derfrzocker.feature.api.Feature;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
@@ -35,9 +34,7 @@ import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.SingleInventoryGuiBuilder;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
 
 import java.util.function.BiConsumer;
@@ -101,29 +98,7 @@ public class NumberEditScreen {
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("feature-name", guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().getKey()))
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("setting-name", guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getSettingWrapper().getSetting().name()))
                                 .withMessageValue((setting, guiInfo) -> new MessageValue("current-value", numberSupplier.apply(guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()))))
-                                .itemStack((setting, guiInfo) -> {
-                                    PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity());
-                                    Feature feature = playerGuiData.getFeature();
-                                    String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
-                                    ItemStack icon = setting.get(key + ".item-stack", null);
-                                    if (icon == null) {
-                                        icon = setting.get("default-icon.item-stack", new ItemStack(Material.STONE)).clone();
-                                        String type = setting.get(key + ".type", null);
-                                        if (type == null) {
-                                            guiValuesHolder.plugin().getLogger().info(String.format("No item stack or type found for feature '%s' using default item stack", feature.getKey()));
-                                        } else {
-                                            try {
-                                                Material material = Material.valueOf(type.toUpperCase());
-                                                icon.setType(material);
-                                            } catch (IllegalArgumentException e) {
-                                                guiValuesHolder.plugin().getLogger().warning(String.format("Material '%s' for feature '%s' not found", type, feature.getKey()));
-                                            }
-                                        }
-                                    } else {
-                                        icon = icon.clone();
-                                    }
-                                    return icon;
-                                })
+                                .itemStack((setting, guiInfo) -> ScreenUtil.getIcon(guiValuesHolder, setting, null, guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getFeature()))
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         )
                 )

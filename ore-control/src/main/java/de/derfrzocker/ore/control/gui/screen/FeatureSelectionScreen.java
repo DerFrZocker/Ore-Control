@@ -39,10 +39,8 @@ import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -68,27 +66,7 @@ public class FeatureSelectionScreen {
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-key", feature.getKey().getKey()))
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-namespace", feature.getKey().getNamespace()))
-                        .itemStack((setting, guiInfo, feature) -> {
-                            String key = "icons." + feature.getKey().getNamespace() + "." + feature.getKey().getKey();
-                            ItemStack icon = setting.get(IDENTIFIER, key + ".item-stack", null);
-                            if (icon == null) {
-                                icon = setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone();
-                                String type = setting.get(IDENTIFIER, key + ".type", null);
-                                if (type == null) {
-                                    guiValuesHolder.plugin().getLogger().info(String.format("No item stack or type found for feature '%s' using default item stack", feature.getKey()));
-                                } else {
-                                    try {
-                                        Material material = Material.valueOf(type.toUpperCase());
-                                        icon.setType(material);
-                                    } catch (IllegalArgumentException e) {
-                                        guiValuesHolder.plugin().getLogger().warning(String.format("Material '%s' for feature '%s' not found", type, feature.getKey()));
-                                    }
-                                }
-                            } else {
-                                icon = icon.clone();
-                            }
-                            return icon;
-                        })
+                        .itemStack((setting, guiInfo, feature) -> ScreenUtil.getIcon(guiValuesHolder, setting, IDENTIFIER, feature))
                         .withAction((clickAction, feature) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, feature) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setFeature(feature))
                         .withAction((clickAction, feature) -> guiValuesHolder.guiManager().openFeatureSettingsScreen(clickAction.getPlayer()))
