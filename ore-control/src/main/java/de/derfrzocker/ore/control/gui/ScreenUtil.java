@@ -23,19 +23,30 @@
  *
  */
 
-package de.derfrzocker.ore.control.gui.screen.value;
+package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.feature.api.Value;
-import de.derfrzocker.ore.control.gui.GuiValuesHolder;
-import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
 
 import java.util.function.Function;
 
-public final class ValueUtil {
+public final class ScreenUtil {
 
-    private ValueUtil() {
+    private ScreenUtil() {
+    }
+
+    public static ButtonContextBuilder getBackButton(OreControlGuiManager guiManager) {
+        return Builders
+                .buttonContext()
+                .identifier("back")
+                .button(Builders
+                        .button()
+                        .identifier("back")
+                        .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                        .withAction(clickAction -> guiManager.getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory().onBack(clickAction.getPlayer()))
+                        .withAction(clickAction -> guiManager.openGui(guiManager.getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory(), clickAction.getPlayer()))
+                );
     }
 
     public static <T extends Value<?, ?, ?>> ButtonContextBuilder getPassthroughButton(GuiValuesHolder guiValuesHolder, String identifier, Class<T> valueClass, Function<T, Value<?, ?, ?>> toEditFunction) {

@@ -29,6 +29,7 @@ import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -62,7 +63,7 @@ public class WeightedListIntegerScreen {
                         .withAction((clickAction, distributionHolder) -> guiValuesHolder.guiManager().openGui(subGui, clickAction.getPlayer()))
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }
 
@@ -73,10 +74,10 @@ public class WeightedListIntegerScreen {
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("value/weighted_list_sub_integer_screen.yml"))
-                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "data", "weighted_list_integer_data", DistributionHolder.class, DistributionHolder::data))
-                .addButtonContext(ValueUtil.getPassthroughButton(guiValuesHolder, "weight", "weighted_list_integer_data", DistributionHolder.class, DistributionHolder::weight))
+                .addButtonContext(ScreenUtil.getPassthroughButton(guiValuesHolder, "data", "weighted_list_integer_data", DistributionHolder.class, DistributionHolder::data))
+                .addButtonContext(ScreenUtil.getPassthroughButton(guiValuesHolder, "weight", "weighted_list_integer_data", DistributionHolder.class, DistributionHolder::weight))
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).removeData("weighted_list_integer_data"))
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }
 

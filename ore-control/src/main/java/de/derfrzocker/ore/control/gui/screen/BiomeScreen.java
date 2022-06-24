@@ -32,6 +32,7 @@ import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -89,7 +90,7 @@ public class BiomeScreen {
                         .withAction((clickAction, biome) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setBiome(biome))
                         .withAction((clickAction, biome) -> guiValuesHolder.guiManager().openFeatureSelectionScreen(clickAction.getPlayer()))
                 )
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }
 

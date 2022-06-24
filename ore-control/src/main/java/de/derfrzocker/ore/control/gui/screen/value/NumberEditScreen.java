@@ -30,6 +30,7 @@ import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.SingleInventoryGuiBuilder;
@@ -127,6 +128,6 @@ public class NumberEditScreen {
                         )
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton());
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()));
     }
 }

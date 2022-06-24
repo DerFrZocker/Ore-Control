@@ -33,6 +33,7 @@ import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -93,7 +94,7 @@ public class FeatureSelectionScreen {
                         .withAction((clickAction, feature) -> guiValuesHolder.guiManager().openFeatureSettingsScreen(clickAction.getPlayer()))
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setBiome(null))
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }
 

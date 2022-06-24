@@ -28,6 +28,7 @@ package de.derfrzocker.ore.control.gui.screen.value;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import org.bukkit.entity.Player;
@@ -80,7 +81,7 @@ public class BooleanScreen {
                         )
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }
 }

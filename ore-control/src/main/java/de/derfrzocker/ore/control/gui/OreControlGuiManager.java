@@ -50,8 +50,6 @@ import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.WeightedListIntegerScreen;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
-import de.derfrzocker.spigot.utils.gui.builders.Builders;
-import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
@@ -166,18 +164,5 @@ public class OreControlGuiManager implements Listener {
                 oreControlManager.onValueChange();
             }
         });
-    }
-
-    public ButtonContextBuilder getBackButton() {
-        return Builders
-                .buttonContext()
-                .identifier("back")
-                .button(Builders
-                        .button()
-                        .identifier("back")
-                        .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                        .withAction(clickAction -> getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory().onBack(clickAction.getPlayer()))
-                        .withAction(clickAction -> openGui(getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory(), clickAction.getPlayer()))
-                );
     }
 }

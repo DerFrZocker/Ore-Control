@@ -27,6 +27,7 @@ package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 
@@ -63,7 +64,7 @@ public class ConfigInfoScreen {
                                 .withAction(clickAction -> guiValuesHolder.guiManager().openBiomeScreen(clickAction.getPlayer()))
                         )
                 )
-                .addButtonContext(guiValuesHolder.guiManager().getBackButton())
+                .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }
 }
