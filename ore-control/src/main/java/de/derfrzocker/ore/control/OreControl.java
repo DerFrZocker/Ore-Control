@@ -55,7 +55,6 @@ import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
 import de.derfrzocker.spigot.utils.language.manager.DirectLanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -116,8 +115,6 @@ public class OreControl extends JavaPlugin implements Listener {
 
         nmsReplacer.hookIntoBiomes();
 
-        new Metrics(this, 4244);
-
         languageManager = new DirectLanguageManager(this, new PluginLanguageLoader(this), "en");
         guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
@@ -126,6 +123,8 @@ public class OreControl extends JavaPlugin implements Listener {
         });
 
         getServer().getPluginManager().registerEvents(this, this);
+
+        new Stats(this, registries);
     }
 
     @Override
