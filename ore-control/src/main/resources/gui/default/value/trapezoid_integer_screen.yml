@@ -11,6 +11,8 @@ min-inclusive:
       display-name: "&f%%translation:[trapezoid_integer_screen.min-inclusive.name]%"
       lore:
         - "   "
+        - "%value-settings%"
+        - "   "
         - "&7>> &b%%translation:[trapezoid_integer_screen.min-inclusive.lore.left-click]% &7<<"
 max-inclusive:
   slot: 24
@@ -24,6 +26,8 @@ max-inclusive:
       display-name: "&f%%translation:[trapezoid_integer_screen.max-inclusive.name]%"
       lore:
         - "   "
+        - "%value-settings%"
+        - "   "
         - "&7>> &b%%translation:[trapezoid_integer_screen.max-inclusive.lore.left-click]% &7<<"
 plateau:
   slot: 22
@@ -36,5 +40,7 @@ plateau:
       meta-type: UNSPECIFIC
       display-name: "&f%%translation:[trapezoid_integer_screen.plateau.name]%"
       lore:
+        - "   "
+        - "%value-settings%"
         - "   "
         - "&7>> &b%%translation:[trapezoid_integer_screen.plateau.lore.left-click]% &7<<"

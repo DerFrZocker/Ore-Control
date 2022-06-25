@@ -9,4 +9,6 @@ default-icon:
     display-name: "&f%%translation:[weighted_list_integer_screen.default-icon.name]%"
     lore:
       - "   "
+      - "%value-settings%"
+      - "   "
       - "&7>> &b%%translation:[weighted_list_integer_screen.default-icon.lore.left-click]% &7<<"

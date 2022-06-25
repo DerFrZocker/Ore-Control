@@ -10,6 +10,8 @@ default-icon:
       display-name: "&f%%translation:[settings.%setting%.name]%"
       lore:
         - "   "
+        - "%value-settings%"
+        - "   "
         - "&7>> &b%%translation:[feature_settings_screen.default-icon.lore.left-click]% &7<<"
 placement-modifier-icon:
   feature:

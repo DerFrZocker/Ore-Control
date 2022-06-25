@@ -11,6 +11,8 @@ min-inclusive:
       display-name: "&f%%translation:[uniform_integer_screen.min-inclusive.name]%"
       lore:
         - "   "
+        - "%value-settings%"
+        - "   "
         - "&7>> &b%%translation:[uniform_integer_screen.min-inclusive.lore.left-click]% &7<<"
 max-inclusive:
   slot: 23
@@ -23,5 +25,7 @@ max-inclusive:
       meta-type: UNSPECIFIC
       display-name: "&f%%translation:[uniform_integer_screen.max-inclusive.name]%"
       lore:
+        - "   "
+        - "%value-settings%"
         - "   "
         - "&7>> &b%%translation:[uniform_integer_screen.max-inclusive.lore.left-click]% &7<<"

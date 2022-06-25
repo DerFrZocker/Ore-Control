@@ -10,4 +10,8 @@ default-icon:
       display-name: "&f%%translation:[namespaces.%feature-namespace%.name]%: %%translation:[features.%feature-namespace%.%feature-key%.name]%"
       lore:
         - "   "
+        - "%generator-settings%"
+        - "   "
+        - "%placement-modifier-settings%"
+        - "   "
         - "&7>> &b%%translation:[feature_selection_screen.default-icon.lore.left-click]% &7<<"

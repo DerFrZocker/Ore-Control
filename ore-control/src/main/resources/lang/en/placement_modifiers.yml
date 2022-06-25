@@ -1,0 +1,15 @@
+placement-modifiers:
+  minecraft:
+    rarity_filter:
+      name: "Rarity Filter"
+    surface_relative_threshold_filter:
+      name: "Surface Relative Threshold Filter"
+    surface_water_depth_filter:
+      name: "Surface Water Depth Filter"
+    count:
+      name: "Count"
+    height_range:
+      name: "Height Range"
+  feature:
+    activation:
+      name: "Activation"

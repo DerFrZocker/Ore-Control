@@ -17,3 +17,16 @@ settings:
     name: "Max Water Depth"
   activate:
     name: "Activate"
+value-settings:
+  min-inclusive:
+    name: "Min Inclusive"
+  max-inclusive:
+    name: "Max Inclusive"
+  plateau:
+    name: "Plateau"
+  base:
+    name: "Base"
+  data:
+    name: "Data"
+  weight:
+    name: "Weight"

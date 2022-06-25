@@ -11,6 +11,8 @@ data:
       display-name: "&f%%translation:[weighted_list_sub_integer_screen.data.name]%"
       lore:
         - "   "
+        - "%value-settings%"
+        - "   "
         - "&7>> &b%%translation:[weighted_list_sub_integer_screen.data.lore.left-click]% &7<<"
 weight:
   slot: 23
@@ -23,5 +25,7 @@ weight:
       meta-type: UNSPECIFIC
       display-name: "&f%%translation:[weighted_list_sub_integer_screen.weight.name]%"
       lore:
+        - "   "
+        - "%value-settings%"
         - "   "
         - "&7>> &b%%translation:[weighted_list_sub_integer_screen.weight.lore.left-click]% &7<<"

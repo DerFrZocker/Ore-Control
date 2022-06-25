@@ -135,7 +135,7 @@ public class PlayerGuiData {
 
     public void setToEditValue(Value<?, ?, ?> toEditValue) {
         if (this.toEditValue != null) {
-            valueTree.add(this.toEditValue);
+            valueTree.addFirst(this.toEditValue);
         }
 
         this.toEditValue = toEditValue;

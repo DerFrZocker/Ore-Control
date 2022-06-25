@@ -86,7 +86,7 @@ public class OreControlGuiManager implements Listener {
     public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
-        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction);
+        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser());
         this.configInfosScreen = ConfigInfosScreen.getGui(guiValuesHolder);
         this.configInfoScreen = ConfigInfoScreen.getGui(guiValuesHolder);
         this.featureSelectionScreen = FeatureSelectionScreen.getGui(guiValuesHolder);

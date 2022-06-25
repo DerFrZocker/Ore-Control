@@ -41,8 +41,8 @@ import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
-import de.derfrzocker.ore.control.gui.SettingWrapper;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.SettingWrapper;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -74,6 +74,7 @@ public class FeatureSettingsScreen {
                         .pageContent(SettingWrapper.class)
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
                         .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting", settingWrapper.getSetting().name()))
+                        .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("value-settings", getValueSettings(guiValuesHolder, guiInfo, settingWrapper)))
                         .itemStack((setting, guiInfo, settingWrapper) -> setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, settingWrapper) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setSettingWrapper(settingWrapper))
@@ -250,6 +251,46 @@ public class FeatureSettingsScreen {
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setFeature(null))
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
+    }
+
+    private static String getValueSettings(GuiValuesHolder guiValuesHolder, GuiInfo guiInfo, SettingWrapper settingWrapper) {
+        PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity());
+        Setting setting = settingWrapper.getSetting();
+        ConfigurationAble settingOwner = settingWrapper.getSettingOwner();
+
+        if (settingOwner == null) {
+            guiValuesHolder.plugin().getLogger().warning(String.format("No setting owner found, this is a bug!"));
+            return "UNKNOWN";
+        }
+
+        Optional<Config> optionalConfig;
+        if (playerGuiData.getBiome() == null) {
+            optionalConfig = guiValuesHolder.oreControlManager().getConfigManager().getGuiConfig(playerGuiData.getConfigInfo(), playerGuiData.getFeature().getKey());
+        } else {
+            optionalConfig = guiValuesHolder.oreControlManager().getConfigManager().getGuiConfig(playerGuiData.getConfigInfo(), playerGuiData.getBiome(), playerGuiData.getFeature().getKey());
+        }
+
+        if (optionalConfig.isEmpty()) {
+            guiValuesHolder.plugin().getLogger().warning(String.format("No gui specific config found, it should always be possible to build one with default value, this is a bug!"));
+            return "UNKNOWN";
+        }
+
+        Config config = optionalConfig.get();
+
+        Configuration configuration = config.getFeature();
+
+        if (configuration == null || configuration.getOwner() != settingOwner) {
+            configuration = getPlacementConfiguration(config.getPlacements().values(), settingOwner);
+        }
+
+        if (configuration == null || configuration.getOwner() != settingOwner) {
+            guiValuesHolder.plugin().getLogger().warning(String.format("No suitable configuration found, there should always a default configuration present, this is a bug!"));
+            return "UNKNOWN";
+        }
+
+        Value<?, ?, ?> value = configuration.getValue(setting);
+
+        return guiValuesHolder.valueTraverser().traverse(value, "§r§f%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%: ");
     }
 
     private static List<SettingWrapper> buildList(OreControlManager oreControlManager, OreControlGuiManager guiManager, GuiInfo guiInfo) {

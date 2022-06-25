@@ -11,4 +11,6 @@ base:
       display-name: "&f%%translation:[above_bottom_offset_integer_screen.base.name]%"
       lore:
         - "   "
+        - "%value-settings%"
+        - "   "
         - "&7>> &b%%translation:[above_bottom_offset_integer_screen.base.lore.left-click]% &7<<"

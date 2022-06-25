@@ -33,5 +33,5 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.function.Function;
 
-public record GuiValuesHolder(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, ConfigManager configManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
+public record GuiValuesHolder(Plugin plugin, OreControlManager oreControlManager, OreControlGuiManager guiManager, ConfigManager configManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction, ValueTraverser valueTraverser) {
 }

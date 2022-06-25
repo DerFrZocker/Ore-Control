@@ -14,3 +14,9 @@ value-types:
       name: "Below Top Offset"
     fixed_float:
       name: "Fixed Float"
+    weighted_list_integer:
+      name: "Weighted"
+    biased_to_bottom_integer:
+      name: "Biased To Bottom"
+    fixed_boolean:
+      name: "Fixed Boolean"

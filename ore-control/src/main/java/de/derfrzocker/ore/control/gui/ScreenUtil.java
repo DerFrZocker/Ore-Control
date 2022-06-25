@@ -28,9 +28,11 @@ package de.derfrzocker.ore.control.gui;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.Setting;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Function;
@@ -82,6 +84,15 @@ public final class ScreenUtil {
                 .button(Builders
                         .button()
                         .identifier(identifier)
+                        .withMessageValue((setting, guiInfo) -> {
+                            PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity());
+                            Value<?, ?, ?> currently = guiData.getToEditValue();
+                            if (!valueClass.isAssignableFrom(currently.getClass())) {
+                                guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
+                            }
+                            Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
+                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "§r§f%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%: "));
+                        })
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
                             PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
@@ -103,6 +114,15 @@ public final class ScreenUtil {
                 .button(Builders
                         .button()
                         .identifier(identifier)
+                        .withMessageValue((setting, guiInfo) -> {
+                            PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity());
+                            Object currently = guiData.getData(dataKey);
+                            if (!valueClass.isAssignableFrom(currently.getClass())) {
+                                guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, currently.getClass()));
+                            }
+                            Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
+                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "§r§f%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%: "));
+                        })
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
                             PlayerGuiData guiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
