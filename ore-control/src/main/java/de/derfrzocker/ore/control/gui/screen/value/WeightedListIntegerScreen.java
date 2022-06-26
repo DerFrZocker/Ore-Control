@@ -33,6 +33,7 @@ import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -57,6 +58,11 @@ public class WeightedListIntegerScreen {
                 .pageContent(Builders
                         .pageContent(DistributionHolder.class)
                         .data((setting, guiInfo) -> getData(guiValuesHolder, guiInfo))
+                        .withMessageValue((setting, guiInfo, distributionHolder) -> {
+                            String data = guiValuesHolder.valueTraverser().traverse(distributionHolder.data, "§r§f%%translation:[value-settings.data.name]%: ");
+                            String weight = guiValuesHolder.valueTraverser().traverse(distributionHolder.weight, "§r§f%%translation:[value-settings.data.name]%: ");
+                            return new MessageValue("value-settings", data + "%%new-line%" + weight);
+                        })
                         .itemStack((setting, guiInfo, distributionHolder) -> setting.get("value.weighted_list_sub_integer_screen", "default-icon", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, distributionHolder) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, distributionHolder) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).addData("weighted_list_integer_data", distributionHolder))
