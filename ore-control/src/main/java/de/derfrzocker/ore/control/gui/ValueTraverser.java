@@ -37,6 +37,8 @@ import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
@@ -106,6 +108,21 @@ public class ValueTraverser {
             List<String> max = traverse(maxValue, getKey("max-inclusive", spaces + " ", arrow), spaces + " ", arrow);
             List<String> values = new LinkedList<>();
             values.add(key);
+            values.addAll(min);
+            values.addAll(max);
+            return values;
+        }
+        if (value.getValueType() == ClampedIntegerType.type()) {
+            ClampedIntegerValue val = (ClampedIntegerValue) value;
+            IntegerValue sourceValue = val.getSource();
+            IntegerValue minValue = val.getMinInclusive();
+            IntegerValue maxValue = val.getMaxInclusive();
+            List<String> source = traverse(sourceValue, getKey("source", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> min = traverse(minValue, getKey("min-inclusive", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> max = traverse(maxValue, getKey("max-inclusive", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> values = new LinkedList<>();
+            values.add(key);
+            values.addAll(source);
             values.addAll(min);
             values.addAll(max);
             return values;

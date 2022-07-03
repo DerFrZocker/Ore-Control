@@ -28,10 +28,12 @@ package de.derfrzocker.ore.control.impl.v1_18_R2;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerValue;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.util.valueproviders.ClampedInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviderType;
 import net.minecraft.util.valueproviders.WeightedListInt;
@@ -53,6 +55,18 @@ public final class ConversionUtil {
                 return new UniformIntegerValue(new FixedDoubleToIntegerValue(intProvider.getMinValue()), new FixedDoubleToIntegerValue(intProvider.getMaxValue()));
             } else if (intProvider.getType() == IntProviderType.BIASED_TO_BOTTOM) {
                 return new BiasedToBottomIntegerValue(new FixedDoubleToIntegerValue(intProvider.getMinValue()), new FixedDoubleToIntegerValue(intProvider.getMaxValue()));
+            } else if (intProvider.getType() == IntProviderType.CLAMPED) {
+                Field sourceField = ClampedInt.class.getDeclaredField(NMSReflectionNames.CLAMPED_INT_SOURCE);
+                Field minField = ClampedInt.class.getDeclaredField(NMSReflectionNames.CLAMPED_INT_MIN_INCLUSIVE);
+                Field maxField = ClampedInt.class.getDeclaredField(NMSReflectionNames.CLAMPED_INT_MAX_INCLUSIVE);
+                sourceField.setAccessible(true);
+                minField.setAccessible(true);
+                maxField.setAccessible(true);
+
+                IntProvider source = (IntProvider) sourceField.get(intProvider);
+                int min = (int) minField.get(intProvider);
+                int max = (int) maxField.get(intProvider);
+                return new ClampedIntegerValue(convert(source), new FixedDoubleToIntegerValue(min), new FixedDoubleToIntegerValue(max));
             } else if (intProvider.getType() == IntProviderType.WEIGHTED_LIST) {
                 Field distributionField = WeightedListInt.class.getDeclaredField(NMSReflectionNames.WEIGHTED_LIST_INT_DISTRIBUTION);
                 distributionField.setAccessible(true);

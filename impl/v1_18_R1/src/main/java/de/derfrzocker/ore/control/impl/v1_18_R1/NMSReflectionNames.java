@@ -37,6 +37,9 @@ public final class NMSReflectionNames {
     public final static String SURFACE_RELATIVE_THRESHOLD_FILTER_MIN_INCLUSIVE = "d";
     public final static String SURFACE_RELATIVE_THRESHOLD_FILTER_MAX_INCLUSIVE = "e";
     public final static String SURFACE_WATER_DEPTH_FILTER_MAX_WATER_DEPTH = "c";
+    public static final String CLAMPED_INT_SOURCE = "b";
+    public static final String CLAMPED_INT_MIN_INCLUSIVE = "f";
+    public static final String CLAMPED_INT_MAX_INCLUSIVE = "g";
 
     private NMSReflectionNames() {
     }

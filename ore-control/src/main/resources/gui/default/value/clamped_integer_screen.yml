@@ -1,0 +1,46 @@
+name: "%%translation:[clamped_integer_screen.name]%"
+source:
+  slot: 20
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_integer_screen.source.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_integer_screen.source.lore.left-click]% &7<<"
+min-inclusive:
+  slot: 22
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_integer_screen.min-inclusive.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_integer_screen.min-inclusive.lore.left-click]% &7<<"
+max-inclusive:
+  slot: 24
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_integer_screen.max-inclusive.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_integer_screen.max-inclusive.lore.left-click]% &7<<"
