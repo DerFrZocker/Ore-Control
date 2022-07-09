@@ -25,15 +25,18 @@
 
 package de.derfrzocker.ore.control.impl.v1_19_R1;
 
+import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedNormalIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerValue;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.valueproviders.ClampedInt;
+import net.minecraft.util.valueproviders.ClampedNormalInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviderType;
 import net.minecraft.util.valueproviders.WeightedListInt;
@@ -78,7 +81,18 @@ public final class ConversionUtil {
                 }
 
                 return new WeightedListIntegerValue(values);
-            } else { // TODO add rest of IntProvider types
+            } else if (intProvider.getType() == IntProviderType.CLAMPED_NORMAL) {
+                Field meanField = ClampedNormalInt.class.getDeclaredField(NMSReflectionNames.CLAMPED_NORMAL_INT_MEAN);
+                Field deviationField = ClampedNormalInt.class.getDeclaredField(NMSReflectionNames.CLAMPED_NORMAL_INT_DEVIATION);
+                meanField.setAccessible(true);
+                deviationField.setAccessible(true);
+
+                float mean = (float) meanField.get(intProvider);
+                float deviation = (float) meanField.get(intProvider);
+                int min = intProvider.getMinValue();
+                int max = intProvider.getMaxValue();
+                return new ClampedNormalIntegerValue(new FixedFloatValue(mean), new FixedFloatValue(deviation), new FixedDoubleToIntegerValue(min), new FixedDoubleToIntegerValue(max));
+            } else {
                 throw new UnsupportedOperationException(String.format("No integer value equivalent for IntProvider '%s'", intProvider));
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {

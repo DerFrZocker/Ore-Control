@@ -1,0 +1,61 @@
+name: "%%translation:[clamped_normal_integer_screen.name]%"
+mean:
+  slot: 19
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_normal_integer_screen.mean.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_normal_integer_screen.mean.lore.left-click]% &7<<"
+deviation:
+  slot: 21
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_normal_integer_screen.deviation.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_normal_integer_screen.deviation.lore.left-click]% &7<<"
+min-inclusive:
+  slot: 23
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_normal_integer_screen.min-inclusive.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_normal_integer_screen.min-inclusive.lore.left-click]% &7<<"
+max-inclusive:
+  slot: 25
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[clamped_normal_integer_screen.max-inclusive.name]%"
+      lore:
+        - "   "
+        - "%value-settings%"
+        - "   "
+        - "&7>> &b%%translation:[clamped_normal_integer_screen.max-inclusive.lore.left-click]% &7<<"

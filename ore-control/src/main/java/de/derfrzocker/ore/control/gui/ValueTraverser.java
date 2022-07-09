@@ -30,6 +30,7 @@ import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
+import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
@@ -39,6 +40,8 @@ import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomI
 import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerValue;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedNormalIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedNormalIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
@@ -123,6 +126,24 @@ public class ValueTraverser {
             List<String> values = new LinkedList<>();
             values.add(key);
             values.addAll(source);
+            values.addAll(min);
+            values.addAll(max);
+            return values;
+        }
+        if (value.getValueType() == ClampedNormalIntegerType.type()) {
+            ClampedNormalIntegerValue val = (ClampedNormalIntegerValue) value;
+            FloatValue meanValue = val.getMean();
+            FloatValue deviationValue = val.getDeviation();
+            IntegerValue minValue = val.getMinInclusive();
+            IntegerValue maxValue = val.getMaxInclusive();
+            List<String> mean = traverse(meanValue, getKey("mean", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> deviation = traverse(deviationValue, getKey("deviation", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> min = traverse(minValue, getKey("min-inclusive", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> max = traverse(maxValue, getKey("max-inclusive", spaces + " ", arrow), spaces + " ", arrow);
+            List<String> values = new LinkedList<>();
+            values.add(key);
+            values.addAll(mean);
+            values.addAll(deviation);
             values.addAll(min);
             values.addAll(max);
             return values;

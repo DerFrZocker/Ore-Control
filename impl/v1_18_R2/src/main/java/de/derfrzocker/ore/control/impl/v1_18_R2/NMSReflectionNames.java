@@ -40,6 +40,8 @@ public final class NMSReflectionNames {
     public static final String CLAMPED_INT_SOURCE = "b";
     public static final String CLAMPED_INT_MIN_INCLUSIVE = "f";
     public static final String CLAMPED_INT_MAX_INCLUSIVE = "g";
+    public static final String CLAMPED_NORMAL_INT_MEAN = "b";
+    public static final String CLAMPED_NORMAL_INT_DEVIATION = "f";
 
     private NMSReflectionNames() {
     }

@@ -36,6 +36,7 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerTy
 import de.derfrzocker.feature.common.value.number.integer.FixedIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.biased.BiasedToBottomIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedIntegerType;
+import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedNormalIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
@@ -162,6 +163,7 @@ public class OreControl extends JavaPlugin implements Listener {
         registries.getValueTypeRegistry(IntegerType.class).register(new WeightedListIntegerType(registries));
         registries.getValueTypeRegistry(IntegerType.class).register(new BiasedToBottomIntegerType(registries));
         registries.getValueTypeRegistry(IntegerType.class).register(new ClampedIntegerType(registries));
+        registries.getValueTypeRegistry(IntegerType.class).register(new ClampedNormalIntegerType(registries));
         registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);
         registries.getValueTypeRegistry(BooleanType.class).register(FixedBooleanType.INSTANCE);
     }

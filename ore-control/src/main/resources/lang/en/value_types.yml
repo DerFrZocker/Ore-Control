@@ -20,3 +20,7 @@ value-types:
       name: "Biased To Bottom"
     fixed_boolean:
       name: "Fixed Boolean"
+    clamped_integer:
+      name: "Clamped"
+    clamped_normal_integer:
+      name: "Normal Clamped"

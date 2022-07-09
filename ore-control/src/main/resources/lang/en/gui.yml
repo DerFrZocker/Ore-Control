@@ -95,6 +95,24 @@ clamped_integer_screen:
     name: "Max Inclusive"
     lore:
       left-click: "Click to edit max inclusive!"
+clamped_normal_integer_screen:
+  name: "Clamped Normal"
+  mean:
+    name: "Mean"
+    lore:
+      left-click: "Click to edit mean!"
+  deviation:
+    name: "Deviation"
+    lore:
+      left-click: "Click to edit deviation!"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
 number_edit_screen:
   name: "Set A Value!"
   default-icon:
