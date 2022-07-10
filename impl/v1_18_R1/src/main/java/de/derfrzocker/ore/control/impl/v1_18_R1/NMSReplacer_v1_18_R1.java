@@ -32,13 +32,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import de.derfrzocker.feature.api.FeatureGenerator;
+import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.common.feature.generator.configuration.EmptyFeatureConfiguration;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
+import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.GlowstoneBlobFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.OreFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.ScatteredOreGenerator;
 import de.derfrzocker.feature.impl.v1_18_R1.feature.generator.configuration.OreFeatureConfiguration;
@@ -58,6 +61,7 @@ import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
+import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.GlowstoneBlobFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.OreFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.feature.generator.ScatteredOreFeatureGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_18_R1.placement.CountModifierHook;
@@ -76,6 +80,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.GlowstoneFeature;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.ScatteredOreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
@@ -147,6 +152,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
     private void registerFeatureGenerators() {
         registries.getFeatureGeneratorRegistry().register(new OreFeatureGenerator(registries));
         registries.getFeatureGeneratorRegistry().register(new ScatteredOreGenerator(registries));
+        registries.getFeatureGeneratorRegistry().register(new GlowstoneBlobFeatureGenerator(registries));
     }
 
     private void registerPlacementModifier() {
@@ -281,25 +287,29 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
             return;
         }
 
-        if (!(configuredFeature.feature() instanceof OreFeature) && !(configuredFeature.feature() instanceof ScatteredOreFeature)) {
+        if (!(configuredFeature.feature() instanceof OreFeature) && !(configuredFeature.feature() instanceof ScatteredOreFeature) && !(configuredFeature.feature() instanceof GlowstoneFeature)) {
             return;
         }
 
         file.getParentFile().mkdirs();
 
-        OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
-
         FeatureGenerator<?> featureGenerator;
+        FeatureGeneratorConfiguration featureConfiguration;
 
         if (configuredFeature.feature() instanceof OreFeature) {
+            OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("ore")).get();
+            featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
+            OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("scattered_ore")).get();
+            featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
+        } else if (configuredFeature.feature() instanceof GlowstoneFeature) {
+            featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("glowstone_blob")).get();
+            featureConfiguration = new EmptyFeatureConfiguration(featureGenerator);
         } else {
             throw new RuntimeException("HOW?");
         }
-
-        OreFeatureConfiguration featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
 
         boolean hasCount = false;
         List<PlacementModifierConfiguration> placementConfiguration = new ArrayList<>();
@@ -433,7 +443,7 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
             return null;
         }
 
-        if (!(configuredFeature.feature() instanceof OreFeature) && !(configuredFeature.feature() instanceof ScatteredOreFeature)) {
+        if (!(configuredFeature.feature() instanceof OreFeature) && !(configuredFeature.feature() instanceof ScatteredOreFeature) && !(configuredFeature.feature() instanceof GlowstoneFeature)) {
             return null;
         }
 
@@ -464,6 +474,8 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
             return new PlacedFeature(() -> new ConfiguredFeature(new OreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config()), placementModifiers);
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
             return new PlacedFeature(() -> new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config()), placementModifiers);
+        } else if (configuredFeature.feature() instanceof GlowstoneFeature) {
+            return new PlacedFeature(() -> new ConfiguredFeature(new GlowstoneBlobFeatureGeneratorHook(oreControlManager, biome, key), configuredFeature.config()), placementModifiers);
         }
 
         throw new RuntimeException("HOW?");
