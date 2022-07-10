@@ -1,5 +1,9 @@
 icons:
   minecraft:
+    glowstone_extra:
+      type: GLOWSTONE
+    glowstone:
+      type: GLOWSTONE
     ore_magma:
       type: MAGMA_BLOCK
     ore_soul_sand:

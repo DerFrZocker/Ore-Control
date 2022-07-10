@@ -1,5 +1,9 @@
 features:
   minecraft:
+    glowstone_extra:
+      name: "Glowstone Extra"
+    glowstone:
+      name: "Glowstone"
     ore_magma:
       name: "Magma"
     ore_soul_sand:
