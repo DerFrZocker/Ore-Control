@@ -1,0 +1,168 @@
+design:
+  next:
+    name: "Nächste Seite"
+    lore:
+      left-click: "Klicke, um zur nächsten Seite zu gelangen!"
+  previous:
+    name: "Vorherige Seite"
+    lore:
+      left-click: "Klicke, um zur vorherigen Seite zu gelangen!"
+  back:
+    name: "Zurück"
+    lore:
+      left-click: "Klicke, um einen Schritt zurück zu gehen!"
+config_info_screen:
+  name: "Wähle Einen Typ!"
+  whole-world:
+    name: "Ganze Welt"
+    lore:
+      left-click: "Klicke, um die ganze Welt zu bearbeiten!"
+  biome:
+    name: "Biome Spezifisch"
+    lore:
+      left-click: "Klicke, um ein bestimmtes Biom zu bearbeiten!"
+biome_screen:
+  name: "Wähle Ein Biome!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um dieses Biom auszuwählen!"
+config_infos_screen:
+  name: "Wähle Eine Konfig"
+  default-icons:
+    global:
+      name: "Globale Konfig"
+      lore:
+        left-click: "Klicke, um die globale Konfiguration auszuwählen!"
+    template:
+      lore:
+        left-click: "Klicke, um diese Vorlage auszuwählen!"
+    world:
+      lore:
+        left-click: "Klicke, um diese Welt auszuwählen!"
+feature_selection_screen:
+  name: "Wähle Ein Feature!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um dieses Feature auszuwählen!"
+feature_settings_screen:
+  name: "Wähle eine Einstellung!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um diese Einstellung zu bearbeiten!"
+above_bottom_offset_integer_screen:
+  name: "Below Top Offset"
+  base:
+    name: "Base"
+    lore:
+      left-click: "Click to edit the base value!"
+below_top_offset_integer_screen:
+  name: "Below Top Offset"
+  base:
+    name: "Base"
+    lore:
+      left-click: "Click to edit the base value!"
+biased_to_bottom_integer_screen:
+  name: "Biased To Bottom Distribution"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
+boolean_screen:
+  name: "Set The Status!"
+  true:
+    name: "True"
+    lore:
+      left-click: "Click to set the status to true"
+  false:
+    name: "False"
+    lore:
+      left-click: "Click to set the status to false"
+clamped_integer_screen:
+  name: "Clamped"
+  source:
+    name: "Source"
+    lore:
+      left-click: "Click to edit source!"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
+clamped_normal_integer_screen:
+  name: "Clamped Normal"
+  mean:
+    name: "Mean"
+    lore:
+      left-click: "Click to edit mean!"
+  deviation:
+    name: "Deviation"
+    lore:
+      left-click: "Click to edit deviation!"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
+number_edit_screen:
+  name: "Set A Value!"
+  default-icon:
+    lore:
+      current: "Currently: &d%current-value%"
+  add:
+    name: "Add %value%"
+    lore:
+      left-click: "Click to add %value%!"
+  subtract:
+    name: "Subtract %value%"
+    lore:
+      left-click: "Click to subtract %value%!"
+trapezoid_integer_screen:
+  name: "Trapezoid Distribution"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
+  plateau:
+    name: "Plateau"
+    lore:
+      left-click: "Click to edit plateau!"
+uniform_integer_screen:
+  name: "Uniform Distribution"
+  min-inclusive:
+    name: "Min Inclusive"
+    lore:
+      left-click: "Click to edit min inclusive!"
+  max-inclusive:
+    name: "Max Inclusive"
+    lore:
+      left-click: "Click to edit max inclusive!"
+weighted_list_integer_screen:
+  name: "Weighted List"
+  default-icon:
+    name: "Weight Data Pair"
+    lore:
+      left-click: "Click to edit this weight data pair!"
+weighted_list_sub_integer_screen:
+  name: "Weight Data Pair"
+  data:
+    name: "Data"
+    lore:
+      left-click: "Click to edit the data!"
+  weight:
+    name: "Weight"
+    lore:
+      left-click: "Click to edit the weight!"

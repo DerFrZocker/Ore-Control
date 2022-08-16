@@ -1,0 +1,329 @@
+biomes:
+  minecraft:
+    the_void:
+      name: "The Void"
+    mushroom_fields:
+      name: "Mushroom Fields"
+    deep_frozen_ocean:
+      name: "Deep Frozen Ocean"
+    frozen_ocean:
+      name: "Frozen Ocean"
+    deep_cold_ocean:
+      name: "Deep Cold Ocean"
+    cold_ocean:
+      name: "Cold Ocean"
+    deep_ocean:
+      name: "Deep Ocean"
+    ocean:
+      name: "OCEAN"
+    deep_lukewarm_ocean:
+      name: "Deep Lukewarm Ocean"
+    lukewarm_ocean:
+      name: "Lukewarm Ocean"
+    warm_ocean:
+      name: "Warm Ocean"
+    stony_shore:
+      name: "Stony Shore"
+    swamp:
+      name: "Swap"
+    snowy_slopes:
+      name: "Snowy Slopes"
+    snowy_plains:
+      name: "Snowy Plains"
+    snowy_beach:
+      name: "Snowy Beach"
+    windswept_gravelly_hills:
+      name: "Windswept Gravelly Hills"
+    grove:
+      name: "Grove"
+    windswept_hills:
+      name: "Windswept Hills"
+    snowy_taiga:
+      name: "Snowy Taiga"
+    windswept_forest:
+      name: "Windswept Forest"
+    taiga:
+      name: "Taiga"
+    plains:
+      name: "Plains"
+    meadow:
+      name: "Meadow"
+    beach:
+      name: "Beach"
+    forest:
+      name: "Forest"
+    old_growth_spruce_taiga:
+      name: "Old Growth Spruce Taiga"
+    flower_forest:
+      name: "Flower Forest"
+    birch_forest:
+      name: "Birch Forest"
+    dark_forest:
+      name: "Dark Forest"
+    savanna_plateau:
+      name: "Savanna Plateau"
+    savanna:
+      name: "Savanna"
+    jungle:
+      name: "Jungle"
+    badlands:
+      name: "Badlands"
+    eroded_badlands:
+      name: "Eroded Badlands"
+    desert:
+      name: "Desert"
+    wooded_badlands:
+      name: "Wooded Badlands"
+    jagged_peaks:
+      name: "Jagged Peaks"
+    stony_peaks:
+      name: "Stony Peaks"
+    frozen_river:
+      name: "Frozen River"
+    river:
+      name: "River"
+    ice_spikes:
+      name: "Ice Spikes"
+    old_growth_pine_taiga:
+      name: "Old Growth Pine Taiga"
+    sunflower_plains:
+      name: "Sunflower Plains"
+    old_growth_birch_forest:
+      name: "Old Growth Birch Forest"
+    sparse_jungle:
+      name: "Sparse Jungle"
+    bamboo_jungle:
+      name: "Bamboo Jungle"
+    windswept_savanna:
+      name: "Windswept Savanna"
+    frozen_peaks:
+      name: "Frozen Peaks"
+    dripstone_caves:
+      name: "Dripstone Caves"
+    lush_caves:
+      name: "Lush Caves"
+    nether_wastes:
+      name: "Nether Wastes"
+    soul_sand_valley:
+      name: "Soul Sand Valley"
+    crimson_forest:
+      name: "Crimson Forest"
+    warped_forest:
+      name: "Warped Forest"
+    basalt_deltas:
+      name: "Basalt Deltas"
+    the_end:
+      name: "The End"
+    end_highlands:
+      name: "End Highlands"
+    end_midlands:
+      name: "End Midlands"
+    small_end_islands:
+      name: "Small End Islands"
+    end_barrens:
+      name: "End Barrens"
+    # 1.19 biomes
+    mangrove_swamp:
+      name: "Mangrove Swamp"
+    deep_dark:
+      name: "Deep Dark"
+    # from terralith
+    deep_warm_ocean:
+      name: "Deep Warm Ocean"
+  terralith:
+    frozen_cliffs:
+      name: "Frozen Cliffs"
+    fractured_savanna:
+      name: "Fractured Savanna"
+    cave/thermal_caves:
+      name: "Thermal Caves"
+    rocky_shrubland:
+      name: "Rocky Shrubland"
+    steppe:
+      name: "Steppe"
+    volcanic_peaks:
+      name: "Volcanic Peaks"
+    rocky_jungle:
+      name: "Rocky Jungle"
+    forested_highlands:
+      name: "Forested Highlands"
+    glacial_chasm:
+      name: "Glacial Chasm"
+    arid_highlands:
+      name: "Arid Highlands"
+    cave/deep_caves:
+      name: "Deep Caves"
+    sakura_valley:
+      name: "Sakura Valley"
+    scarlet_mountains:
+      name: "Scarlet Mountains"
+    granite_cliffs:
+      name: "Granite Cliffs"
+    red_oasis:
+      name: "Red Oasis"
+    alpha_islands:
+      name: "Alpha Islands"
+    stony_spires:
+      name: "Stony Spires"
+    lavender_forest:
+      name: "Lavender Forest"
+    siberian_grove:
+      name: "Siberian Grove"
+    blooming_plateau:
+      name: "Blooming Plateau"
+    white_cliffs:
+      name: "White Cliffs"
+    volcanic_crater:
+      name: "Volcanic Crater"
+    yellowstone:
+      name: "Yellowstone"
+    alpha_islands_winter:
+      name: "Alpha Islands Winter"
+    cave/crystal_caves:
+      name: "Crystal Caves"
+    cave/desert_caves:
+      name: "Desert Caves"
+    windswept_spires:
+      name: "Windswept Spires"
+    savanna_badlands:
+      name: "Savanna Badlands"
+    skylands:
+      name: "Skylands"
+    cave/mantle_caves:
+      name: "Mantle Caves"
+    skylands_winter:
+      name: "Skylands Winter"
+    snowy_badlands:
+      name: "Snowy Badlands"
+    alpine_highlands:
+      name: "Alpine Highlands"
+    moonlight_grove:
+      name: "Moonlight Grove"
+    skylands_autumn:
+      name: "Skylands Autumn"
+    temperate_highlands:
+      name: "Temperate Highlands"
+    basalt_cliffs:
+      name: "Basalt Cliffs"
+    cave/diorite_caves:
+      name: "Diorite Caves"
+    rocky_mountains:
+      name: "Rocky Mountains"
+    warped_mesa:
+      name: "Warped Mesa"
+    painted_mountains:
+      name: "Painted Mountains"
+    yosemite_cliffs:
+      name: "Yosemite Cliffs"
+    cave/frostfire_caves:
+      name: "Frostfire Caves"
+    mirage_isles:
+      name: "Mirage Isles"
+    cave/infested_caves:
+      name: "Infested Caves"
+    birch_taiga:
+      name: "Birch Taiga"
+    snowy_shield:
+      name: "Snowy Shield"
+    highlands:
+      name: "Highlands"
+    skylands_summer:
+      name: "Skylands Summer"
+    sakura_grove:
+      name: "Sakura Grove"
+    jungle_mountains:
+      name: "Jungle Mountains"
+    wintry_forest:
+      name: "Wintry Forest"
+    shield:
+      name: "Shield"
+    cloud_forest:
+      name: "Cloud Forest"
+    savanna_slopes:
+      name: "Savanna Slopes"
+    siberian_taiga:
+      name: "Siberian Taiga"
+    orchid_swamp:
+      name: "Orchid Swamp"
+    amethyst_rainforest:
+      name: "Amethyst Rainforest"
+    ancient_sands:
+      name: "Ancient Sands"
+    desert_canyon:
+      name: "Desert Canyon"
+    sandstone_valley:
+      name: "Sandstone Valley"
+    bryce_canyon:
+      name: "Bryce Canyon"
+    gravel_beach:
+      name: "Gravel Beach"
+    brushland:
+      name: "Brushland"
+    cold_shrubland:
+      name: "Cold Shrubland"
+    wintry_lowlands:
+      name: "Wintry Lowlands"
+    yosemite_lowlands:
+      name: "Yosemite Lowlands"
+    cave/granite_caves:
+      name: "Granite Caves"
+    cave/andesite_caves:
+      name: "Andesite Caves"
+    skylands_spring:
+      name: "Skylands Spring"
+    gravel_desert:
+      name: "Gravel Desert"
+    shield_clearing:
+      name: "Shield Clearing"
+    snowy_maple_forest:
+      name: "Snowy Maple Forest"
+    moonlight_valley:
+      name: "Moonlight Valley"
+    alpine_grove:
+      name: "Alpine Grove"
+    desert_oasis:
+      name: "Desert Oasis"
+    shrubland:
+      name: "Shrubland"
+    white_mesa:
+      name: "White Mesa"
+    hot_shrubland:
+      name: "Hot Shrubland"
+    caldera:
+      name: "Caldera"
+    cave/fungal_caves:
+      name: "Fungal Caves"
+    ashen_savanna:
+      name: "Ashen Savanna"
+    cave/ice_caves:
+      name: "Ice Caves"
+    emerald_peaks:
+      name: "Emerald Peaks"
+    warm_river:
+      name: "Warm River"
+    blooming_valley:
+      name: "Blooming Valley"
+    lavender_valley:
+      name: "Lavender Valley"
+    amethyst_canyon:
+      name: "Amethyst Canyon"
+    tropical_jungle:
+      name: "Tropical Jungle"
+    valley_clearing:
+      name: "Valley Clearing"
+    desert_spires:
+      name: "Desert Spires"
+    mountain_steppe:
+      name: "Mountain Steppe"
+    haze_mountain:
+      name: "Haze Mountain"
+    ice_marsh:
+      name: "Ice Marsh"
+    lush_valley:
+      name: "Lush Valley"
+    cave/tuff_caves:
+      name: "Tuff Caves"
+    lush_desert:
+      name: "Lush Desert"
+    cave/underground_jungle:
+      name: "Underground Jungle Cave"

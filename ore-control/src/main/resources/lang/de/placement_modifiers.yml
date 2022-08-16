@@ -1,0 +1,15 @@
+placement-modifiers:
+  minecraft:
+    rarity_filter:
+      name: "Raritätsfilter"
+    surface_relative_threshold_filter:
+      name: "Relativer Oberflächenschwellenwertfilter"
+    surface_water_depth_filter:
+      name: "Oberflächenwasser Tiefenfilter"
+    count:
+      name: "Anzahl"
+    height_range:
+      name: "Höhenbereich"
+  feature:
+    activation:
+      name: "Aktivierung"

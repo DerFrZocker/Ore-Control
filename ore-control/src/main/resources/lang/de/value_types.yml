@@ -1,0 +1,26 @@
+value-types:
+  feature:
+    fixed_integer:
+      name: "Feste Zahl"
+    fixed_double_to_integer:
+      name: "Feste Gleitkommazahl"
+    uniform_integer:
+      name: "Uniform"
+    trapezoid_integer:
+      name: "Trapezförmig"
+    above_bottom_offset_integer:
+      name: "Oberhalb Des Unteren Offsets"
+    below_top_offset_integer:
+      name: "Unterhalb Des Oberen Offsets"
+    fixed_float:
+      name: "Feste Gleitkommazahl"
+    weighted_list_integer:
+      name: "Gewichtet"
+    biased_to_bottom_integer:
+      name: "Verzerrt Nach Unten"
+    fixed_boolean:
+      name: "Fester Boolean"
+    clamped_integer:
+      name: "Geklemmt"
+    clamped_normal_integer:
+      name: "Normal Geklemmt"

@@ -1,0 +1,8 @@
+feature-generators:
+  minecraft:
+    ore:
+      name: "Ore"
+    scattered_ore:
+      name: "Scattered Ore"
+    glowstone_blob:
+      name: "Glowstone Blob"

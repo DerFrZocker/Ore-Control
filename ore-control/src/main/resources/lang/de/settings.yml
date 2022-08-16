@@ -1,0 +1,32 @@
+settings:
+  size:
+    name: "Größe"
+  discard-chance-on-air-exposure:
+    name: "Stop Chance Bei Luft Berührung"
+  count:
+    name: "Anzahl"
+  height:
+    name: "Höhe"
+  chance:
+    name: "Chance"
+  min-inclusive:
+    name: "Min Inklusive"
+  max-inclusive:
+    name: "Max Inklusive"
+  max-water-depth:
+    name: "Max Wasser Tiefe"
+  activate:
+    name: "Aktivieren"
+value-settings:
+  min-inclusive:
+    name: "Min Inklusive"
+  max-inclusive:
+    name: "Max Inklusive"
+  plateau:
+    name: "Plateau"
+  base:
+    name: "Basis"
+  data:
+    name: "Daten"
+  weight:
+    name: "Gewicht"
