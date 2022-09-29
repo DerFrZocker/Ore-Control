@@ -26,11 +26,13 @@
 package de.derfrzocker.ore.control.api.config;
 
 import com.mojang.serialization.Codec;
+import de.derfrzocker.feature.api.ExtraValues;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
+import de.derfrzocker.ore.control.api.config.dao.ExtraValueDao;
 import de.derfrzocker.ore.control.api.util.Reloadable;
 import org.bukkit.NamespacedKey;
 
@@ -41,21 +43,28 @@ public class ConfigManager implements Reloadable {
 
     private final ConfigDao configDao;
     private final ConfigInfoDao configInfoDao;
+    private final ExtraValueDao extraValueDao;
     private final Set<ConfigInfo> configInfos = new HashSet<>();
     private final Map<String, ConfigInfo> worldNames = new ConcurrentHashMap<>();
     // TODO clean up
+    // Generation
+    private final Map<ConfigInfo, Optional<ExtraValues>> extraValuesCache = new ConcurrentHashMap<>();
     private final Map<ConfigInfo, Map<NamespacedKey, Optional<Config>>> configCache = new ConcurrentHashMap<>();
     private final Map<ConfigInfo, Map<Biome, Map<NamespacedKey, Optional<Config>>>> biomeConfigCache = new ConcurrentHashMap<>();
+    // GUI
+    private final Map<ConfigInfo, Optional<ExtraValues>> guiExtraValuesCache = new ConcurrentHashMap<>();
     private final Map<ConfigInfo, Map<NamespacedKey, Optional<Config>>> guiConfigCache = new ConcurrentHashMap<>();
     private final Map<ConfigInfo, Map<Biome, Map<NamespacedKey, Optional<Config>>>> guiBiomeConfigCache = new ConcurrentHashMap<>();
+    // Default
     private final Map<NamespacedKey, Optional<Config>> defaultConfigCache = new ConcurrentHashMap<>();
     private final Map<Biome, Map<NamespacedKey, Optional<Config>>> defaultBiomeConfigCache = new ConcurrentHashMap<>();
     private final Map<String, Map<Biome, Map<NamespacedKey, Optional<Config>>>> generationConfigCache = new ConcurrentHashMap<>();
     private ConfigInfo globalConfigInfo;
 
-    public ConfigManager(ConfigDao configDao, ConfigInfoDao configInfoDao) {
+    public ConfigManager(ConfigDao configDao, ConfigInfoDao configInfoDao, ExtraValueDao extraValueDao) {
         this.configDao = configDao;
         this.configInfoDao = configInfoDao;
+        this.extraValueDao = extraValueDao;
     }
 
     @Override
@@ -155,6 +164,10 @@ public class ConfigManager implements Reloadable {
         }
 
         return configInfo;
+    }
+
+    public Optional<ExtraValues> getExtraValues(ConfigInfo configInfo) {
+        return extraValuesCache.computeIfAbsent(configInfo, configInfo1 -> extraValueDao.getExtraValues(configInfo));
     }
 
     public Optional<Config> getConfig(ConfigInfo configInfo, NamespacedKey key) {

@@ -44,6 +44,7 @@ import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
+import de.derfrzocker.feature.impl.v1_19_R1.extra.OreVeinHandler;
 import de.derfrzocker.feature.impl.v1_19_R1.feature.generator.GlowstoneBlobFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_19_R1.feature.generator.OreFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_19_R1.feature.generator.ScatteredOreGenerator;
@@ -105,6 +106,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.util.CraftNamespacedKey;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -126,13 +128,15 @@ import java.util.stream.Collectors;
 public class NMSReplacer_v1_19_R1 implements NMSReplacer {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private final Plugin plugin;
     private final Codec<Config> configCodec;
     private final OreControlManager oreControlManager;
     @NotNull
     private final OreControlRegistries registries;
     private final ConfigManager configManager;
 
-    public NMSReplacer_v1_19_R1(@NotNull OreControlManager oreControlManager) {
+    public NMSReplacer_v1_19_R1(@NotNull Plugin plugin, @NotNull OreControlManager oreControlManager) {
+        this.plugin = plugin;
         this.oreControlManager = oreControlManager;
         this.registries = oreControlManager.getRegistries();
         this.configManager = oreControlManager.getConfigManager();
@@ -146,6 +150,7 @@ public class NMSReplacer_v1_19_R1 implements NMSReplacer {
         registerPlacementModifier();
         registerFeatures();
         registerBiomes();
+        registerExtraValues();
     }
 
     private void registerValueTypes() {
@@ -220,6 +225,10 @@ public class NMSReplacer_v1_19_R1 implements NMSReplacer {
 
             registries.getBiomeRegistry().register(bio);
         });
+    }
+
+    private void registerExtraValues() {
+        plugin.getServer().getPluginManager().registerEvents(new OreVeinHandler(configManager), plugin);
     }
 
     @Override

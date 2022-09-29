@@ -48,6 +48,7 @@ import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
+import de.derfrzocker.ore.control.api.config.dao.ExtraValueDao;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
@@ -105,7 +106,7 @@ public class OreControl extends JavaPlugin implements Listener {
         OreControlRegistries registries = new OreControlRegistries();
         ConfigDao configDao = new ConfigDao(registries);
         ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
-        ConfigManager configManager = new ConfigManager(configDao, configInfoDao);
+        ConfigManager configManager = new ConfigManager(configDao, configInfoDao, new ExtraValueDao());
         configManager.reload();
         oreControlManager = new OreControlManager(registries, configManager, world -> nmsReplacer.getBiomes(world));
 
@@ -142,7 +143,7 @@ public class OreControl extends JavaPlugin implements Listener {
         } else if (version == Version.v1_18_R2) {
             return new NMSReplacer_v1_18_R2(oreControlManager);
         } else if (version == Version.v1_19_R1) {
-            return new NMSReplacer_v1_19_R1(oreControlManager);
+            return new NMSReplacer_v1_19_R1(this, oreControlManager);
         } else {
             throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
         }

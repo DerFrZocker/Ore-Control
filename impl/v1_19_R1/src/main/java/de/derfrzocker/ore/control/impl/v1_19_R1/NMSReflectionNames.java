@@ -42,6 +42,7 @@ public final class NMSReflectionNames {
     public static final String CLAMPED_INT_MAX_INCLUSIVE = "g";
     public static final String CLAMPED_NORMAL_INT_MEAN = "b";
     public static final String CLAMPED_NORMAL_INT_DEVIATION = "f";
+    public static final String CHUNK_MAP_GENERATOR = "u";
 
     private NMSReflectionNames() {
     }
