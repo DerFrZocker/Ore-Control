@@ -1,0 +1,329 @@
+biomes:
+  minecraft:
+    the_void:
+      name: "Die Leere"
+    mushroom_fields:
+      name: "Pilzfelder"
+    deep_frozen_ocean:
+      name: "Tief Gefrorener Ozean"
+    frozen_ocean:
+      name: "Gefrorener Ozean"
+    deep_cold_ocean:
+      name: "Tiefer Kalter Ozean"
+    cold_ocean:
+      name: "Kalter Ozean"
+    deep_ocean:
+      name: "Tiefer Ozean"
+    ocean:
+      name: "Ozean"
+    deep_lukewarm_ocean:
+      name: "Tiefes lauwarmes Meer"
+    lukewarm_ocean:
+      name: "Lauwarmes Meer"
+    warm_ocean:
+      name: "Warmer Ozean"
+    stony_shore:
+      name: "Steilküste"
+    swamp:
+      name: "Sumpf"
+    snowy_slopes:
+      name: "Verschneite Hänge"
+    snowy_plains:
+      name: "Schneebedeckte Ebenen"
+    snowy_beach:
+      name: "Verschneiter Strand"
+    windswept_gravelly_hills:
+      name: "Windgepeitschte Kiesige Hügel"
+    grove:
+      name: "Gehölz"
+    windswept_hills:
+      name: "Windgepeitschte Hügel"
+    snowy_taiga:
+      name: "Verschneite Taiga"
+    windswept_forest:
+      name: "Windgepeitschter Wald"
+    taiga:
+      name: "Taiga"
+    plains:
+      name: "Ebenen"
+    meadow:
+      name: "Wiese"
+    beach:
+      name: "Strand"
+    forest:
+      name: "Wald"
+    old_growth_spruce_taiga:
+      name: "Altgewachsene Fichte Taiga"
+    flower_forest:
+      name: "Blumenwald"
+    birch_forest:
+      name: "Birkenwald"
+    dark_forest:
+      name: "Dunkler Wald"
+    savanna_plateau:
+      name: "Savannenplateau"
+    savanna:
+      name: "Savanne"
+    jungle:
+      name: "Dschungel"
+    badlands:
+      name: "Badlands"
+    eroded_badlands:
+      name: "Erodierte Badlands"
+    desert:
+      name: "Wüste"
+    wooded_badlands:
+      name: "Bewaldete Badlands"
+    jagged_peaks:
+      name: "Zerklüftete Spitzen"
+    stony_peaks:
+      name: "Steinerne Spitzen"
+    frozen_river:
+      name: "Gefrorener Fluss"
+    river:
+      name: "Fluss"
+    ice_spikes:
+      name: "Eisstacheln"
+    old_growth_pine_taiga:
+      name: "Altgewachsene Kiefer Taiga"
+    sunflower_plains:
+      name: "Sonnenblumen-Ebenen"
+    old_growth_birch_forest:
+      name: "Altbewachsener Birkenwald"
+    sparse_jungle:
+      name: "Dichter Dschungel"
+    bamboo_jungle:
+      name: "Bambus-Dschungel"
+    windswept_savanna:
+      name: "Windgepeitschte Savanne"
+    frozen_peaks:
+      name: "Gefrorene Gipfel"
+    dripstone_caves:
+      name: "Tropfsteinhöhlen"
+    lush_caves:
+      name: "Lush-Höhlen"
+    nether_wastes:
+      name: "Nether Abfall"
+    soul_sand_valley:
+      name: "Seelensand Tal"
+    crimson_forest:
+      name: "Karmesinwald"
+    warped_forest:
+      name: "Zerrwald"
+    basalt_deltas:
+      name: "Basaltdeltas"
+    the_end:
+      name: "Das Ende"
+    end_highlands:
+      name: "Ende Hochland"
+    end_midlands:
+      name: "Ende Mittelland"
+    small_end_islands:
+      name: "Kleine Endinseln"
+    end_barrens:
+      name: "Ende Barrens"
+    # 1.19 biomes
+    mangrove_swamp:
+      name: "Mangroven-Sumpf"
+    deep_dark:
+      name: "Tiefes Dunkel"
+    # from terralith
+    deep_warm_ocean:
+      name: "Tiefes warmes Meer"
+  terralith:
+    frozen_cliffs:
+      name: "Gefrorene Klippen"
+    fractured_savanna:
+      name: "Gebrochene Savanne"
+    cave/thermal_caves:
+      name: "Thermal-Höhlen"
+    rocky_shrubland:
+      name: "Felsiges Strauchland"
+    steppe:
+      name: "Steppe"
+    volcanic_peaks:
+      name: "Vulkanische Gipfel"
+    rocky_jungle:
+      name: "Felsendschungel"
+    forested_highlands:
+      name: "Bewaldetes Hochland"
+    glacial_chasm:
+      name: "Gletscherschlucht"
+    arid_highlands:
+      name: "Trockenes Hochland"
+    cave/deep_caves:
+      name: "Tiefe Höhlen"
+    sakura_valley:
+      name: "Sakura-Tal"
+    scarlet_mountains:
+      name: "Scharlachrote Berge"
+    granite_cliffs:
+      name: "Granitfelsen"
+    red_oasis:
+      name: "Rote Oase"
+    alpha_islands:
+      name: "Alpha-Inseln"
+    stony_spires:
+      name: "Steinerne Türme"
+    lavender_forest:
+      name: "Lavendelwald"
+    siberian_grove:
+      name: "Sibirischer Hain"
+    blooming_plateau:
+      name: "Blühendes Plateau"
+    white_cliffs:
+      name: "Weiße Klippen"
+    volcanic_crater:
+      name: "Vulkankrater"
+    yellowstone:
+      name: "Yellowstone"
+    alpha_islands_winter:
+      name: "Alpha-Inseln Winter"
+    cave/crystal_caves:
+      name: "Kristallhöhlen"
+    cave/desert_caves:
+      name: "Wüstenhöhlen"
+    windswept_spires:
+      name: "Windgepeitschte Türme"
+    savanna_badlands:
+      name: "Savanne Badlands"
+    skylands:
+      name: "Himmelreich"
+    cave/mantle_caves:
+      name: "Mantelhöhlen"
+    skylands_winter:
+      name: "Himmelsreich Winter"
+    snowy_badlands:
+      name: "Verschneite Badlands"
+    alpine_highlands:
+      name: "Alpine Highlands"
+    moonlight_grove:
+      name: "Mondschein-Hain"
+    skylands_autumn:
+      name: "Skylands Herbst"
+    temperate_highlands:
+      name: "Gemäßigtes Hochland"
+    basalt_cliffs:
+      name: "Basaltklippen"
+    cave/diorite_caves:
+      name: "Diorit-Höhlen"
+    rocky_mountains:
+      name: "Rocky Mountains"
+    warped_mesa:
+      name: "Verzogene Mesa"
+    painted_mountains:
+      name: "Bemalte Berge"
+    yosemite_cliffs:
+      name: "Yosemite-Felsen"
+    cave/frostfire_caves:
+      name: "Frostfeuer-Höhlen"
+    mirage_isles:
+      name: "Mirage-Inseln"
+    cave/infested_caves:
+      name: "Verseuchte Höhlen"
+    birch_taiga:
+      name: "Birke Taiga"
+    snowy_shield:
+      name: "Schnee-Schild"
+    highlands:
+      name: "Hochland"
+    skylands_summer:
+      name: "Himmelsreich Sommer"
+    sakura_grove:
+      name: "Sakura-Hain"
+    jungle_mountains:
+      name: "Dschungelgebirge"
+    wintry_forest:
+      name: "Winterlicher Wald"
+    shield:
+      name: "Schild"
+    cloud_forest:
+      name: "Nebelwald"
+    savanna_slopes:
+      name: "Savanne Hänge"
+    siberian_taiga:
+      name: "Sibirische Taiga"
+    orchid_swamp:
+      name: "Orchideen-Sumpf"
+    amethyst_rainforest:
+      name: "Amethyst-Regenwald"
+    ancient_sands:
+      name: "Uralter Sand"
+    desert_canyon:
+      name: "Wüstenschlucht"
+    sandstone_valley:
+      name: "Sandsteintal"
+    bryce_canyon:
+      name: "Bryce Canyon"
+    gravel_beach:
+      name: "Kiesstrand"
+    brushland:
+      name: "Bürstenland"
+    cold_shrubland:
+      name: "Kaltes Strauchland"
+    wintry_lowlands:
+      name: "Winterliches Tiefland"
+    yosemite_lowlands:
+      name: "Yosemite-Tiefland"
+    cave/granite_caves:
+      name: "Granit-Höhlen"
+    cave/andesite_caves:
+      name: "Andesit-Höhlen"
+    skylands_spring:
+      name: "Himmelsreich Frühling"
+    gravel_desert:
+      name: "Kieswüste"
+    shield_clearing:
+      name: "Schild-Clearing"
+    snowy_maple_forest:
+      name: "Verschneiter Ahornwald"
+    moonlight_valley:
+      name: "Mondscheintal"
+    alpine_grove:
+      name: "Alpenhain"
+    desert_oasis:
+      name: "Wüstenoase"
+    shrubland:
+      name: "Strauchland"
+    white_mesa:
+      name: "Weißes Mesa"
+    hot_shrubland:
+      name: "Heißes Strauchland"
+    caldera:
+      name: "Kaldera"
+    cave/fungal_caves:
+      name: "Pilzhöhlen"
+    ashen_savanna:
+      name: "Aschensavanne"
+    cave/ice_caves:
+      name: "Eishöhlen"
+    emerald_peaks:
+      name: "Smaragdgipfel"
+    warm_river:
+      name: "Warmer Fluss"
+    blooming_valley:
+      name: "Blühendes Tal"
+    lavender_valley:
+      name: "Lavendeltal"
+    amethyst_canyon:
+      name: "Amethyst-Schlucht"
+    tropical_jungle:
+      name: "Tropischer Dschungel"
+    valley_clearing:
+      name: "Talräumung"
+    desert_spires:
+      name: "Wüstentürme"
+    mountain_steppe:
+      name: "Bergsteppe"
+    haze_mountain:
+      name: "Haze Mountain"
+    ice_marsh:
+      name: "Eissumpf"
+    lush_valley:
+      name: "Üppiges Tal"
+    cave/tuff_caves:
+      name: "Tuffsteinhöhlen"
+    lush_desert:
+      name: "Üppige Wüste"
+    cave/underground_jungle:
+      name: "Unterirdische Dschungelhöhle"

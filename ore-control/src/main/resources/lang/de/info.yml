@@ -1,0 +1,15 @@
+authors: [DerFrZocker]
+icon:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2865
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"text":"Deutsch"}'
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: be211c23-d8aa-4119-bd0d-7f50fd115d9f
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWU3ODk5YjQ4MDY4NTg2OTdlMjgzZjA4NGQ5MTczZmU0ODc4ODY0NTM3NzQ2MjZiMjRiZDhjZmVjYzc3YjNmIn19fQ==

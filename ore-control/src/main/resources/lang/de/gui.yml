@@ -1,0 +1,168 @@
+design:
+  next:
+    name: "Nächste Seite"
+    lore:
+      left-click: "Klicke, um zur nächsten Seite zu gelangen!"
+  previous:
+    name: "Vorherige Seite"
+    lore:
+      left-click: "Klicke, um zur vorherigen Seite zu gelangen!"
+  back:
+    name: "Zurück"
+    lore:
+      left-click: "Klicke, um einen Schritt zurück zu gehen!"
+config_info_screen:
+  name: "Wähle Einen Typ!"
+  whole-world:
+    name: "Ganze Welt"
+    lore:
+      left-click: "Klicke, um die ganze Welt zu bearbeiten!"
+  biome:
+    name: "Biome Spezifisch"
+    lore:
+      left-click: "Klicke, um ein bestimmtes Biom zu bearbeiten!"
+biome_screen:
+  name: "Wähle Ein Biome!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um dieses Biom auszuwählen!"
+config_infos_screen:
+  name: "Wähle Eine Konfig"
+  default-icons:
+    global:
+      name: "Globale Konfig"
+      lore:
+        left-click: "Klicke, um die globale Konfiguration auszuwählen!"
+    template:
+      lore:
+        left-click: "Klicke, um diese Vorlage auszuwählen!"
+    world:
+      lore:
+        left-click: "Klicke, um diese Welt auszuwählen!"
+feature_selection_screen:
+  name: "Wähle Ein Feature!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um dieses Feature auszuwählen!"
+feature_settings_screen:
+  name: "Wähle eine Einstellung!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um diese Einstellung zu bearbeiten!"
+above_bottom_offset_integer_screen:
+  name: "Oberhalb Des Unteren Offsets"
+  base:
+    name: "Basis"
+    lore:
+      left-click: "Klicke, um den Basiswert zu bearbeiten!"
+below_top_offset_integer_screen:
+  name: "Unterhalb Des Oberen Offsets"
+  base:
+    name: "Basis"
+    lore:
+      left-click: "Klicke, um den Basiswert zu bearbeiten!"
+biased_to_bottom_integer_screen:
+  name: "Verzerrt Nach Unten"
+  min-inclusive:
+    name: "Min Inklusive"
+    lore:
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
+  max-inclusive:
+    name: "Max Inklusive"
+    lore:
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
+boolean_screen:
+  name: "Setze Den Status!"
+  true:
+    name: "Wahr"
+    lore:
+      left-click: "Klicke, um den Status auf wahr zu setzen!"
+  false:
+    name: "Falsch"
+    lore:
+      left-click: "Klicke, um den Status auf falsch zu setzen!"
+clamped_integer_screen:
+  name: "Geklemmt"
+  source:
+    name: "Quelle"
+    lore:
+      left-click: "Klicke, um die Quelle zu bearbeiten!"
+  min-inclusive:
+    name: "Min Inklusive"
+    lore:
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
+  max-inclusive:
+    name: "Max Inklusive"
+    lore:
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
+clamped_normal_integer_screen:
+  name: "Normal Geklemmt"
+  mean:
+    name: "Durchschnitt"
+    lore:
+      left-click: "Klicke, um den durchschnitt zu bearbeiten!"
+  deviation:
+    name: "Abweichung"
+    lore:
+      left-click: "Klicke, um die Abweichung zu bearbeiten!"
+  min-inclusive:
+    name: "Min Inklusive"
+    lore:
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
+  max-inclusive:
+    name: "Max Inklusive"
+    lore:
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
+number_edit_screen:
+  name: "Setzen Einen Wert!"
+  default-icon:
+    lore:
+      current: "Aktuell: &d%current-value%"
+  add:
+    name: "Hinzufügen %value%"
+    lore:
+      left-click: "Klicke, um %value% hinzuzufügen!"
+  subtract:
+    name: "Entfernen %value%"
+    lore:
+      left-click: "Klicke, um %value% zuentfernen!"
+trapezoid_integer_screen:
+  name: "Trapezförmige Verteilung"
+  min-inclusive:
+    name: "Min Inklusive"
+    lore:
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
+  max-inclusive:
+    name: "Max Inklusive"
+    lore:
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
+  plateau:
+    name: "Plateau"
+    lore:
+      left-click: "Klicken, um das Plateau zu bearbeiten!"
+uniform_integer_screen:
+  name: "Gleichmäßige Verteilung"
+  min-inclusive:
+    name: "Min Inklusive"
+    lore:
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
+  max-inclusive:
+    name: "Max Inklusive"
+    lore:
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
+weighted_list_integer_screen:
+  name: "Gewichtete Liste"
+  default-icon:
+    name: "Gewicht Datenpaar"
+    lore:
+      left-click: "Klicken, um dieses Gewichtsdatenpaar zu bearbeiten!"
+weighted_list_sub_integer_screen:
+  name: "Gewicht Datenpaar"
+  data:
+    name: "Daten"
+    lore:
+      left-click: "Klicken, um die Daten zu bearbeiten!"
+  weight:
+    name: "Gewicht"
+    lore:
+      left-click: "Klicken, um das Gewicht zu bearbeiten!"
