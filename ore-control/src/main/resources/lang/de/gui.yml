@@ -50,119 +50,119 @@ feature_settings_screen:
     lore:
       left-click: "Klicke, um diese Einstellung zu bearbeiten!"
 above_bottom_offset_integer_screen:
-  name: "Below Top Offset"
+  name: "Oberhalb Des Unteren Offsets"
   base:
-    name: "Base"
+    name: "Basis"
     lore:
-      left-click: "Click to edit the base value!"
+      left-click: "Klicke, um den Basiswert zu bearbeiten!"
 below_top_offset_integer_screen:
-  name: "Below Top Offset"
+  name: "Unterhalb Des Oberen Offsets"
   base:
-    name: "Base"
+    name: "Basis"
     lore:
-      left-click: "Click to edit the base value!"
+      left-click: "Klicke, um den Basiswert zu bearbeiten!"
 biased_to_bottom_integer_screen:
-  name: "Biased To Bottom Distribution"
+  name: "Verzerrt Nach Unten"
   min-inclusive:
-    name: "Min Inclusive"
+    name: "Min Inklusive"
     lore:
-      left-click: "Click to edit min inclusive!"
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
   max-inclusive:
-    name: "Max Inclusive"
+    name: "Max Inklusive"
     lore:
-      left-click: "Click to edit max inclusive!"
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
 boolean_screen:
-  name: "Set The Status!"
+  name: "Setze Den Status!"
   true:
-    name: "True"
+    name: "Wahr"
     lore:
-      left-click: "Click to set the status to true"
+      left-click: "Klicke, um den Status auf wahr zu setzen!"
   false:
-    name: "False"
+    name: "Falsch"
     lore:
-      left-click: "Click to set the status to false"
+      left-click: "Klicke, um den Status auf falsch zu setzen!"
 clamped_integer_screen:
-  name: "Clamped"
+  name: "Geklemmt"
   source:
-    name: "Source"
+    name: "Quelle"
     lore:
-      left-click: "Click to edit source!"
+      left-click: "Klicke, um die Quelle zu bearbeiten!"
   min-inclusive:
-    name: "Min Inclusive"
+    name: "Min Inklusive"
     lore:
-      left-click: "Click to edit min inclusive!"
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
   max-inclusive:
-    name: "Max Inclusive"
+    name: "Max Inklusive"
     lore:
-      left-click: "Click to edit max inclusive!"
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
 clamped_normal_integer_screen:
-  name: "Clamped Normal"
+  name: "Normal Geklemmt"
   mean:
-    name: "Mean"
+    name: "Durchschnitt"
     lore:
-      left-click: "Click to edit mean!"
+      left-click: "Klicke, um den durchschnitt zu bearbeiten!"
   deviation:
-    name: "Deviation"
+    name: "Abweichung"
     lore:
-      left-click: "Click to edit deviation!"
+      left-click: "Klicke, um die Abweichung zu bearbeiten!"
   min-inclusive:
-    name: "Min Inclusive"
+    name: "Min Inklusive"
     lore:
-      left-click: "Click to edit min inclusive!"
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
   max-inclusive:
-    name: "Max Inclusive"
+    name: "Max Inklusive"
     lore:
-      left-click: "Click to edit max inclusive!"
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
 number_edit_screen:
-  name: "Set A Value!"
+  name: "Setzen Einen Wert!"
   default-icon:
     lore:
-      current: "Currently: &d%current-value%"
+      current: "Aktuell: &d%current-value%"
   add:
-    name: "Add %value%"
+    name: "Hinzufügen %value%"
     lore:
-      left-click: "Click to add %value%!"
+      left-click: "Klicke, um %value% hinzuzufügen!"
   subtract:
-    name: "Subtract %value%"
+    name: "Entfernen %value%"
     lore:
-      left-click: "Click to subtract %value%!"
+      left-click: "Klicke, um %value% zuentfernen!"
 trapezoid_integer_screen:
-  name: "Trapezoid Distribution"
+  name: "Trapezförmige Verteilung"
   min-inclusive:
-    name: "Min Inclusive"
+    name: "Min Inklusive"
     lore:
-      left-click: "Click to edit min inclusive!"
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
   max-inclusive:
-    name: "Max Inclusive"
+    name: "Max Inklusive"
     lore:
-      left-click: "Click to edit max inclusive!"
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
   plateau:
     name: "Plateau"
     lore:
-      left-click: "Click to edit plateau!"
+      left-click: "Klicken, um das Plateau zu bearbeiten!"
 uniform_integer_screen:
-  name: "Uniform Distribution"
+  name: "Gleichmäßige Verteilung"
   min-inclusive:
-    name: "Min Inclusive"
+    name: "Min Inklusive"
     lore:
-      left-click: "Click to edit min inclusive!"
+      left-click: "Klicke, um min inklusive zu bearbeiten!"
   max-inclusive:
-    name: "Max Inclusive"
+    name: "Max Inklusive"
     lore:
-      left-click: "Click to edit max inclusive!"
+      left-click: "Klicke, um max inklusive zu bearbeiten!"
 weighted_list_integer_screen:
-  name: "Weighted List"
+  name: "Gewichtete Liste"
   default-icon:
-    name: "Weight Data Pair"
+    name: "Gewicht Datenpaar"
     lore:
-      left-click: "Click to edit this weight data pair!"
+      left-click: "Klicken, um dieses Gewichtsdatenpaar zu bearbeiten!"
 weighted_list_sub_integer_screen:
-  name: "Weight Data Pair"
+  name: "Gewicht Datenpaar"
   data:
-    name: "Data"
+    name: "Daten"
     lore:
-      left-click: "Click to edit the data!"
+      left-click: "Klicken, um die Daten zu bearbeiten!"
   weight:
-    name: "Weight"
+    name: "Gewicht"
     lore:
-      left-click: "Click to edit the weight!"
+      left-click: "Klicken, um das Gewicht zu bearbeiten!"

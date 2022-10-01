@@ -1,13 +1,13 @@
 features:
   minecraft:
     glowstone_extra:
-      name: "Glowstone Extra"
+      name: "Leuchtstein Extra"
     glowstone:
-      name: "Glowstone"
+      name: "Leuchtstein"
     ore_magma:
       name: "Magma"
     ore_soul_sand:
-      name: "Soul Sand"
+      name: "Seelensand"
     ore_gold_deltas:
       name: "Gold Deltas"
     ore_quartz_deltas:
@@ -17,148 +17,148 @@ features:
     ore_quartz_nether:
       name: "Quartz Nether"
     ore_gravel_nether:
-      name: "Gravel Nether"
+      name: "Kies Nether"
     ore_blackstone:
-      name: "Blackstone"
+      name: "Blackstone" # TODO
     ore_dirt:
-      name: "Dirt"
+      name: "Erde"
     ore_gravel:
-      name: "Gravel"
+      name: "Kies"
     ore_granite_upper:
-      name: "Granite Upper"
+      name: "Granit Oben"
     ore_granite_lower:
-      name: "Granite Lower"
+      name: "Granit Unten"
     ore_diorite_upper:
-      name: "Diorite Upper"
+      name: "Diorit Oben"
     ore_diorite_lower:
-      name: "Diorite Lower"
+      name: "Diorit Unten"
     ore_andesite_upper:
-      name: "Andesite Upper"
+      name: "Andesit Oben"
     ore_andesite_lower:
-      name: "Andesite Lower"
+      name: "Andesit Unten"
     ore_tuff:
       name: "Tuff"
     ore_coal_upper:
-      name: "Coal Upper"
+      name: "Kohle Oben"
     ore_coal_lower:
-      name: "Coal Lower"
+      name: "Kohle Unten"
     ore_iron_upper:
-      name: "Iron Upper"
+      name: "Eisen Oben"
     ore_iron_middle:
-      name: "Iron Middle"
+      name: "Eisen Mitte"
     ore_iron_small:
-      name: "Iron Small"
+      name: "Eisen Klein"
     ore_gold_extra:
       name: "Gold Extra"
     ore_gold:
       name: "Gold"
     ore_gold_lower:
-      name: "Gold Lower"
+      name: "Gold Unten"
     ore_redstone:
       name: "Redstone"
     ore_redstone_lower:
-      name: "Redstone Lower"
+      name: "Redstone Unten"
     ore_diamond:
-      name: "Diamond"
+      name: "Diamant"
     ore_diamond_large:
-      name: "Diamon Large"
+      name: "Diamant Groß"
     ore_diamond_buried:
-      name: "Diamond Buried"
+      name: "Diamant Vergraben"
     ore_lapis:
       name: "Lapis"
     ore_lapis_buried:
-      name: "Lapis Buried"
+      name: "Lapis Vergraben"
     ore_infested:
-      name: "Infested"
+      name: "Befallen"
     ore_emerald:
-      name: "Emerald"
+      name: "Smaragd"
     ore_ancient_debris_large:
-      name: "Ancient Debris Large"
+      name: "Antiker Schrott Groß"
     ore_debris_small:
-      name: "Ancient Debris Small"
+      name: "Antiker Schrott Klein"
     ore_copper:
-      name: "Copper"
+      name: "Kupfer"
     ore_copper_large:
-      name: "Copper Large"
+      name: "Kupfer Groß"
     ore_clay:
-      name: "Clay"
+      name: "Ton"
   # from terralith
   terralith:
     desert/sandstone:
-      name: "Desert Sandstone"
+      name: "Wüsten Sandstein"
     cave/generic/noise_reducer:
-      name: "Cave Noise Reducer"
+      name: "Höhle Noise Reduzierer"
     cave/generic/noise_reducer_small:
-      name: "Cave Noise Reducer Small"
+      name: "Höhle Noise Reduzierer Klein"
     cave/desert/noise_reducer:
-      name: "Desert Cave Noise Reducer"
+      name: "Wüsten Höhle Noise Reduzierer"
     cave/desert/noise_reducer_small:
-      name: "Desert Cave Noise Reducer Small"
+      name: "Wüsten Höhle Noise Reduzierer Klein"
     cave/mantle/replacer:
-      name: "Mantle Cave Replacer"
+      name: "Mantel Höhle Ersetzer"
     canyon/sandstone/sandstone:
-      name: "Sandstone Canyon"
+      name: "Sandstein Schlucht"
     cliffs/granite/granitifier:
-      name: "Granite Cliffs"
+      name: "Granit Klippen"
     cliffs/white/calcitifier:
-      name: "Cliffs Calcitifier"
+      name: "Klippen Kalzit"
     cliffs/white/diorite_crack:
-      name: "Cliffs Diorite Crack"
+      name: "Klippen Diorit Riss"
     cliffs/white/andesite_crack:
-      name: "Cliffs Andesite Crack"
+      name: "Klippen Andesit Riss"
     yosemite/calcite:
-      name: "Yosemite Calcite"
+      name: "Yosemite Kalzit"
     yosemite/diorite:
-      name: "Yosemite Diorite"
+      name: "Yosemite Diorit"
     alpha/clay_patch:
-      name: "Alpha Clay Patch"
+      name: "Alpha Ton Patch"
     alpha/sand_beaches:
-      name: "Alpha Sand Beaches"
+      name: "Alpha Sand Strände"
     cliffs/frozen/blue_ice:
-      name: "Frozen Cliffs Blue Ice"
+      name: "Gefrorenes Klippen Blaues Eis"
     mountains/misty/tuff:
-      name: "Mountains Tuff"
+      name: "Berge Tuff"
     cliffs/basalt/basaltifier:
-      name: "Cliffs Basaltifier"
+      name: "Klippen Basalt"
     cliffs/basalt/crack:
-      name: "Cliffs Basalt Crack"
+      name: "Klippen Basalt Riss"
     cliffs/basalt/crack_deepslate:
-      name: "Cliffs Crack Deepslate"
+      name: "Klippen Riss Deepslate" # TODO
     cave/infested/cobble_vein:
-      name: "Infested Cave Cobble Vein"
+      name: "Befallener Höhlen Pflasterstein Ader"
     caldera/crater_fixer:
-      name: "Caldera Crater Fixer"
+      name: "Caldera Krater Fixer"
     cave/generic/ds_reducer:
-      name: "Cave Ds Reducer"
+      name: "Höhle Ds Reduzierer"
     cave/generic/ds_reducer_small:
-      name: "Cave Ds Reducer Small"
+      name: "Höhle Ds Reduzierer Klein"
     shrubland/patch_granite:
-      name: "Shrubland Granite Patch"
+      name: "Strauchland Granit Patch"
     cliffs/white/diorite_crack3:
-      name: "Cliffs Diorite Crack 3"
+      name: "Klippen Diorit Riss 3"
     shrubland/hot/patch_terracotta:
-      name: "Shrubland Terracotta Patch"
+      name: "Strauchland Keramik Patch"
     mountains/scarlet2/snow_spread:
-      name: "Mountains Scarlet 2 Snow Spread"
+      name: "Berge Scharlachrot 2 Schnee Verbreitet"
     canyon/red_sandstone/red_sandstone:
-      name: "Canyon Red Sandstone"
+      name: "Schlucht Roter Sandstein"
     cave/mantle/blackstone:
-      name: "Cave Mantle Blackstone"
+      name: "Höhle Mantel Blackstone" # TODO
     canyon/glacial/special_ice:
-      name: "Canyon Special Ice"
+      name: "Schlucht Spezial Eis"
     alpha/clay_patch_beach:
-      name: "Alpha Beach Clay Patch"
+      name: "Alpha Strand Ton Patch"
     cliffs/white/diorite_crack2:
-      name: "Cliffs Diorite Crack 2"
+      name: "Klippen Diorit Riss 2"
     canyon/glacial/special_ice_upper:
-      name: "Canyon Special Ice Upper"
+      name: "Schlucht Spezial Eis Oben"
     mountains/emerald/emeralds:
-      name: "Mountains Emeralds"
+      name: "Berge Smaragde"
     cliffs/white/diorite_crack4:
-      name: "Cliffs Diorite Crack 4"
+      name: "Klippen Diorit Riss 4"
     mountains/scarlet/snow_spread:
-      name: "Mountains Scarlet Snow Spread"
+      name: "Berge Scharlachrot Schnee Verbreitet"
     flower/blue/nylium:
-      name: "Nylium Flower"
+      name: "Nylium blume"
     shrubland/hot/patch_granite:
-      name: "Shrubland Granite Patch"
+      name: "Strauchland Granit Patch"

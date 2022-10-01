@@ -1,8 +1,8 @@
 feature-generators:
   minecraft:
     ore:
-      name: "Ore"
+      name: "Erz"
     scattered_ore:
-      name: "Scattered Ore"
+      name: "Verstreut Erz"
     glowstone_blob:
-      name: "Glowstone Blob"
+      name: "Leuchtstein Klecks"
