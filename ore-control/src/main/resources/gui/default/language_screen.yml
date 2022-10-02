@@ -1,0 +1,14 @@
+name: "%%translation:[language_screen.name]%"
+finished:
+  slot: 4
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: WARPED_SIGN
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[language_screen.finished.name]%"
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[language_screen.finished.lore.left-click]% &7<<"

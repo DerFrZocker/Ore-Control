@@ -26,6 +26,12 @@ biome_screen:
   default-icon:
     lore:
       left-click: "Klicke, um dieses Biom auszuwählen!"
+language_screen:
+  name: "Wähle Eine Sprache!"
+  finished:
+    name: "Weiter"
+    lore:
+      left-click: "Klicke, um weiter zu machen!"
 config_infos_screen:
   name: "Wähle Eine Konfig"
   default-icons:

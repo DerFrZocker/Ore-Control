@@ -44,6 +44,7 @@ import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
+import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
@@ -79,7 +80,9 @@ public class OreControlGuiManager implements Listener {
     private final Map<ValueType<?, ?, ?>, InventoryGui> valueTypeInventoryGuis = new ConcurrentHashMap<>();
 
     private final Plugin plugin;
+    private final LanguageManager languageManager;
     private final OreControlManager oreControlManager;
+    private final InventoryGui languageScreen;
     private final InventoryGui configInfosScreen;
     private final InventoryGui configInfoScreen;
     private final InventoryGui featureSelectionScreen;
@@ -90,7 +93,9 @@ public class OreControlGuiManager implements Listener {
     public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
+        this.languageManager = languageManager;
         GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser());
+        this.languageScreen = LanguageScreen.getGui(guiValuesHolder);
         this.configInfosScreen = ConfigInfosScreen.getGui(guiValuesHolder);
         this.configInfoScreen = ConfigInfoScreen.getGui(guiValuesHolder);
         this.featureSelectionScreen = FeatureSelectionScreen.getGui(guiValuesHolder);
@@ -118,7 +123,11 @@ public class OreControlGuiManager implements Listener {
 
     public void openGui(Player player) {
         playerGuiData.remove(player);
-        openGui(configInfosScreen, player);
+        if (!languageManager.hasLanguageSet(player)) {
+            openGui(languageScreen, player);
+        } else {
+            openGui(configInfosScreen, player);
+        }
     }
 
     public void openConfigInfoScreen(Player player) {
