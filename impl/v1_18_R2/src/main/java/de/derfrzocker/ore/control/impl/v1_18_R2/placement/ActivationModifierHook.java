@@ -99,7 +99,7 @@ public class ActivationModifierHook extends PlacementModifier implements Placeme
     }
 
     private PlacementModifierConfiguration loadConfig(String name) {
-        Config config = configManager.getGenerationConfig(name, biome, namespacedKey).orElse(null);
+        Config config = configManager.getGenerationConfig(configManager.getOrCreateConfigInfo(name), biome, namespacedKey).orElse(null);
 
         if (config == null) {
             return null;

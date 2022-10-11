@@ -6,8 +6,6 @@ import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.language.Language;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-
 public class LanguageScreen {
 
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {

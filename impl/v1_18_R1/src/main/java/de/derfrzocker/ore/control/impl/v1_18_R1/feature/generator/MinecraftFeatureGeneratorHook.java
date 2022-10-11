@@ -108,7 +108,7 @@ public abstract class MinecraftFeatureGeneratorHook<M extends FeatureConfigurati
     }
 
     private FeatureGeneratorConfiguration loadConfig(String name) {
-        Config config = configManager.getGenerationConfig(name, biome, namespacedKey).orElse(null);
+        Config config = configManager.getGenerationConfig(configManager.getOrCreateConfigInfo(name), biome, namespacedKey).orElse(null);
 
         if (config == null) {
             return null;

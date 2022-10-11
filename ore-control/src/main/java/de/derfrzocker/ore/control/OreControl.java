@@ -26,6 +26,7 @@
 package de.derfrzocker.ore.control;
 
 import com.google.common.base.Charsets;
+import com.mojang.serialization.Codec;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.value.bool.BooleanType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
@@ -43,13 +44,18 @@ import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListI
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
+import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
 import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.ore.control.api.config.dao.ConfigDao;
 import de.derfrzocker.ore.control.api.config.dao.ConfigInfoDao;
 import de.derfrzocker.ore.control.api.config.dao.ExtraValueDao;
+import de.derfrzocker.ore.control.cache.config.ConfigCache;
+import de.derfrzocker.ore.control.cache.extra.ExtraValueCache;
+import de.derfrzocker.ore.control.cache.info.ConfigInfoCache;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
+import de.derfrzocker.ore.control.impl.BasicConfigManager;
 import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
 import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
 import de.derfrzocker.ore.control.impl.v1_19_R1.NMSReplacer_v1_19_R1;
@@ -66,6 +72,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -85,6 +92,8 @@ public class OreControl extends JavaPlugin implements Listener {
     private OreControlGuiManager guiManager;
     private List<ConfigSetting> guiSettings = new ArrayList<>();
     private NMSReplacer nmsReplacer;
+    @Deprecated
+    private Codec<Config> configCodec;
 
     @Override
     public void onLoad() {
@@ -106,10 +115,12 @@ public class OreControl extends JavaPlugin implements Listener {
         OreControlRegistries registries = new OreControlRegistries();
         ConfigDao configDao = new ConfigDao(registries);
         ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
-        ConfigManager configManager = new ConfigManager(configDao, configInfoDao, new ExtraValueDao());
+        ConfigInfoCache configInfoCache = new ConfigInfoCache(configInfoDao);
+        ConfigManager configManager = new BasicConfigManager(configInfoCache, new ExtraValueCache(new ExtraValueDao(), configInfoCache::getGlobalConfigInfo), new ConfigCache(configDao, configInfoCache::getGlobalConfigInfo));
         configManager.reload();
         oreControlManager = new OreControlManager(registries, configManager, world -> nmsReplacer.getBiomes(world));
 
+        configCodec = configDao.getConfigCodec();
         nmsReplacer = getNmsReplacer();
 
         register(registries);
@@ -139,11 +150,11 @@ public class OreControl extends JavaPlugin implements Listener {
 
     private NMSReplacer getNmsReplacer() {
         if (version == Version.v1_18_R1) {
-            return new NMSReplacer_v1_18_R1(oreControlManager);
+            return new NMSReplacer_v1_18_R1(oreControlManager, configCodec);
         } else if (version == Version.v1_18_R2) {
-            return new NMSReplacer_v1_18_R2(oreControlManager);
+            return new NMSReplacer_v1_18_R2(oreControlManager, configCodec);
         } else if (version == Version.v1_19_R1) {
-            return new NMSReplacer_v1_19_R1(this, oreControlManager);
+            return new NMSReplacer_v1_19_R1(this, oreControlManager, configCodec);
         } else {
             throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
         }

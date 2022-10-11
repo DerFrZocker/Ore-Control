@@ -126,11 +126,11 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
     private final OreControlRegistries registries;
     private final ConfigManager configManager;
 
-    public NMSReplacer_v1_18_R1(@NotNull OreControlManager oreControlManager) {
+    public NMSReplacer_v1_18_R1(@NotNull OreControlManager oreControlManager, Codec<Config> configCodec) {
         this.oreControlManager = oreControlManager;
         this.registries = oreControlManager.getRegistries();
         this.configManager = oreControlManager.getConfigManager();
-        this.configCodec = configManager.getConfigCodec();
+        this.configCodec = configCodec;
     }
 
     @Override
