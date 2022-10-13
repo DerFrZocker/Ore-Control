@@ -47,7 +47,11 @@ public interface ConfigManager extends Reloadable {
     // Extra Values
     Optional<ExtraValues> getExtraValues(ConfigInfo configInfo);
 
+    ExtraValues getOrCreateExtraValues(ConfigInfo configInfo);
+
     Optional<ExtraValues> getGuiExtraValues(ConfigInfo configInfo);
+
+    void clearGuiExtraValueCache(ConfigInfo configInfo);
 
     Optional<ExtraValues> getGenerationExtraValues(ConfigInfo configInfo);
 
@@ -56,7 +60,7 @@ public interface ConfigManager extends Reloadable {
 
     Optional<Config> getConfig(ConfigInfo configInfo, Biome biome, NamespacedKey featureKey);
 
-    public Config getOrCreateConfig(ConfigInfo configInfo, NamespacedKey featureKey);
+    Config getOrCreateConfig(ConfigInfo configInfo, NamespacedKey featureKey);
 
     Config getOrCreateConfig(ConfigInfo configInfo, Biome biome, NamespacedKey featureKey);
 

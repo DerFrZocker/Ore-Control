@@ -27,11 +27,21 @@ config_info_screen:
     name: "Biome Specific"
     lore:
       left-click: "Click to edit a specific biome!"
+  extra-values:
+    name: "Extra Values"
+    lore:
+      left-click: "Click to edit extra values!"
 biome_screen:
   name: "Choose A Biome!"
   default-icon:
     lore:
       left-click: "Click to select this biome!"
+extra_values_screen:
+  name: "Choose An Extra Value!"
+  big_ore_veins:
+    name: "Big Ore Veins"
+    lore:
+      left-click: "Click to edit big ore veins!"
 config_infos_screen:
   name: "Choose A Config"
   default-icons:
@@ -172,3 +182,17 @@ weighted_list_sub_integer_screen:
     name: "Weight"
     lore:
       left-click: "Click to edit the weight!"
+big_ore_vein_screen:
+  name: "Set The Value!"
+  true:
+    name: "Activate"
+    lore:
+      left-click: "Click to generated big ore veins!"
+  false:
+    name: "Deactivate"
+    lore:
+      left-click: "Click to stop the generation of big ore veins!"
+  reset:
+    name: "Reset"
+    lore:
+      left-click: "Click to reset the value!"

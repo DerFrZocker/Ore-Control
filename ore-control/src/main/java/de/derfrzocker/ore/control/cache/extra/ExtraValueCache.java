@@ -20,12 +20,39 @@ public class ExtraValueCache {
         this.global = global;
     }
 
+    public void save() {
+        configCache.forEach((configInfo, extraValues) -> {
+            if (extraValues.isEmpty()) {
+                return;
+            }
+
+            if (extraValues.get().isDirty()) {
+                extraValueDao.save(configInfo, extraValues.get());
+                extraValues.get().saved();
+            }
+        });
+    }
+
+    public void clear() {
+        configCache.clear();
+        guiConfigCache.clear();
+        generationConfigCache.clear();
+    }
+
     public Optional<ExtraValues> getExtraValues(ConfigInfo configInfo) {
         return configCache.getOrCompute(configInfo, () -> extraValueDao.getExtraValues(configInfo));
     }
 
+    public ExtraValues getOrCreateExtraValues(ConfigInfo configInfo) {
+        return configCache.getOrCreate(configInfo);
+    }
+
     public Optional<ExtraValues> getGuiExtraValues(ConfigInfo configInfo) {
         return guiConfigCache.getOrCompute(configInfo, () -> loadConfig(configInfo));
+    }
+
+    public void clearGuiExtraValueCache(ConfigInfo configInfo) {
+        guiConfigCache.clear(configInfo);
     }
 
     public Optional<ExtraValues> getGenerationExtraValues(ConfigInfo configInfo) {

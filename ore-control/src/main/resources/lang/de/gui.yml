@@ -21,11 +21,21 @@ config_info_screen:
     name: "Biome Spezifisch"
     lore:
       left-click: "Klicke, um ein bestimmtes Biom zu bearbeiten!"
+  extra-values:
+    name: "Extra Einstellungen"
+    lore:
+      left-click: "Klicke, um ein extra Einstellungen zu bearbeiten!"
 biome_screen:
   name: "Wähle Ein Biome!"
   default-icon:
     lore:
       left-click: "Klicke, um dieses Biom auszuwählen!"
+extra_values_screen:
+  name: "Wähle Eine Extra Einstellung!"
+  big_ore_veins:
+    name: "Große Erzadern"
+    lore:
+      left-click: "Klicke, um große Erzadern zu bearbeiten!"
 language_screen:
   name: "Wähle Eine Sprache!"
   finished:
@@ -172,3 +182,17 @@ weighted_list_sub_integer_screen:
     name: "Gewicht"
     lore:
       left-click: "Klicken, um das Gewicht zu bearbeiten!"
+big_ore_vein_screen:
+  name: "Setze Den Status!"
+  true:
+    name: "Aktivieren"
+    lore:
+      left-click: "Klicke, um große Erzadern zu generieren!"
+  false:
+    name: "Deaktivieren"
+    lore:
+      left-click: "Klicke, um keine große Erzadern zu generieren!"
+  reset:
+    name: "Resetten"
+    lore:
+      left-click: "Klicke, um den Wert zu Resetten!"

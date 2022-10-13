@@ -25,3 +25,16 @@ biome:
       lore:
         - "   "
         - "&7>> &b%%translation:[config_info_screen.biome.lore.left-click]% &7<<"
+extra-values:
+  slot: 4
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: COMPARATOR
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[config_info_screen.extra-values.name]%"
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[config_info_screen.extra-values.lore.left-click]% &7<<"

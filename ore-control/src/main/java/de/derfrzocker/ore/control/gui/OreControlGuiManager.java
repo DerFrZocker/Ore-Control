@@ -42,9 +42,11 @@ import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.BiomeScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
+import de.derfrzocker.ore.control.gui.screen.ExtraValuesScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
+import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
@@ -88,6 +90,8 @@ public class OreControlGuiManager implements Listener {
     private final InventoryGui featureSelectionScreen;
     private final InventoryGui featureSettingsScreen;
     private final InventoryGui biomeScreen;
+    private final InventoryGui extraValuesScreen;
+    private final InventoryGui bigOreVeinsExtraValueScreen;
     private boolean openOther = false;
 
     public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
@@ -101,6 +105,8 @@ public class OreControlGuiManager implements Listener {
         this.featureSelectionScreen = FeatureSelectionScreen.getGui(guiValuesHolder);
         this.featureSettingsScreen = FeatureSettingsScreen.getGui(guiValuesHolder);
         this.biomeScreen = BiomeScreen.getGui(guiValuesHolder);
+        this.extraValuesScreen = ExtraValuesScreen.getGui(guiValuesHolder);
+        this.bigOreVeinsExtraValueScreen = BigOreVeinScreen.getGui(guiValuesHolder);
 
         this.valueTypeInventoryGuis.put(FixedDoubleToIntegerType.INSTANCE, NumberEditScreen.getFixedDoubleToIntegerGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(FixedFloatType.INSTANCE, NumberEditScreen.getFixedFloatGui(guiValuesHolder));
@@ -144,6 +150,14 @@ public class OreControlGuiManager implements Listener {
 
     public void openBiomeScreen(Player player) {
         openGui(biomeScreen, player);
+    }
+
+    public void openExtraValuesScreen(Player player) {
+        openGui(extraValuesScreen, player);
+    }
+
+    public void openBigOreVeinsExtraValueScreen(Player player) {
+        openGui(bigOreVeinsExtraValueScreen, player);
     }
 
     public void openValueScreen(Player player, Value<?, ?, ?> value) {

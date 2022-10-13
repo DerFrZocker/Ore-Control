@@ -20,6 +20,19 @@ public class FeatureConfigCachePart {
         return cache.computeIfAbsent(featureKey, ignore -> supplier.get());
     }
 
+    public Config getOrCreate(NamespacedKey featureKey) {
+        Optional<Config> optional = cache.getOrDefault(featureKey, Optional.empty());
+
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+
+        Config config = new Config();
+        cache.put(featureKey, Optional.of(config));
+
+        return config;
+    }
+
     public void set(NamespacedKey featureKey, Optional<Config> config) {
         cache.put(featureKey, config);
     }

@@ -68,10 +68,10 @@ public class StandardConfigCache {
     }
 
     public Config getOrCreate(ConfigInfo configInfo, NamespacedKey featureKey) {
-        return cache.getOrCreate(configInfo).getOrCompute(featureKey, () -> Optional.of(configDao.getConfig(configInfo, featureKey).orElseGet(Config::new))).get();
+        return cache.getOrCreate(configInfo).getOrCreate(featureKey);
     }
 
     public Config getOrCreate(ConfigInfo configInfo, Biome biome, NamespacedKey featureKey) {
-        return biomeCache.getOrCreate(configInfo).getOrCreate(biome).getOrCompute(featureKey, () -> Optional.of(configDao.getConfig(configInfo, featureKey).orElseGet(Config::new))).get();
+        return biomeCache.getOrCreate(configInfo).getOrCreate(biome).getOrCreate(featureKey);
     }
 }

@@ -29,12 +29,14 @@ public class BasicConfigManager implements ConfigManager {
     @Override
     public void save() {
         configInfoCache.save();
+        extraValueCache.save();
         configCache.save();
     }
 
     @Override
     public void reload() {
         configInfoCache.reload();
+        extraValueCache.clear();
         configCache.clear();
     }
 
@@ -60,8 +62,18 @@ public class BasicConfigManager implements ConfigManager {
     }
 
     @Override
+    public ExtraValues getOrCreateExtraValues(ConfigInfo configInfo) {
+        return extraValueCache.getOrCreateExtraValues(configInfo);
+    }
+
+    @Override
     public Optional<ExtraValues> getGuiExtraValues(ConfigInfo configInfo) {
         return extraValueCache.getGuiExtraValues(configInfo);
+    }
+
+    @Override
+    public void clearGuiExtraValueCache(ConfigInfo configInfo) {
+        extraValueCache.clearGuiExtraValueCache(configInfo);
     }
 
     @Override

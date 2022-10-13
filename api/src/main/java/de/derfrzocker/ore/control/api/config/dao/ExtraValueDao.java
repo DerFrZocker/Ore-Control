@@ -39,7 +39,6 @@ public class ExtraValueDao {
 
     private static final String EXTRA_VALUES_FILE = "extra_values/extra_values.yml";
 
-
     public Optional<ExtraValues> getExtraValues(ConfigInfo configInfo) {
         File extraValuesFile = new File(configInfo.getDataDirectory(), EXTRA_VALUES_FILE);
 
@@ -62,5 +61,33 @@ public class ExtraValueDao {
         }
 
         return Optional.of(new ExtraValues(generatedBigOreVeins));
+    }
+
+    public void save(ConfigInfo configInfo, ExtraValues extraValues) {
+        File extraValuesFile = new File(configInfo.getDataDirectory(), EXTRA_VALUES_FILE);
+
+        if (!extraValuesFile.exists()) {
+            extraValuesFile.getParentFile().mkdirs();
+            try {
+                extraValuesFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        FileConfiguration config = new YamlConfiguration();
+        try {
+            config.load(extraValuesFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        config.set("generated-big-ore-veins", extraValues.shouldGeneratedBigOreVeins().orElse(null));
+
+        try {
+            config.save(extraValuesFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

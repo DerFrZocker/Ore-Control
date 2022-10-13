@@ -64,6 +64,16 @@ public class ConfigInfoScreen {
                                 .withAction(clickAction -> guiValuesHolder.guiManager().openBiomeScreen(clickAction.getPlayer()))
                         )
                 )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier("extra-values")
+                        .button(Builders
+                                .button()
+                                .identifier("extra-values")
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openExtraValuesScreen(clickAction.getPlayer()))
+                        )
+                )
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }

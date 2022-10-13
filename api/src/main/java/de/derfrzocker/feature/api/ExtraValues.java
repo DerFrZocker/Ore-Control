@@ -33,6 +33,9 @@ public class ExtraValues {
 
     private boolean dirty;
 
+    public ExtraValues() {
+    }
+
     public ExtraValues(Optional<Boolean> generateBigOreVeins) {
         this.generateBigOreVeins = generateBigOreVeins;
     }
@@ -43,6 +46,7 @@ public class ExtraValues {
 
     public void setGenerateBigOreVeins(Optional<Boolean> generateBigOreVeins) {
         this.generateBigOreVeins = generateBigOreVeins;
+        dirty = true;
     }
 
     public boolean isDirty() {
