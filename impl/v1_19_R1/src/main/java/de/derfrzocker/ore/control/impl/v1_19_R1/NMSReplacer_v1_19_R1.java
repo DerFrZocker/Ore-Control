@@ -228,7 +228,7 @@ public class NMSReplacer_v1_19_R1 implements NMSReplacer {
     }
 
     private void registerExtraValues() {
-        plugin.getServer().getPluginManager().registerEvents(new OreVeinHandler(configManager), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new OreVeinHandler(oreControlManager), plugin);
     }
 
     @Override

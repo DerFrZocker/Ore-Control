@@ -43,6 +43,7 @@ public final class NMSReflectionNames {
     public static final String CLAMPED_NORMAL_INT_MEAN = "b";
     public static final String CLAMPED_NORMAL_INT_DEVIATION = "f";
     public static final String CHUNK_MAP_GENERATOR = "u";
+    public static final String NOISE_GENERATOR_SETTINGS = "g";
 
     private NMSReflectionNames() {
     }
