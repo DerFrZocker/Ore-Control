@@ -72,7 +72,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -134,11 +133,9 @@ public class OreControl extends JavaPlugin implements Listener {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
             return guiSetting;
-        });
+        }, new Stats(this, registries));
 
         getServer().getPluginManager().registerEvents(this, this);
-
-        new Stats(this, registries);
     }
 
     @Override

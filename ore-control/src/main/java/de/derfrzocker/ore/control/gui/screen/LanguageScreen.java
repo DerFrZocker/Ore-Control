@@ -34,6 +34,7 @@ public class LanguageScreen {
                                 .identifier("finished")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> guiValuesHolder.guiManager().openGui(clickAction.getPlayer()))
+                                .withAction(clickAction -> guiValuesHolder.stats().addLanguage(guiValuesHolder.languageManager().getLanguage(clickAction.getPlayer())))
                         )
                 )
                 .build();

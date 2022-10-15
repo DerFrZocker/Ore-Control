@@ -38,6 +38,7 @@ import de.derfrzocker.feature.common.value.number.integer.uniform.UniformInteger
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
+import de.derfrzocker.ore.control.Stats;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.BiomeScreen;
 import de.derfrzocker.ore.control.gui.screen.ConfigInfoScreen;
@@ -94,11 +95,11 @@ public class OreControlGuiManager implements Listener {
     private final InventoryGui bigOreVeinsExtraValueScreen;
     private boolean openOther = false;
 
-    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction) {
+    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction, Stats stats) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
         this.languageManager = languageManager;
-        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser());
+        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser(), stats);
         this.languageScreen = LanguageScreen.getGui(guiValuesHolder);
         this.configInfosScreen = ConfigInfosScreen.getGui(guiValuesHolder);
         this.configInfoScreen = ConfigInfoScreen.getGui(guiValuesHolder);
