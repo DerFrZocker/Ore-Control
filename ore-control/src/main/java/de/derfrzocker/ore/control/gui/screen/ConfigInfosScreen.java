@@ -58,6 +58,16 @@ public class ConfigInfosScreen {
                         .withAction((clickAction, configInfo) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setConfigInfo(configInfo))
                         .withAction((clickAction, configInfo) -> guiValuesHolder.guiManager().openConfigInfoScreen(clickAction.getPlayer()))
                 )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier("language")
+                        .button(Builders
+                                .button()
+                                .identifier("language")
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openLanguageScreen(clickAction.getPlayer()))
+                        )
+                )
                 .build();
     }
 }

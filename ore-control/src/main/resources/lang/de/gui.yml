@@ -55,6 +55,10 @@ config_infos_screen:
     world:
       lore:
         left-click: "Klicke, um diese Welt auszuwählen!"
+  language:
+    name: "Sprache"
+    lore:
+      left-click: "Klicke, um eine Sprache auszuwählen!"
 feature_selection_screen:
   name: "Wähle Ein Feature!"
   default-icon:

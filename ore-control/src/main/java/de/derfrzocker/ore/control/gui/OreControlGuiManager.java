@@ -137,6 +137,10 @@ public class OreControlGuiManager implements Listener {
         }
     }
 
+    public void openLanguageScreen(Player player) {
+        openGui(languageScreen, player);
+    }
+
     public void openConfigInfoScreen(Player player) {
         openGui(configInfoScreen, player);
     }
