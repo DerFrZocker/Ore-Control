@@ -25,9 +25,11 @@
 
 package de.derfrzocker.ore.control.api.config;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
-public class ConfigInfo {
+public class ConfigInfo implements Comparable<ConfigInfo> {
 
     private final String worldName;
     private final File dataDirectory;
@@ -67,5 +69,18 @@ public class ConfigInfo {
 
     public void saved() {
         dirty = false;
+    }
+
+    @Override
+    public int compareTo(@NotNull ConfigInfo configInfo) {
+        if (this == configInfo) {
+            return 0;
+        }
+
+        if (getConfigType() != configInfo.getConfigType()) {
+            return getConfigType().compareTo(configInfo.getConfigType());
+        }
+
+        return getWorldName().compareTo(configInfo.getWorldName());
     }
 }

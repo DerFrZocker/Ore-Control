@@ -34,7 +34,8 @@ import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigInfosScreen {
 
@@ -51,7 +52,11 @@ public class ConfigInfosScreen {
                 .addDefaultPreviousButton()
                 .pageContent(Builders
                         .pageContent(ConfigInfo.class)
-                        .data((setting, guiInfo) -> new LinkedList<>(guiValuesHolder.configManager().getConfigInfos()))
+                        .data((setting, guiInfo) -> {
+                            List<ConfigInfo> data = new ArrayList<>(guiValuesHolder.configManager().getConfigInfos());
+                            data.sort(null);
+                            return data;
+                        })
                         .withMessageValue((setting, guiInfo, configInfo) -> new MessageValue("world-name", configInfo.getWorldName()))
                         .itemStack((setting, guiInfo, configInfo) -> setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, configInfo) -> clickAction.getClickEvent().setCancelled(true))
