@@ -61,6 +61,8 @@ import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
 import de.derfrzocker.ore.control.impl.v1_19_R1.NMSReplacer_v1_19_R1;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
+import de.derfrzocker.spigot.utils.language.loader.FileLanguageLoader;
+import de.derfrzocker.spigot.utils.language.loader.MergeLanguageLoader;
 import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
 import de.derfrzocker.spigot.utils.language.manager.DirectLanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
@@ -78,6 +80,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
 
 // TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
@@ -128,7 +131,9 @@ public class OreControl extends JavaPlugin implements Listener {
 
         nmsReplacer.hookIntoBiomes();
 
-        languageManager = new DirectLanguageManager(this, new PluginLanguageLoader(this), "en");
+        File languageDirectory = new File(getDataFolder(), "lang");
+        languageManager = new DirectLanguageManager(this, new MergeLanguageLoader(this, new PluginLanguageLoader(this, languageDirectory, true), new FileLanguageLoader(this, languageDirectory)), "en");
+        saveResource("lang/README.txt", true);
         guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
