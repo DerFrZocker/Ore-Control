@@ -33,6 +33,7 @@ import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -46,12 +47,10 @@ import java.util.List;
 
 public class BiomeScreen {
 
-    private final static String IDENTIFIER = "biome_screen";
-
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .paged()
-                .identifier(IDENTIFIER)
+                .identifier(Screens.BIOME_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("biome_icons.yml"))
@@ -63,10 +62,10 @@ public class BiomeScreen {
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
                         .withMessageValue((setting, guiInfo, biome) -> new MessageValue("biome-key", biome.getKey().getKey()))
                         .withMessageValue((setting, guiInfo, biome) -> new MessageValue("biome-namespace", biome.getKey().getNamespace()))
-                        .itemStack((setting, guiInfo, biome) -> ScreenUtil.getIcon(guiValuesHolder, setting, IDENTIFIER, biome))
+                        .itemStack((setting, guiInfo, biome) -> ScreenUtil.getIcon(guiValuesHolder, setting, Screens.BIOME_SCREEN, biome))
                         .withAction((clickAction, biome) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, biome) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setBiome(biome))
-                        .withAction((clickAction, biome) -> guiValuesHolder.guiManager().openFeatureSelectionScreen(clickAction.getPlayer()))
+                        .withAction((clickAction, biome) -> guiValuesHolder.guiManager().openScreen(Screens.FEATURE_SELECTION_SCREEN, clickAction.getPlayer()))
                 )
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();

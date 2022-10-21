@@ -39,6 +39,7 @@ import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -56,12 +57,10 @@ import java.util.Set;
 
 public class FeatureSelectionScreen {
 
-    private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SELECTION_SCREEN;
-
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .paged()
-                .identifier(IDENTIFIER)
+                .identifier(Screens.FEATURE_SELECTION_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("feature_icons.yml"))
@@ -75,10 +74,10 @@ public class FeatureSelectionScreen {
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("feature-namespace", feature.getKey().getNamespace()))
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("generator-settings", getGeneratorSetting(guiValuesHolder, guiInfo, feature)))
                         .withMessageValue((setting, guiInfo, feature) -> new MessageValue("placement-modifier-settings", getPlacementModifierSetting(guiValuesHolder, guiInfo, feature)))
-                        .itemStack((setting, guiInfo, feature) -> ScreenUtil.getIcon(guiValuesHolder, setting, IDENTIFIER, feature))
+                        .itemStack((setting, guiInfo, feature) -> ScreenUtil.getIcon(guiValuesHolder, setting, Screens.FEATURE_SELECTION_SCREEN, feature))
                         .withAction((clickAction, feature) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, feature) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setFeature(feature))
-                        .withAction((clickAction, feature) -> guiValuesHolder.guiManager().openFeatureSettingsScreen(clickAction.getPlayer()))
+                        .withAction((clickAction, feature) -> guiValuesHolder.guiManager().openScreen(Screens.FEATURE_SETTINGS_SCREEN, clickAction.getPlayer()))
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setBiome(null))
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))

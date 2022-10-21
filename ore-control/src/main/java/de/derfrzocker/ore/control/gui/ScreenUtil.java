@@ -73,7 +73,7 @@ public final class ScreenUtil {
                         .identifier("back")
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> guiManager.getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory().onBack(clickAction.getPlayer()))
-                        .withAction(clickAction -> guiManager.openGui(guiManager.getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory(), clickAction.getPlayer()))
+                        .withAction(clickAction -> guiManager.openScreen(guiManager.getPlayerGuiData(clickAction.getPlayer()).pollFirstInventory(), clickAction.getPlayer()))
                 );
     }
 

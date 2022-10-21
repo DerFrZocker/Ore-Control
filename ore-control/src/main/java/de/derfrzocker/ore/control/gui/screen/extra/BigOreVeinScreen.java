@@ -5,6 +5,7 @@ import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.ClickAction;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -16,7 +17,7 @@ public class BigOreVeinScreen {
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .single()
-                .identifier("big_ore_vein_screen")
+                .identifier(Screens.EXTRA_BIG_ORE_VEIN_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("extra/big_ore_vein_screen.yml"))

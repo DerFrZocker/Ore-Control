@@ -30,6 +30,7 @@ import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListI
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -49,7 +50,7 @@ public class WeightedListIntegerScreen {
         InventoryGui subGui = getSubGui(guiValuesHolder);
         return Builders
                 .paged()
-                .identifier("value.weighted_list_sub_integer_screen")
+                .identifier(Screens.VALUE_WEIGHTED_LIST_INTEGER_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("value/weighted_list_integer_screen.yml"))
@@ -66,7 +67,7 @@ public class WeightedListIntegerScreen {
                         .itemStack((setting, guiInfo, distributionHolder) -> setting.get("value.weighted_list_sub_integer_screen", "default-icon", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, distributionHolder) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, distributionHolder) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).addData("weighted_list_integer_data", distributionHolder))
-                        .withAction((clickAction, distributionHolder) -> guiValuesHolder.guiManager().openGui(subGui, clickAction.getPlayer()))
+                        .withAction((clickAction, distributionHolder) -> guiValuesHolder.guiManager().openScreen(subGui, clickAction.getPlayer()))
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setPreviousToEditValue())
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))

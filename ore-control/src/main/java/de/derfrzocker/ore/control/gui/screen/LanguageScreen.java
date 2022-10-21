@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.language.Language;
@@ -11,7 +12,7 @@ public class LanguageScreen {
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .paged()
-                .identifier("language_screen")
+                .identifier(Screens.LANGUAGE_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("language_screen.yml"))

@@ -26,42 +26,38 @@
 package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
-import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 
 public class ConfigInfoScreen {
 
-    private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFO_SCREEN;
-    private static final String WHOLE_WORLD = "whole-world";
-    private static final String BIOME = "biome";
-
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .single()
-                .identifier(IDENTIFIER)
+                .identifier(Screens.CONFIG_INFO_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("config_info_screen.yml"))
                 .addButtonContext(Builders
                         .buttonContext()
-                        .identifier(WHOLE_WORLD)
+                        .identifier("whole-world")
                         .button(Builders
                                 .button()
-                                .identifier(WHOLE_WORLD)
+                                .identifier("whole-world")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiValuesHolder.guiManager().openFeatureSelectionScreen(clickAction.getPlayer()))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.FEATURE_SELECTION_SCREEN, clickAction.getPlayer()))
                         )
                 )
                 .addButtonContext(Builders
                         .buttonContext()
-                        .identifier(BIOME)
+                        .identifier("biome")
                         .button(Builders
                                 .button()
-                                .identifier(BIOME)
+                                .identifier("biome")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiValuesHolder.guiManager().openBiomeScreen(clickAction.getPlayer()))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.BIOME_SCREEN, clickAction.getPlayer()))
                         )
                 )
                 .addButtonContext(Builders
@@ -71,7 +67,7 @@ public class ConfigInfoScreen {
                                 .button()
                                 .identifier("extra-values")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiValuesHolder.guiManager().openExtraValuesScreen(clickAction.getPlayer()))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.EXTRA_VALUES_SCREEN, clickAction.getPlayer()))
                         )
                 )
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))

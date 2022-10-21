@@ -30,6 +30,7 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerVa
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.SingleInventoryGuiBuilder;
@@ -54,7 +55,7 @@ public class NumberEditScreen {
                     }
                     value.setValue(value.getValue() + number.doubleValue());
                 })
-                .identifier("value.fixed_double_to_integer_screen")
+                .identifier(Screens.VALUE_FIXED_DOUBLE_TO_INTEGER_SCREEN)
                 .withSetting(guiValuesHolder.settingFunction().apply("value/fixed_double_to_integer_screen.yml"))
                 .build();
     }
@@ -69,7 +70,7 @@ public class NumberEditScreen {
                     }
                     value.setValue(value.getValue() + number.floatValue());
                 })
-                .identifier("value.fixed_float_screen")
+                .identifier(Screens.VALUE_FIXED_FLOAT_SCREEN)
                 .withSetting(guiValuesHolder.settingFunction().apply("value/fixed_float_screen.yml"))
                 .build();
     }

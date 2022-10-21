@@ -29,6 +29,7 @@ import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
@@ -41,7 +42,7 @@ public class BooleanScreen {
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .single()
-                .identifier("value.boolean_screen")
+                .identifier(Screens.VALUE_BOOLEAN_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("value/boolean_screen.yml"))

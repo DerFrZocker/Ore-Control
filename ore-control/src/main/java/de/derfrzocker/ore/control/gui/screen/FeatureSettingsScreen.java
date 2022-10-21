@@ -42,6 +42,7 @@ import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.ore.control.gui.SettingWrapper;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
@@ -59,12 +60,10 @@ import java.util.Optional;
 // TODO clean up
 public class FeatureSettingsScreen {
 
-    private static final String IDENTIFIER = OreControlGuiManager.FEATURE_SETTINGS_SCREEN;
-
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .paged()
-                .identifier(IDENTIFIER)
+                .identifier(Screens.FEATURE_SETTINGS_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("feature_settings_screen.yml"))
@@ -75,7 +74,7 @@ public class FeatureSettingsScreen {
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
                         .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting", settingWrapper.getSetting().name()))
                         .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("value-settings", getValueSettings(guiValuesHolder, guiInfo, settingWrapper)))
-                        .itemStack((setting, guiInfo, settingWrapper) -> setting.get(IDENTIFIER, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
+                        .itemStack((setting, guiInfo, settingWrapper) -> setting.get(Screens.FEATURE_SETTINGS_SCREEN, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, settingWrapper) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setSettingWrapper(settingWrapper))
                         .withAction((clickAction, settingWrapper) -> {
@@ -140,7 +139,7 @@ public class FeatureSettingsScreen {
 
                             return guiValuesHolder.oreControlManager().getRegistries().getPlacementModifierRegistry().get(ActivationModifier.KEY).map(modifier -> feature.placementModifiers().contains(modifier)).orElse(false);
                         })
-                        .slot((setting, guiInfo) -> setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.slot", 4))
+                        .slot((setting, guiInfo) -> setting.get(Screens.FEATURE_SETTINGS_SCREEN, "placement-modifier-icon.feature.activation.slot", 4))
                         .identifier("activation")
                         .button(Builders
                                 .button()
@@ -187,13 +186,13 @@ public class FeatureSettingsScreen {
                                     }
 
                                     if (!(value instanceof FixedBooleanValue)) {
-                                        return setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.unknown.item-stack", new ItemStack(Material.STONE));
+                                        return setting.get(Screens.FEATURE_SETTINGS_SCREEN, "placement-modifier-icon.feature.activation.unknown.item-stack", new ItemStack(Material.STONE));
                                     }
 
                                     if (((FixedBooleanValue) value).getValue()) {
-                                        return setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.true.item-stack", new ItemStack(Material.STONE));
+                                        return setting.get(Screens.FEATURE_SETTINGS_SCREEN, "placement-modifier-icon.feature.activation.true.item-stack", new ItemStack(Material.STONE));
                                     } else {
-                                        return setting.get(IDENTIFIER, "placement-modifier-icon.feature.activation.false.item-stack", new ItemStack(Material.STONE));
+                                        return setting.get(Screens.FEATURE_SETTINGS_SCREEN, "placement-modifier-icon.feature.activation.false.item-stack", new ItemStack(Material.STONE));
                                     }
                                 })
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))

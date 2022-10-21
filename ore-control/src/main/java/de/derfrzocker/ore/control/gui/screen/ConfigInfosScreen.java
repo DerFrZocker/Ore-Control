@@ -28,6 +28,7 @@ package de.derfrzocker.ore.control.gui.screen;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
+import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -39,12 +40,10 @@ import java.util.List;
 
 public class ConfigInfosScreen {
 
-    private static final String IDENTIFIER = OreControlGuiManager.CONFIG_INFOS_SCREEN;
-
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
         return Builders
                 .paged()
-                .identifier(IDENTIFIER)
+                .identifier(Screens.CONFIG_INFOS_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("config_infos_screen.yml"))
@@ -58,10 +57,10 @@ public class ConfigInfosScreen {
                             return data;
                         })
                         .withMessageValue((setting, guiInfo, configInfo) -> new MessageValue("world-name", configInfo.getWorldName()))
-                        .itemStack((setting, guiInfo, configInfo) -> setting.get(IDENTIFIER, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone())
+                        .itemStack((setting, guiInfo, configInfo) -> setting.get(Screens.CONFIG_INFOS_SCREEN, "default-icons." + configInfo.getConfigType(), new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, configInfo) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, configInfo) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setConfigInfo(configInfo))
-                        .withAction((clickAction, configInfo) -> guiValuesHolder.guiManager().openConfigInfoScreen(clickAction.getPlayer()))
+                        .withAction((clickAction, configInfo) -> guiValuesHolder.guiManager().openScreen(Screens.CONFIG_INFO_SCREEN, clickAction.getPlayer()))
                 )
                 .addButtonContext(Builders
                         .buttonContext()
@@ -70,7 +69,7 @@ public class ConfigInfosScreen {
                                 .button()
                                 .identifier("language")
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                .withAction(clickAction -> guiValuesHolder.guiManager().openLanguageScreen(clickAction.getPlayer()))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.LANGUAGE_SCREEN, clickAction.getPlayer()))
                         )
                 )
                 .build();
