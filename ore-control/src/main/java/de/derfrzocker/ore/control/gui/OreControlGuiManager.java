@@ -51,7 +51,6 @@ import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
-import de.derfrzocker.ore.control.gui.screen.value.ClampedNormalIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
@@ -118,8 +117,8 @@ public class OreControlGuiManager implements Listener {
         this.valueTypeInventoryGuis.put(BelowTopOffsetIntegerType.type(), OffsetIntegerScreens.getBelowTopOffsetGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(WeightedListIntegerType.type(), WeightedListIntegerScreen.getGui(guiValuesHolder));
         this.valueTypeInventoryGuis.put(BiasedToBottomIntegerType.type(), BiasedToBottomIntegerScreen.getGui(guiValuesHolder));
-        this.valueTypeInventoryGuis.put(ClampedIntegerType.type(), ClampedIntegerScreen.getGui(guiValuesHolder));
-        this.valueTypeInventoryGuis.put(ClampedNormalIntegerType.type(), ClampedNormalIntegerScreen.getGui(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(ClampedIntegerType.type(), ClampedIntegerScreen.getClampedIntegerScreen(guiValuesHolder));
+        this.valueTypeInventoryGuis.put(ClampedNormalIntegerType.type(), ClampedIntegerScreen.getClampedNormalIntegerGui(guiValuesHolder));
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
