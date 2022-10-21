@@ -2,9 +2,6 @@ package de.derfrzocker.ore.control.gui;
 
 public final class Screens {
 
-    private Screens() {
-    }
-
     // Standard screens
     public static final String BIOME_SCREEN = "biome_screen";
     public static final String CONFIG_INFO_SCREEN = "config_info_screen";
@@ -13,7 +10,6 @@ public final class Screens {
     public static final String FEATURE_SELECTION_SCREEN = "feature_selection_screen";
     public static final String FEATURE_SETTINGS_SCREEN = "feature_settings_screen";
     public static final String LANGUAGE_SCREEN = "language_screen";
-
     // Value screens
     public static final String VALUE_BIASED_TO_BOTTOM_INTEGER_SCREEN = "value.biased_to_bottom_integer_screen";
     public static final String VALUE_BOOLEAN_SCREEN = "value.boolean_screen";
@@ -26,7 +22,9 @@ public final class Screens {
     public static final String VALUE_TRAPEZOID_INTEGER_SCREEN = "value.trapezoid_integer_screen";
     public static final String VALUE_UNIFORM_INTEGER_SCREEN = "value.uniform_integer_screen";
     public static final String VALUE_WEIGHTED_LIST_INTEGER_SCREEN = "value.weighted_list_integer_screen";
-
     // Extra screens
     public static final String EXTRA_BIG_ORE_VEIN_SCREEN = "extra.big_ore_vein_screen";
+
+    private Screens() {
+    }
 }

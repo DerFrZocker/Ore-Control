@@ -27,7 +27,11 @@ package de.derfrzocker.feature.common.feature.placement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import de.derfrzocker.feature.api.*;
+import de.derfrzocker.feature.api.Configuration;
+import de.derfrzocker.feature.api.FeaturePlacementModifier;
+import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
 import de.derfrzocker.feature.common.value.bool.BooleanType;
 import de.derfrzocker.feature.common.value.bool.BooleanValue;

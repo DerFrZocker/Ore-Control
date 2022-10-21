@@ -39,7 +39,7 @@ public class EmptyFeatureConfiguration implements FeatureGeneratorConfiguration 
 
     private final FeatureGenerator<?> featureGenerator;
 
-    public EmptyFeatureConfiguration(FeatureGenerator<?> featureGenerator)  {
+    public EmptyFeatureConfiguration(FeatureGenerator<?> featureGenerator) {
         this.featureGenerator = featureGenerator;
     }
 

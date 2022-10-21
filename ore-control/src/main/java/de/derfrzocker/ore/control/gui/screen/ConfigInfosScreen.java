@@ -27,7 +27,6 @@ package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
-import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;

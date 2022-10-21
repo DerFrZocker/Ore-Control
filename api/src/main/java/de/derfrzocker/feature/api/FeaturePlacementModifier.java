@@ -58,7 +58,7 @@ public interface FeaturePlacementModifier<C extends PlacementModifierConfigurati
      * <br>
      * While a new configuration is returned the values are not cloned.
      *
-     * @param first The main configuration to merge.
+     * @param first  The main configuration to merge.
      * @param second The second configuration to merge.
      * @return a new configuration with the merged values.
      */
@@ -71,9 +71,9 @@ public interface FeaturePlacementModifier<C extends PlacementModifierConfigurati
      * The returned positions may be altered by other placement modifiers.
      * During generation the given random and configuration should be used.
      *
-     * @param worldInfo The information about the world.
-     * @param random The random which should be used.
-     * @param position The position where a feature should generate.
+     * @param worldInfo     The information about the world.
+     * @param random        The random which should be used.
+     * @param position      The position where a feature should generate.
      * @param limitedRegion The LimitedRegion to use to generate the feature
      * @param configuration The configuration to use for this placement modifier.
      * @return a stream of positions where a feature should generate.

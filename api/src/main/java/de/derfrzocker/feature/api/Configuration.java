@@ -75,7 +75,7 @@ public interface Configuration {
      * Use {@link #getSettings()} for a set of allowed settings.
      *
      * @param setting The setting which should get the new value.
-     * @param value The new value for the given setting.
+     * @param value   The new value for the given setting.
      * @throws IllegalArgumentException if the given setting is not allowed in this configuration.
      * @throws IllegalArgumentException if the given value is not the right type for the setting.
      */

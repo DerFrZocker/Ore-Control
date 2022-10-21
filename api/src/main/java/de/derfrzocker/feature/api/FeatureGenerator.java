@@ -57,7 +57,7 @@ public interface FeatureGenerator<C extends FeatureGeneratorConfiguration> exten
      * <br>
      * While a new configuration is returned the values are not cloned.
      *
-     * @param first The main configuration to merge.
+     * @param first  The main configuration to merge.
      * @param second The second configuration to merge.
      * @return a new configuration with the merged values.
      */
@@ -68,9 +68,9 @@ public interface FeatureGenerator<C extends FeatureGeneratorConfiguration> exten
      * Generates the feature at the given position and region.
      * During generation the given random and configuration should be used.
      *
-     * @param worldInfo The information about the world.
-     * @param random The random which should be used.
-     * @param position The position where the feature should get generated.
+     * @param worldInfo     The information about the world.
+     * @param random        The random which should be used.
+     * @param position      The position where the feature should get generated.
      * @param limitedRegion The LimitedRegion to use to generate the feature.
      * @param configuration The configuration to use to generate the feature.
      */

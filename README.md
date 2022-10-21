@@ -5,10 +5,12 @@ Ore-Control is a Spigot plugin, with which you can manipulate the default Minecr
 **Note:** You need to reconfigure the plugin, if you updated from version **v2021.06.29** (or earlier)
 or from the pre-release version **v2022.01.31** or **v2021.12.31** to a new one.
 
-With Ore-Control it is possible to change various features of the world decoration generation, it is thereby possible to change the settings
+With Ore-Control it is possible to change various features of the world decoration generation, it is thereby possible to
+change the settings
 on a global, per world and per biome bases. And this can all be done with an inventory gui (`/ore-control`).
 
-The plugin also supports custom biomes and some custom features from other datapacks such as [terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/).
+The plugin also supports custom biomes and some custom features from other datapacks such
+as [terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/).
 
 Links
 -----

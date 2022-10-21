@@ -29,7 +29,6 @@ import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.spigot.utils.language.Language;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
-import org.bstats.charts.SimplePie;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class GlowstoneBlobFeatureGeneratorHook extends MinecraftFeatureGeneratorHook<NoneFeatureConfiguration, EmptyFeatureConfiguration>{
+public class GlowstoneBlobFeatureGeneratorHook extends MinecraftFeatureGeneratorHook<NoneFeatureConfiguration, EmptyFeatureConfiguration> {
 
     public GlowstoneBlobFeatureGeneratorHook(@NotNull OreControlManager oreControlManager, Biome biome, NamespacedKey namespacedKey) {
         super(NoneFeatureConfiguration.CODEC, GLOWSTONE_BLOB, oreControlManager, "glowstone_blob", biome, namespacedKey);

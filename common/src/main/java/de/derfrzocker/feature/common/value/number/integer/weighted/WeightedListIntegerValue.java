@@ -31,7 +31,11 @@ import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class WeightedListIntegerValue extends IntegerValue {
 

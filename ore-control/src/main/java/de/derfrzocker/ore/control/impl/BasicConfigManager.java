@@ -1,6 +1,5 @@
 package de.derfrzocker.ore.control.impl;
 
-import com.mojang.serialization.Codec;
 import de.derfrzocker.feature.api.ExtraValues;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.config.Config;

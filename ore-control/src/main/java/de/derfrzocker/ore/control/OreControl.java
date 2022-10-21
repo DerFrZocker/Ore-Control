@@ -80,7 +80,6 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 // TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
