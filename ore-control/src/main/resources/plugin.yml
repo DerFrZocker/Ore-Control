@@ -5,6 +5,8 @@ author: ${project.author}
 main: de.derfrzocker.ore.control.OreControl
 api-version: "1.13"
 load: STARTUP
+libraries:
+  - net.objecthunter:exp4j:0.4.8
 commands:
   ore-control:
     permission: "ore.control"
