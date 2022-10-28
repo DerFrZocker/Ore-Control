@@ -25,9 +25,11 @@
 
 package de.derfrzocker.feature.api;
 
+import de.derfrzocker.feature.api.util.SaveAble;
+
 import java.util.Optional;
 
-public class ExtraValues {
+public class ExtraValues implements SaveAble {
 
     private Optional<Boolean> generateBigOreVeins = Optional.empty();
 

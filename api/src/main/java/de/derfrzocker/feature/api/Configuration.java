@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
+import de.derfrzocker.feature.api.util.SaveAble;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +34,7 @@ import java.util.Set;
 /**
  * Holds values for features.
  */
-public interface Configuration {
+public interface Configuration extends SaveAble {
 
     /**
      * Returns the owner of this configuration.
@@ -80,17 +81,4 @@ public interface Configuration {
      * @throws IllegalArgumentException if the given value is not the right type for the setting.
      */
     void setValue(@NotNull Setting setting, @Nullable Value<?, ?, ?> value);
-
-    /**
-     * Checks and returns true if this configuration or any value in this configuration
-     * is dirty.
-     *
-     * @return true if this configuration is dirty otherwise false.
-     */
-    boolean isDirty();
-
-    /**
-     * Marks this configuration and any value this configuration holds as saved and not dirty.
-     */
-    void saved();
 }

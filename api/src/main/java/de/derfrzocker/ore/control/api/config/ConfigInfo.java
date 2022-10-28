@@ -25,11 +25,12 @@
 
 package de.derfrzocker.ore.control.api.config;
 
+import de.derfrzocker.feature.api.util.SaveAble;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class ConfigInfo implements Comparable<ConfigInfo> {
+public class ConfigInfo implements Comparable<ConfigInfo>, SaveAble {
 
     private final String worldName;
     private final File dataDirectory;

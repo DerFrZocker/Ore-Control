@@ -28,13 +28,14 @@ package de.derfrzocker.ore.control.api.config;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.util.SaveAble;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Config {
+public class Config implements SaveAble {
 
     private final Map<FeaturePlacementModifier<?>, PlacementModifierConfiguration> placements = new LinkedHashMap<>();
     private FeatureGeneratorConfiguration feature;
