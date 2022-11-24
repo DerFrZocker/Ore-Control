@@ -31,6 +31,8 @@ import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FixedTargetValue extends TargetValue {
@@ -69,5 +71,10 @@ public class FixedTargetValue extends TargetValue {
     @Override
     public FixedTargetValue clone() {
         return new FixedTargetValue(value);
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        return new ArrayList<>();
     }
 }

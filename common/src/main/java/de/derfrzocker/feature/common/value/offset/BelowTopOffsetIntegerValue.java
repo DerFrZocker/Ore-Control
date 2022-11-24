@@ -25,7 +25,12 @@
 
 package de.derfrzocker.feature.common.value.offset;
 
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.spigot.utils.Pair;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class BelowTopOffsetIntegerValue extends IntegerValue {
 
@@ -66,5 +71,10 @@ public abstract class BelowTopOffsetIntegerValue extends IntegerValue {
     public void setBase(IntegerValue integerValue) {
         this.base = integerValue;
         dirty = true;
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        return MessageTraversUtil.multiple(formatter, depth, key, new Pair<>("base", getBase()));
     }
 }

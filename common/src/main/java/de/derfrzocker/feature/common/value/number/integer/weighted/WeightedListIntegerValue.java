@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -105,5 +106,21 @@ public class WeightedListIntegerValue extends IntegerValue {
 
     public Map<IntegerValue, IntegerValue> getDistribution() {
         return distribution;
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        List<String> result = new LinkedList<>();
+        result.add(formatter.format(depth, key, null));
+        for (Map.Entry<IntegerValue, IntegerValue> entry : getDistribution().entrySet()) {
+            IntegerValue dataValue = entry.getKey();
+            IntegerValue weightValue = entry.getValue();
+            List<String> data = dataValue.traverse(formatter, depth + 1, "data");
+            List<String> weight = weightValue.traverse(formatter, depth + 1, "weight");
+            result.addAll(data);
+            result.addAll(weight);
+        }
+
+        return result;
     }
 }

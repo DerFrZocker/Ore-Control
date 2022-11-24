@@ -25,11 +25,13 @@
 
 package de.derfrzocker.feature.common.value.number;
 
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 public class FixedFloatValue extends FloatValue {
@@ -73,5 +75,10 @@ public class FixedFloatValue extends FloatValue {
     @Override
     public FixedFloatValue clone() {
         return new FixedFloatValue(value);
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        return MessageTraversUtil.single(formatter, depth, key, getValue());
     }
 }

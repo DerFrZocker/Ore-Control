@@ -1,5 +1,6 @@
 package de.derfrzocker.feature.common.value.number.integer;
 
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import net.objecthunter.exp4j.Expression;
@@ -10,6 +11,7 @@ import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -90,5 +92,10 @@ public class Exp4jIntegerValue extends IntegerValue {
     @Override
     public Exp4jIntegerValue clone() {
         return new Exp4jIntegerValue(expressionString);
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        return MessageTraversUtil.single(formatter, depth, key, getExpressionString());
     }
 }

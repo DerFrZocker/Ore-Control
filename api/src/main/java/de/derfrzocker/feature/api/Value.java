@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
+import de.derfrzocker.feature.api.util.MessageTraversAble;
 import de.derfrzocker.feature.api.util.SaveAble;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public interface Value<V extends Value<V, T, O>, T extends ValueType<V, T, O>, O> extends Cloneable, SaveAble {
+public interface Value<V extends Value<V, T, O>, T extends ValueType<V, T, O>, O> extends Cloneable, SaveAble, MessageTraversAble {
 
     T getValueType();
 

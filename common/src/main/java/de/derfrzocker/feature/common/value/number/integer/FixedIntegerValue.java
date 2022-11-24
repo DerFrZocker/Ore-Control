@@ -25,12 +25,14 @@
 
 package de.derfrzocker.feature.common.value.number.integer;
 
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 public class FixedIntegerValue extends IntegerValue {
@@ -74,5 +76,10 @@ public class FixedIntegerValue extends IntegerValue {
     @Override
     public FixedIntegerValue clone() {
         return new FixedIntegerValue(value);
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        return MessageTraversUtil.single(formatter, depth, key, getValue());
     }
 }

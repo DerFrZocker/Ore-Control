@@ -25,13 +25,16 @@
 
 package de.derfrzocker.feature.common.value.number.integer.clamped;
 
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
+import de.derfrzocker.spigot.utils.Pair;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 public class ClampedNormalIntegerValue extends IntegerValue {
@@ -151,5 +154,12 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     @Override
     public ClampedNormalIntegerValue clone() {
         return new ClampedNormalIntegerValue(mean == null ? null : mean.clone(), deviation == null ? null : deviation.clone(), minInclusive == null ? null : minInclusive.clone(), maxInclusive == null ? null : maxInclusive.clone());
+    }
+
+    @Override
+    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+        return MessageTraversUtil.multiple(formatter, depth, key, new Pair<>("mean", getMean()),
+                new Pair<>("deviation", getDeviation()), new Pair<>("min-inclusive", getMinInclusive()),
+                new Pair<>("max-inclusive", getMaxInclusive()));
     }
 }
