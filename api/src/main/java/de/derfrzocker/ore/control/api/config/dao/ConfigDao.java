@@ -33,14 +33,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
+import de.derfrzocker.ore.control.api.config.ConfigType;
 import org.bukkit.NamespacedKey;
 
 import java.io.File;
@@ -72,11 +77,11 @@ public class ConfigDao {
     }
 
     public Optional<Config> getConfig(ConfigInfo configInfo, NamespacedKey key) {
-        return load(getConfigFile(configInfo, key));
+        return setValueLocation(load(getConfigFile(configInfo, key)), configInfo.getConfigType() == ConfigType.GLOBAL ? ValueLocation.GLOBAL_WORLD : ValueLocation.PER_WORLD);
     }
 
     public Optional<Config> getConfig(ConfigInfo configInfo, Biome biome, NamespacedKey key) {
-        return load(getConfigFile(configInfo, biome, key));
+        return setValueLocation(load(getConfigFile(configInfo, biome, key)), configInfo.getConfigType() == ConfigType.GLOBAL ? ValueLocation.GLOBAL_BIOME : ValueLocation.PER_BIOME);
     }
 
     public void saveConfig(ConfigInfo configInfo, NamespacedKey key, Config config) {
@@ -95,6 +100,33 @@ public class ConfigDao {
         }
 
         save(getConfigFile(configInfo, biome, key), config);
+    }
+
+    private Optional<Config> setValueLocation(Optional<Config> configOptional, ValueLocation valueLocation) {
+        configOptional.ifPresent(config -> {
+            setValueLocation(config.getFeature(), valueLocation);
+
+            if (config.getPlacements() != null) {
+                for (PlacementModifierConfiguration placementConfig : config.getPlacements().values()) {
+                    setValueLocation(placementConfig, valueLocation);
+                }
+            }
+        });
+
+        return configOptional;
+    }
+
+    private void setValueLocation(Configuration configuration, ValueLocation valueLocation) {
+        if (configuration == null) {
+            return;
+        }
+
+        for (Setting setting : configuration.getSettings()) {
+            Value<?, ?, ?> value = configuration.getValue(setting);
+            if (value != null) {
+                value.setValueLocation(valueLocation);
+            }
+        }
     }
 
     private File getConfigFile(ConfigInfo configInfo, NamespacedKey key) {

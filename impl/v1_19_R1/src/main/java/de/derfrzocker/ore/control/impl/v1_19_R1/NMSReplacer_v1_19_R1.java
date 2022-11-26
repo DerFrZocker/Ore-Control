@@ -36,9 +36,11 @@ import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.feature.generator.configuration.EmptyFeatureConfiguration;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
+import de.derfrzocker.feature.common.util.ValueLocationUtil;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerType;
@@ -375,8 +377,10 @@ public class NMSReplacer_v1_19_R1 implements NMSReplacer {
         Config config = new Config(placementConfiguration, featureConfiguration);
 
         if (biome == null) {
+            ValueLocationUtil.setValueLocation(Optional.of(config), ValueLocation.DEFAULT_WORLD);
             configManager.setDefaultConfig(featureKey, config);
         } else {
+            ValueLocationUtil.setValueLocation(Optional.of(config), ValueLocation.DEFAULT_BIOME);
             configManager.setDefaultConfig(biome, featureKey, config);
         }
 

@@ -26,6 +26,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.ValueType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
@@ -55,10 +56,13 @@ import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.WeightedListIntegerScreen;
+import de.derfrzocker.ore.control.traverser.BasicStringFormatter;
+import de.derfrzocker.ore.control.traverser.ValueTraverser;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -86,6 +90,20 @@ public class OreControlGuiManager implements Listener {
         this.oreControlManager = oreControlManager;
         this.languageManager = languageManager;
         GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser(), stats);
+
+        // TODO move to config file
+        for (ValueLocation location : ValueLocation.values()) {
+            String prefix = switch (location) {
+                case PER_WORLD -> ChatColor.GREEN.toString();
+                case PER_BIOME -> ChatColor.DARK_GREEN.toString();
+                case GLOBAL_WORLD -> ChatColor.BLUE.toString();
+                case GLOBAL_BIOME -> ChatColor.DARK_BLUE.toString();
+                case DEFAULT_WORLD -> ChatColor.RED.toString();
+                case DEFAULT_BIOME -> ChatColor.DARK_PURPLE.toString();
+                case UNKNOWN -> ChatColor.GRAY.toString();
+            };
+            guiValuesHolder.valueTraverser().registerFormatter(location, new BasicStringFormatter(prefix));
+        }
 
         // Register standard screens
         register(BiomeScreen.getGui(guiValuesHolder));

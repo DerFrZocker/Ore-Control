@@ -23,37 +23,26 @@
  *
  */
 
-package de.derfrzocker.ore.control.gui;
+package de.derfrzocker.ore.control.traverser;
 
 import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.util.MessageTraversAble;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 // TODO clean up / make more flexible
 public class ValueTraverser {
 
-    private final MessageTraversAble.StringFormatter formatter = (depth, key, value) -> {
-        StringBuilder builder = new StringBuilder();
+    private final Map<ValueLocation, MessageTraversAble.StringFormatter> formatters = new EnumMap<>(ValueLocation.class);
 
-        builder.append(" ".repeat(Math.max(0, depth)));
-        builder.append("§r§7>§r§f ");
-
-        if (key.startsWith("%%")) {
-            builder.append(key);
-        } else {
-            builder.append(getTranslationValueSettingKey(key));
-        }
-        builder.append(":");
-        if (value != null) {
-            builder.append(" ");
-            builder.append(value);
-        }
-
-        return builder.toString();
-    };
+    public void registerFormatter(ValueLocation valueLocation, MessageTraversAble.StringFormatter formatter) {
+        this.formatters.put(valueLocation, formatter);
+    }
 
     public String traverse(Configuration configuration) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -71,7 +60,7 @@ public class ValueTraverser {
     }
 
     public String traverse(Value<?, ?, ?> valueTo, String keyTo) {
-        List<String> list = valueTo.traverse(formatter, 1, keyTo);
+        List<String> list = valueTo.traverse(formatters.get(valueTo.getValueLocation()), 1, keyTo);
         StringBuilder stringBuilder = new StringBuilder();
         boolean first = true;
         for (String string : list) {
@@ -84,10 +73,6 @@ public class ValueTraverser {
         }
 
         return stringBuilder.toString();
-    }
-
-    private String getTranslationValueSettingKey(String value) {
-        return "%%translation:[" + "value-settings." + value + ".name]%";
     }
 
     private String getTranslationSettingKey(String value) {
