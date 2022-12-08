@@ -289,7 +289,7 @@ public class FeatureSettingsScreen {
 
         Value<?, ?, ?> value = configuration.getValue(setting);
 
-        return guiValuesHolder.valueTraverser().traverse(value, "§r§f%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%: ");
+        return guiValuesHolder.valueTraverser().traverse(value, "%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%");
     }
 
     private static List<SettingWrapper> buildList(OreControlManager oreControlManager, OreControlGuiManager guiManager, GuiInfo guiInfo) {

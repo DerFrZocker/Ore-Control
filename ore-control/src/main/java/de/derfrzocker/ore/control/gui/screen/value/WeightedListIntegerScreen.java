@@ -60,8 +60,8 @@ public class WeightedListIntegerScreen {
                         .pageContent(DistributionHolder.class)
                         .data((setting, guiInfo) -> getData(guiValuesHolder, guiInfo))
                         .withMessageValue((setting, guiInfo, distributionHolder) -> {
-                            String data = guiValuesHolder.valueTraverser().traverse(distributionHolder.data, "§r§f%%translation:[value-settings.data.name]%: ");
-                            String weight = guiValuesHolder.valueTraverser().traverse(distributionHolder.weight, "§r§f%%translation:[value-settings.data.name]%: ");
+                            String data = guiValuesHolder.valueTraverser().traverse(distributionHolder.data, "%%translation:[value-settings.data.name]%");
+                            String weight = guiValuesHolder.valueTraverser().traverse(distributionHolder.weight, "%%translation:[value-settings.data.name]%");
                             return new MessageValue("value-settings", data + "%%new-line%" + weight);
                         })
                         .itemStack((setting, guiInfo, distributionHolder) -> setting.get("value.weighted_list_sub_integer_screen", "default-icon", new ItemStack(Material.STONE)).clone())

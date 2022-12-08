@@ -91,7 +91,7 @@ public final class ScreenUtil {
                                 guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                             }
                             Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
-                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "§r§f%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%: "));
+                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%"));
                         })
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
@@ -121,7 +121,7 @@ public final class ScreenUtil {
                                 guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, currently.getClass()));
                             }
                             Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
-                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "§r§f%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%: "));
+                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%"));
                         })
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
