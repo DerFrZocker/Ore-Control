@@ -81,11 +81,6 @@ public class OreVeinHandler implements Listener {
         NoiseBasedChunkGenerator newGenerator = new NoiseBasedChunkGenerator(noiseChunkGenerator.getBiomeSource(), Holder.direct(newSettings));
 
         try {
-            newGenerator.conf = noiseChunkGenerator.conf;
-        } catch (Throwable ignore) {
-        }
-
-        try {
             CHUNK_GENERATOR_FIELD.set(((CraftWorld) event.getWorld()).getHandle().getChunkSource().chunkMap, newGenerator);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
