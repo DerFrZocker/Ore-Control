@@ -205,6 +205,12 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
             biome.getGenerationSettings().features().forEach(featureSet -> featureSet.forEach(holder -> {
                 PlacedFeature feature = holder.get();
                 ResourceLocation featureKey = placedFeatureRegistry.getKey(feature);
+
+                if (featureKey == null) {
+                    // Skip if the feature is not registered, this can happen if another plugin adds a feature without registering it
+                    return;
+                }
+
                 registries.getFeatureRegistry().get(CraftNamespacedKey.fromMinecraft(featureKey)).ifPresent(value -> bio.getFeatures().add(value));
             }));
 
@@ -269,6 +275,12 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
                     PlacedFeature feature = featureSupplier.get();
                     Registry<PlacedFeature> registry = getRegistry().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
                     ResourceLocation featureKey = registry.getKey(feature);
+
+                    if (featureKey == null) {
+                        // Skip if the feature is not registered, this can happen if another plugin adds a feature without registering it
+                        return;
+                    }
+
                     File featureFile = new File(biomeFile, featureKey.getNamespace() + "/" + featureKey.getPath() + ".json");
                     try {
                         saveFeature(featureFile, registries.getBiomeRegistry().get(CraftNamespacedKey.fromMinecraft(biomeKey)).get(), CraftNamespacedKey.fromMinecraft(featureKey), feature);
