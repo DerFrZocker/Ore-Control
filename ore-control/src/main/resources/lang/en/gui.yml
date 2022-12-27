@@ -70,7 +70,7 @@ feature_settings_screen:
     lore:
       left-click: "Click to edit this setting!"
 above_bottom_offset_integer_screen:
-  name: "Below Top Offset"
+  name: "Above Bottom Offset"
   base:
     name: "Base"
     lore:
