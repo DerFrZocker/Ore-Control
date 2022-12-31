@@ -48,6 +48,7 @@ import de.derfrzocker.ore.control.gui.screen.ExtraValuesScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
+import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
@@ -129,6 +130,7 @@ public class OreControlGuiManager implements Listener {
 
         // Register extra screens
         register(ExtraValuesScreen.getGui(guiValuesHolder));
+        register(BigOreVeinScreen.getGui(guiValuesHolder));
 
         // Register listeners
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
