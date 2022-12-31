@@ -47,7 +47,6 @@ import de.derfrzocker.ore.control.gui.SettingWrapper;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
-import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -70,62 +69,24 @@ public class FeatureSettingsScreen {
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
                 .pageContent(Builders
-                        .pageContent(SettingWrapper.class)
+                        .pageContent(FeaturePlacementModifier.class)
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
-                        .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting", settingWrapper.getSetting().name()))
-                        .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("value-settings", getValueSettings(guiValuesHolder, guiInfo, settingWrapper)))
-                        .itemStack((setting, guiInfo, settingWrapper) -> setting.get(Screens.FEATURE_SETTINGS_SCREEN, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
-                        .withAction((clickAction, settingWrapper) -> clickAction.getClickEvent().setCancelled(true))
-                        .withAction((clickAction, settingWrapper) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setSettingWrapper(settingWrapper))
-                        .withAction((clickAction, settingWrapper) -> {
-                            PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
-                            Setting setting = settingWrapper.getSetting();
-                            ConfigurationAble settingOwner = settingWrapper.getSettingOwner();
-
-                            if (settingOwner == null) {
-                                guiValuesHolder.plugin().getLogger().warning(String.format("No setting owner found, this is a bug!"));
-                                return;
-                            }
-
-                            Optional<Config> optionalConfig;
-                            if (playerGuiData.getBiome() == null) {
-                                optionalConfig = guiValuesHolder.oreControlManager().getConfigManager().getGuiConfig(playerGuiData.getConfigInfo(), playerGuiData.getFeature().getKey());
-                            } else {
-                                optionalConfig = guiValuesHolder.oreControlManager().getConfigManager().getGuiConfig(playerGuiData.getConfigInfo(), playerGuiData.getBiome(), playerGuiData.getFeature().getKey());
-                            }
-
-                            if (optionalConfig.isEmpty()) {
-                                guiValuesHolder.plugin().getLogger().warning(String.format("No gui specific config found, it should always be possible to build one with default value, this is a bug!"));
-                                return;
-                            }
-
-                            Config config = optionalConfig.get();
-
-                            Configuration configuration = config.getFeature();
-
-                            if (configuration == null || configuration.getOwner() != settingOwner) {
-                                configuration = getPlacementConfiguration(config.getPlacements().values(), settingOwner);
-                            }
-
-                            if (configuration == null || configuration.getOwner() != settingOwner) {
-                                guiValuesHolder.plugin().getLogger().warning(String.format("No suitable configuration found, there should always a default configuration present, this is a bug!"));
-                                return;
-                            }
-
-                            Value<?, ?, ?> value = configuration.getValue(setting);
-
-                            if (value == null) {
-                                guiValuesHolder.plugin().getLogger().warning(String.format("No suitable value found, there should always a default value present, this is a bug!"));
-                                return;
-                            }
-
-                            value = value.clone();
-
-                            playerGuiData.setOriginalValue(value);
-                            playerGuiData.setToEditValue(value);
-                            playerGuiData.setApplied(false);
-                            guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), value);
-                        })
+                        // .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting", settingWrapper.getSetting().name()))
+                        // .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("value-settings", getValueSettings(guiValuesHolder, guiInfo, settingWrapper)))
+                        .itemStack((setting, guiInfo, placementModifier) -> setting.get(Screens.FEATURE_SETTINGS_SCREEN, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
+                        .withAction((clickAction, placementModifier) -> clickAction.getClickEvent().setCancelled(true))
+                        .withAction((clickAction, placementModifier) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setPlacementModifier(placementModifier))
+                        .withAction(((clickAction, placementModifier) -> guiValuesHolder.guiManager().openScreen(Screens.PLACEMENT_MODIFIER_SETTINGS_SCREEN, clickAction.getPlayer())))
+                )
+                .addButtonContext(Builders
+                        .buttonContext()
+                        .identifier("feature-generator")
+                        .button(Builders
+                                .button()
+                                .identifier("feature-generator")
+                                .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.GENERATOR_SETTINGS_SCREEN, clickAction.getPlayer()))
+                        )
                 )
                 .addButtonContext(Builders
                         .buttonContext()
@@ -292,26 +253,20 @@ public class FeatureSettingsScreen {
         return guiValuesHolder.valueTraverser().traverse(value, "%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%");
     }
 
-    private static List<SettingWrapper> buildList(OreControlManager oreControlManager, OreControlGuiManager guiManager, GuiInfo guiInfo) {
+    private static List<FeaturePlacementModifier> buildList(OreControlManager oreControlManager, OreControlGuiManager guiManager, GuiInfo guiInfo) {
         PlayerGuiData playerGuiData = guiManager.getPlayerGuiData((Player) guiInfo.getEntity());
         Feature feature = playerGuiData.getFeature();
-        List<SettingWrapper> settingWrappers = new LinkedList<>();
-
-        for (Setting setting : feature.generator().getSettings()) {
-            settingWrappers.add(new SettingWrapper(setting, feature.generator()));
-        }
+        List<FeaturePlacementModifier> placementModifiers = new LinkedList<>();
 
         for (FeaturePlacementModifier<?> placementModifier : feature.placementModifiers()) {
             if (placementModifier.getKey().equals(ActivationModifier.KEY)) {
                 continue;
             }
 
-            for (Setting setting : placementModifier.getSettings()) {
-                settingWrappers.add(new SettingWrapper(setting, placementModifier));
-            }
+            placementModifiers.add(placementModifier);
         }
 
-        return settingWrappers;
+        return placementModifiers;
     }
 
     private static PlacementModifierConfiguration getPlacementConfiguration(Collection<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {

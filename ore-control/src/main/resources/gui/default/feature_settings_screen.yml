@@ -1,4 +1,5 @@
 name: "%%translation:[feature_settings_screen.name]%"
+skip-slots: 2
 default-icon:
   item-stack:
     ==: org.bukkit.inventory.ItemStack
@@ -13,6 +14,19 @@ default-icon:
         - "%value-settings%"
         - "   "
         - "&7>> &b%%translation:[feature_settings_screen.default-icon.lore.left-click]% &7<<"
+feature-generator:
+  slot: 10
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: "&f%%translation:[namespaces.%feature-generator-namespace%.name]%: %%translation:[feature-generators.%feature-generator-namespace%.%feature-generator-key%.name]%"
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[feature_settings_screen.feature-generator.lore.left-click]% &7<<"
 placement-modifier-icon:
   feature:
     activation:

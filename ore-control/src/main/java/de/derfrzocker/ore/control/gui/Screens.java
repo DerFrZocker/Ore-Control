@@ -9,6 +9,8 @@ public final class Screens {
     public static final String EXTRA_VALUES_SCREEN = "extra_values_screen";
     public static final String FEATURE_SELECTION_SCREEN = "feature_selection_screen";
     public static final String FEATURE_SETTINGS_SCREEN = "feature_settings_screen";
+    public static final String GENERATOR_SETTINGS_SCREEN = "generator_settings_screen";
+    public static final String PLACEMENT_MODIFIER_SETTINGS_SCREEN = "placement_modifier_settings_screen";
     public static final String LANGUAGE_SCREEN = "language_screen";
     // Value screens
     public static final String VALUE_BIASED_TO_BOTTOM_INTEGER_SCREEN = "value.biased_to_bottom_integer_screen";

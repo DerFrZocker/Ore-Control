@@ -55,6 +55,7 @@ public class PlayerGuiData {
     private Biome biome = null;
     private Feature feature = null;
     private SettingWrapper settingWrapper = null;
+    private FeaturePlacementModifier<?> placementModifier = null;
     private Value<?, ?, ?> originalValue = null;
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
@@ -203,5 +204,13 @@ public class PlayerGuiData {
                 oreControlManager.getConfigManager().clearGuiConfigCache(getConfigInfo(), getBiome(), getFeature().getKey());
             }
         }
+    }
+
+    public FeaturePlacementModifier<?> getPlacementModifier() {
+        return placementModifier;
+    }
+
+    public void setPlacementModifier(FeaturePlacementModifier<?> placementModifier) {
+        this.placementModifier = placementModifier;
     }
 }
