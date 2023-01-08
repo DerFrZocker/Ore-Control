@@ -47,6 +47,7 @@ import de.derfrzocker.ore.control.gui.SettingWrapper;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -54,6 +55,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 // TODO clean up
@@ -65,14 +67,16 @@ public class FeatureSettingsScreen {
                 .identifier(Screens.FEATURE_SETTINGS_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("generator_icons.yml"))
                 .withSetting(guiValuesHolder.settingFunction().apply("feature_settings_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
                 .pageContent(Builders
                         .pageContent(FeaturePlacementModifier.class)
                         .data((setting, guiInfo) -> buildList(guiValuesHolder.oreControlManager(), guiValuesHolder.guiManager(), guiInfo))
-                        // .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("setting", settingWrapper.getSetting().name()))
-                        // .withMessageValue((setting, guiInfo, settingWrapper) -> new MessageValue("value-settings", getValueSettings(guiValuesHolder, guiInfo, settingWrapper)))
+                        .withMessageValue((setting, guiInfo, placementModifier) -> new MessageValue("placement-modifier-key", placementModifier.getKey().getKey()))
+                        .withMessageValue((setting, guiInfo, placementModifier) -> new MessageValue("placement-modifier-namespace", placementModifier.getKey().getNamespace()))
+                        .withMessageValue((setting, guiInfo, placementModifier) -> new MessageValue("placement-modifier-settings", getPlacementModifierSetting(guiValuesHolder, guiInfo, placementModifier)))
                         .itemStack((setting, guiInfo, placementModifier) -> setting.get(Screens.FEATURE_SETTINGS_SCREEN, "default-icon.item-stack", new ItemStack(Material.STONE)).clone())
                         .withAction((clickAction, placementModifier) -> clickAction.getClickEvent().setCancelled(true))
                         .withAction((clickAction, placementModifier) -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()).setPlacementModifier(placementModifier))
@@ -84,6 +88,10 @@ public class FeatureSettingsScreen {
                         .button(Builders
                                 .button()
                                 .identifier("feature-generator")
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("generator-key", guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().generator().getKey().getKey()))
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("generator-namespace", guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().generator().getKey().getNamespace()))
+                                .withMessageValue((setting, guiInfo) -> new MessageValue("generator-settings", getGeneratorSetting(guiValuesHolder, guiInfo, guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getFeature())))
+                                .itemStack((setting, guiInfo) -> ScreenUtil.getIcon(guiValuesHolder, setting, "feature-generator", guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).getFeature().generator()))
                                 .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                 .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.GENERATOR_SETTINGS_SCREEN, clickAction.getPlayer()))
                         )
@@ -213,15 +221,9 @@ public class FeatureSettingsScreen {
                 .build();
     }
 
-    private static String getValueSettings(GuiValuesHolder guiValuesHolder, GuiInfo guiInfo, SettingWrapper settingWrapper) {
+    public static String getPlacementModifierSetting(GuiValuesHolder guiValuesHolder, GuiInfo guiInfo, FeaturePlacementModifier<?> placementModifier) {
         PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity());
-        Setting setting = settingWrapper.getSetting();
-        ConfigurationAble settingOwner = settingWrapper.getSettingOwner();
-
-        if (settingOwner == null) {
-            guiValuesHolder.plugin().getLogger().warning(String.format("No setting owner found, this is a bug!"));
-            return "UNKNOWN";
-        }
+        StringBuilder stringBuilder = new StringBuilder();
 
         Optional<Config> optionalConfig;
         if (playerGuiData.getBiome() == null) {
@@ -237,20 +239,36 @@ public class FeatureSettingsScreen {
 
         Config config = optionalConfig.get();
 
-        Configuration configuration = config.getFeature();
+        stringBuilder.append("§r§f");
+        stringBuilder.append("%%translation:[placement-modifiers.");
+        stringBuilder.append(placementModifier.getKey().getNamespace());
+        stringBuilder.append(".");
+        stringBuilder.append(placementModifier.getKey().getKey());
+        stringBuilder.append(".name]%:");
+        stringBuilder.append("%%new-line%");
+        stringBuilder.append(guiValuesHolder.valueTraverser().traverse(config.getPlacements().get(placementModifier)));
 
-        if (configuration == null || configuration.getOwner() != settingOwner) {
-            configuration = getPlacementConfiguration(config.getPlacements().values(), settingOwner);
+        return stringBuilder.toString();
+    }
+
+    public static String getGeneratorSetting(GuiValuesHolder guiValuesHolder, GuiInfo guiInfo, Feature feature) {
+        PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity());
+        Optional<Config> optionalConfig;
+        if (playerGuiData.getBiome() == null) {
+            optionalConfig = guiValuesHolder.oreControlManager().getConfigManager().getGuiConfig(playerGuiData.getConfigInfo(), feature.getKey());
+        } else {
+            optionalConfig = guiValuesHolder.oreControlManager().getConfigManager().getGuiConfig(playerGuiData.getConfigInfo(), playerGuiData.getBiome(), feature.getKey());
         }
 
-        if (configuration == null || configuration.getOwner() != settingOwner) {
-            guiValuesHolder.plugin().getLogger().warning(String.format("No suitable configuration found, there should always a default configuration present, this is a bug!"));
+        if (optionalConfig.isEmpty()) {
+            guiValuesHolder.plugin().getLogger().warning(String.format("No gui specific config found, it should always be possible to build one with default value, this is a bug!"));
             return "UNKNOWN";
         }
 
-        Value<?, ?, ?> value = configuration.getValue(setting);
+        Config config = optionalConfig.get();
+        Configuration configuration = config.getFeature();
 
-        return guiValuesHolder.valueTraverser().traverse(value, "%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%");
+        return "§r§f%%translation:[feature-generators." + feature.generator().getKey().getNamespace() + "." + feature.generator().getKey().getKey() + ".name]%:%%new-line%" + guiValuesHolder.valueTraverser().traverse(configuration);
     }
 
     private static List<FeaturePlacementModifier> buildList(OreControlManager oreControlManager, OreControlGuiManager guiManager, GuiInfo guiInfo) {

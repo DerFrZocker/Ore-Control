@@ -65,6 +65,14 @@ feature_selection_screen:
     lore:
       left-click: "Click to select this feature!"
 feature_settings_screen:
+  name: "Choose A Type!"
+  default-icon:
+    lore:
+      left-click: "Click to edit this placement modifier!"
+  generator:
+    lore:
+      left-click: "Click to edit this generator!"
+all_settings_screen:
   name: "Choose A Setting!"
   default-icon:
     lore:

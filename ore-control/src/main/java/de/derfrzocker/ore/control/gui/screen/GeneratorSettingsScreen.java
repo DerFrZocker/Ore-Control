@@ -56,7 +56,7 @@ public class GeneratorSettingsScreen {
                 .identifier(Screens.GENERATOR_SETTINGS_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
-                .withSetting(guiValuesHolder.settingFunction().apply("generator_settings_screen.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("all_settings_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
                 .pageContent(Builders

@@ -1,0 +1,8 @@
+icons:
+  minecraft:
+    ore:
+      type: "DIAMOND_BLOCK"
+    scattered_ore:
+      type: "NETHERITE_BLOCK"
+    glowstone_blob:
+      type: "GLOWSTONE"

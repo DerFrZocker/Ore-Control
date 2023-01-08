@@ -55,7 +55,7 @@ public class PlacementModifierSettingsScreen {
                 .identifier(Screens.PLACEMENT_MODIFIER_SETTINGS_SCREEN)
                 .languageManager(guiValuesHolder.languageManager())
                 .withSetting(guiValuesHolder.settingFunction().apply("design.yml"))
-                .withSetting(guiValuesHolder.settingFunction().apply("placement_modifier_settings_screen.yml"))
+                .withSetting(guiValuesHolder.settingFunction().apply("all_settings_screen.yml"))
                 .addDefaultNextButton()
                 .addDefaultPreviousButton()
                 .pageContent(Builders
