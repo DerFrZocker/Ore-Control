@@ -47,7 +47,9 @@ import de.derfrzocker.ore.control.gui.screen.ConfigInfosScreen;
 import de.derfrzocker.ore.control.gui.screen.ExtraValuesScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSelectionScreen;
 import de.derfrzocker.ore.control.gui.screen.FeatureSettingsScreen;
+import de.derfrzocker.ore.control.gui.screen.GeneratorSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
+import de.derfrzocker.ore.control.gui.screen.PlacementModifierSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
@@ -113,7 +115,9 @@ public class OreControlGuiManager implements Listener {
         register(ExtraValuesScreen.getGui(guiValuesHolder));
         register(FeatureSelectionScreen.getGui(guiValuesHolder));
         register(FeatureSettingsScreen.getGui(guiValuesHolder));
+        register(GeneratorSettingsScreen.getGui(guiValuesHolder));
         register(LanguageScreen.getGui(guiValuesHolder));
+        register(PlacementModifierSettingsScreen.getGui(guiValuesHolder));
 
         // Register value screens
         register(BiasedToBottomIntegerType.type(), BiasedToBottomIntegerScreen.getGui(guiValuesHolder));

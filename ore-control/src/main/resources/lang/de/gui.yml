@@ -65,6 +65,14 @@ feature_selection_screen:
     lore:
       left-click: "Klicke, um dieses Feature auszuwählen!"
 feature_settings_screen:
+  name: "Wähle Ein Type!"
+  default-icon:
+    lore:
+      left-click: "Klicke, um diesen Plaziermodifikator zu bearbeiten!"
+  generator:
+    lore:
+      left-click: "Klicke, um diesen Generator zu bearbeiten!"
+all_settings_screen:
   name: "Wähle eine Einstellung!"
   default-icon:
     lore:
