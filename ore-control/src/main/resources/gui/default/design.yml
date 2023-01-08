@@ -74,3 +74,22 @@ back:
       lore:
         - "   "
         - "&7>> &b%%translation:[design.back.lore.left-click]% &7<<"
+info:
+  slot: 7
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '&f%%translation:[info.name]%'
+      lore:
+        - "   "
+        - "&7>> &b%%translation:[info.lore.left-click]% &7<<"
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: be211c23-d8aa-4119-bd0d-7f50fd115d9f
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxYWZlOTczYzU0ODJmZGM3MWU2YWExMDY5ODgzM2M3OWM0MzdmMjEzMDhlYTlhMWEwOTU3NDZlYzI3NGEwZiJ9fX0=

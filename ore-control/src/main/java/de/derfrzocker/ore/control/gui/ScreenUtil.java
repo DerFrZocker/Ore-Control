@@ -26,10 +26,14 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.Setting;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -133,6 +137,26 @@ public final class ScreenUtil {
                             Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
                             guiData.setToEditValue(toEdit);
                             guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), toEdit);
+                        })
+                );
+    }
+
+    public static ButtonContextBuilder getInfoButton(GuiValuesHolder guiValuesHolder, InfoLink... infoLinks) {
+        return Builders
+                .buttonContext()
+                .identifier("info")
+                .button(Builders
+                        .button()
+                        .identifier("info")
+                        .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                        .withAction(clickAction -> {
+                            // TODO better format
+                            for (InfoLink infoLink : infoLinks) {
+                                TextComponent component = new TextComponent(infoLink.toString());
+                                component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, infoLink.getUrl().apply(guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()))));
+                                clickAction.getPlayer().spigot().sendMessage(component);
+                            }
+                            clickAction.getPlayer().closeInventory();
                         })
                 );
     }

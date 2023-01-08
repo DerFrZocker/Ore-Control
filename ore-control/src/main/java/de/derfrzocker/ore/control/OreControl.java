@@ -87,6 +87,7 @@ import java.util.List;
 public class OreControl extends JavaPlugin implements Listener {
 
     private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_19_R2, Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
+    public final static String BASE_WIKI_URL = "https://github.com/DerFrZocker/Ore-Control/wiki/";
 
     private Version version = Version.UNKNOWN;
     private boolean loaded = false;

@@ -11,6 +11,10 @@ design:
     name: "Zurück"
     lore:
       left-click: "Klicke, um einen Schritt zurück zu gehen!"
+info:
+  name: "Info"
+  lore:
+    left-click: "Klicke, für nützliche Links!"
 config_info_screen:
   name: "Wähle Einen Typ!"
   whole-world:

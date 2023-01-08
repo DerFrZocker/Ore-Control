@@ -34,6 +34,7 @@ import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.ore.control.gui.SettingWrapper;
+import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -104,6 +105,7 @@ public class PlacementModifierSettingsScreen {
                             guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), value);
                         })
                 )
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, InfoLink.PLACEMENT_MODIFIER_INFO))
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }

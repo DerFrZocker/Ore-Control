@@ -11,6 +11,10 @@ design:
     name: "Back"
     lore:
       left-click: "Click to go a step back!"
+info:
+  name: "Info"
+  lore:
+    left-click: "Click for some useful links!"
 language_screen:
   name: "Choose A Language!"
   finished:
