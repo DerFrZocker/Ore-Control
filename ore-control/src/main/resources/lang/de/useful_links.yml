@@ -1,0 +1,8 @@
+useful-links:
+  header: "&7~~~~~~~~~~~~~~~~~&bNützliche Links&7~~~~~~~~~~~~~~~~~"
+  prefix: "&bOre Control &7>>&f "
+  footer: "&7~~~~~~~~~~~~~~~~~&bNützliche Links&7~~~~~~~~~~~~~~~~~"
+  hover: "Klicke Mich!"
+  questions:
+    GENERATOR_INFO: "Was ist %%translation:[namespaces.%generator-namespace%.name]% %%translation:[feature-generators.%generator-namespace%.%generator-key%.name]% für ein Generator?"
+    PLACEMENT_MODIFIER_INFO: "Was ist %%translation:[namespaces.%placement-modifier-namespace%.name]% %%translation:[placement-modifiers.%placement-modifier-namespace%.%placement-modifier-key%.name]% für ein Plaziermodifikator?"

@@ -1,0 +1,8 @@
+useful-links:
+  header: "&7~~~~~~~~~~~~~~~~~~&bUseful Links&7~~~~~~~~~~~~~~~~~~"
+  prefix: "&bOre Control &7>>&f "
+  footer: "&7~~~~~~~~~~~~~~~~~~&bUseful Links&7~~~~~~~~~~~~~~~~~~"
+  hover: "Click Me!"
+  questions:
+    GENERATOR_INFO: "What is %%translation:[namespaces.%generator-namespace%.name]% %%translation:[feature-generators.%generator-namespace%.%generator-key%.name]% for a generator?"
+    PLACEMENT_MODIFIER_INFO: "What is %%translation:[namespaces.%placement-modifier-namespace%.name]% %%translation:[placement-modifiers.%placement-modifier-namespace%.%placement-modifier-key%.name]% for a placement modifier?"

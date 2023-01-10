@@ -29,11 +29,16 @@ import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
+import de.derfrzocker.spigot.utils.language.Language;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.Setting;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -150,11 +155,37 @@ public final class ScreenUtil {
                         .identifier("info")
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
-                            // TODO better format
-                            for (InfoLink infoLink : infoLinks) {
-                                TextComponent component = new TextComponent(infoLink.toString());
-                                component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, infoLink.getUrl().apply(guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer()))));
-                                clickAction.getPlayer().spigot().sendMessage(component);
+                            Language language = guiValuesHolder.languageManager().getLanguage(clickAction.getPlayer());
+                            PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
+                            for (String header : MessageUtil.format(language, language.getSetting().get("useful-links.header", "HEADER STRING NOT PRESENT"))) {
+                                clickAction.getPlayer().sendMessage(header);
+                            }
+                            String prefixString = MessageUtil.formatToString(language, language.getSetting().get("useful-links.prefix", "PREFIX STRING NOT PRESENT"), MessageUtil.StringSeparator.SPACE);
+                            BaseComponent[] prefix = TextComponent.fromLegacyText(prefixString);
+
+                            String hoverString = MessageUtil.formatToString(language, language.getSetting().get("useful-links.hover", "HOVER STRING NOT PRESENT"), MessageUtil.StringSeparator.SPACE);
+                            BaseComponent[] hoverComponent = TextComponent.fromLegacyText(hoverString);
+                            HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hoverComponent));
+
+                            for (InfoLink infoLink: infoLinks) {
+                                ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, infoLink.getUrl().apply(playerGuiData));
+                                String questionString = MessageUtil.formatToString(language, language.getSetting().get("useful-links.questions." + infoLink, "NO QUESTIONS FOUND FOR " + clickEvent), MessageUtil.StringSeparator.SPACE, infoLink.getMessageValues().apply(playerGuiData));
+                                BaseComponent[] questions = TextComponent.fromLegacyText(questionString);
+
+                                for (BaseComponent component : questions) {
+                                    component.setClickEvent(clickEvent);
+                                    component.setHoverEvent(hoverEvent);
+                                }
+
+                                BaseComponent[] messages = new BaseComponent[prefix.length + questions.length];
+                                System.arraycopy(prefix, 0, messages, 0, prefix.length);
+                                System.arraycopy(questions, 0, messages, prefix.length, questions.length);
+
+                                clickAction.getPlayer().spigot().sendMessage(messages);
+                            }
+
+                            for (String footer : MessageUtil.format(language, language.getSetting().get("useful-links.footer", "FOOTER STRING NOT PRESENT"))) {
+                                clickAction.getPlayer().sendMessage(footer);
                             }
                             clickAction.getPlayer().closeInventory();
                         })
