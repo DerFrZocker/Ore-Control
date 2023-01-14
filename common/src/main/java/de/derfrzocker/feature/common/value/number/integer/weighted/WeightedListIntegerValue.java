@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.common.value.number.integer.weighted;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -106,6 +107,15 @@ public class WeightedListIntegerValue extends IntegerValue {
 
     public Map<IntegerValue, IntegerValue> getDistribution() {
         return distribution;
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        for (Map.Entry<IntegerValue, IntegerValue> entry : getDistribution().entrySet()) {
+            entry.getKey().setValueLocation(valueLocation);
+            entry.getValue().setValueLocation(valueLocation);
+        }
     }
 
     @Override

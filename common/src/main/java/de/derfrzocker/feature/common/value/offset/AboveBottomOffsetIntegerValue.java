@@ -25,9 +25,11 @@
 
 package de.derfrzocker.feature.common.value.offset;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.spigot.utils.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -68,8 +70,15 @@ public abstract class AboveBottomOffsetIntegerValue extends IntegerValue {
     }
 
     public void setBase(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.base = integerValue;
         dirty = true;
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        getBase().setValueLocation(valueLocation);
     }
 
     @Override

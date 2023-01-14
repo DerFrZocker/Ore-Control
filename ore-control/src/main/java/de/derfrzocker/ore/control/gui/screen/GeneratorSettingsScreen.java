@@ -29,6 +29,7 @@ import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.Feature;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
@@ -98,7 +99,9 @@ public class GeneratorSettingsScreen {
                                 return;
                             }
 
+                            ValueLocation valueLocation = value.getValueLocation();
                             value = value.clone();
+                            value.setValueLocation(valueLocation);
 
                             playerGuiData.setOriginalValue(value);
                             playerGuiData.setToEditValue(value);

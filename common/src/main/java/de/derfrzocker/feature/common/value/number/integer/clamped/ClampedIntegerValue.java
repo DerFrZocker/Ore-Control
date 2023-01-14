@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.common.value.number.integer.clamped;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.spigot.utils.Pair;
@@ -106,6 +107,7 @@ public class ClampedIntegerValue extends IntegerValue {
     }
 
     public void setSource(IntegerValue source) {
+        source.setValueLocation(getValueLocation());
         this.source = source;
         dirty = true;
     }
@@ -115,6 +117,7 @@ public class ClampedIntegerValue extends IntegerValue {
     }
 
     public void setMinInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.minInclusive = integerValue;
         dirty = true;
     }
@@ -124,6 +127,7 @@ public class ClampedIntegerValue extends IntegerValue {
     }
 
     public void setMaxInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.maxInclusive = integerValue;
         dirty = true;
     }
@@ -131,6 +135,14 @@ public class ClampedIntegerValue extends IntegerValue {
     @Override
     public ClampedIntegerValue clone() {
         return new ClampedIntegerValue(source == null ? null : source.clone(), minInclusive == null ? null : minInclusive.clone(), maxInclusive == null ? null : maxInclusive.clone());
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        getSource().setValueLocation(valueLocation);
+        getMinInclusive().setValueLocation(valueLocation);
+        getMaxInclusive().setValueLocation(valueLocation);
     }
 
     @Override

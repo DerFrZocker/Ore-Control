@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.common.value.number.integer.trapezoid;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.spigot.utils.Pair;
@@ -113,6 +114,7 @@ public class TrapezoidIntegerValue extends IntegerValue {
     }
 
     public void setMinInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.minInclusive = integerValue;
         dirty = true;
     }
@@ -122,6 +124,7 @@ public class TrapezoidIntegerValue extends IntegerValue {
     }
 
     public void setMaxInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.maxInclusive = integerValue;
         dirty = true;
     }
@@ -131,6 +134,7 @@ public class TrapezoidIntegerValue extends IntegerValue {
     }
 
     public void setPlateau(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.plateau = integerValue;
         dirty = true;
     }
@@ -138,6 +142,14 @@ public class TrapezoidIntegerValue extends IntegerValue {
     @Override
     public TrapezoidIntegerValue clone() {
         return new TrapezoidIntegerValue(minInclusive == null ? null : minInclusive.clone(), maxInclusive == null ? null : maxInclusive.clone(), plateau == null ? null : plateau.clone());
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        getPlateau().setValueLocation(valueLocation);
+        getMinInclusive().setValueLocation(valueLocation);
+        getMaxInclusive().setValueLocation(valueLocation);
     }
 
     @Override

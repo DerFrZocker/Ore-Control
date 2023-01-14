@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.common.value.number.integer.clamped;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
@@ -120,6 +121,7 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     }
 
     public void setMean(FloatValue mean) {
+        mean.setValueLocation(getValueLocation());
         this.mean = mean;
         dirty = true;
     }
@@ -129,6 +131,7 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     }
 
     public void setDeviation(FloatValue deviation) {
+        deviation.setValueLocation(getValueLocation());
         this.deviation = deviation;
         dirty = true;
     }
@@ -138,6 +141,7 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     }
 
     public void setMinInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.minInclusive = integerValue;
         dirty = true;
     }
@@ -147,6 +151,7 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     }
 
     public void setMaxInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.maxInclusive = integerValue;
         dirty = true;
     }
@@ -154,6 +159,15 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     @Override
     public ClampedNormalIntegerValue clone() {
         return new ClampedNormalIntegerValue(mean == null ? null : mean.clone(), deviation == null ? null : deviation.clone(), minInclusive == null ? null : minInclusive.clone(), maxInclusive == null ? null : maxInclusive.clone());
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        getMean().setValueLocation(valueLocation);
+        getDeviation().setValueLocation(valueLocation);
+        getMinInclusive().setValueLocation(valueLocation);
+        getMaxInclusive().setValueLocation(valueLocation);
     }
 
     @Override

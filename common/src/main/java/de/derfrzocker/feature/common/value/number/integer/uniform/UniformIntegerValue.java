@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.common.value.number.integer.uniform;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.spigot.utils.Pair;
@@ -96,6 +97,7 @@ public class UniformIntegerValue extends IntegerValue {
     }
 
     public void setMinInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.minInclusive = integerValue;
         dirty = true;
     }
@@ -105,8 +107,16 @@ public class UniformIntegerValue extends IntegerValue {
     }
 
     public void setMaxInclusive(IntegerValue integerValue) {
+        integerValue.setValueLocation(getValueLocation());
         this.maxInclusive = integerValue;
         dirty = true;
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        getMinInclusive().setValueLocation(valueLocation);
+        getMaxInclusive().setValueLocation(valueLocation);
     }
 
     @Override

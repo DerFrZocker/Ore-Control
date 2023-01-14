@@ -32,6 +32,7 @@ import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
 import de.derfrzocker.feature.common.value.bool.BooleanValue;
@@ -206,7 +207,10 @@ public class FeatureSettingsScreen {
                                         return;
                                     }
 
+
+                                    ValueLocation valueLocation = value.getValueLocation();
                                     value = value.clone();
+                                    value.setValueLocation(valueLocation);
 
                                     playerGuiData.setOriginalValue(value);
                                     playerGuiData.setToEditValue(value);
