@@ -33,10 +33,12 @@ import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
+import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import org.bukkit.plugin.Plugin;
 
@@ -193,6 +195,25 @@ public class PlayerGuiData {
                 plugin.getLogger().warning(String.format("Expected a setting owner of type '%s' or '%s' but got '%s', this is a bug!", FeatureGenerator.class, FeaturePlacementModifier.class, settingWrapper.getSettingOwner().getClass()));
                 return;
             }
+
+            ValueLocation valueLocation = switch (getConfigInfo().getConfigType()) {
+                case GLOBAL -> {
+                    if (getBiome() == null) {
+                        yield ValueLocation.GLOBAL_WORLD;
+                    } else {
+                        yield ValueLocation.GLOBAL_BIOME;
+                    }
+                }
+                case WORLD, TEMPLATE -> {
+                    if (getBiome() == null) {
+                        yield ValueLocation.PER_WORLD;
+                    } else {
+                        yield  ValueLocation.PER_BIOME;
+                    }
+                }
+            };
+
+            getOriginalValue().setValueLocation(valueLocation);
 
             configuration.setValue(settingWrapper.getSetting(), getOriginalValue());
             setApplied(true);
