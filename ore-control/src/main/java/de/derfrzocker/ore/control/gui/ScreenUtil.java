@@ -156,6 +156,8 @@ public final class ScreenUtil {
                         .identifier("info")
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
+                            guiValuesHolder.stats().incrementUsefulLinksClicksCount();
+
                             Language language = guiValuesHolder.languageManager().getLanguage(clickAction.getPlayer());
                             PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
                             for (String header : MessageUtil.format(language, language.getSetting().get("useful-links.header", "HEADER STRING NOT PRESENT"))) {

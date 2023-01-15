@@ -29,6 +29,7 @@ import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.spigot.utils.language.Language;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Stats {
 
@@ -51,6 +53,7 @@ public class Stats {
     private final Map<String, Integer> featureGeneratorNamespace = new LinkedHashMap<>();
 
     private final Map<String, Integer> languages = new LinkedHashMap<>();
+    private AtomicInteger usefulLinksClickCount = new AtomicInteger(0);
     private final File languageFile;
 
     public Stats(JavaPlugin plugin, OreControlRegistries registries) {
@@ -60,6 +63,7 @@ public class Stats {
         metrics.addCustomChart(new AdvancedPie("placement_modifier_namespace", () -> placementModifierNamespace));
         metrics.addCustomChart(new AdvancedPie("feature_generator_namespace", () -> featureGeneratorNamespace));
         metrics.addCustomChart(new AdvancedPie("language", () -> languages));
+        metrics.addCustomChart(new SingleLineChart("useful_links_click_count", () -> usefulLinksClickCount.getAndSet(0)));
 
         registries.getBiomeRegistry().getValues().keySet().forEach(key -> biomeNamespace.put(key.getNamespace(), 1));
         registries.getFeatureRegistry().getValues().keySet().forEach(key -> featureNamespace.put(key.getNamespace(), 1));
@@ -104,5 +108,9 @@ public class Stats {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void incrementUsefulLinksClicksCount() {
+        usefulLinksClickCount.incrementAndGet();
     }
 }
