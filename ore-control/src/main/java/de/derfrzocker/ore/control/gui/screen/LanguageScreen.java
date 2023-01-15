@@ -1,11 +1,15 @@
 package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.ore.control.gui.Screens;
+import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.language.Language;
 import org.bukkit.entity.Player;
+
+import static de.derfrzocker.ore.control.gui.info.InfoLinkData.of;
 
 public class LanguageScreen {
 
@@ -38,6 +42,7 @@ public class LanguageScreen {
                                 .withAction(clickAction -> guiValuesHolder.stats().addLanguage(guiValuesHolder.languageManager().getLanguage(clickAction.getPlayer())))
                         )
                 )
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, of(InfoLink.INVENTORY_GUI_SCREENS_EXPLAINED, "Choose-A-Language", "language_screen")))
                 .build();
     }
 

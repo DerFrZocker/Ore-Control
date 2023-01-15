@@ -49,6 +49,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static de.derfrzocker.ore.control.gui.info.InfoLinkData.of;
+
 public class PlacementModifierSettingsScreen {
 
     public static InventoryGui getGui(GuiValuesHolder guiValuesHolder) {
@@ -108,7 +110,7 @@ public class PlacementModifierSettingsScreen {
                             guiValuesHolder.guiManager().openValueScreen(clickAction.getPlayer(), value);
                         })
                 )
-                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, InfoLink.PLACEMENT_MODIFIER_INFO))
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, of(InfoLink.PLACEMENT_MODIFIER_INFO)))
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
                 .build();
     }

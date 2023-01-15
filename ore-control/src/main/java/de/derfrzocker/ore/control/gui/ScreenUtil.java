@@ -27,6 +27,7 @@ package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.ore.control.gui.info.InfoLink;
+import de.derfrzocker.ore.control.gui.info.InfoLinkData;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
 import de.derfrzocker.spigot.utils.language.Language;
@@ -146,7 +147,7 @@ public final class ScreenUtil {
                 );
     }
 
-    public static ButtonContextBuilder getInfoButton(GuiValuesHolder guiValuesHolder, InfoLink... infoLinks) {
+    public static ButtonContextBuilder getInfoButton(GuiValuesHolder guiValuesHolder, InfoLinkData... infoLinkData) {
         return Builders
                 .buttonContext()
                 .identifier("info")
@@ -167,9 +168,9 @@ public final class ScreenUtil {
                             BaseComponent[] hoverComponent = TextComponent.fromLegacyText(hoverString);
                             HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hoverComponent));
 
-                            for (InfoLink infoLink: infoLinks) {
-                                ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, infoLink.getUrl().apply(playerGuiData));
-                                String questionString = MessageUtil.formatToString(language, language.getSetting().get("useful-links.questions." + infoLink, "NO QUESTIONS FOUND FOR " + clickEvent), MessageUtil.StringSeparator.SPACE, infoLink.getMessageValues().apply(playerGuiData));
+                            for (InfoLinkData infoLink: infoLinkData) {
+                                ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, infoLink.url(playerGuiData));
+                                String questionString = MessageUtil.formatToString(language, language.getSetting().get("useful-links.questions." + infoLink.infoLink(), "NO QUESTIONS FOUND FOR " + infoLink.infoLink()), MessageUtil.StringSeparator.SPACE, infoLink.messageValues(playerGuiData));
                                 BaseComponent[] questions = TextComponent.fromLegacyText(questionString);
 
                                 for (BaseComponent component : questions) {

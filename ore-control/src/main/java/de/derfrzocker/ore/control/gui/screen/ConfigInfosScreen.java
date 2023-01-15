@@ -27,7 +27,9 @@ package de.derfrzocker.ore.control.gui.screen;
 
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
+import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.ore.control.gui.Screens;
+import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -36,6 +38,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static de.derfrzocker.ore.control.gui.info.InfoLinkData.of;
 
 public class ConfigInfosScreen {
 
@@ -71,6 +75,7 @@ public class ConfigInfosScreen {
                                 .withAction(clickAction -> guiValuesHolder.guiManager().openScreen(Screens.LANGUAGE_SCREEN, clickAction.getPlayer()))
                         )
                 )
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, of(InfoLink.INVENTORY_GUI_SCREENS_EXPLAINED, "Choose-A-Config", "config_infos_screen")))
                 .build();
     }
 }

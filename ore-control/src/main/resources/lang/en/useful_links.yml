@@ -6,3 +6,4 @@ useful-links:
   questions:
     GENERATOR_INFO: "What is %%translation:[namespaces.%generator-namespace%.name]% %%translation:[feature-generators.%generator-namespace%.%generator-key%.name]% for a generator?"
     PLACEMENT_MODIFIER_INFO: "What is %%translation:[namespaces.%placement-modifier-namespace%.name]% %%translation:[placement-modifiers.%placement-modifier-namespace%.%placement-modifier-key%.name]% for a placement modifier?"
+    INVENTORY_GUI_SCREENS_EXPLAINED: "What can I set / make in the '%%translation:[%screen-name-key%.name]%' gui screen?"
