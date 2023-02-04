@@ -28,8 +28,11 @@ package de.derfrzocker.ore.control.gui.screen;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.ore.control.gui.Screens;
+import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+
+import static de.derfrzocker.ore.control.gui.info.InfoLinkData.of;
 
 public class ConfigInfoScreen {
 
@@ -71,6 +74,7 @@ public class ConfigInfoScreen {
                         )
                 )
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, of(InfoLink.INVENTORY_GUI_SCREENS_EXPLAINED, "Choose-A-Type", "config_info_screen")))
                 .build();
     }
 }
