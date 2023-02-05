@@ -34,6 +34,7 @@ import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.ore.control.gui.Screens;
+import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.spigot.utils.gui.GuiInfo;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
@@ -44,6 +45,8 @@ import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static de.derfrzocker.ore.control.gui.info.InfoLinkData.of;
 
 public class BiomeScreen {
 
@@ -68,6 +71,7 @@ public class BiomeScreen {
                         .withAction((clickAction, biome) -> guiValuesHolder.guiManager().openScreen(Screens.FEATURE_SELECTION_SCREEN, clickAction.getPlayer()))
                 )
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, of(InfoLink.INVENTORY_GUI_SCREENS_EXPLAINED, "Choose-A-Biome", "biome_screen")))
                 .build();
     }
 
