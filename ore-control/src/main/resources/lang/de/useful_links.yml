@@ -7,3 +7,6 @@ useful-links:
     GENERATOR_INFO: "Was ist %%translation:[namespaces.%generator-namespace%.name]% %%translation:[feature-generators.%generator-namespace%.%generator-key%.name]% für ein Generator?"
     PLACEMENT_MODIFIER_INFO: "Was ist %%translation:[namespaces.%placement-modifier-namespace%.name]% %%translation:[placement-modifiers.%placement-modifier-namespace%.%placement-modifier-key%.name]% für ein Plaziermodifikator?"
     INVENTORY_GUI_SCREENS_EXPLAINED: "Was kann ich setzen / machen in der '%%translation:[%screen-name-key%.name]%' gui screen?"
+    COMMON_QUESTIONS: "%%translation:[useful-links.common-questions.%common-question-key%]%"
+  common-questions:
+    why-are-there-multiple-features-with-the-same-ore: "Warum gibt es mehrere features mit dem selben Erz?"

@@ -84,7 +84,10 @@ public class FeatureSelectionScreen {
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).setBiome(null))
                 .addButtonContext(ScreenUtil.getBackButton(guiValuesHolder.guiManager()))
-                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder, of(InfoLink.INVENTORY_GUI_SCREENS_EXPLAINED, "Choose-A-Feature", "feature_selection_screen")))
+                .addButtonContext(ScreenUtil.getInfoButton(guiValuesHolder,
+                        of(InfoLink.INVENTORY_GUI_SCREENS_EXPLAINED, "Choose-A-Feature", "feature_selection_screen"),
+                        of(InfoLink.COMMON_QUESTIONS, "why-are-there-multiple-features-with-the-same-ore")
+                ))
                 .build();
     }
 
