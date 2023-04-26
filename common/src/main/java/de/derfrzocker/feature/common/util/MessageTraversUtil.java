@@ -18,12 +18,12 @@ public final class MessageTraversUtil {
     }
 
     @SafeVarargs
-    public static List<String> multiple(MessageTraversAble.StringFormatter formatter, int depth, String key, Pair<String, Value<?, ?, ?>>... values) {
+    public static List<String> multiple(MessageTraversAble.StringFormatter formatter, int depth, String key, Pair<String, MessageTraversAble>... values) {
         List<String> result = new LinkedList<>();
 
         result.add(formatter.format(depth, key, null));
 
-        for (Pair<String, Value<?, ?, ?>> pair : values) {
+        for (Pair<String, MessageTraversAble> pair : values) {
             int nextDepth = depth + 1;
             result.addAll(pair.getSecond().traverse(formatter, nextDepth, pair.getFirst()));
         }

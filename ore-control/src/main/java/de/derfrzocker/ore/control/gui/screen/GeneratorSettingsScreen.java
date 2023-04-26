@@ -131,7 +131,7 @@ public class GeneratorSettingsScreen {
         }
 
         Config config = optionalConfig.get();
-        Value<?,?,?> value = config.getFeature().getValue(setting);
+        Value<?, ?, ?> value = config.getFeature().getValue(setting);
 
         return guiValuesHolder.valueTraverser().traverse(value, "%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%");
     }

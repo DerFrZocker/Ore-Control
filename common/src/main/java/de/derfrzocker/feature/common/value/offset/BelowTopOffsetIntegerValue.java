@@ -31,7 +31,6 @@ import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.spigot.utils.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class BelowTopOffsetIntegerValue extends IntegerValue {

@@ -74,11 +74,6 @@ public class ClampedNormalIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public ClampedNormalIntegerValue createNewValue() {
         return new ClampedNormalIntegerValue(new FixedFloatValue(0), new FixedFloatValue(0), new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(1));
     }

@@ -17,8 +17,7 @@ public enum InfoLink {
     INVENTORY_GUI_SCREENS_EXPLAINED((playerGuiData, data) -> OreControl.BASE_WIKI_URL + "Inventory-Gui-Screens-Explained#" + data[0],
             (playerGuiData, data) -> new MessageValue[]{new MessageValue("screen-name-key", data[1])}),
     COMMON_QUESTIONS((playerGuiData, data) -> OreControl.BASE_WIKI_URL + "Common-Questions#" + data[0],
-            (playerGuiData, data) -> new MessageValue[]{new MessageValue("common-question-key", data[0])})
-    ;
+            (playerGuiData, data) -> new MessageValue[]{new MessageValue("common-question-key", data[0])});
 
     private final BiFunction<PlayerGuiData, String[], String> url;
     private final BiFunction<PlayerGuiData, String[], MessageValue[]> messageValues;

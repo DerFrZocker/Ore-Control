@@ -30,7 +30,6 @@ import de.derfrzocker.feature.api.ConfigurationAble;
 import de.derfrzocker.feature.api.Feature;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
-import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
@@ -56,7 +55,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 // TODO clean up

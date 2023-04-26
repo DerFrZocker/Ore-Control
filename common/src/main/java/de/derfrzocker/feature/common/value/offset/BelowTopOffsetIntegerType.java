@@ -68,11 +68,6 @@ public class BelowTopOffsetIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public BelowTopOffsetIntegerValue createNewValue() {
         return newValue.apply(new FixedDoubleToIntegerValue(0));
     }

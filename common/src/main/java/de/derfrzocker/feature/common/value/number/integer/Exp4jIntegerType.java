@@ -21,11 +21,6 @@ public class Exp4jIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public Exp4jIntegerValue createNewValue() {
         return new Exp4jIntegerValue("0");
     }

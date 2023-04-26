@@ -23,38 +23,38 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_18_R1.value.target;
+package de.derfrzocker.feature.common.value.target;
 
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class FixedTargetValue extends TargetValue {
+public class FixedTargetListValue extends TargetListValue {
 
-    private final OreConfiguration.TargetBlockState value;
+    private final List<TargetBlockState> value;
     private boolean dirty = false;
 
-    public FixedTargetValue(OreConfiguration.TargetBlockState value) {
+    public FixedTargetListValue(List<TargetBlockState> value) {
         this.value = value;
     }
 
     @Override
-    public FixedTargetType getValueType() {
-        return FixedTargetType.INSTANCE;
+    public FixedTargetListType getValueType() {
+        return FixedTargetListType.type();
     }
 
     @Override
-    public OreConfiguration.TargetBlockState getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
+    public List<TargetBlockState> getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
         return value;
     }
 
-    public OreConfiguration.TargetBlockState getValue() {
+    public List<TargetBlockState> getValue() {
         return value;
     }
 
@@ -69,12 +69,29 @@ public class FixedTargetValue extends TargetValue {
     }
 
     @Override
-    public FixedTargetValue clone() {
-        return new FixedTargetValue(value);
+    public FixedTargetListValue clone() {
+        if (value == null) {
+            return new FixedTargetListValue(null);
+        }
+
+        List<TargetBlockState> values = new ArrayList<>();
+
+        for (TargetBlockState targetBlockState : value) {
+            values.add(targetBlockState.clone());
+        }
+
+        return new FixedTargetListValue(values);
     }
 
     @Override
     public List<String> traverse(StringFormatter formatter, int depth, String key) {
-        return new ArrayList<>();
+        List<String> result = new LinkedList<>();
+        result.add(formatter.format(depth, key, null));
+        for (TargetBlockState state : getValue()) {
+            List<String> states = state.traverse(formatter, depth + 1, "state");
+            result.addAll(states);
+        }
+
+        return result;
     }
 }

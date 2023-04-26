@@ -46,11 +46,6 @@ public class FixedDoubleToIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public FixedDoubleToIntegerValue createNewValue() {
         return new FixedDoubleToIntegerValue(0);
     }

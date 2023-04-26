@@ -23,10 +23,11 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_19_R3.value.target;
+package de.derfrzocker.feature.common.value.target;
 
 import de.derfrzocker.feature.api.ValueType;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 
-public abstract class TargetType implements ValueType<TargetValue, TargetType, OreConfiguration.TargetBlockState> {
+import java.util.List;
+
+public abstract class TargetListType implements ValueType<TargetListValue, TargetListType, List<TargetBlockState>> {
 }

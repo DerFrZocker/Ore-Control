@@ -44,11 +44,6 @@ public class FixedBooleanType extends BooleanType {
     }
 
     @Override
-    public Class<Boolean> getTypeClass() {
-        return Boolean.class;
-    }
-
-    @Override
     public FixedBooleanValue createNewValue() {
         return new FixedBooleanValue(false);
     }

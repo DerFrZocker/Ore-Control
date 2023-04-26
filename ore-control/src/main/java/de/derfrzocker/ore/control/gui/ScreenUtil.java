@@ -26,7 +26,6 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.feature.api.Value;
-import de.derfrzocker.ore.control.gui.info.InfoLink;
 import de.derfrzocker.ore.control.gui.info.InfoLinkData;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
@@ -36,7 +35,6 @@ import de.derfrzocker.spigot.utils.message.MessageValue;
 import de.derfrzocker.spigot.utils.setting.Setting;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -170,7 +168,7 @@ public final class ScreenUtil {
                             BaseComponent[] hoverComponent = TextComponent.fromLegacyText(hoverString);
                             HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hoverComponent));
 
-                            for (InfoLinkData infoLink: infoLinkData) {
+                            for (InfoLinkData infoLink : infoLinkData) {
                                 ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, infoLink.url(playerGuiData));
                                 String questionString = MessageUtil.formatToString(language, language.getSetting().get("useful-links.questions." + infoLink.infoLink(), "NO QUESTIONS FOUND FOR " + infoLink.infoLink()), MessageUtil.StringSeparator.SPACE, infoLink.messageValues(playerGuiData));
                                 BaseComponent[] questions = TextComponent.fromLegacyText(questionString);

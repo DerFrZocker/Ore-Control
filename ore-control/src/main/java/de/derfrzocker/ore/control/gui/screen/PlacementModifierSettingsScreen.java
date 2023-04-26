@@ -130,7 +130,7 @@ public class PlacementModifierSettingsScreen {
         }
 
         Config config = optionalConfig.get();
-        Value<?,?,?> value = config.getPlacements().get(playerGuiData.getPlacementModifier()).getValue(setting);
+        Value<?, ?, ?> value = config.getPlacements().get(playerGuiData.getPlacementModifier()).getValue(setting);
 
         return guiValuesHolder.valueTraverser().traverse(value, "%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%");
     }

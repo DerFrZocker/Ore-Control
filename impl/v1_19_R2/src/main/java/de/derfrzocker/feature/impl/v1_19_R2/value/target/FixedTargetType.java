@@ -45,11 +45,6 @@ public class FixedTargetType extends TargetType {
     }
 
     @Override
-    public Class<OreConfiguration.TargetBlockState> getTypeClass() {
-        return OreConfiguration.TargetBlockState.class;
-    }
-
-    @Override
     public TargetValue createNewValue() {
         throw new UnsupportedOperationException("Not supported");
     }

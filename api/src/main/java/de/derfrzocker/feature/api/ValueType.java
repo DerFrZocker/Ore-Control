@@ -32,7 +32,5 @@ public interface ValueType<V extends Value<V, T, O>, T extends ValueType<V, T, O
 
     Codec<V> getCodec();
 
-    Class<O> getTypeClass();
-
     V createNewValue();
 }

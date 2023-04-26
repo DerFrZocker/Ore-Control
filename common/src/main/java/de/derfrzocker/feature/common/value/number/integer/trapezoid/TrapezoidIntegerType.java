@@ -69,11 +69,6 @@ public class TrapezoidIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public TrapezoidIntegerValue createNewValue() {
         return new TrapezoidIntegerValue(new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(1), new FixedDoubleToIntegerValue(0));
     }

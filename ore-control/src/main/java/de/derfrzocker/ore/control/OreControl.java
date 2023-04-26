@@ -28,6 +28,12 @@ package de.derfrzocker.ore.control;
 import com.google.common.base.Charsets;
 import com.mojang.serialization.Codec;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
+import de.derfrzocker.feature.common.ruletest.AlwaysTrueRuleTestType;
+import de.derfrzocker.feature.common.ruletest.BlockMatchRuleTestType;
+import de.derfrzocker.feature.common.ruletest.BlockStateMatchRuleTestType;
+import de.derfrzocker.feature.common.ruletest.RandomBlockMatchRuleTestType;
+import de.derfrzocker.feature.common.ruletest.RandomBlockStateMatchRuleTestType;
+import de.derfrzocker.feature.common.ruletest.TagMatchRuleTestType;
 import de.derfrzocker.feature.common.value.bool.BooleanType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
@@ -42,6 +48,8 @@ import de.derfrzocker.feature.common.value.number.integer.clamped.ClampedNormalI
 import de.derfrzocker.feature.common.value.number.integer.trapezoid.TrapezoidIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.uniform.UniformIntegerType;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
+import de.derfrzocker.feature.common.value.target.FixedTargetListType;
+import de.derfrzocker.feature.common.value.target.TargetListType;
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
@@ -87,9 +95,8 @@ import java.util.List;
 // TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
 
-    private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_19_R3, Version.v1_19_R2, Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
     public final static String BASE_WIKI_URL = "https://github.com/DerFrZocker/Ore-Control/wiki/";
-
+    private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_19_R3, Version.v1_19_R2, Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
     private Version version = Version.UNKNOWN;
     private boolean loaded = false;
     private OreControlManager oreControlManager;
@@ -170,10 +177,20 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private void register(OreControlRegistries registries) {
+        registerRuleTests(registries);
         registerValueTypes(registries);
         registerFeatureGenerators(registries);
         registerPlacementModifier(registries);
         nmsReplacer.register();
+    }
+
+    private void registerRuleTests(OreControlRegistries registries) {
+        registries.getRuleTestTypeRegistry().register(AlwaysTrueRuleTestType.INSTANCE);
+        registries.getRuleTestTypeRegistry().register(BlockMatchRuleTestType.INSTANCE);
+        registries.getRuleTestTypeRegistry().register(BlockStateMatchRuleTestType.INSTANCE);
+        registries.getRuleTestTypeRegistry().register(RandomBlockMatchRuleTestType.INSTANCE);
+        registries.getRuleTestTypeRegistry().register(RandomBlockStateMatchRuleTestType.INSTANCE);
+        registries.getRuleTestTypeRegistry().register(TagMatchRuleTestType.INSTANCE);
     }
 
     private void registerValueTypes(OreControlRegistries registries) {
@@ -188,6 +205,7 @@ public class OreControl extends JavaPlugin implements Listener {
         registries.getValueTypeRegistry(IntegerType.class).register(Exp4jIntegerType.INSTANCE);
         registries.getValueTypeRegistry(FloatType.class).register(FixedFloatType.INSTANCE);
         registries.getValueTypeRegistry(BooleanType.class).register(FixedBooleanType.INSTANCE);
+        registries.getValueTypeRegistry(TargetListType.class).register(new FixedTargetListType(registries));
     }
 
     private void registerFeatureGenerators(OreControlRegistries registries) {

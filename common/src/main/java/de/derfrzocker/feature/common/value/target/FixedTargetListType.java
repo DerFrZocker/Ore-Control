@@ -23,58 +23,47 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_19_R3.value.target;
+package de.derfrzocker.feature.common.value.target;
 
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
-import org.bukkit.util.BlockVector;
+import com.mojang.serialization.Codec;
+import de.derfrzocker.feature.api.Registries;
+import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-public class FixedTargetValue extends TargetValue {
+public class FixedTargetListType extends TargetListType {
 
-    private final OreConfiguration.TargetBlockState value;
-    private boolean dirty = false;
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_ore_target_list");
+    private static FixedTargetListType type = null;
+    private final Codec<FixedTargetListValue> codec;
 
-    public FixedTargetValue(OreConfiguration.TargetBlockState value) {
-        this.value = value;
+    public FixedTargetListType(Registries registries) {
+        if (type != null) {
+            throw new IllegalStateException("FixedTargetListType was already created!");
+        }
+
+        codec = Codec.list(TargetBlockState.createCodec(registries)).xmap(FixedTargetListValue::new, FixedTargetListValue::getValue);
+        type = this;
+    }
+
+    public static FixedTargetListType type() {
+        return type;
     }
 
     @Override
-    public FixedTargetType getValueType() {
-        return FixedTargetType.INSTANCE;
+    public Codec<TargetListValue> getCodec() {
+        return codec.xmap(value -> value, value -> (FixedTargetListValue) value);
     }
 
     @Override
-    public OreConfiguration.TargetBlockState getValue(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion) {
-        return value;
+    public TargetListValue createNewValue() {
+        return new FixedTargetListValue(new ArrayList<>());
     }
 
-    public OreConfiguration.TargetBlockState getValue() {
-        return value;
-    }
-
+    @NotNull
     @Override
-    public boolean isDirty() {
-        return dirty;
-    }
-
-    @Override
-    public void saved() {
-        dirty = false;
-    }
-
-    @Override
-    public FixedTargetValue clone() {
-        return new FixedTargetValue(value);
-    }
-
-    @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
-        return new ArrayList<>();
+    public NamespacedKey getKey() {
+        return KEY;
     }
 }

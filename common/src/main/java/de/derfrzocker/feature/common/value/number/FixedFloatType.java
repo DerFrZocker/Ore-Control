@@ -44,11 +44,6 @@ public class FixedFloatType extends FloatType {
     }
 
     @Override
-    public Class<Float> getTypeClass() {
-        return Float.class;
-    }
-
-    @Override
     public FixedFloatValue createNewValue() {
         return new FixedFloatValue(0);
     }

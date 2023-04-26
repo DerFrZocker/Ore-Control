@@ -67,11 +67,6 @@ public class BiasedToBottomIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public BiasedToBottomIntegerValue createNewValue() {
         return new BiasedToBottomIntegerValue(new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(1));
     }

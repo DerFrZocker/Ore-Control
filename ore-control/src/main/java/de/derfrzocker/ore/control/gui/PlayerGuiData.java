@@ -38,7 +38,6 @@ import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
-import de.derfrzocker.ore.control.api.config.ConfigType;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import org.bukkit.plugin.Plugin;
 
@@ -208,7 +207,7 @@ public class PlayerGuiData {
                     if (getBiome() == null) {
                         yield ValueLocation.PER_WORLD;
                     } else {
-                        yield  ValueLocation.PER_BIOME;
+                        yield ValueLocation.PER_BIOME;
                     }
                 }
             };

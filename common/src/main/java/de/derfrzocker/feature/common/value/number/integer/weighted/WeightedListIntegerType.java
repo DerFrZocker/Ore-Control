@@ -90,11 +90,6 @@ public class WeightedListIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public WeightedListIntegerValue createNewValue() {
         return new WeightedListIntegerValue(Collections.emptyMap());
     }

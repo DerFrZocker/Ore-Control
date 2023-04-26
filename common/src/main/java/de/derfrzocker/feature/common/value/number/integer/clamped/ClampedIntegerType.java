@@ -69,11 +69,6 @@ public class ClampedIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public ClampedIntegerValue createNewValue() {
         return new ClampedIntegerValue(new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(1));
     }

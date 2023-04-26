@@ -23,40 +23,14 @@
  *
  */
 
-package de.derfrzocker.feature.impl.v1_19_R3.value.target;
+package de.derfrzocker.feature.common.value.target;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import de.derfrzocker.feature.common.AbstractValue;
 
-public class FixedTargetType extends TargetType {
+import java.util.List;
 
-    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_ore_target");
-    public static final FixedTargetType INSTANCE = new FixedTargetType();
-    public static final Codec<FixedTargetValue> CODEC = OreConfiguration.TargetBlockState.CODEC.xmap(FixedTargetValue::new, FixedTargetValue::getValue);
-
-    private FixedTargetType() {
-    }
+public abstract class TargetListValue extends AbstractValue<TargetListValue, TargetListType, List<TargetBlockState>> {
 
     @Override
-    public Codec<TargetValue> getCodec() {
-        return CODEC.xmap(value -> value, value -> (FixedTargetValue) value);
-    }
-
-    @Override
-    public Class<OreConfiguration.TargetBlockState> getTypeClass() {
-        return OreConfiguration.TargetBlockState.class;
-    }
-
-    @Override
-    public TargetValue createNewValue() {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    @NotNull
-    @Override
-    public NamespacedKey getKey() {
-        return KEY;
-    }
+    public abstract TargetListValue clone();
 }

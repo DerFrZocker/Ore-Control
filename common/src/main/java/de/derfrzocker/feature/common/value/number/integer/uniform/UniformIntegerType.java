@@ -67,11 +67,6 @@ public class UniformIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public UniformIntegerValue createNewValue() {
         return new UniformIntegerValue(new FixedDoubleToIntegerValue(0), new FixedDoubleToIntegerValue(1));
     }

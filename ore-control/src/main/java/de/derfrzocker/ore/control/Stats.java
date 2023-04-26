@@ -53,8 +53,8 @@ public class Stats {
     private final Map<String, Integer> featureGeneratorNamespace = new LinkedHashMap<>();
 
     private final Map<String, Integer> languages = new LinkedHashMap<>();
-    private AtomicInteger usefulLinksClickCount = new AtomicInteger(0);
     private final File languageFile;
+    private AtomicInteger usefulLinksClickCount = new AtomicInteger(0);
 
     public Stats(JavaPlugin plugin, OreControlRegistries registries) {
         Metrics metrics = new Metrics(plugin, PLUGIN_ID);

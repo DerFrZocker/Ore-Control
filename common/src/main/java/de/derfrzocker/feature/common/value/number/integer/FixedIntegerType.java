@@ -46,11 +46,6 @@ public class FixedIntegerType extends IntegerType {
     }
 
     @Override
-    public Class<Integer> getTypeClass() {
-        return Integer.class;
-    }
-
-    @Override
     public FixedIntegerValue createNewValue() {
         return new FixedIntegerValue(0);
     }

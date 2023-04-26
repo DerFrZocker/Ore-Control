@@ -38,20 +38,18 @@ import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.common.feature.generator.configuration.EmptyFeatureConfiguration;
+import de.derfrzocker.feature.common.feature.generator.configuration.OreFeatureConfiguration;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
 import de.derfrzocker.feature.common.util.ValueLocationUtil;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanValue;
-import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerType;
-import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_19_R3.extra.OreVeinHandler;
 import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.GlowstoneBlobFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.OreFeatureGenerator;
 import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.ScatteredOreGenerator;
-import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.configuration.OreFeatureConfiguration;
 import de.derfrzocker.feature.impl.v1_19_R3.placement.CountModifier;
 import de.derfrzocker.feature.impl.v1_19_R3.placement.HeightRangeModifier;
 import de.derfrzocker.feature.impl.v1_19_R3.placement.RarityModifier;
@@ -61,8 +59,6 @@ import de.derfrzocker.feature.impl.v1_19_R3.value.heightmap.FixedHeightmapType;
 import de.derfrzocker.feature.impl.v1_19_R3.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_19_R3.value.offset.NMSAboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.impl.v1_19_R3.value.offset.NMSBelowTopOffsetIntegerValue;
-import de.derfrzocker.feature.impl.v1_19_R3.value.target.FixedTargetType;
-import de.derfrzocker.feature.impl.v1_19_R3.value.target.TargetType;
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
@@ -158,7 +154,6 @@ public class NMSReplacer_v1_19_R3 implements NMSReplacer {
     private void registerValueTypes() {
         registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries, NMSAboveBottomOffsetIntegerValue::new));
         registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries, NMSBelowTopOffsetIntegerValue::new));
-        registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
         registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
     }
 
@@ -335,11 +330,11 @@ public class NMSReplacer_v1_19_R3 implements NMSReplacer {
         if (configuredFeature.feature() instanceof OreFeature) {
             OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("ore")).get();
-            featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
+            featureConfiguration = OreFeatureGeneratorHook.createDefaultConfiguration(configuration, (FeatureGenerator<OreFeatureConfiguration>) featureGenerator);
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
             OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("scattered_ore")).get();
-            featureConfiguration = new OreFeatureConfiguration(featureGenerator, null, new FixedDoubleToIntegerValue(configuration.size), new FixedFloatValue(configuration.discardChanceOnAirExposure));
+            featureConfiguration = OreFeatureGeneratorHook.createDefaultConfiguration(configuration, (FeatureGenerator<OreFeatureConfiguration>) featureGenerator);
         } else if (configuredFeature.feature() instanceof GlowstoneFeature) {
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("glowstone_blob")).get();
             featureConfiguration = new EmptyFeatureConfiguration(featureGenerator);
