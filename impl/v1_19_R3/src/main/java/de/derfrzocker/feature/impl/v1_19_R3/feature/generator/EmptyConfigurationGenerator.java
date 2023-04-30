@@ -41,10 +41,14 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
-public class GlowstoneBlobFeatureGenerator extends MinecraftFeatureGenerator<NoneFeatureConfiguration, EmptyFeatureConfiguration> {
+public class EmptyConfigurationGenerator extends MinecraftFeatureGenerator<NoneFeatureConfiguration, EmptyFeatureConfiguration> {
 
-    public GlowstoneBlobFeatureGenerator(Registries registries) {
-        super(registries, Feature.GLOWSTONE_BLOB, "glowstone_blob");
+    private EmptyConfigurationGenerator(Registries registries, Feature<NoneFeatureConfiguration> feature, String name) {
+        super(registries, feature, name);
+    }
+
+    public static EmptyConfigurationGenerator createGlowstoneBlob(Registries registries) {
+        return new EmptyConfigurationGenerator(registries, Feature.GLOWSTONE_BLOB, "glowstone_blob");
     }
 
     @Override

@@ -1,28 +1,3 @@
-/*
- * MIT License
- *
- * Copyright (c) 2019 - 2022 Marvin (DerFrZocker)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- */
-
 package de.derfrzocker.feature.impl.v1_19_R3.feature.generator;
 
 import com.mojang.serialization.Codec;
@@ -44,7 +19,7 @@ import de.derfrzocker.feature.common.value.target.TargetBlockState;
 import de.derfrzocker.feature.common.value.target.TargetListType;
 import de.derfrzocker.feature.common.value.target.TargetListValue;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.levelgen.feature.OreFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
@@ -67,10 +42,18 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
-public class ScatteredOreGenerator extends MinecraftFeatureGenerator<OreConfiguration, OreFeatureConfiguration> {
+public class OreConfigurationGenerator extends MinecraftFeatureGenerator<OreConfiguration, OreFeatureConfiguration> {
 
-    public ScatteredOreGenerator(Registries registries) {
-        super(registries, OreFeature.SCATTERED_ORE, "scattered_ore");
+    private OreConfigurationGenerator(Registries registries, Feature<OreConfiguration> feature, String name) {
+        super(registries, feature, name);
+    }
+
+    public static OreConfigurationGenerator createOre(Registries registries) {
+        return new OreConfigurationGenerator(registries, Feature.ORE, "ore");
+    }
+
+    public static OreConfigurationGenerator createScatteredOre(Registries registries) {
+        return new OreConfigurationGenerator(registries, Feature.SCATTERED_ORE, "scattered_ore");
     }
 
     public Codec<OreFeatureConfiguration> createCodec(Registries registries) {
@@ -88,7 +71,6 @@ public class ScatteredOreGenerator extends MinecraftFeatureGenerator<OreConfigur
 
     @Override
     public OreFeatureConfiguration mergeConfig(OreFeatureConfiguration first, OreFeatureConfiguration second) {
-
         return new OreFeatureConfiguration(this,
                 first.getTargets() != null ? first.getTargets() : second.getTargets(),
                 first.getSize() != null ? first.getSize() : second.getSize(),

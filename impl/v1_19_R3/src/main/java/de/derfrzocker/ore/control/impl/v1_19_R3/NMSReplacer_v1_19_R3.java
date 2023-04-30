@@ -47,9 +47,8 @@ import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
 import de.derfrzocker.feature.impl.v1_19_R3.extra.OreVeinHandler;
-import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.GlowstoneBlobFeatureGenerator;
-import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.OreFeatureGenerator;
-import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.ScatteredOreGenerator;
+import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.EmptyConfigurationGenerator;
+import de.derfrzocker.feature.impl.v1_19_R3.feature.generator.OreConfigurationGenerator;
 import de.derfrzocker.feature.impl.v1_19_R3.placement.CountModifier;
 import de.derfrzocker.feature.impl.v1_19_R3.placement.HeightRangeModifier;
 import de.derfrzocker.feature.impl.v1_19_R3.placement.RarityModifier;
@@ -64,9 +63,8 @@ import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.OreControlRegistries;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
-import de.derfrzocker.ore.control.impl.v1_19_R3.feature.generator.GlowstoneBlobFeatureGeneratorHook;
-import de.derfrzocker.ore.control.impl.v1_19_R3.feature.generator.OreFeatureGeneratorHook;
-import de.derfrzocker.ore.control.impl.v1_19_R3.feature.generator.ScatteredOreFeatureGeneratorHook;
+import de.derfrzocker.ore.control.impl.v1_19_R3.feature.generator.EmptyConfigurationGeneratorHook;
+import de.derfrzocker.ore.control.impl.v1_19_R3.feature.generator.OreConfigurationGeneratorHook;
 import de.derfrzocker.ore.control.impl.v1_19_R3.placement.ActivationModifierHook;
 import de.derfrzocker.ore.control.impl.v1_19_R3.placement.CountModifierHook;
 import de.derfrzocker.ore.control.impl.v1_19_R3.placement.HeightRangeModifierHook;
@@ -158,9 +156,9 @@ public class NMSReplacer_v1_19_R3 implements NMSReplacer {
     }
 
     private void registerFeatureGenerators() {
-        registries.getFeatureGeneratorRegistry().register(new OreFeatureGenerator(registries));
-        registries.getFeatureGeneratorRegistry().register(new ScatteredOreGenerator(registries));
-        registries.getFeatureGeneratorRegistry().register(new GlowstoneBlobFeatureGenerator(registries));
+        registries.getFeatureGeneratorRegistry().register(OreConfigurationGenerator.createOre(registries));
+        registries.getFeatureGeneratorRegistry().register(OreConfigurationGenerator.createScatteredOre(registries));
+        registries.getFeatureGeneratorRegistry().register(EmptyConfigurationGenerator.createGlowstoneBlob(registries));
     }
 
     private void registerPlacementModifier() {
@@ -330,11 +328,11 @@ public class NMSReplacer_v1_19_R3 implements NMSReplacer {
         if (configuredFeature.feature() instanceof OreFeature) {
             OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("ore")).get();
-            featureConfiguration = OreFeatureGeneratorHook.createDefaultConfiguration(configuration, (FeatureGenerator<OreFeatureConfiguration>) featureGenerator);
+            featureConfiguration = OreConfigurationGeneratorHook.createDefaultConfiguration(configuration, (FeatureGenerator<OreFeatureConfiguration>) featureGenerator);
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
             OreConfiguration configuration = (OreConfiguration) configuredFeature.config();
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("scattered_ore")).get();
-            featureConfiguration = OreFeatureGeneratorHook.createDefaultConfiguration(configuration, (FeatureGenerator<OreFeatureConfiguration>) featureGenerator);
+            featureConfiguration = OreConfigurationGeneratorHook.createDefaultConfiguration(configuration, (FeatureGenerator<OreFeatureConfiguration>) featureGenerator);
         } else if (configuredFeature.feature() instanceof GlowstoneFeature) {
             featureGenerator = registries.getFeatureGeneratorRegistry().get(NamespacedKey.minecraft("glowstone_blob")).get();
             featureConfiguration = new EmptyFeatureConfiguration(featureGenerator);
@@ -506,11 +504,11 @@ public class NMSReplacer_v1_19_R3 implements NMSReplacer {
         modifierOptional.ifPresent(modifier -> placementModifiers.add(0, new ActivationModifierHook(oreControlManager, biome, key)));
 
         if (configuredFeature.feature() instanceof OreFeature) {
-            return new PlacedFeature(Holder.direct(new ConfiguredFeature(new OreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config())), placementModifiers);
+            return new PlacedFeature(Holder.direct(new ConfiguredFeature(OreConfigurationGeneratorHook.createOreHook(oreControlManager, key, biome), configuredFeature.config())), placementModifiers);
         } else if (configuredFeature.feature() instanceof ScatteredOreFeature) {
-            return new PlacedFeature(Holder.direct(new ConfiguredFeature(new ScatteredOreFeatureGeneratorHook(oreControlManager, key, biome), configuredFeature.config())), placementModifiers);
+            return new PlacedFeature(Holder.direct(new ConfiguredFeature(OreConfigurationGeneratorHook.createScatteredOreHook(oreControlManager, key, biome), configuredFeature.config())), placementModifiers);
         } else if (configuredFeature.feature() instanceof GlowstoneFeature) {
-            return new PlacedFeature(Holder.direct(new ConfiguredFeature(new GlowstoneBlobFeatureGeneratorHook(oreControlManager, biome, key), configuredFeature.config())), placementModifiers);
+            return new PlacedFeature(Holder.direct(new ConfiguredFeature(EmptyConfigurationGeneratorHook.createGlowstoneBlobHook(oreControlManager, key, biome), configuredFeature.config())), placementModifiers);
         }
 
         throw new RuntimeException("HOW?");

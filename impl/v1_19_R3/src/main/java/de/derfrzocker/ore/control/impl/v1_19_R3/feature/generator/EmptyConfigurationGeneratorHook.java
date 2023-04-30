@@ -28,6 +28,7 @@ package de.derfrzocker.ore.control.impl.v1_19_R3.feature.generator;
 import de.derfrzocker.feature.common.feature.generator.configuration.EmptyFeatureConfiguration;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
@@ -37,10 +38,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class GlowstoneBlobFeatureGeneratorHook extends MinecraftFeatureGeneratorHook<NoneFeatureConfiguration, EmptyFeatureConfiguration> {
+public class EmptyConfigurationGeneratorHook extends MinecraftFeatureGeneratorHook<NoneFeatureConfiguration, EmptyFeatureConfiguration> {
 
-    public GlowstoneBlobFeatureGeneratorHook(@NotNull OreControlManager oreControlManager, Biome biome, NamespacedKey namespacedKey) {
-        super(NoneFeatureConfiguration.CODEC, GLOWSTONE_BLOB, oreControlManager, "glowstone_blob", biome, namespacedKey);
+    private EmptyConfigurationGeneratorHook(Feature<NoneFeatureConfiguration> feature, @NotNull OreControlManager oreControlManager, @NotNull String name, Biome biome, NamespacedKey namespacedKey) {
+        super(NoneFeatureConfiguration.CODEC, feature, oreControlManager, name, biome, namespacedKey);
+    }
+
+    public static EmptyConfigurationGeneratorHook createGlowstoneBlobHook(@NotNull OreControlManager oreControlManager, @NotNull NamespacedKey namespacedKey, @NotNull Biome biome) {
+        return new EmptyConfigurationGeneratorHook(GLOWSTONE_BLOB, oreControlManager, "glowstone_blob", biome, namespacedKey);
     }
 
     @Override
