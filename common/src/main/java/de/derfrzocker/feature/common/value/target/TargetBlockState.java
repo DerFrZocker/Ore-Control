@@ -1,17 +1,19 @@
 package de.derfrzocker.feature.common.value.target;
 
-import com.mojang.datafixers.kinds.Traversable;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.RuleTest;
 import de.derfrzocker.feature.api.RuleTestType;
-import de.derfrzocker.feature.api.util.MessageTraversAble;
+import de.derfrzocker.feature.api.util.traverser.message.MessageTraversAble;
 import de.derfrzocker.feature.api.util.SaveAble;
+import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.spigot.utils.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,12 +83,8 @@ public class TargetBlockState implements MessageTraversAble, SaveAble, Cloneable
     }
 
     @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
-        List<String> result = new ArrayList<>();
-
-        result.addAll(MessageTraversUtil.single(formatter, depth + 1, "block-data", blockData));
-        result.addAll(MessageTraversUtil.multiple(formatter, depth, key, new Pair<>("rule-test", getRuleTest())));
-
-        return result;
+    public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
+        return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofValueSetting("target-block-state"),
+        new Pair<>("block-data", MessageTraversUtil.asTraversAble(getBlockData())), new Pair<>("rule-test", getRuleTest()));
     }
 }

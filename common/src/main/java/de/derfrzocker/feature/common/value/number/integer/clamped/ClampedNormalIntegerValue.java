@@ -26,6 +26,8 @@
 package de.derfrzocker.feature.common.value.number.integer.clamped;
 
 import de.derfrzocker.feature.api.ValueLocation;
+import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
@@ -171,9 +173,9 @@ public class ClampedNormalIntegerValue extends IntegerValue {
     }
 
     @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
-        return MessageTraversUtil.multiple(formatter, depth, key, new Pair<>("mean", getMean()),
-                new Pair<>("deviation", getDeviation()), new Pair<>("min-inclusive", getMinInclusive()),
-                new Pair<>("max-inclusive", getMaxInclusive()));
+    public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
+        return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofValueType(getValueType().getKey()),
+                new Pair<>("mean", getMean()), new Pair<>("deviation", getDeviation()),
+                new Pair<>("min-inclusive", getMinInclusive()), new Pair<>("max-inclusive", getMaxInclusive()));
     }
 }

@@ -26,6 +26,8 @@
 package de.derfrzocker.feature.common.value.number.integer.biased;
 
 import de.derfrzocker.feature.api.ValueLocation;
+import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.spigot.utils.Pair;
@@ -120,8 +122,8 @@ public class BiasedToBottomIntegerValue extends IntegerValue {
     }
 
     @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
-        return MessageTraversUtil.multiple(formatter, depth, key,
+    public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
+        return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofValueType(getValueType().getKey()),
                 new Pair<>("min-inclusive", getMinInclusive()), new Pair<>("max-inclusive", getMaxInclusive()));
     }
 }

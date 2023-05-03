@@ -25,7 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
-import de.derfrzocker.feature.api.util.MessageTraversAble;
+import de.derfrzocker.feature.api.util.traverser.message.MessageTraversAble;
 import de.derfrzocker.feature.api.util.SaveAble;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;

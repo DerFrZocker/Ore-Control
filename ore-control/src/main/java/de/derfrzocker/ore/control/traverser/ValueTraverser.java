@@ -29,7 +29,7 @@ import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueLocation;
-import de.derfrzocker.feature.api.util.MessageTraversAble;
+import de.derfrzocker.feature.api.util.traverser.message.MessageTraversAble;
 
 import java.util.EnumMap;
 import java.util.List;
