@@ -25,6 +25,7 @@
 
 package de.derfrzocker.ore.control.gui.screen.value;
 
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerValue;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
@@ -60,8 +61,8 @@ public class WeightedListIntegerScreen {
                         .pageContent(DistributionHolder.class)
                         .data((setting, guiInfo) -> getData(guiValuesHolder, guiInfo))
                         .withMessageValue((setting, guiInfo, distributionHolder) -> {
-                            String data = guiValuesHolder.valueTraverser().traverse(distributionHolder.data, "%%translation:[value-settings.data.name]%");
-                            String weight = guiValuesHolder.valueTraverser().traverse(distributionHolder.weight, "%%translation:[value-settings.data.name]%");
+                            String data = guiValuesHolder.valueTraverser().traverse(distributionHolder.data, TraversKey.ofValueSetting("data"));
+                            String weight = guiValuesHolder.valueTraverser().traverse(distributionHolder.weight, TraversKey.ofValueSetting("weight")); // TODO: 5/3/23 Was "data" check if this was a bug 
                             return new MessageValue("value-settings", data + "%%new-line%" + weight);
                         })
                         .itemStack((setting, guiInfo, distributionHolder) -> setting.get("value.weighted_list_sub_integer_screen", "default-icon", new ItemStack(Material.STONE)).clone())

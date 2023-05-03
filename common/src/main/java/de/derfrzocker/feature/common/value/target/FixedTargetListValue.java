@@ -94,7 +94,8 @@ public class FixedTargetListValue extends TargetListValue {
         result.add(formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
 
         for (TargetBlockState state : getValue()) {
-            List<String> states = state.traverse(formatter, depth + 2, TraversKey.ofValueSetting("state"));
+            // TODO: 5/3/23 Maybe remove the "entry" line 
+            List<String> states = state.traverse(formatter, depth + 2, TraversKey.ofValueSetting("entry"));
             result.addAll(states);
         }
 

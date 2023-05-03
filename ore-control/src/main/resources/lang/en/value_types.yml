@@ -24,3 +24,5 @@ value-types:
       name: "Clamped"
     clamped_normal_integer:
       name: "Normal Clamped"
+    fixed_target_list:
+      name: "Fixed Target List"

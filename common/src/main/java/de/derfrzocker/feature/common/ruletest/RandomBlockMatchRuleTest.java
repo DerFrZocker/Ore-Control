@@ -61,7 +61,8 @@ public class RandomBlockMatchRuleTest implements RuleTest {
 
     @Override
     public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
-        return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofValueSetting("block-match"),
-                new Pair<>("material", MessageTraversUtil.asTraversAble(getMaterial())));
+        return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofRuleTest(getType().getKey()),
+                new Pair<>("block", MessageTraversUtil.asTraversAble(getMaterial())),
+                new Pair<>("probability", MessageTraversUtil.asTraversAble(getProbability())));
     }
 }

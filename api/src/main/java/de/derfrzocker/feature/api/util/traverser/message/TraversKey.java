@@ -19,4 +19,9 @@ public record TraversKey(@NotNull KeyType keyType, @NotNull Object key) {
     public static TraversKey ofValueSetting(@NotNull String key) {
         return new TraversKey(KeyType.VALUE_SETTING, key);
     }
+
+    @NotNull
+    public static TraversKey ofRuleTest(@NotNull NamespacedKey key) {
+        return new TraversKey(KeyType.RULE_TEST, key);
+    }
 }

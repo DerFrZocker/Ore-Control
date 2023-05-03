@@ -24,3 +24,5 @@ value-types:
       name: "Geklemmt"
     clamped_normal_integer:
       name: "Normal Geklemmt"
+    fixed_target_list:
+      name: "Feste Zielliste"

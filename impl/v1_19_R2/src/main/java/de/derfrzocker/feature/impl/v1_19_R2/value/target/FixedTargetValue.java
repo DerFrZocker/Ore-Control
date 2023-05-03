@@ -25,6 +25,8 @@
 
 package de.derfrzocker.feature.impl.v1_19_R2.value.target;
 
+import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -74,7 +76,7 @@ public class FixedTargetValue extends TargetValue {
     }
 
     @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+    public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         return new ArrayList<>();
     }
 }

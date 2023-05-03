@@ -26,6 +26,7 @@
 package de.derfrzocker.ore.control.gui;
 
 import de.derfrzocker.feature.api.Value;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.ore.control.gui.info.InfoLinkData;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.gui.builders.ButtonContextBuilder;
@@ -99,7 +100,7 @@ public final class ScreenUtil {
                                 guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, guiData.getToEditValue() != null ? guiData.getToEditValue().getClass() : "null"));
                             }
                             Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
-                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%"));
+                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, TraversKey.ofValueType(toEdit.getValueType().getKey())));
                         })
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
@@ -129,7 +130,7 @@ public final class ScreenUtil {
                                 guiValuesHolder.plugin().getLogger().warning(String.format("Expected a value of type '%s' but got one of type '%s', this is a bug!", valueClass, currently.getClass()));
                             }
                             Value<?, ?, ?> toEdit = toEditFunction.apply((T) currently);
-                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, "%%translation:[value-types." + toEdit.getValueType().getKey().getNamespace() + "." + toEdit.getValueType().getKey().getKey() + ".name]%"));
+                            return new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(toEdit, TraversKey.ofValueType(toEdit.getValueType().getKey())));
                         })
                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                         .withAction(clickAction -> {
