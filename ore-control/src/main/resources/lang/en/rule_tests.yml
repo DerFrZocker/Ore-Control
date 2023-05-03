@@ -1,0 +1,14 @@
+rule-tests:
+  minecraft:
+    always_true:
+      name: "Always True"
+    block_match:
+      name: "Block Match"
+    blockstate_match:
+      name: "Block State Match"
+    random_block_match:
+      name: "Random Block Match"
+    random_blockstate_match:
+      name: "Random Blockstate Match"
+    tag_match:
+      name: "Tag Match"

@@ -29,6 +29,7 @@ import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.Setting;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueLocation;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.ore.control.api.config.Config;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
@@ -132,7 +133,7 @@ public class PlacementModifierSettingsScreen {
         Config config = optionalConfig.get();
         Value<?, ?, ?> value = config.getPlacements().get(playerGuiData.getPlacementModifier()).getValue(setting);
 
-        return guiValuesHolder.valueTraverser().traverse(value, "%%translation:[value-types." + value.getValueType().getKey().getNamespace() + "." + value.getValueType().getKey().getKey() + ".name]%");
+        return guiValuesHolder.valueTraverser().traverse(value, TraversKey.ofValueType(value.getValueType().getKey()));
     }
 
     private static List<Setting> buildList(GuiValuesHolder guiValuesHolder, GuiInfo guiInfo) {

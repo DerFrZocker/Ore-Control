@@ -4,6 +4,8 @@ public enum KeyType {
 
     SETTING,
     VALUE_TYPE,
-    VALUE_SETTING
+    VALUE_SETTING,
+
+    RULE_TEST
 
 }

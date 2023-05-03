@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class FixedTargetListType extends TargetListType {
 
-    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_ore_target_list");
+    public static final NamespacedKey KEY = NamespacedKey.fromString("feature:fixed_target_list");
     private static FixedTargetListType type = null;
     private final Codec<FixedTargetListValue> codec;
 

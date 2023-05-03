@@ -1,0 +1,14 @@
+rule-tests:
+  minecraft:
+    always_true:
+      name: "Immer Wahr"
+    block_match:
+      name: "Block Übereinstimmung"
+    blockstate_match:
+      name: "Blockzustand Übereinstimmung"
+    random_block_match:
+      name: "Zufällige Block Übereinstimmung"
+    random_blockstate_match:
+      name: "Zufällige Blockzustand Übereinstimmung"
+    tag_match:
+      name: "Tag Übereinstimmung"

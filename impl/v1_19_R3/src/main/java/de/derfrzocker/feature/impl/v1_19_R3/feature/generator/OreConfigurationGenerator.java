@@ -84,23 +84,23 @@ public class OreConfigurationGenerator extends MinecraftFeatureGenerator<OreConf
             for (TargetBlockState targetValue : configuration.getTargets().getValue(worldInfo, random, position, limitedRegion)) {
                 RuleTest ruleTest;
 
-                if (targetValue.getRuleTest() instanceof AlwaysTrueRuleTest) {
+                if (targetValue.getTarget() instanceof AlwaysTrueRuleTest) {
                     ruleTest = AlwaysTrueTest.INSTANCE;
-                } else if (targetValue.getRuleTest() instanceof BlockMatchRuleTest rule) {
+                } else if (targetValue.getTarget() instanceof BlockMatchRuleTest rule) {
                     ruleTest = new BlockMatchTest(CraftMagicNumbers.getBlock(rule.getMaterial()));
-                } else if (targetValue.getRuleTest() instanceof BlockStateMatchRuleTest rule) {
+                } else if (targetValue.getTarget() instanceof BlockStateMatchRuleTest rule) {
                     ruleTest = new BlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState());
-                } else if (targetValue.getRuleTest() instanceof RandomBlockMatchRuleTest rule) {
+                } else if (targetValue.getTarget() instanceof RandomBlockMatchRuleTest rule) {
                     ruleTest = new RandomBlockMatchTest(CraftMagicNumbers.getBlock(rule.getMaterial()), rule.getProbability());
-                } else if (targetValue.getRuleTest() instanceof RandomBlockStateMatchRuleTest rule) {
+                } else if (targetValue.getTarget() instanceof RandomBlockStateMatchRuleTest rule) {
                     ruleTest = new RandomBlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState(), rule.getProbability());
-                } else if (targetValue.getRuleTest() instanceof TagMatchRuleTest rule) {
+                } else if (targetValue.getTarget() instanceof TagMatchRuleTest rule) {
                     ruleTest = new TagMatchTest(TagKey.create(net.minecraft.core.registries.Registries.BLOCK, CraftNamespacedKey.toMinecraft(rule.getTag())));
                 } else {
-                    throw new IllegalArgumentException("Got unexpected rule test from class " + targetValue.getRuleTest().getClass());
+                    throw new IllegalArgumentException("Got unexpected rule test from class " + targetValue.getTarget().getClass());
                 }
 
-                blockStates.add(OreConfiguration.target(ruleTest, ((CraftBlockData) targetValue.getBlockData()).getState()));
+                blockStates.add(OreConfiguration.target(ruleTest, ((CraftBlockData) targetValue.getState()).getState()));
             }
         }
 

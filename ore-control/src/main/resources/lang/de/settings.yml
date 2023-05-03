@@ -17,6 +17,8 @@ settings:
     name: "Max Wasser Tiefe"
   activate:
     name: "Aktivieren"
+  targets:
+    name: "Ziele"
 value-settings:
   min-inclusive:
     name: "Min Inklusive"
@@ -30,3 +32,19 @@ value-settings:
     name: "Daten"
   weight:
     name: "Gewicht"
+  target-block-state:
+    name: "Ziel Blockzustand"
+  state:
+    name: "Zustand"
+  target:
+    name: "Ziel"
+  entry:
+    name: "Eintrag"
+  block:
+    name: "Block"
+  block-state:
+    name: "Blockzustand"
+  probability:
+    name: "Wahrscheinlichkeit"
+  tag:
+    name: "Tag"
