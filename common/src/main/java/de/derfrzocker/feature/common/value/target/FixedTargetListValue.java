@@ -25,6 +25,9 @@
 
 package de.derfrzocker.feature.common.value.target;
 
+import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -84,11 +87,14 @@ public class FixedTargetListValue extends TargetListValue {
     }
 
     @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+    public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         List<String> result = new LinkedList<>();
+
         result.add(formatter.format(depth, key, null));
+        result.add(formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
+
         for (TargetBlockState state : getValue()) {
-            List<String> states = state.traverse(formatter, depth + 1, "state");
+            List<String> states = state.traverse(formatter, depth + 2, TraversKey.ofValueSetting("state"));
             result.addAll(states);
         }
 

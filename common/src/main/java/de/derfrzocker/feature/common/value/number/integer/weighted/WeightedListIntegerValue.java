@@ -26,6 +26,9 @@
 package de.derfrzocker.feature.common.value.number.integer.weighted;
 
 import de.derfrzocker.feature.api.ValueLocation;
+import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
+import de.derfrzocker.feature.common.util.MessageTraversUtil;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
@@ -119,14 +122,16 @@ public class WeightedListIntegerValue extends IntegerValue {
     }
 
     @Override
-    public List<String> traverse(StringFormatter formatter, int depth, String key) {
+    public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         List<String> result = new LinkedList<>();
         result.add(formatter.format(depth, key, null));
+        result.add(formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
+
         for (Map.Entry<IntegerValue, IntegerValue> entry : getDistribution().entrySet()) {
             IntegerValue dataValue = entry.getKey();
             IntegerValue weightValue = entry.getValue();
-            List<String> data = dataValue.traverse(formatter, depth + 1, "data");
-            List<String> weight = weightValue.traverse(formatter, depth + 1, "weight");
+            List<String> data = dataValue.traverse(formatter, depth + 2, TraversKey.ofValueSetting("data"));
+            List<String> weight = weightValue.traverse(formatter, depth + 2, TraversKey.ofValueSetting("weight"));
             result.addAll(data);
             result.addAll(weight);
         }
