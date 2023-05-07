@@ -13,11 +13,11 @@ import java.util.List;
 
 public class BlockMatchRuleTest implements RuleTest {
 
-    private Material material;
+    private Material block;
     private boolean dirty;
 
-    public BlockMatchRuleTest(Material material) {
-        this.material = material;
+    public BlockMatchRuleTest(Material block) {
+        this.block = block;
     }
 
     @Override
@@ -27,15 +27,15 @@ public class BlockMatchRuleTest implements RuleTest {
 
     @Override
     public RuleTest clone() {
-        return new BlockMatchRuleTest(material);
+        return new BlockMatchRuleTest(block);
     }
 
-    public Material getMaterial() {
-        return material;
+    public Material getBlock() {
+        return block;
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setBlock(Material block) {
+        this.block = block;
         dirty = true;
     }
 
@@ -52,6 +52,6 @@ public class BlockMatchRuleTest implements RuleTest {
     @Override
     public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofRuleTest(getType().getKey()),
-                new Pair<>("block", MessageTraversUtil.asTraversAble(getMaterial())));
+                new Pair<>("block", MessageTraversUtil.asTraversAble(getBlock())));
     }
 }

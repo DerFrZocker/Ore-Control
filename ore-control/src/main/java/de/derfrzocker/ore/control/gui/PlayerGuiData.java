@@ -158,8 +158,8 @@ public class PlayerGuiData {
         data.remove(key);
     }
 
-    public Object getData(String key) {
-        return data.get(key);
+    public <T> T getData(String key) {
+        return (T) data.get(key);
     }
 
     // TODO move to better location

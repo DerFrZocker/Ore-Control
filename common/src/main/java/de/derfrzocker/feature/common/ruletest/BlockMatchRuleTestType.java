@@ -17,7 +17,7 @@ public class BlockMatchRuleTestType implements RuleTestType {
     private static final Codec<BlockMatchRuleTest> CODEC = Codec.STRING
             .xmap(NamespacedKey::fromString, NamespacedKey::toString)
             .xmap(Registry.MATERIAL::get, Material::getKey)
-            .xmap(BlockMatchRuleTest::new, BlockMatchRuleTest::getMaterial);
+            .xmap(BlockMatchRuleTest::new, BlockMatchRuleTest::getBlock);
 
     private BlockMatchRuleTestType() {
     }

@@ -25,6 +25,7 @@
 
 package de.derfrzocker.feature.common.value.target;
 
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
 import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
@@ -84,6 +85,14 @@ public class FixedTargetListValue extends TargetListValue {
         }
 
         return new FixedTargetListValue(values);
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        super.setValueLocation(valueLocation);
+        for (TargetBlockState state : getValue()) {
+            state.setValueLocation(valueLocation);
+        }
     }
 
     @Override

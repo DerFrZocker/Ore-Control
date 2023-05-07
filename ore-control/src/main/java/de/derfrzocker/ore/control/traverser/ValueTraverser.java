@@ -26,10 +26,9 @@
 package de.derfrzocker.ore.control.traverser;
 
 import de.derfrzocker.feature.api.Configuration;
+import de.derfrzocker.feature.api.LocatedAble;
 import de.derfrzocker.feature.api.Setting;
-import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueLocation;
-import de.derfrzocker.feature.api.util.traverser.message.KeyType;
 import de.derfrzocker.feature.api.util.traverser.message.MessageTraversAble;
 import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
 import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
@@ -61,8 +60,8 @@ public class ValueTraverser {
         return stringBuilder.toString();
     }
 
-    public String traverse(Value<?, ?, ?> valueTo, TraversKey keyTo) {
-        List<String> list = valueTo.traverse(formatters.get(valueTo.getValueLocation()), 1, keyTo);
+    public <T extends MessageTraversAble & LocatedAble> String traverse(T value, TraversKey keyTo) {
+        List<String> list = value.traverse(formatters.get(value.getValueLocation()), 1, keyTo);
         StringBuilder stringBuilder = new StringBuilder();
         boolean first = true;
         for (String string : list) {

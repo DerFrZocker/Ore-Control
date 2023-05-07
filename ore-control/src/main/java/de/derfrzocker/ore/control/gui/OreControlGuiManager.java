@@ -25,6 +25,8 @@
 
 package de.derfrzocker.ore.control.gui;
 
+import de.derfrzocker.feature.api.RuleTest;
+import de.derfrzocker.feature.api.RuleTestType;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.ValueType;
@@ -39,6 +41,7 @@ import de.derfrzocker.feature.common.value.number.integer.uniform.UniformInteger
 import de.derfrzocker.feature.common.value.number.integer.weighted.WeightedListIntegerType;
 import de.derfrzocker.feature.common.value.offset.AboveBottomOffsetIntegerType;
 import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerType;
+import de.derfrzocker.feature.common.value.target.FixedTargetListType;
 import de.derfrzocker.ore.control.Stats;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.gui.screen.BiomeScreen;
@@ -51,9 +54,11 @@ import de.derfrzocker.ore.control.gui.screen.GeneratorSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
 import de.derfrzocker.ore.control.gui.screen.PlacementModifierSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
+import de.derfrzocker.ore.control.gui.screen.other.TargetBlockStateScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
+import de.derfrzocker.ore.control.gui.screen.value.FixedTargetListScreen;
 import de.derfrzocker.ore.control.gui.screen.value.NumberEditScreen;
 import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
@@ -71,6 +76,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -82,6 +88,7 @@ public class OreControlGuiManager implements Listener {
     private final Map<Player, PlayerGuiData> playerGuiData = new ConcurrentHashMap<>();
     private final Map<String, InventoryGui> inventoryGuis = new ConcurrentHashMap<>();
     private final Map<ValueType<?, ?, ?>, InventoryGui> valueTypeInventoryGuis = new ConcurrentHashMap<>();
+    private final Map<RuleTestType, InventoryGui> ruleTestTypeInventoryGuis = new ConcurrentHashMap<>();
 
     private final Plugin plugin;
     private final LanguageManager languageManager;
@@ -131,10 +138,14 @@ public class OreControlGuiManager implements Listener {
         register(TrapezoidIntegerType.type(), TrapezoidIntegerScreen.getGui(guiValuesHolder));
         register(UniformIntegerType.type(), UniformIntegerScreen.getGui(guiValuesHolder));
         register(WeightedListIntegerType.type(), WeightedListIntegerScreen.getGui(guiValuesHolder));
+        register(FixedTargetListType.type(), FixedTargetListScreen.getGui(guiValuesHolder));
 
         // Register extra screens
         register(ExtraValuesScreen.getGui(guiValuesHolder));
         register(BigOreVeinScreen.getGui(guiValuesHolder));
+
+        // Register other screens
+        register(TargetBlockStateScreen.getGui(guiValuesHolder));
 
         // Register listeners
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -162,6 +173,17 @@ public class OreControlGuiManager implements Listener {
 
         if (inventoryGui == null) {
             plugin.getLogger().info(String.format("No inventory gui found for value type with the key '%s'", value.getValueType().getKey()));
+            return;
+        }
+
+        openScreen(inventoryGui, player);
+    }
+
+    public void openRuleTestScreen(Player player, RuleTest ruleTest) {
+        InventoryGui inventoryGui = ruleTestTypeInventoryGuis.get(ruleTest.getType());
+
+        if (inventoryGui == null) {
+            plugin.getLogger().info(String.format("No inventory gui found for rule test type with the key '%s'", ruleTest.getType().getKey()));
             return;
         }
 
@@ -199,5 +221,9 @@ public class OreControlGuiManager implements Listener {
 
     private void register(ValueType<?, ?, ?> valueType, InventoryGui inventoryGui) {
         valueTypeInventoryGuis.put(valueType, register(inventoryGui));
+    }
+
+    private void register(RuleTestType ruleTestType, InventoryGui inventoryGui) {
+        ruleTestTypeInventoryGuis.put(ruleTestType, register(inventoryGui));
     }
 }

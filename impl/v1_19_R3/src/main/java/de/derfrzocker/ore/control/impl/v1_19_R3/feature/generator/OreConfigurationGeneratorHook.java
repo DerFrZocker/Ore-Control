@@ -114,7 +114,7 @@ public class OreConfigurationGeneratorHook extends MinecraftFeatureGeneratorHook
                 if (targetValue.getTarget() instanceof AlwaysTrueRuleTest) {
                     ruleTest = AlwaysTrueTest.INSTANCE;
                 } else if (targetValue.getTarget() instanceof BlockMatchRuleTest rule) {
-                    ruleTest = new BlockMatchTest(CraftMagicNumbers.getBlock(rule.getMaterial()));
+                    ruleTest = new BlockMatchTest(CraftMagicNumbers.getBlock(rule.getBlock()));
                 } else if (targetValue.getTarget() instanceof BlockStateMatchRuleTest rule) {
                     ruleTest = new BlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState());
                 } else if (targetValue.getTarget() instanceof RandomBlockMatchRuleTest rule) {

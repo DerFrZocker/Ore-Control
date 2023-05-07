@@ -24,8 +24,13 @@ public final class Screens {
     public static final String VALUE_TRAPEZOID_INTEGER_SCREEN = "value.trapezoid_integer_screen";
     public static final String VALUE_UNIFORM_INTEGER_SCREEN = "value.uniform_integer_screen";
     public static final String VALUE_WEIGHTED_LIST_INTEGER_SCREEN = "value.weighted_list_integer_screen";
+    public static final String VALUE_FIXED_TARGET_LIST_SCREEN = "value.fixed_target_list_screen";
+    // Rule Test screens
+    public static final String RULE_TEST_BLOCK_MATCH_SCREEN = "rule_test.block_match_screen";
     // Extra screens
     public static final String EXTRA_BIG_ORE_VEIN_SCREEN = "extra.big_ore_vein_screen";
+    // Other screens
+    public static final String OTHER_TARGET_BLOCK_STATE_SCREEN = "other.target_block_state_screen";
 
     private Screens() {
     }

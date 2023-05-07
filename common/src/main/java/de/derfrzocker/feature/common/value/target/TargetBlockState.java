@@ -2,9 +2,11 @@ package de.derfrzocker.feature.common.value.target;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import de.derfrzocker.feature.api.LocatedAble;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.RuleTest;
 import de.derfrzocker.feature.api.RuleTestType;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.util.traverser.message.MessageTraversAble;
 import de.derfrzocker.feature.api.util.SaveAble;
 import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
@@ -17,11 +19,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class TargetBlockState implements MessageTraversAble, SaveAble, Cloneable {
+public class TargetBlockState implements MessageTraversAble, SaveAble, Cloneable, LocatedAble {
 
     private boolean dirty = false;
     private RuleTest target;
     private BlockData state;
+    private ValueLocation valueLocation = ValueLocation.UNKNOWN;
 
     public TargetBlockState(RuleTest target, BlockData state) {
         this.target = target;
@@ -84,6 +87,16 @@ public class TargetBlockState implements MessageTraversAble, SaveAble, Cloneable
     @Override
     public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofValueSetting("target-block-state"),
-        new Pair<>("state", MessageTraversUtil.asTraversAble(getState())), new Pair<>("target", getTarget()));
+                new Pair<>("state", MessageTraversUtil.asTraversAble(getState())), new Pair<>("target", getTarget()));
+    }
+
+    @Override
+    public @NotNull ValueLocation getValueLocation() {
+        return valueLocation;
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        this.valueLocation = valueLocation;
     }
 }
