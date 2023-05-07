@@ -60,6 +60,7 @@ public class PlayerGuiData {
     private Value<?, ?, ?> originalValue = null;
     private Value<?, ?, ?> toEditValue = null;
     private boolean applied = false;
+    private boolean handleInventoryClosing = true;
 
     private static PlacementModifierConfiguration getPlacementConfiguration(Collection<PlacementModifierConfiguration> placementModifierConfigurations, ConfigurationAble owner) {
         if (placementModifierConfigurations == null || placementModifierConfigurations.isEmpty()) {
@@ -232,5 +233,13 @@ public class PlayerGuiData {
 
     public void setPlacementModifier(FeaturePlacementModifier<?> placementModifier) {
         this.placementModifier = placementModifier;
+    }
+
+    public boolean isHandleInventoryClosing() {
+        return handleInventoryClosing;
+    }
+
+    public void setHandleInventoryClosing(boolean handleInventoryClosing) {
+        this.handleInventoryClosing = handleInventoryClosing;
     }
 }

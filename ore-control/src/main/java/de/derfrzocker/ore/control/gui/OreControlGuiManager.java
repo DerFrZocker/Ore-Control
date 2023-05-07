@@ -64,6 +64,7 @@ import de.derfrzocker.ore.control.gui.screen.value.OffsetIntegerScreens;
 import de.derfrzocker.ore.control.gui.screen.value.TrapezoidIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.UniformIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.WeightedListIntegerScreen;
+import de.derfrzocker.ore.control.interactions.BlockInteractionManager;
 import de.derfrzocker.ore.control.traverser.BasicStringFormatter;
 import de.derfrzocker.ore.control.traverser.ValueTraverser;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
@@ -76,7 +77,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -93,13 +93,12 @@ public class OreControlGuiManager implements Listener {
     private final Plugin plugin;
     private final LanguageManager languageManager;
     private final OreControlManager oreControlManager;
-    private boolean openOther = false;
 
-    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction, Stats stats) {
+    public OreControlGuiManager(Plugin plugin, OreControlManager oreControlManager, LanguageManager languageManager, Function<String, ConfigSetting> settingFunction, Stats stats, BlockInteractionManager interactionManager) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
         this.languageManager = languageManager;
-        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser(), stats);
+        GuiValuesHolder guiValuesHolder = new GuiValuesHolder(plugin, oreControlManager, this, oreControlManager.getConfigManager(), languageManager, settingFunction, new ValueTraverser(), stats, interactionManager);
 
         // TODO move to config file
         for (ValueLocation location : ValueLocation.values()) {
@@ -191,16 +190,21 @@ public class OreControlGuiManager implements Listener {
     }
 
     public void openScreen(InventoryGui inventoryGui, Player player) {
-        openOther = true;
         PlayerGuiData data = getPlayerGuiData(player);
+        data.setHandleInventoryClosing(false);
         inventoryGui.openGui(plugin, player, true);
         data.addGui(inventoryGui);
-        openOther = false;
+        data.setHandleInventoryClosing(true);
     }
 
     @EventHandler
     private void onInventoryClose(InventoryCloseEvent event) {
-        if (openOther) {
+        PlayerGuiData data = getPlayerGuiData((Player) event.getPlayer());
+        if (data == null) {
+            return;
+        }
+
+        if (!data.isHandleInventoryClosing()) {
             return;
         }
 

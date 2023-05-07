@@ -70,6 +70,7 @@ import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
 import de.derfrzocker.ore.control.impl.v1_19_R1.NMSReplacer_v1_19_R1;
 import de.derfrzocker.ore.control.impl.v1_19_R2.NMSReplacer_v1_19_R2;
 import de.derfrzocker.ore.control.impl.v1_19_R3.NMSReplacer_v1_19_R3;
+import de.derfrzocker.ore.control.interactions.BlockInteractionManager;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.FileLanguageLoader;
@@ -144,11 +145,13 @@ public class OreControl extends JavaPlugin implements Listener {
         File languageDirectory = new File(getDataFolder(), "lang");
         languageManager = new DirectLanguageManager(this, new MergeLanguageLoader(this, new PluginLanguageLoader(this, languageDirectory, true), new FileLanguageLoader(this, languageDirectory)), "en");
         saveResource("lang/README.txt", true);
+        BlockInteractionManager interactionManager = new BlockInteractionManager(languageManager);
+        getServer().getPluginManager().registerEvents(interactionManager, this);
         guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
             ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
             return guiSetting;
-        }, new Stats(this, registries));
+        }, new Stats(this, registries), interactionManager);
 
         getServer().getPluginManager().registerEvents(this, this);
     }

@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.gui.screen.ruletest;
 
 import de.derfrzocker.feature.common.ruletest.BlockMatchRuleTest;
+import de.derfrzocker.feature.common.value.target.TargetBlockState;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
 import de.derfrzocker.ore.control.gui.ScreenUtil;
@@ -27,7 +28,17 @@ public class BlockMatchRuleTestScreen {
                                         .identifier("block")
                                         // TODO: 5/5/23 Set item stack 
                                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                        .withAction(clickAction -> {/* TODO: 5/5/23 add method to click block */})
+                                        .withAction(clickAction -> {
+                                            PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
+                                            playerGuiData.setHandleInventoryClosing(false);
+                                            guiValuesHolder.plugin().getServer().getScheduler().runTask(guiValuesHolder.plugin(), () -> clickAction.getPlayer().closeInventory());
+                                            guiValuesHolder.blockInteractionManager().createBasicBlockDataInteraction(clickAction.getPlayer(), blockData -> {
+                                                BlockMatchRuleTest ruleTest = getRuleTest(guiValuesHolder, clickAction.getPlayer());
+                                                ruleTest.setBlock(blockData.getMaterial());
+                                                playerGuiData.apply(guiValuesHolder.plugin(), guiValuesHolder.oreControlManager());
+                                                guiValuesHolder.guiManager().openScreen(playerGuiData.pollFirstInventory(), clickAction.getPlayer());
+                                            }, () -> guiValuesHolder.guiManager().openScreen(playerGuiData.pollFirstInventory(), clickAction.getPlayer()));
+                                        })
                                 )
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).removeData("target_rule_test"))

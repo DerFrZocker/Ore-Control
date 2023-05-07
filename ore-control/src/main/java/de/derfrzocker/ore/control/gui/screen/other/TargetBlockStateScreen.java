@@ -7,6 +7,7 @@ import de.derfrzocker.ore.control.gui.ScreenUtil;
 import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.entity.Player;
 
 public class TargetBlockStateScreen {
@@ -25,7 +26,11 @@ public class TargetBlockStateScreen {
                                 .button(Builders
                                         .button()
                                         .identifier("target")
+                                        .withMessageValue((setting, guiInfo) -> new MessageValue("rule-test-key", getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getTarget().getType().getKey().getKey()))
+                                        .withMessageValue((setting, guiInfo) -> new MessageValue("rule-test-namespace", getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getTarget().getType().getKey().getNamespace()))
                                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
+                                        .withAction(clickAction -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer())
+                                                .addData("target_rule_test", getTargetBlockState(guiValuesHolder, clickAction.getPlayer()).getTarget()))
                                         .withAction(clickAction -> guiValuesHolder.guiManager().openRuleTestScreen(clickAction.getPlayer(),
                                                 getTargetBlockState(guiValuesHolder, clickAction.getPlayer()).getTarget()))
                                 )
@@ -39,7 +44,17 @@ public class TargetBlockStateScreen {
                                         .identifier("state")
                                         // TODO: 5/5/23 Set item stack 
                                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
-                                        .withAction(clickAction -> {/* TODO: 5/5/23 add method to click block */})
+                                        .withAction(clickAction -> {
+                                            PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());
+                                            playerGuiData.setHandleInventoryClosing(false);
+                                            guiValuesHolder.plugin().getServer().getScheduler().runTask(guiValuesHolder.plugin(), () -> clickAction.getPlayer().closeInventory());
+                                            guiValuesHolder.blockInteractionManager().createBasicBlockDataInteraction(clickAction.getPlayer(), blockData -> {
+                                                TargetBlockState targetBlockState = getTargetBlockState(guiValuesHolder, clickAction.getPlayer());
+                                                targetBlockState.setState(blockData);
+                                                playerGuiData.apply(guiValuesHolder.plugin(), guiValuesHolder.oreControlManager());
+                                                guiValuesHolder.guiManager().openScreen(playerGuiData.pollFirstInventory(), clickAction.getPlayer());
+                                            }, () -> guiValuesHolder.guiManager().openScreen(playerGuiData.pollFirstInventory(), clickAction.getPlayer()));
+                                        })
                                 )
                 )
                 .withBackAction((setting, guiInfo) -> guiValuesHolder.guiManager().getPlayerGuiData((Player) guiInfo.getEntity()).removeData("target_block_state"))
