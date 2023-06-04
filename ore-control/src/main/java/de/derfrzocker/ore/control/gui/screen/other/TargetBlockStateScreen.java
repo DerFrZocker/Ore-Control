@@ -8,7 +8,9 @@ import de.derfrzocker.ore.control.gui.Screens;
 import de.derfrzocker.spigot.utils.gui.InventoryGui;
 import de.derfrzocker.spigot.utils.gui.builders.Builders;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class TargetBlockStateScreen {
 
@@ -42,7 +44,14 @@ public class TargetBlockStateScreen {
                                 .button(Builders
                                         .button()
                                         .identifier("state")
-                                        // TODO: 5/5/23 Set item stack 
+                                        .withMessageValue((setting, guiInfo) -> new MessageValue("state", getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getState().getAsString()))
+                                        .itemStack((setting, guiInfo) -> {
+                                            ItemStack itemStack = setting.get("other.target_block_state_screen", "state.item-stack", new ItemStack(Material.STONE)).clone();
+
+                                            itemStack.setType(getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getState().getMaterial());
+
+                                            return itemStack;
+                                        })
                                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                         .withAction(clickAction -> {
                                             PlayerGuiData playerGuiData = guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer());

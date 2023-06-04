@@ -158,6 +158,12 @@ number_edit_screen:
     name: "Subtract %value%"
     lore:
       left-click: "Click to subtract %value%!"
+fixed_target_list_screen:
+  name: "Fixed Target List"
+  default-icon:
+    name: "Target Blockstate"
+    lore:
+      left-click: "Click to edit this target blockstate!"
 trapezoid_integer_screen:
   name: "Trapezoid Distribution"
   min-inclusive:
@@ -212,3 +218,28 @@ big_ore_vein_screen:
     name: "Reset"
     lore:
       left-click: "Click to reset the value!"
+target_block_state_screen:
+  name: "Target Blockstate"
+  target:
+    name: "Rule Test"
+    lore:
+      left-click: "Click to edit the rule test"
+  state:
+    name: "State"
+    lore:
+      state: "Blockstate"
+      left-click: "Click to edit the blockstate!"
+block_match_screen:
+  name: "Block Match Rule Test"
+  block:
+    name: "Block"
+    lore:
+      block: "Block"
+      left-click: "Click to edit the block!"
+block_state_match_screen:
+  name: "Blockstate Match Rule Test"
+  block-state:
+    name: "Blockstate"
+    lore:
+      block-state: "Blockstate"
+      left-click: "Click to edit the Blockstate!"

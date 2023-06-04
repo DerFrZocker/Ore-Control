@@ -1,1 +1,14 @@
 name: "%%translation:[fixed_target_list_screen.name]%"
+default-icon:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2865
+  type: COAL
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: "&f%%translation:[fixed_target_list_screen.default-icon.name]%"
+    lore:
+      - "   "
+      - "%value-settings%"
+      - "   "
+      - "&7>> &b%%translation:[fixed_target_list_screen.default-icon.lore.left-click]% &7<<"

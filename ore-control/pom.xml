@@ -53,13 +53,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>net.wesjd</groupId>
-            <artifactId>anvilgui</artifactId>
-            <version>1.5.2-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>spigot-utils</artifactId>
             <version>${spigot-utils.version}</version>

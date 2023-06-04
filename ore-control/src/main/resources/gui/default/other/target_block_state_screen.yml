@@ -8,7 +8,7 @@ target:
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
-      display-name: "&f%%translation:[namespaces.%rule-test-namespace%.name]%: %%translation:[rule-tests.%rule-test-namespace%.%rule-test-key%.name]%"
+      display-name:  "&f%%translation:[target_block_state_screen.target.name]%"
       lore:
         - "   "
         - "%value-settings%"
@@ -25,5 +25,7 @@ state:
       meta-type: UNSPECIFIC
       display-name: "&f%%translation:[target_block_state_screen.state.name]%"
       lore:
+        - "   "
+        - "&r&b%%translation:[target_block_state_screen.state.lore.state]%: %state%"
         - "   "
         - "&7>> &b%%translation:[target_block_state_screen.state.lore.left-click]% &7<<"

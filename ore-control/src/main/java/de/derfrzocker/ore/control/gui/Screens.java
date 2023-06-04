@@ -27,6 +27,7 @@ public final class Screens {
     public static final String VALUE_FIXED_TARGET_LIST_SCREEN = "value.fixed_target_list_screen";
     // Rule Test screens
     public static final String RULE_TEST_BLOCK_MATCH_SCREEN = "rule_test.block_match_screen";
+    public static final String RULE_TEST_BLOCK_STATE_MATCH_SCREEN = "rule_test.block_state_match_screen";
     // Extra screens
     public static final String EXTRA_BIG_ORE_VEIN_SCREEN = "extra.big_ore_vein_screen";
     // Other screens

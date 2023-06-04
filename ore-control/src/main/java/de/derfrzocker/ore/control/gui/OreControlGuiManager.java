@@ -30,6 +30,8 @@ import de.derfrzocker.feature.api.RuleTestType;
 import de.derfrzocker.feature.api.Value;
 import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.ValueType;
+import de.derfrzocker.feature.common.ruletest.BlockMatchRuleTestType;
+import de.derfrzocker.feature.common.ruletest.BlockStateMatchRuleTestType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
@@ -55,6 +57,8 @@ import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
 import de.derfrzocker.ore.control.gui.screen.PlacementModifierSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
 import de.derfrzocker.ore.control.gui.screen.other.TargetBlockStateScreen;
+import de.derfrzocker.ore.control.gui.screen.ruletest.BlockMatchRuleTestScreen;
+import de.derfrzocker.ore.control.gui.screen.ruletest.BlockStateMatchRuleTestScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
@@ -138,6 +142,10 @@ public class OreControlGuiManager implements Listener {
         register(UniformIntegerType.type(), UniformIntegerScreen.getGui(guiValuesHolder));
         register(WeightedListIntegerType.type(), WeightedListIntegerScreen.getGui(guiValuesHolder));
         register(FixedTargetListType.type(), FixedTargetListScreen.getGui(guiValuesHolder));
+
+        // Register rule test screens
+        register(BlockMatchRuleTestType.INSTANCE, BlockMatchRuleTestScreen.getGui(guiValuesHolder));
+        register(BlockStateMatchRuleTestType.INSTANCE, BlockStateMatchRuleTestScreen.getGui(guiValuesHolder));
 
         // Register extra screens
         register(ExtraValuesScreen.getGui(guiValuesHolder));
