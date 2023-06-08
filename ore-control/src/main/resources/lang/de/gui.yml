@@ -158,6 +158,12 @@ number_edit_screen:
     name: "Entfernen %value%"
     lore:
       left-click: "Klicke, um %value% zuentfernen!"
+fixed_target_list_screen:
+  name: "Feste Ziel Liste"
+  default-icon:
+    name: "Ziel Blockzustand"
+    lore:
+      left-click: "Klicke, um den Ziel Blockzustand zu bearbeiten!"
 trapezoid_integer_screen:
   name: "Trapezförmige Verteilung"
   min-inclusive:
@@ -212,3 +218,40 @@ big_ore_vein_screen:
     name: "Resetten"
     lore:
       left-click: "Klicke, um den Wert zu Resetten!"
+target_block_state_screen:
+  name: "Ziel Blockzustand"
+  target:
+    name: "Regel Tester"
+    lore:
+      left-click: "Klicke, um den Regel tester zu bearbeiten!"
+  state:
+    name: "Zustand"
+    lore:
+      state: "Blockzustand"
+      left-click: "Klicke, um den Blockzustand zu bearbeiten!"
+block_match_screen:
+  name: "Blockübereinstimmungsregel"
+  block:
+    name: "Block"
+    lore:
+      block: "Block"
+      left-click: "Klicke, um den Block zu bearbeiten!"
+block_state_match_screen:
+  name: "Blockzustandübereinstimmungsregel"
+  block-state:
+    name: "Blockzustand"
+    lore:
+      block-state: "Blockzustand"
+      left-click: "Klicke, um den Blockzustand zu bearbeiten!"
+tag_match_screen:
+  name: "Tagübereinstimmungsregel"
+  tag:
+    name: "Tag"
+    lore:
+      tag: "Tag"
+      left-click: "Klicke, um den Tag zu bearbeiten!"
+block_tag_screen:
+  name: "Block Tags"
+  default-icon:
+    lore:
+      left-click: "Klicke, um diesen Tag auszuwählen!"

@@ -12,7 +12,7 @@ public class AlwaysTrueRuleTestType implements RuleTestType {
 
     public static final AlwaysTrueRuleTestType INSTANCE = new AlwaysTrueRuleTestType();
     private static final NamespacedKey KEY = NamespacedKey.minecraft("always_true");
-    private static final Codec<AlwaysTrueRuleTest> CODEC = Codec.unit(() -> AlwaysTrueRuleTest.INSTANCE);
+    private static final Codec<AlwaysTrueRuleTest> CODEC = Codec.unit(AlwaysTrueRuleTest::new);
 
     private AlwaysTrueRuleTestType() {
     }

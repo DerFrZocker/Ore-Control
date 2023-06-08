@@ -1,5 +1,6 @@
 package de.derfrzocker.ore.control.gui.screen.other;
 
+import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.value.target.TargetBlockState;
 import de.derfrzocker.ore.control.gui.GuiValuesHolder;
 import de.derfrzocker.ore.control.gui.PlayerGuiData;
@@ -30,6 +31,7 @@ public class TargetBlockStateScreen {
                                         .identifier("target")
                                         .withMessageValue((setting, guiInfo) -> new MessageValue("rule-test-key", getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getTarget().getType().getKey().getKey()))
                                         .withMessageValue((setting, guiInfo) -> new MessageValue("rule-test-namespace", getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getTarget().getType().getKey().getNamespace()))
+                                        .withMessageValue(((setting, guiInfo) -> new MessageValue("value-settings", guiValuesHolder.valueTraverser().traverse(getTargetBlockState(guiValuesHolder, (Player) guiInfo.getEntity()).getTarget(), TraversKey.ofValueSetting("target")))))
                                         .withAction(clickAction -> clickAction.getClickEvent().setCancelled(true))
                                         .withAction(clickAction -> guiValuesHolder.guiManager().getPlayerGuiData(clickAction.getPlayer())
                                                 .addData("target_rule_test", getTargetBlockState(guiValuesHolder, clickAction.getPlayer()).getTarget()))

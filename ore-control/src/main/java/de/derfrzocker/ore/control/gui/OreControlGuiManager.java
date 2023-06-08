@@ -32,6 +32,8 @@ import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.ValueType;
 import de.derfrzocker.feature.common.ruletest.BlockMatchRuleTestType;
 import de.derfrzocker.feature.common.ruletest.BlockStateMatchRuleTestType;
+import de.derfrzocker.feature.common.ruletest.TagMatchRuleTest;
+import de.derfrzocker.feature.common.ruletest.TagMatchRuleTestType;
 import de.derfrzocker.feature.common.value.bool.FixedBooleanType;
 import de.derfrzocker.feature.common.value.number.FixedFloatType;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerType;
@@ -56,9 +58,11 @@ import de.derfrzocker.ore.control.gui.screen.GeneratorSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.LanguageScreen;
 import de.derfrzocker.ore.control.gui.screen.PlacementModifierSettingsScreen;
 import de.derfrzocker.ore.control.gui.screen.extra.BigOreVeinScreen;
+import de.derfrzocker.ore.control.gui.screen.other.BlockTagScreen;
 import de.derfrzocker.ore.control.gui.screen.other.TargetBlockStateScreen;
 import de.derfrzocker.ore.control.gui.screen.ruletest.BlockMatchRuleTestScreen;
 import de.derfrzocker.ore.control.gui.screen.ruletest.BlockStateMatchRuleTestScreen;
+import de.derfrzocker.ore.control.gui.screen.ruletest.TagRuleTestScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BiasedToBottomIntegerScreen;
 import de.derfrzocker.ore.control.gui.screen.value.BooleanScreen;
 import de.derfrzocker.ore.control.gui.screen.value.ClampedIntegerScreen;
@@ -146,6 +150,7 @@ public class OreControlGuiManager implements Listener {
         // Register rule test screens
         register(BlockMatchRuleTestType.INSTANCE, BlockMatchRuleTestScreen.getGui(guiValuesHolder));
         register(BlockStateMatchRuleTestType.INSTANCE, BlockStateMatchRuleTestScreen.getGui(guiValuesHolder));
+        register(TagMatchRuleTestType.INSTANCE, TagRuleTestScreen.getGui(guiValuesHolder));
 
         // Register extra screens
         register(ExtraValuesScreen.getGui(guiValuesHolder));
@@ -153,6 +158,7 @@ public class OreControlGuiManager implements Listener {
 
         // Register other screens
         register(TargetBlockStateScreen.getGui(guiValuesHolder));
+        register(BlockTagScreen.getGui(guiValuesHolder));
 
         // Register listeners
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

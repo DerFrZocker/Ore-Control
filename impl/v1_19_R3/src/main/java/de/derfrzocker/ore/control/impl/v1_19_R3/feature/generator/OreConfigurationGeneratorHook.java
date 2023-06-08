@@ -61,7 +61,7 @@ public class OreConfigurationGeneratorHook extends MinecraftFeatureGeneratorHook
         for (OreConfiguration.TargetBlockState targetBlockState : configuration.targetStates) {
             de.derfrzocker.feature.api.RuleTest ruleTest;
             if (targetBlockState.target instanceof AlwaysTrueTest) {
-                ruleTest = AlwaysTrueRuleTest.INSTANCE;
+                ruleTest = new AlwaysTrueRuleTest();
             } else if (targetBlockState.target instanceof BlockMatchTest rule) {
                 ruleTest = new BlockMatchRuleTest(CraftMagicNumbers.getMaterial(getFieldValueFromType(rule, Block.class)));
             } else if (targetBlockState.target instanceof BlockStateMatchTest rule) {

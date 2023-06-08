@@ -28,10 +28,12 @@ public final class Screens {
     // Rule Test screens
     public static final String RULE_TEST_BLOCK_MATCH_SCREEN = "rule_test.block_match_screen";
     public static final String RULE_TEST_BLOCK_STATE_MATCH_SCREEN = "rule_test.block_state_match_screen";
+    public static final String RULE_TEST_TAG_MATCH_SCREEN = "rule_test.tag_match_screen";
     // Extra screens
     public static final String EXTRA_BIG_ORE_VEIN_SCREEN = "extra.big_ore_vein_screen";
     // Other screens
     public static final String OTHER_TARGET_BLOCK_STATE_SCREEN = "other.target_block_state_screen";
+    public static final String OTHER_BLOCK_TAG_SCREEN = "other.block_tag_screen";
 
     private Screens() {
     }

@@ -243,3 +243,15 @@ block_state_match_screen:
     lore:
       block-state: "Blockstate"
       left-click: "Click to edit the Blockstate!"
+tag_match_screen:
+  name: "Tag Match Rule Test"
+  tag:
+    name: "Tag"
+    lore:
+      tag: "Tag"
+      left-click: "Click to edit the Tag!"
+block_tag_screen:
+  name: "Block Tags"
+  default-icon:
+    lore:
+      left-click: "Click to select this Tag!"

@@ -2,6 +2,7 @@ package de.derfrzocker.feature.common.ruletest;
 
 import de.derfrzocker.feature.api.RuleTest;
 import de.derfrzocker.feature.api.RuleTestType;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
 import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
@@ -15,6 +16,7 @@ public class RandomBlockMatchRuleTest implements RuleTest {
     private Material material;
     private float probability;
     private boolean dirty;
+    private ValueLocation valueLocation = ValueLocation.UNKNOWN;
 
     public RandomBlockMatchRuleTest(Material material, float probability) {
         this.material = material;
@@ -64,5 +66,15 @@ public class RandomBlockMatchRuleTest implements RuleTest {
         return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofRuleTest(getType().getKey()),
                 new Pair<>("block", MessageTraversUtil.asTraversAble(getMaterial())),
                 new Pair<>("probability", MessageTraversUtil.asTraversAble(getProbability())));
+    }
+
+    @Override
+    public @NotNull ValueLocation getValueLocation() {
+        return valueLocation;
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        this.valueLocation = valueLocation;
     }
 }

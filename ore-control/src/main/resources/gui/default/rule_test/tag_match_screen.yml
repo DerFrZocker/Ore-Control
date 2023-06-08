@@ -1,0 +1,16 @@
+name: "%%translation:[tag_match_screen.name]%"
+tag:
+  slot: 22
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2865
+    type: NAME_TAG
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name:  "&f%%translation:[tag_match_screen.tag.name]%"
+      lore:
+        - "   "
+        - "&r&b%%translation:[tag_match_screen.tag.lore.tag]%: %tag%"
+        - "   "
+        - "&7>> &b%%translation:[tag_match_screen.tag.lore.left-click]% &7<<"

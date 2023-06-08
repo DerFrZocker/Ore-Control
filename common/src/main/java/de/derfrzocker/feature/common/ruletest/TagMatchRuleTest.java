@@ -2,6 +2,7 @@ package de.derfrzocker.feature.common.ruletest;
 
 import de.derfrzocker.feature.api.RuleTest;
 import de.derfrzocker.feature.api.RuleTestType;
+import de.derfrzocker.feature.api.ValueLocation;
 import de.derfrzocker.feature.api.util.traverser.message.StringFormatter;
 import de.derfrzocker.feature.api.util.traverser.message.TraversKey;
 import de.derfrzocker.feature.common.util.MessageTraversUtil;
@@ -15,6 +16,7 @@ public class TagMatchRuleTest implements RuleTest {
 
     private NamespacedKey tag;
     private boolean dirty;
+    private ValueLocation valueLocation = ValueLocation.UNKNOWN;
 
     public TagMatchRuleTest(NamespacedKey tag) {
         this.tag = tag;
@@ -53,5 +55,15 @@ public class TagMatchRuleTest implements RuleTest {
     public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         return MessageTraversUtil.multiple(formatter, depth, key, TraversKey.ofRuleTest(getType().getKey()),
                 new Pair<>("tag", MessageTraversUtil.asTraversAble(getTag())));
+    }
+
+    @Override
+    public @NotNull ValueLocation getValueLocation() {
+        return valueLocation;
+    }
+
+    @Override
+    public void setValueLocation(@NotNull ValueLocation valueLocation) {
+        this.valueLocation = valueLocation;
     }
 }

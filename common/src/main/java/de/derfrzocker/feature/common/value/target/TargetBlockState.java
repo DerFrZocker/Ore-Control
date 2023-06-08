@@ -98,5 +98,9 @@ public class TargetBlockState implements MessageTraversAble, SaveAble, Cloneable
     @Override
     public void setValueLocation(@NotNull ValueLocation valueLocation) {
         this.valueLocation = valueLocation;
+
+        if (target != null) {
+            target.setValueLocation(valueLocation);
+        }
     }
 }
