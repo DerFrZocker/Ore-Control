@@ -16,5 +16,5 @@ language, such as the names of the authors and an icon which is shown in the sel
 5: Share your language files!
 You can help bringing this plugin to more languages by contributing your custom language files back to the plugin,
 they don't need to be completed every bit is helpful.
-You can do this by either making a PR (https://github.com/DerFrZocker/Ore-Control) or by sending me the language files,
-you can reach me on discord at the server https://discord.derfrzocker.de.
+You can do this by either making a PR (https://github.com/DerFrZocker/Ore-Control) or by sending the language files,
+via a discussion post https://github.com/DerFrZocker/Ore-Control/discussions.
