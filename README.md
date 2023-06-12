@@ -13,7 +13,7 @@ With Ore-Control, you can customize the following aspects of ore generation:
 * The height at which ores should generate.
 * The ability to stop the generation of specific ores.
 * The ability to stop the generation of large [ore veins](https://minecraft.fandom.com/wiki/Ore_vein).
-* Experimental feature: Replacing blocks when generating ores.
+* Experimental feature: Change which blocks should be generated and which ones should be replaced.
 * Experimental feature: Generation based on mathematical equations. For example, making ores more common the further you are from the center. (This feature is only available through file system configuration.)
 * Compatibility with custom biomes and features from other datapacks, such as [terralith](https://www.planetminecraft.com/data-pack/terralith-overworld-evolved-100-biomes-caves-and-more/).
 
