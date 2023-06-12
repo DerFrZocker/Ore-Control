@@ -99,8 +99,8 @@ public class FixedTargetListValue extends TargetListValue {
     public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         List<String> result = new LinkedList<>();
 
-        result.add(formatter.format(depth, key, null));
-        result.add(formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
+        MessageTraversUtil.addIfNotNull(result, formatter.format(depth, key, null));
+        MessageTraversUtil.addIfNotNull(result, formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
 
         for (TargetBlockState state : getValue()) {
             // TODO: 5/3/23 Maybe remove the "entry" line 

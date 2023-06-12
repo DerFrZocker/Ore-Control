@@ -6,6 +6,6 @@ import org.jetbrains.annotations.Nullable;
 @FunctionalInterface
 public interface StringFormatter {
 
-    @NotNull
+    @Nullable
     String format(int depth, @NotNull TraversKey key, @Nullable Object value);
 }

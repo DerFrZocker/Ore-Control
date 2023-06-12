@@ -23,7 +23,13 @@ public final class MessageTraversUtil {
 
     @NotNull
     public static List<@NotNull String> single(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key, @Nullable Object value) {
-        return Collections.singletonList(formatter.format(depth, key, value));
+        String result = formatter.format(depth, key, value);
+
+        if (result == null) {
+            return Collections.emptyList();
+        }
+
+        return Collections.singletonList(result);
     }
 
     @NotNull
@@ -31,8 +37,8 @@ public final class MessageTraversUtil {
     public static List<@NotNull String> multiple(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key, @NotNull TraversKey valueTypeKey, @NotNull Pair<@NotNull String, @NotNull MessageTraversAble>... values) {
         List<String> result = new LinkedList<>();
 
-        result.add(formatter.format(depth, key, null));
-        result.add(formatter.format(depth + 1, valueTypeKey, null));
+        addIfNotNull(result, formatter.format(depth, key, null));
+        addIfNotNull(result, formatter.format(depth + 1, valueTypeKey, null));
 
         for (Pair<String, MessageTraversAble> pair : values) {
             int nextDepth = depth + 2;
@@ -40,5 +46,14 @@ public final class MessageTraversUtil {
         }
 
         return result;
+    }
+
+
+    public static void addIfNotNull(List<String> list, @Nullable String element) {
+        if (element == null) {
+            return;
+        }
+
+        list.add(element);
     }
 }

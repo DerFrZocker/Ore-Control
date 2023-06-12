@@ -15,10 +15,19 @@ public class BasicStringFormatter implements StringFormatter {
     }
 
     @Override
-    public @NotNull String format(int depth, @NotNull TraversKey key, @Nullable Object value) {
+    public @Nullable String format(int depth, @NotNull TraversKey key, @Nullable Object value) {
         StringBuilder builder = new StringBuilder();
 
         builder.append(" ".repeat(Math.max(0, depth)));
+
+        if (depth == 4) {
+            return builder.append("§r§7[...]").toString();
+        }
+
+        if (depth > 4) {
+            return null;
+        }
+
         builder.append("§r§7>§r§f ");
         builder.append(keyPrefix);
 

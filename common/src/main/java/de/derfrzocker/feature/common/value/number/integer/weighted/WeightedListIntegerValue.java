@@ -124,8 +124,9 @@ public class WeightedListIntegerValue extends IntegerValue {
     @Override
     public @NotNull List<@NotNull String> traverse(@NotNull StringFormatter formatter, int depth, @NotNull TraversKey key) {
         List<String> result = new LinkedList<>();
-        result.add(formatter.format(depth, key, null));
-        result.add(formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
+
+        MessageTraversUtil.addIfNotNull(result, formatter.format(depth, key, null));
+        MessageTraversUtil.addIfNotNull(result, formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
 
         for (Map.Entry<IntegerValue, IntegerValue> entry : getDistribution().entrySet()) {
             IntegerValue dataValue = entry.getKey();
