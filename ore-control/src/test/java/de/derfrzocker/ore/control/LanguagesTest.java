@@ -1,4 +1,4 @@
-package de.defrzocker.ore.control;
+package de.derfrzocker.ore.control;
 
 import org.bukkit.configuration.file.YamlConstructor;
 import org.junit.jupiter.api.BeforeAll;
