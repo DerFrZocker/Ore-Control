@@ -61,7 +61,7 @@ features:
     ore_diamond:
       name: "Diamond"
     ore_diamond_large:
-      name: "Diamon Large"
+      name: "Diamond Large"
     ore_diamond_buried:
       name: "Diamond Buried"
     ore_lapis:
