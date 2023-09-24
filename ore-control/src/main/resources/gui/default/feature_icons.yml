@@ -82,6 +82,9 @@ icons:
       type: COPPER_ORE
     ore_clay:
       type: CLAY
+    # from version 1.20.2
+    ore_diamond_medium:
+      type: DIAMOND_ORE
   # from terralith
   terralith:
     desert/sandstone:

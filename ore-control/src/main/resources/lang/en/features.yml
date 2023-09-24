@@ -82,6 +82,9 @@ features:
       name: "Copper Large"
     ore_clay:
       name: "Clay"
+    # from version 1.20.2
+    ore_diamond_medium:
+      name: "Diamond Medium"
   # from terralith
   terralith:
     desert/sandstone:

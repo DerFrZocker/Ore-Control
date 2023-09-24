@@ -82,6 +82,9 @@ features:
       name: "Kupfer Groß"
     ore_clay:
       name: "Ton"
+    # from version 1.20.2
+    ore_diamond_medium:
+      name: "Diamant Mittel"
   # from terralith
   terralith:
     desert/sandstone:
