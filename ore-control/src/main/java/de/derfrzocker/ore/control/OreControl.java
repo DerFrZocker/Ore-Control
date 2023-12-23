@@ -72,6 +72,7 @@ import de.derfrzocker.ore.control.impl.v1_19_R2.NMSReplacer_v1_19_R2;
 import de.derfrzocker.ore.control.impl.v1_19_R3.NMSReplacer_v1_19_R3;
 import de.derfrzocker.ore.control.impl.v1_20_R1.NMSReplacer_v1_20_R1;
 import de.derfrzocker.ore.control.impl.v1_20_R2.NMSReplacer_v1_20_R2;
+import de.derfrzocker.ore.control.impl.v1_20_R3.NMSReplacer_v1_20_R3;
 import de.derfrzocker.ore.control.interactions.BlockInteractionManager;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
@@ -99,7 +100,7 @@ import java.util.List;
 public class OreControl extends JavaPlugin implements Listener {
 
     public final static String BASE_WIKI_URL = "https://github.com/DerFrZocker/Ore-Control/wiki/";
-    private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_20_R2, Version.v1_20_R1, Version.v1_19_R3, Version.v1_19_R2, Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
+    private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_20_R3, Version.v1_20_R2, Version.v1_20_R1, Version.v1_19_R3, Version.v1_19_R2, Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
     private Version version = Version.UNKNOWN;
     private boolean loaded = false;
     private OreControlManager oreControlManager;
@@ -180,6 +181,8 @@ public class OreControl extends JavaPlugin implements Listener {
             return new NMSReplacer_v1_20_R1(this, oreControlManager, configCodec);
         } else if (version == Version.v1_20_R2) {
             return new NMSReplacer_v1_20_R2(this, oreControlManager, configCodec);
+        } else if (version == Version.v1_20_R3) {
+            return new NMSReplacer_v1_20_R3(this, oreControlManager, configCodec);
         } else {
             throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
         }
@@ -220,9 +223,7 @@ public class OreControl extends JavaPlugin implements Listener {
     private void registerFeatureGenerators(OreControlRegistries registries) {
     }
 
-    private void registerPlacementModifier(OreControlRegistries registries) {
-        registries.getPlacementModifierRegistry().register(new ActivationModifier(registries));
-    }
+    private void registerPlacementModifier(OreControlRegistries registries) { registries.getPlacementModifierRegistry().register(new ActivationModifier(registries)); }
 
     @Override // TODO move to own class
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

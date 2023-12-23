@@ -27,6 +27,9 @@
 /impl/v1_20_R2/target/
 /impl/v1_20_R2/.flattened-pom.xml
 /impl/v1_20_R2/ore-control-impl-v1_20_R2.iml
+/impl/v1_20_R3/target/
+/impl/v1_20_R3/.flattened-pom.xml
+/impl/v1_20_R3/ore-control-impl-v1_20_R3.iml
 /impl/.flattened-pom.xml
 /impl/ore-control-impl.iml
 /ore-control/target/
