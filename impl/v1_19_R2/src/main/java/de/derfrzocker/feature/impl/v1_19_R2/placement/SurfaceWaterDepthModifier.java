@@ -25,20 +25,21 @@
 
 package de.derfrzocker.feature.impl.v1_19_R2.placement;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.feature.placement.configuration.SurfaceWaterDepthModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
+import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -55,11 +56,32 @@ public class SurfaceWaterDepthModifier extends MinecraftPlacementModifier<Surfac
     }
 
     @Override
-    public Codec<SurfaceWaterDepthModifierConfiguration> createCodec(Registries registries) {
-        return RecordCodecBuilder.create((builder) -> builder.group(
-                registries.getValueTypeRegistry(IntegerType.class).dispatch("max_water_depth_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("max_water_depth").forGetter(config -> Optional.ofNullable(config.getMaxWaterDepth()))
-        ).apply(builder, (maxWaterDepth) -> new SurfaceWaterDepthModifierConfiguration(this, maxWaterDepth.orElse(null))));
+    public Parser<SurfaceWaterDepthModifierConfiguration> createParser(Registries registries) {
+        return new Parser<>() {
+            @Override
+            public JsonElement toJson(SurfaceWaterDepthModifierConfiguration value) {
+                JsonObject jsonObject = new JsonObject();
+                if (value.getMaxWaterDepth() != null) {
+                    JsonObject entry = value.getMaxWaterDepth().getValueType().getParser().toJson(value.getMaxWaterDepth()).getAsJsonObject();
+                    entry.addProperty("max_water_depth_type", value.getMaxWaterDepth().getValueType().getKey().toString());
+                    jsonObject.add("max_water_depth", entry);
+                }
+                return jsonObject;
+            }
+
+            @Override
+            public SurfaceWaterDepthModifierConfiguration fromJson(JsonElement jsonElement) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                IntegerValue count = null;
+                if (jsonObject.has("max_water_depth")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("max_water_depth");
+                    count = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("max_water_depth_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                return new SurfaceWaterDepthModifierConfiguration(SurfaceWaterDepthModifier.this, count);
+            }
+        };
     }
 
     @Override

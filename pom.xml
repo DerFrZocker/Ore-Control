@@ -51,7 +51,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.build.timestamp.format>yyyy.MM.d</maven.build.timestamp.format>
         <project.author>DerFrZocker</project.author>
-        <spigot-utils.version>88</spigot-utils.version>
+        <spigot-utils.version>89</spigot-utils.version>
         <bstats.version>3.0.0</bstats.version>
     </properties>
 
@@ -84,12 +84,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.18.1-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>datafixerupper</artifactId>
-            <version>4.0.26</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

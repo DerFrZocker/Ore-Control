@@ -25,10 +25,10 @@
 
 package de.derfrzocker.feature.impl.v1_19_R1.placement;
 
-import com.mojang.serialization.Codec;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.util.Parser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -47,17 +47,17 @@ import java.util.stream.Stream;
 
 public abstract class MinecraftPlacementModifier<M extends PlacementModifier, C extends PlacementModifierConfiguration> implements FeaturePlacementModifier<C> {
 
-    private final Codec<PlacementModifierConfiguration> codec;
+    private final Parser<PlacementModifierConfiguration> parser;
     private final NamespacedKey namespacedKey;
 
     public MinecraftPlacementModifier(@NotNull Registries registries, @NotNull String name) {
-        this.codec = (Codec<PlacementModifierConfiguration>) createCodec(registries);
+        this.parser = (Parser<PlacementModifierConfiguration>) createParser(registries);
         this.namespacedKey = NamespacedKey.minecraft(name);
     }
 
     public abstract C mergeConfig(C first, C second);
 
-    public abstract Codec<C> createCodec(Registries registries);
+    public abstract Parser<C> createParser(Registries registries);
 
     public abstract M createPlacementModifier(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);
 
@@ -78,8 +78,8 @@ public abstract class MinecraftPlacementModifier<M extends PlacementModifier, C 
 
     @NotNull
     @Override
-    public Codec<PlacementModifierConfiguration> getCodec() {
-        return codec;
+    public Parser<PlacementModifierConfiguration> getParser() {
+        return parser;
     }
 
     @NotNull

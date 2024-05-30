@@ -25,19 +25,20 @@
 
 package de.derfrzocker.feature.impl.v1_18_R2.feature.generator;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.value.number.FloatType;
 import de.derfrzocker.feature.common.value.number.FloatValue;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R2.feature.generator.configuration.OreFeatureConfiguration;
-import de.derfrzocker.feature.impl.v1_18_R2.value.target.TargetType;
 import de.derfrzocker.feature.impl.v1_18_R2.value.target.TargetValue;
 import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -45,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -55,17 +55,46 @@ public class ScatteredOreGenerator extends MinecraftFeatureGenerator<OreConfigur
         super(registries, OreFeature.SCATTERED_ORE, "scattered_ore");
     }
 
-    public Codec<OreFeatureConfiguration> createCodec(Registries registries) {
-        return RecordCodecBuilder.create((builder) -> builder.group(
-                Codec.list(registries.getValueTypeRegistry(TargetType.class).
-                                dispatch("target_type", TargetValue::getValueType, TargetType::getCodec)).
-                        optionalFieldOf("targets").
-                        forGetter(config -> Optional.ofNullable(config.getTargets())),
-                registries.getValueTypeRegistry(IntegerType.class).dispatch("size_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("size").forGetter(config -> Optional.ofNullable(config.getSize())),
-                registries.getValueTypeRegistry(FloatType.class).dispatch("discard_chance_on_air_exposure_type", FloatValue::getValueType, FloatType::getCodec).
-                        optionalFieldOf("discard_chance_on_air_exposure").forGetter(config -> Optional.ofNullable(config.getDiscardChanceOnAirExposure()))
-        ).apply(builder, (targets, size, discardChanceOnAirExposure) -> new OreFeatureConfiguration(this, targets.orElse(null), size.orElse(null), discardChanceOnAirExposure.orElse(null))));
+    @Override
+    public Parser<OreFeatureConfiguration> createParser(Registries registries) {
+        return new Parser<>() {
+            @Override
+            public JsonElement toJson(OreFeatureConfiguration value) {
+                JsonObject jsonObject = new JsonObject();
+
+                if (value.getSize() != null) {
+                    JsonObject size = value.getSize().getValueType().getParser().toJson(value.getSize()).getAsJsonObject();
+                    size.addProperty("size_type", value.getSize().getValueType().getKey().toString());
+                    jsonObject.add("size", size);
+                }
+
+                if (value.getDiscardChanceOnAirExposure() != null) {
+                    JsonObject discardChanceOnAirExposure = value.getDiscardChanceOnAirExposure().getValueType().getParser().toJson(value.getDiscardChanceOnAirExposure()).getAsJsonObject();
+                    discardChanceOnAirExposure.addProperty("discard_chance_on_air_exposure_type", value.getDiscardChanceOnAirExposure().getValueType().getKey().toString());
+                }
+
+                return jsonObject;
+            }
+
+            @Override
+            public OreFeatureConfiguration fromJson(JsonElement jsonElement) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                IntegerValue size = null;
+                if (jsonObject.has("size")) {
+                    JsonObject sizes = jsonObject.getAsJsonObject("size");
+                    size = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(sizes.getAsJsonPrimitive("size_type").getAsString())).get().getParser().fromJson(sizes);
+                }
+
+                FloatValue discardChanceOnAirExposure = null;
+                if (jsonObject.has("discard_chance_on_air_exposure")) {
+                    JsonObject chance = jsonObject.getAsJsonObject("discard_chance_on_air_exposure");
+                    discardChanceOnAirExposure = registries.getValueTypeRegistry(FloatType.class).get(NamespacedKey.fromString(chance.getAsJsonPrimitive("discard_chance_on_air_exposure_type").getAsString())).get().getParser().fromJson(chance);
+                }
+
+                return new OreFeatureConfiguration(ScatteredOreGenerator.this, null, size, discardChanceOnAirExposure);
+            }
+        };
     }
 
     @Override

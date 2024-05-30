@@ -25,7 +25,7 @@
 
 package de.derfrzocker.feature.api;
 
-import com.mojang.serialization.Codec;
+import de.derfrzocker.feature.api.util.Parser;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
@@ -41,13 +41,13 @@ import java.util.Random;
 public interface FeatureGenerator<C extends FeatureGeneratorConfiguration> extends ConfigurationAble {
 
     /**
-     * Returns the codec which can be used to serialize
+     * Returns the parser which can be used to serialize
      * the configuration used for this feature generator.
      *
-     * @return the codec to save the configuration
+     * @return the parser to save the configuration
      */
     @NotNull
-    Codec<FeatureGeneratorConfiguration> getCodec();
+    Parser<FeatureGeneratorConfiguration> getParser();
 
     /**
      * Merges the second configuration into the first one.

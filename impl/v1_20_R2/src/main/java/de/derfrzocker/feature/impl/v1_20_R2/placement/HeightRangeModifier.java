@@ -25,10 +25,11 @@
 
 package de.derfrzocker.feature.impl.v1_20_R2.placement;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.feature.placement.configuration.HeightRangeModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
@@ -36,12 +37,12 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -58,11 +59,32 @@ public class HeightRangeModifier extends MinecraftPlacementModifier<HeightRangeP
     }
 
     @Override
-    public Codec<HeightRangeModifierConfiguration> createCodec(Registries registries) {
-        return RecordCodecBuilder.create((builder) -> builder.group(
-                registries.getValueTypeRegistry(IntegerType.class).dispatch("height_range_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("height").forGetter(config -> Optional.ofNullable(config.getHeight()))
-        ).apply(builder, (height) -> new HeightRangeModifierConfiguration(this, height.orElse(null))));
+    public Parser<HeightRangeModifierConfiguration> createParser(Registries registries) {
+        return new Parser<>() {
+            @Override
+            public JsonElement toJson(HeightRangeModifierConfiguration value) {
+                JsonObject jsonObject = new JsonObject();
+                if (value.getHeight() != null) {
+                    JsonObject entry = value.getHeight().getValueType().getParser().toJson(value.getHeight()).getAsJsonObject();
+                    entry.addProperty("height_range_type", value.getHeight().getValueType().getKey().toString());
+                    jsonObject.add("height", entry);
+                }
+                return jsonObject;
+            }
+
+            @Override
+            public HeightRangeModifierConfiguration fromJson(JsonElement jsonElement) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                IntegerValue count = null;
+                if (jsonObject.has("height")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("height");
+                    count = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("height_range_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                return new HeightRangeModifierConfiguration(HeightRangeModifier.this, count);
+            }
+        };
     }
 
     @Override

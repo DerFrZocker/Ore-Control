@@ -37,4 +37,7 @@
 /ore-control/ore-control.iml
 /.flattened-pom.xml
 /ore-control-parent.iml
+.flattened-pom.xml
+target
+*.iml
 

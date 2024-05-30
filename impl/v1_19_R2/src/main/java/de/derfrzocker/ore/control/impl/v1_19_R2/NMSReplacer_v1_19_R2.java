@@ -29,14 +29,12 @@ import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.JsonOps;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.api.PlacementModifierConfiguration;
 import de.derfrzocker.feature.api.ValueLocation;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.feature.generator.configuration.EmptyFeatureConfiguration;
 import de.derfrzocker.feature.common.feature.placement.ActivationModifier;
 import de.derfrzocker.feature.common.feature.placement.configuration.ActivationConfiguration;
@@ -131,18 +129,18 @@ public class NMSReplacer_v1_19_R2 implements NMSReplacer {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final Plugin plugin;
-    private final Codec<Config> configCodec;
+    private final Parser<Config> configParser;
     private final OreControlManager oreControlManager;
     @NotNull
     private final OreControlRegistries registries;
     private final ConfigManager configManager;
 
-    public NMSReplacer_v1_19_R2(@NotNull Plugin plugin, @NotNull OreControlManager oreControlManager, Codec<Config> configCodec) {
+    public NMSReplacer_v1_19_R2(@NotNull Plugin plugin, @NotNull OreControlManager oreControlManager, Parser<Config> configParser) {
         this.plugin = plugin;
         this.oreControlManager = oreControlManager;
         this.registries = oreControlManager.getRegistries();
         this.configManager = oreControlManager.getConfigManager();
-        this.configCodec = configCodec;
+        this.configParser = configParser;
     }
 
     @Override
@@ -406,8 +404,7 @@ public class NMSReplacer_v1_19_R2 implements NMSReplacer {
             throw new RuntimeException(e);
         }
 
-        DataResult<JsonElement> result = configCodec.encodeStart(JsonOps.INSTANCE, config);
-        JsonElement element = result.get().left().get();
+        JsonElement element = configParser.toJson(config);
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(GSON.toJson(element));
         } catch (IOException e) {

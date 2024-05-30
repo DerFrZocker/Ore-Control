@@ -1,11 +1,11 @@
 package de.derfrzocker.feature.api;
 
-import com.mojang.serialization.Codec;
+import de.derfrzocker.feature.api.util.Parser;
 import org.bukkit.Keyed;
 import org.jetbrains.annotations.NotNull;
 
 public interface RuleTestType extends Keyed {
 
     @NotNull
-    Codec<RuleTest> getCodec();
+    Parser<RuleTest> getParser();
 }

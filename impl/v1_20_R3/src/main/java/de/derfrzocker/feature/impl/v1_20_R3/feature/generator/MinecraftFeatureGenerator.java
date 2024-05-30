@@ -25,10 +25,10 @@
 
 package de.derfrzocker.feature.impl.v1_20_R3.feature.generator;
 
-import com.mojang.serialization.Codec;
 import de.derfrzocker.feature.api.FeatureGenerator;
 import de.derfrzocker.feature.api.FeatureGeneratorConfiguration;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.util.Parser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -47,19 +47,19 @@ import java.util.Random;
 
 public abstract class MinecraftFeatureGenerator<M extends FeatureConfiguration, C extends FeatureGeneratorConfiguration> implements FeatureGenerator<C> {
 
-    private final Codec<FeatureGeneratorConfiguration> codec;
+    private final Parser<FeatureGeneratorConfiguration> parser;
     private final Feature<M> feature;
     private final NamespacedKey namespacedKey;
 
     public MinecraftFeatureGenerator(Registries registries, Feature<M> feature, String name) {
-        this.codec = (Codec<FeatureGeneratorConfiguration>) createCodec(registries);
+        this.parser = (Parser<FeatureGeneratorConfiguration>) createParser(registries);
         this.feature = feature;
         this.namespacedKey = NamespacedKey.minecraft(name);
     }
 
     public abstract C mergeConfig(C first, C second);
 
-    public abstract Codec<C> createCodec(Registries registries);
+    public abstract Parser<C> createParser(Registries registries);
 
     public abstract M createConfiguration(@NotNull WorldInfo worldInfo, @NotNull Random random, @NotNull BlockVector position, @NotNull LimitedRegion limitedRegion, @NotNull C configuration);
 
@@ -78,8 +78,8 @@ public abstract class MinecraftFeatureGenerator<M extends FeatureConfiguration, 
 
     @NotNull
     @Override
-    public Codec<FeatureGeneratorConfiguration> getCodec() {
-        return codec;
+    public Parser<FeatureGeneratorConfiguration> getParser() {
+        return parser;
     }
 
     @NotNull

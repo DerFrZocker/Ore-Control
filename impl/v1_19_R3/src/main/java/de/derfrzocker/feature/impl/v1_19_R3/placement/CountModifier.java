@@ -25,20 +25,21 @@
 
 package de.derfrzocker.feature.impl.v1_19_R3.placement;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.feature.placement.configuration.CountModifierConfiguration;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -55,11 +56,32 @@ public class CountModifier extends MinecraftPlacementModifier<CountPlacement, Co
     }
 
     @Override
-    public Codec<CountModifierConfiguration> createCodec(Registries registries) {
-        return RecordCodecBuilder.create((builder) -> builder.group(
-                registries.getValueTypeRegistry(IntegerType.class).dispatch("count_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("count").forGetter(config -> Optional.ofNullable(config.getCount()))
-        ).apply(builder, (count) -> new CountModifierConfiguration(this, count.orElse(null))));
+    public Parser<CountModifierConfiguration> createParser(Registries registries) {
+        return new Parser<>() {
+            @Override
+            public JsonElement toJson(CountModifierConfiguration value) {
+                JsonObject jsonObject = new JsonObject();
+                if (value.getCount() != null) {
+                    JsonObject entry = value.getCount().getValueType().getParser().toJson(value.getCount()).getAsJsonObject();
+                    entry.addProperty("count_type", value.getCount().getValueType().getKey().toString());
+                    jsonObject.add("count", entry);
+                }
+                return jsonObject;
+            }
+
+            @Override
+            public CountModifierConfiguration fromJson(JsonElement jsonElement) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                IntegerValue count = null;
+                if (jsonObject.has("count")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("count");
+                    count = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("count_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                return new CountModifierConfiguration(CountModifier.this, count);
+            }
+        };
     }
 
     @Override

@@ -127,6 +127,13 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>ore-control-impl-v1_20_R4</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.0-M1</version>
@@ -164,6 +171,14 @@
                         <relocation>
                             <pattern>net.wesjd</pattern>
                             <shadedPattern>de.derfrzocker.ore.control.utils</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.mojang.datafixers</pattern>
+                            <shadedPattern>de.derfrzocker.ore.control.utils.datafixers</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.mojang.serialization</pattern>
+                            <shadedPattern>de.derfrzocker.ore.control.utils.serialization</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

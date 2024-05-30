@@ -25,10 +25,12 @@
 
 package de.derfrzocker.feature.impl.v1_18_R1.feature.generator;
 
-import com.mojang.serialization.Codec;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Configuration;
 import de.derfrzocker.feature.api.Registries;
 import de.derfrzocker.feature.api.Setting;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.feature.generator.configuration.EmptyFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -63,8 +65,19 @@ public class GlowstoneBlobFeatureGenerator extends MinecraftFeatureGenerator<Non
     }
 
     @Override
-    public Codec<EmptyFeatureConfiguration> createCodec(Registries registries) {
-        return Codec.unit(() -> new EmptyFeatureConfiguration(this));
+    public Parser<EmptyFeatureConfiguration> createParser(Registries registries) {
+        return new Parser<>() {
+
+            @Override
+            public JsonElement toJson(EmptyFeatureConfiguration value) {
+                return new JsonObject();
+            }
+
+            @Override
+            public EmptyFeatureConfiguration fromJson(JsonElement jsonElement) {
+                return new EmptyFeatureConfiguration(GlowstoneBlobFeatureGenerator.this);
+            }
+        };
     }
 
     @Override

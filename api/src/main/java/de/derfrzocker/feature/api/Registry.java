@@ -25,11 +25,6 @@
 
 package de.derfrzocker.feature.api;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.Lifecycle;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 
@@ -37,19 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Registry<V extends Keyed> implements Codec<V> {
-
-    public static final Codec<NamespacedKey> KEY_CODEC = Codec.STRING.comapFlatMap(value -> {
-        if (value == null || value.isEmpty()) {
-            return DataResult.error("Value is null or empty");
-        }
-        NamespacedKey namespacedKey = NamespacedKey.fromString(value);
-        if (namespacedKey == null) {
-            return DataResult.error("Value " + value + " could not be parsed to a NamespaceKey");
-        }
-
-        return DataResult.success(namespacedKey);
-    }, NamespacedKey::toString);
+public class Registry<V extends Keyed> {
 
     private final Map<NamespacedKey, V> values = new LinkedHashMap<>();
 
@@ -63,19 +46,5 @@ public class Registry<V extends Keyed> implements Codec<V> {
 
     public Map<NamespacedKey, V> getValues() {
         return values;
-    }
-
-    @Override
-    public <T> DataResult<Pair<V, T>> decode(DynamicOps<T> ops, T input) {
-        return KEY_CODEC.
-                decode(ops, input).
-                flatMap(result -> get(result.getFirst()).
-                        map(v -> DataResult.success(Pair.of(v, result.getSecond()), Lifecycle.experimental())).
-                        orElseGet(() -> DataResult.error("No value for key " + result.getFirst() + " registered")));
-    }
-
-    @Override
-    public <T> DataResult<T> encode(V input, DynamicOps<T> ops, T prefix) {
-        return ops.mergeToPrimitive(prefix, ops.createString(input.getKey().toString())).setLifecycle(Lifecycle.experimental());
     }
 }
