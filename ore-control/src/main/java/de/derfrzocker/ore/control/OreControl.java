@@ -75,13 +75,15 @@ import de.derfrzocker.ore.control.impl.v1_20_R2.NMSReplacer_v1_20_R2;
 import de.derfrzocker.ore.control.impl.v1_20_R3.NMSReplacer_v1_20_R3;
 import de.derfrzocker.ore.control.impl.v1_20_R4.NMSReplacer_v1_20_R4;
 import de.derfrzocker.ore.control.interactions.BlockInteractionManager;
-import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.FileLanguageLoader;
 import de.derfrzocker.spigot.utils.language.loader.MergeLanguageLoader;
 import de.derfrzocker.spigot.utils.language.loader.PluginLanguageLoader;
 import de.derfrzocker.spigot.utils.language.manager.DirectLanguageManager;
 import de.derfrzocker.spigot.utils.setting.ConfigSetting;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersionRange;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -101,8 +103,8 @@ import java.util.List;
 public class OreControl extends JavaPlugin implements Listener {
 
     public final static String BASE_WIKI_URL = "https://github.com/DerFrZocker/Ore-Control/wiki/";
-    private static final Version[] SUPPORTED_VERSION = new Version[]{Version.v1_20_R4, Version.v1_20_R3, Version.v1_20_R2, Version.v1_20_R1, Version.v1_19_R3, Version.v1_19_R2, Version.v1_19_R1, Version.v1_18_R2, Version.v1_18_R1};
-    private Version version = Version.UNKNOWN;
+    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_20, ServerVersionRange.V1_19, ServerVersionRange.V1_18};
+    private ServerVersion version = ServerVersion.NONE;
     private boolean loaded = false;
     private OreControlManager oreControlManager;
     private LanguageManager languageManager;
@@ -114,8 +116,8 @@ public class OreControl extends JavaPlugin implements Listener {
 
     @Override
     public void onLoad() {
-        version = Version.getServerVersion(getServer());
-        if (!Version.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
+        version = ServerVersion.getCurrentVersion(getServer());
+        if (!ServerVersion.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
             return;
         }
 
@@ -168,23 +170,23 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private NMSReplacer getNmsReplacer() {
-        if (version == Version.v1_18_R1) {
+        if (InternalVersion.v1_18_R1.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_18_R1(oreControlManager, configParser);
-        } else if (version == Version.v1_18_R2) {
+        } else if (InternalVersion.v1_18_R2.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_18_R2(oreControlManager, configParser);
-        } else if (version == Version.v1_19_R1) {
+        } else if (InternalVersion.v1_19_R1.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_19_R1(this, oreControlManager, configParser);
-        } else if (version == Version.v1_19_R2) {
+        } else if (InternalVersion.v1_19_R2.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_19_R2(this, oreControlManager, configParser);
-        } else if (version == Version.v1_19_R3) {
+        } else if (InternalVersion.v1_19_R3.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_19_R3(this, oreControlManager, configParser);
-        } else if (version == Version.v1_20_R1) {
+        } else if (InternalVersion.v1_20_R1.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R1(this, oreControlManager, configParser);
-        } else if (version == Version.v1_20_R2) {
+        } else if (InternalVersion.v1_20_R2.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R2(this, oreControlManager, configParser);
-        } else if (version == Version.v1_20_R3) {
+        } else if (InternalVersion.v1_20_R3.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R3(this, oreControlManager, configParser);
-        } else if (version == Version.v1_20_R4) {
+        } else if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R4(this, oreControlManager, configParser);
         } else {
             throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
