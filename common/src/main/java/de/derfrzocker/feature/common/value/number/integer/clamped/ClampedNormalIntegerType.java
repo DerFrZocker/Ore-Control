@@ -25,9 +25,10 @@
 
 package de.derfrzocker.feature.common.value.number.integer.clamped;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.value.number.FixedFloatValue;
 import de.derfrzocker.feature.common.value.number.FloatType;
 import de.derfrzocker.feature.common.value.number.FloatValue;
@@ -37,29 +38,81 @@ import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerVa
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 public class ClampedNormalIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:clamped_normal_integer");
     private static ClampedNormalIntegerType type = null;
-    private final Codec<ClampedNormalIntegerValue> codec;
+    private final Parser<IntegerValue> parser;
 
     public ClampedNormalIntegerType(Registries registries) {
         if (type != null) {
             throw new IllegalStateException("ClampedNormalIntegerType was already created!");
         }
 
-        codec = RecordCodecBuilder.create((builder) -> builder.group(
-                registries.getValueTypeRegistry(FloatType.class).dispatch("mean_type", FloatValue::getValueType, FloatType::getCodec).
-                        optionalFieldOf("mean").forGetter(config -> Optional.ofNullable(config.getMean())),
-                registries.getValueTypeRegistry(FloatType.class).dispatch("deviation_type", FloatValue::getValueType, FloatType::getCodec).
-                        optionalFieldOf("deviation").forGetter(config -> Optional.ofNullable(config.getDeviation())),
-                registries.getValueTypeRegistry(IntegerType.class).dispatch("min_inclusive_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("min_inclusive").forGetter(config -> Optional.ofNullable(config.getMinInclusive())),
-                registries.getValueTypeRegistry(IntegerType.class).dispatch("max_inclusive_type", IntegerValue::getValueType, IntegerType::getCodec).
-                        optionalFieldOf("max_inclusive").forGetter(config -> Optional.ofNullable(config.getMaxInclusive()))
-        ).apply(builder, (mean, deviation, minInclusive, maxInclusive) -> new ClampedNormalIntegerValue(mean.orElse(null), deviation.orElse(null), minInclusive.orElse(null), maxInclusive.orElse(null))));
+        parser = new Parser<>() {
+            @Override
+            public JsonElement toJson(IntegerValue v) {
+                ClampedNormalIntegerValue value = (ClampedNormalIntegerValue) v;
+                JsonObject jsonObject = new JsonObject();
+
+                if (value.getMean() != null) {
+                    JsonObject entry = value.getMean().getValueType().getParser().toJson(value.getMean()).getAsJsonObject();
+                    entry.addProperty("mean_type", value.getMean().getValueType().getKey().toString());
+                    jsonObject.add("mean", entry);
+                }
+
+                if (value.getDeviation() != null) {
+                    JsonObject entry = value.getDeviation().getValueType().getParser().toJson(value.getDeviation()).getAsJsonObject();
+                    entry.addProperty("deviation_type", value.getDeviation().getValueType().getKey().toString());
+                    jsonObject.add("deviation", entry);
+                }
+
+                if (value.getMinInclusive() != null) {
+                    JsonObject entry = value.getMinInclusive().getValueType().getParser().toJson(value.getMinInclusive()).getAsJsonObject();
+                    entry.addProperty("min_inclusive_type", value.getMinInclusive().getValueType().getKey().toString());
+                    jsonObject.add("min_inclusive", entry);
+                }
+
+                if (value.getMaxInclusive() != null) {
+                    JsonObject entry = value.getMaxInclusive().getValueType().getParser().toJson(value.getMaxInclusive()).getAsJsonObject();
+                    entry.addProperty("max_inclusive_type", value.getMaxInclusive().getValueType().getKey().toString());
+                    jsonObject.add("max_inclusive", entry);
+                }
+
+                return jsonObject;
+            }
+
+            @Override
+            public ClampedNormalIntegerValue fromJson(JsonElement jsonElement) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                FloatValue mean = null;
+                if (jsonObject.has("mean")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("mean");
+                    mean = registries.getValueTypeRegistry(FloatType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("mean_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                FloatValue deviation = null;
+                if (jsonObject.has("deviation")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("deviation");
+                    deviation = registries.getValueTypeRegistry(FloatType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("deviation_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                IntegerValue minInclusive = null;
+                if (jsonObject.has("min_inclusive")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("min_inclusive");
+                    minInclusive = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("min_inclusive_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                IntegerValue maxInclusive = null;
+                if (jsonObject.has("max_inclusive")) {
+                    JsonObject entry = jsonObject.getAsJsonObject("max_inclusive");
+                    maxInclusive = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("max_inclusive_type").getAsString())).get().getParser().fromJson(entry);
+                }
+
+                return new ClampedNormalIntegerValue(mean, deviation, minInclusive, maxInclusive);
+            }
+        };
 
         type = this;
     }
@@ -69,8 +122,8 @@ public class ClampedNormalIntegerType extends IntegerType {
     }
 
     @Override
-    public Codec<IntegerValue> getCodec() {
-        return codec.xmap(value -> value, value -> (ClampedNormalIntegerValue) value);
+    public Parser<IntegerValue> getParser() {
+        return parser;
     }
 
     @Override

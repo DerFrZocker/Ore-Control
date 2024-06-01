@@ -28,7 +28,6 @@ package de.derfrzocker.ore.control.impl.v1_20_R3.placement;
 import de.derfrzocker.feature.api.FeaturePlacementModifier;
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.feature.impl.v1_20_R3.placement.configuration.SurfaceRelativeThresholdModifierConfiguration;
-import de.derfrzocker.feature.impl.v1_20_R3.value.heightmap.FixedHeightmapValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.impl.v1_20_R3.NMSReflectionNames;
@@ -64,7 +63,7 @@ public class SurfaceRelativeThresholdModifierHook extends MinecraftPlacementModi
             Object heightmapValue = heightmap.get(defaultModifier);
             Object minInclusiveValue = minInclusive.get(defaultModifier);
             Object maxInclusiveValue = maxInclusive.get(defaultModifier);
-            return new SurfaceRelativeThresholdModifierConfiguration(modifier, new FixedHeightmapValue((Heightmap.Types) heightmapValue), new FixedDoubleToIntegerValue(NumberConversions.toInt(minInclusiveValue)), new FixedDoubleToIntegerValue(NumberConversions.toInt(maxInclusiveValue)));
+            return new SurfaceRelativeThresholdModifierConfiguration(modifier, null, new FixedDoubleToIntegerValue(NumberConversions.toInt(minInclusiveValue)), new FixedDoubleToIntegerValue(NumberConversions.toInt(maxInclusiveValue)));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

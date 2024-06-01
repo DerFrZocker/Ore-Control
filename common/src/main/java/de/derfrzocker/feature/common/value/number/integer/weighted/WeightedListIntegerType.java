@@ -25,57 +25,83 @@
 
 package de.derfrzocker.feature.common.value.number.integer.weighted;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.derfrzocker.feature.api.Registries;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class WeightedListIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:weighted_list_integer");
     private static WeightedListIntegerType type = null;
-    private final Codec<WeightedListIntegerValue> codec;
+    private final Parser<IntegerValue> parser;
 
     public WeightedListIntegerType(Registries registries) {
         if (type != null) {
             throw new IllegalStateException("WeightedListIntegerType was already created!");
         }
 
-        codec = RecordCodecBuilder.create((builder) -> builder.group(
-                Codec.list(Codec.mapPair(
-                        registries.getValueTypeRegistry(IntegerType.class).dispatchMap("data_type", IntegerValue::getValueType, IntegerType::getCodec).fieldOf("data"),
-                        registries.getValueTypeRegistry(IntegerType.class).dispatchMap("weight_type", IntegerValue::getValueType, IntegerType::getCodec).fieldOf("weight")).codec()
-                ).optionalFieldOf("distribution").forGetter(config -> {
-                    List<Pair<IntegerValue, IntegerValue>> list = new ArrayList<>();
-                    for (Map.Entry<IntegerValue, IntegerValue> entry : config.getDistribution().entrySet()) {
-                        list.add(new Pair<>(entry.getKey(), entry.getValue()));
+        parser = new Parser<>() {
+            @Override
+            public JsonElement toJson(IntegerValue v) {
+                WeightedListIntegerValue value = (WeightedListIntegerValue) v;
+                JsonObject jsonObject = new JsonObject();
+
+                if (value.getDistribution() != null) {
+                    JsonArray array = new JsonArray();
+                    for (Map.Entry<IntegerValue, IntegerValue> entry : value.getDistribution().entrySet()) {
+                        JsonObject object = new JsonObject();
+
+                        JsonObject key = entry.getKey().getValueType().getParser().toJson(entry.getKey()).getAsJsonObject();
+                        key.addProperty("data_type", entry.getKey().getValueType().getKey().toString());
+                        object.add("data", key);
+
+                        JsonObject val = entry.getValue().getValueType().getParser().toJson(entry.getValue()).getAsJsonObject();
+                        key.addProperty("weight_type", entry.getValue().getValueType().getKey().toString());
+                        object.add("weight", val);
+
+                        array.add(object);
                     }
-                    if (list.isEmpty()) {
-                        return Optional.empty();
+
+                    jsonObject.add("distribution", array);
+                }
+
+                return jsonObject;
+            }
+
+            @Override
+            public WeightedListIntegerValue fromJson(JsonElement jsonElement) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                Map<IntegerValue, IntegerValue> values = null;
+                if (jsonObject.has("distribution")) {
+                    values = new LinkedHashMap<>();
+                    for (JsonElement element : jsonObject.get("distribution").getAsJsonArray()) {
+                        JsonObject object = element.getAsJsonObject();
+
+                        JsonObject keyObject = object.getAsJsonObject("data");
+                        IntegerValue key = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(keyObject.getAsJsonPrimitive("data_type").getAsString())).get().getParser().fromJson(keyObject);
+
+
+                        JsonObject valueObject = object.getAsJsonObject("weight");
+                        IntegerValue value = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(valueObject.getAsJsonPrimitive("weight_type").getAsString())).get().getParser().fromJson(valueObject);
+
+                        values.put(key, value);
                     }
-                    return Optional.of(list);
-                })
-        ).apply(builder, distribution -> {
-            if (distribution.isEmpty()) {
-                return new WeightedListIntegerValue(null);
+                }
+
+                return new WeightedListIntegerValue(values);
             }
-            Map<IntegerValue, IntegerValue> values = new LinkedHashMap<>();
-            for (Pair<IntegerValue, IntegerValue> value : distribution.get()) {
-                values.put(value.getFirst(), value.getSecond());
-            }
-            return new WeightedListIntegerValue(values);
-        }));
+        };
 
         type = this;
     }
@@ -85,8 +111,8 @@ public class WeightedListIntegerType extends IntegerType {
     }
 
     @Override
-    public Codec<IntegerValue> getCodec() {
-        return codec.xmap(value -> value, value -> (WeightedListIntegerValue) value);
+    public Parser<IntegerValue> getParser() {
+        return parser;
     }
 
     @Override

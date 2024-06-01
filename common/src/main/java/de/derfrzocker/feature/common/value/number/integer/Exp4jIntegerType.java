@@ -1,6 +1,8 @@
 package de.derfrzocker.feature.common.value.number.integer;
 
-import com.mojang.serialization.Codec;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import de.derfrzocker.feature.api.util.Parser;
 import de.derfrzocker.feature.common.value.number.IntegerType;
 import de.derfrzocker.feature.common.value.number.IntegerValue;
 import org.bukkit.NamespacedKey;
@@ -10,14 +12,36 @@ public class Exp4jIntegerType extends IntegerType {
 
     public static final NamespacedKey KEY = NamespacedKey.fromString("feature:exp4f_integer");
     public static final Exp4jIntegerType INSTANCE = new Exp4jIntegerType();
-    public static final Codec<Exp4jIntegerValue> CODEC = Codec.STRING.xmap(Exp4jIntegerValue::new, Exp4jIntegerValue::getExpressionString);
+    public static final Parser<IntegerValue> PARSER = new Parser<>() {
+        @Override
+        public JsonElement toJson(IntegerValue v) {
+            Exp4jIntegerValue value = (Exp4jIntegerValue) v;
+            JsonObject jsonObject = new JsonObject();
+
+            jsonObject.addProperty("value", value.getExpressionString());
+
+            return jsonObject;
+        }
+
+        @Override
+        public Exp4jIntegerValue fromJson(JsonElement jsonElement) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+            String value = null;
+            if (jsonObject.has("value")) {
+                value = jsonObject.get("value").getAsString();
+            }
+
+            return new Exp4jIntegerValue(value);
+        }
+    };
 
     private Exp4jIntegerType() {
     }
 
     @Override
-    public Codec<IntegerValue> getCodec() {
-        return CODEC.xmap(value -> value, value -> (Exp4jIntegerValue) value);
+    public Parser<IntegerValue> getParser() {
+        return PARSER;
     }
 
     @Override

@@ -52,8 +52,6 @@ import de.derfrzocker.feature.impl.v1_20_R3.placement.HeightRangeModifier;
 import de.derfrzocker.feature.impl.v1_20_R3.placement.RarityModifier;
 import de.derfrzocker.feature.impl.v1_20_R3.placement.SurfaceRelativeThresholdModifier;
 import de.derfrzocker.feature.impl.v1_20_R3.placement.SurfaceWaterDepthModifier;
-import de.derfrzocker.feature.impl.v1_20_R3.value.heightmap.FixedHeightmapType;
-import de.derfrzocker.feature.impl.v1_20_R3.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_20_R3.value.offset.NMSAboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.impl.v1_20_R3.value.offset.NMSBelowTopOffsetIntegerValue;
 import de.derfrzocker.ore.control.api.NMSReplacer;
@@ -94,7 +92,6 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
 import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
-import org.apache.maven.model.Parent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -151,7 +148,6 @@ public class NMSReplacer_v1_20_R3 implements NMSReplacer {
     private void registerValueTypes() {
         registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries, NMSAboveBottomOffsetIntegerValue::new));
         registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries, NMSBelowTopOffsetIntegerValue::new));
-        registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
     }
 
     private void registerFeatureGenerators() {

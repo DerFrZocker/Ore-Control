@@ -48,11 +48,9 @@ import de.derfrzocker.feature.impl.v1_18_R1.placement.HeightRangeModifier;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.RarityModifier;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.SurfaceRelativeThresholdModifier;
 import de.derfrzocker.feature.impl.v1_18_R1.placement.SurfaceWaterDepthModifier;
-import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.FixedHeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.heightmap.HeightmapType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.offset.NMSAboveBottomOffsetIntegerValue;
 import de.derfrzocker.feature.impl.v1_18_R1.value.offset.NMSBelowTopOffsetIntegerValue;
-import de.derfrzocker.feature.impl.v1_18_R1.value.target.FixedTargetType;
 import de.derfrzocker.feature.impl.v1_18_R1.value.target.TargetType;
 import de.derfrzocker.ore.control.api.NMSReplacer;
 import de.derfrzocker.ore.control.api.OreControlManager;
@@ -143,8 +141,6 @@ public class NMSReplacer_v1_18_R1 implements NMSReplacer {
     private void registerValueTypes() {
         registries.getValueTypeRegistry(IntegerType.class).register(new AboveBottomOffsetIntegerType(registries, NMSAboveBottomOffsetIntegerValue::new));
         registries.getValueTypeRegistry(IntegerType.class).register(new BelowTopOffsetIntegerType(registries, NMSBelowTopOffsetIntegerValue::new));
-        registries.getValueTypeRegistry(TargetType.class).register(FixedTargetType.INSTANCE);
-        registries.getValueTypeRegistry(HeightmapType.class).register(FixedHeightmapType.INSTANCE);
     }
 
     private void registerFeatureGenerators() {
