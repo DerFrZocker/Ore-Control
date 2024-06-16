@@ -74,6 +74,7 @@ import de.derfrzocker.ore.control.impl.v1_20_R1.NMSReplacer_v1_20_R1;
 import de.derfrzocker.ore.control.impl.v1_20_R2.NMSReplacer_v1_20_R2;
 import de.derfrzocker.ore.control.impl.v1_20_R3.NMSReplacer_v1_20_R3;
 import de.derfrzocker.ore.control.impl.v1_20_R4.NMSReplacer_v1_20_R4;
+import de.derfrzocker.ore.control.impl.v1_21_R1.NMSReplacer_v1_21_R1;
 import de.derfrzocker.ore.control.interactions.BlockInteractionManager;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.FileLanguageLoader;
@@ -103,7 +104,7 @@ import java.util.List;
 public class OreControl extends JavaPlugin implements Listener {
 
     public final static String BASE_WIKI_URL = "https://github.com/DerFrZocker/Ore-Control/wiki/";
-    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_20, ServerVersionRange.V1_19, ServerVersionRange.V1_18};
+    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_21, ServerVersionRange.V1_20, ServerVersionRange.V1_19, ServerVersionRange.V1_18};
     private ServerVersion version = ServerVersion.NONE;
     private boolean loaded = false;
     private OreControlManager oreControlManager;
@@ -188,6 +189,8 @@ public class OreControl extends JavaPlugin implements Listener {
             return new NMSReplacer_v1_20_R3(this, oreControlManager, configParser);
         } else if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R4(this, oreControlManager, configParser);
+        } else if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
+            return new NMSReplacer_v1_21_R1(this, oreControlManager, configParser);
         } else {
             throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
         }
