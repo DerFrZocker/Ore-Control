@@ -51,7 +51,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.build.timestamp.format>yyyy.MM.d</maven.build.timestamp.format>
         <project.author>DerFrZocker</project.author>
-        <spigot-utils.version>94</spigot-utils.version>
+        <spigot-utils.version>95</spigot-utils.version>
         <bstats.version>3.0.0</bstats.version>
     </properties>
 
