@@ -106,27 +106,31 @@ public class OreConfigurationGeneratorHook extends MinecraftFeatureGeneratorHook
             blockStates = defaultConfiguration.targetStates;
         } else {
             blockStates = new ArrayList<>();
+            List<TargetBlockState> targetBlockStates = configuration.getTargets().getValue(worldInfo, random, position, limitedRegion);
 
-            for (TargetBlockState targetValue : configuration.getTargets().getValue(worldInfo, random, position, limitedRegion)) {
-                RuleTest ruleTest;
+            // #31: Check for null
+            if (targetBlockStates != null) {
+                for (TargetBlockState targetValue : targetBlockStates) {
+                    RuleTest ruleTest;
 
-                if (targetValue.getTarget() instanceof AlwaysTrueRuleTest) {
-                    ruleTest = AlwaysTrueTest.INSTANCE;
-                } else if (targetValue.getTarget() instanceof BlockMatchRuleTest rule) {
-                    ruleTest = new BlockMatchTest(CraftMagicNumbers.getBlock(rule.getBlock()));
-                } else if (targetValue.getTarget() instanceof BlockStateMatchRuleTest rule) {
-                    ruleTest = new BlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState());
-                } else if (targetValue.getTarget() instanceof RandomBlockMatchRuleTest rule) {
-                    ruleTest = new RandomBlockMatchTest(CraftMagicNumbers.getBlock(rule.getMaterial()), rule.getProbability());
-                } else if (targetValue.getTarget() instanceof RandomBlockStateMatchRuleTest rule) {
-                    ruleTest = new RandomBlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState(), rule.getProbability());
-                } else if (targetValue.getTarget() instanceof TagMatchRuleTest rule) {
-                    ruleTest = new TagMatchTest(TagKey.create(net.minecraft.core.registries.Registries.BLOCK, CraftNamespacedKey.toMinecraft(rule.getTag())));
-                } else {
-                    throw new IllegalArgumentException("Got unexpected rule test from class " + targetValue.getTarget().getClass());
+                    if (targetValue.getTarget() instanceof AlwaysTrueRuleTest) {
+                        ruleTest = AlwaysTrueTest.INSTANCE;
+                    } else if (targetValue.getTarget() instanceof BlockMatchRuleTest rule) {
+                        ruleTest = new BlockMatchTest(CraftMagicNumbers.getBlock(rule.getBlock()));
+                    } else if (targetValue.getTarget() instanceof BlockStateMatchRuleTest rule) {
+                        ruleTest = new BlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState());
+                    } else if (targetValue.getTarget() instanceof RandomBlockMatchRuleTest rule) {
+                        ruleTest = new RandomBlockMatchTest(CraftMagicNumbers.getBlock(rule.getMaterial()), rule.getProbability());
+                    } else if (targetValue.getTarget() instanceof RandomBlockStateMatchRuleTest rule) {
+                        ruleTest = new RandomBlockStateMatchTest(((CraftBlockData) rule.getBlockData()).getState(), rule.getProbability());
+                    } else if (targetValue.getTarget() instanceof TagMatchRuleTest rule) {
+                        ruleTest = new TagMatchTest(TagKey.create(net.minecraft.core.registries.Registries.BLOCK, CraftNamespacedKey.toMinecraft(rule.getTag())));
+                    } else {
+                        throw new IllegalArgumentException("Got unexpected rule test from class " + targetValue.getTarget().getClass());
+                    }
+
+                    blockStates.add(OreConfiguration.target(ruleTest, ((CraftBlockData) targetValue.getState()).getState()));
                 }
-
-                blockStates.add(OreConfiguration.target(ruleTest, ((CraftBlockData) targetValue.getState()).getState()));
             }
         }
 

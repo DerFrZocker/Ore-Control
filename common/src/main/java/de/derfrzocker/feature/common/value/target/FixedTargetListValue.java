@@ -90,8 +90,11 @@ public class FixedTargetListValue extends TargetListValue {
     @Override
     public void setValueLocation(@NotNull ValueLocation valueLocation) {
         super.setValueLocation(valueLocation);
-        for (TargetBlockState state : getValue()) {
-            state.setValueLocation(valueLocation);
+        // #31: Check for null
+        if (value != null) {
+            for (TargetBlockState state : getValue()) {
+                state.setValueLocation(valueLocation);
+            }
         }
     }
 
@@ -102,10 +105,13 @@ public class FixedTargetListValue extends TargetListValue {
         MessageTraversUtil.addIfNotNull(result, formatter.format(depth, key, null));
         MessageTraversUtil.addIfNotNull(result, formatter.format(depth + 1, TraversKey.ofValueType(getValueType().getKey()), null));
 
-        for (TargetBlockState state : getValue()) {
-            // TODO: 5/3/23 Maybe remove the "entry" line 
-            List<String> states = state.traverse(formatter, depth + 2, TraversKey.ofValueSetting("entry"));
-            result.addAll(states);
+        // #31: Check for null
+        if (value != null) {
+            for (TargetBlockState state : getValue()) {
+                // TODO: 5/3/23 Maybe remove the "entry" line
+                List<String> states = state.traverse(formatter, depth + 2, TraversKey.ofValueSetting("entry"));
+                result.addAll(states);
+            }
         }
 
         return result;

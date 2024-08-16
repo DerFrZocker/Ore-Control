@@ -56,6 +56,8 @@ public class FixedTargetListType extends TargetListType {
 
                 if (value.getValue() != null) {
                     JsonArray array = new JsonArray();
+                    // #31: Add the array to object
+                    jsonObject.add("value", array);
                     for (TargetBlockState targetBlockState : value.getValue()) {
                         array.add(targetBlockStateParser.toJson(targetBlockState));
                     }

@@ -54,7 +54,8 @@ public class FixedTargetListScreen {
             return Collections.emptyList();
         }
 
-        return value.getValue();
+        // #31: Check for null
+        return value.getValue() == null ? Collections.emptyList() : value.getValue();
     }
 
     private static ItemStack getItemStack(Setting setting, GuiInfo guiInfo, TargetBlockState targetBlockState) {
