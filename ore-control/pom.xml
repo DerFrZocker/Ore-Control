@@ -141,6 +141,13 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>ore-control-impl-v1_21_R2</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.0-M1</version>
