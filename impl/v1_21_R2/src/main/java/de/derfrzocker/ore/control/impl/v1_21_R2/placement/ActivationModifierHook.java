@@ -19,8 +19,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_21_R2.generator.CraftLimitedRegion;
-import org.bukkit.craftbukkit.v1_21_R2.util.RandomSourceWrapper;
+import org.bukkit.craftbukkit.generator.CraftLimitedRegion;
+import org.bukkit.craftbukkit.util.RandomSourceWrapper;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 

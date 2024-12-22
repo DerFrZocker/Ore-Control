@@ -6,9 +6,11 @@ import de.derfrzocker.feature.common.value.number.IntegerValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.impl.v1_21_R3.ConversionUtil;
-import de.derfrzocker.ore.control.impl.v1_21_R3.NMSReflectionNames;
+
 import java.lang.reflect.Field;
 import java.util.Random;
+
+import de.derfrzocker.ore.control.impl.v1_21_R3.NMSReflectionNames;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import org.bukkit.NamespacedKey;

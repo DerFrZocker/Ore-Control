@@ -4,18 +4,20 @@ import de.derfrzocker.feature.api.ExtraValues;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import de.derfrzocker.ore.control.api.config.ConfigInfo;
 import de.derfrzocker.ore.control.api.config.ConfigManager;
-import de.derfrzocker.ore.control.impl.v1_21_R3.NMSReflectionNames;
+
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import de.derfrzocker.ore.control.impl.v1_21_R3.NMSReflectionNames;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.world.level.chunk.status.WorldGenContext;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_21_R3.CraftWorld;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

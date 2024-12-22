@@ -5,7 +5,7 @@ import de.derfrzocker.feature.common.value.offset.BelowTopOffsetIntegerValue;
 import java.util.Random;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import org.bukkit.craftbukkit.v1_20_R4.generator.CraftLimitedRegion;
+import org.bukkit.craftbukkit.generator.CraftLimitedRegion;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;

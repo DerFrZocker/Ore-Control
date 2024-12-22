@@ -5,9 +5,11 @@ import de.derfrzocker.feature.common.feature.placement.configuration.RarityModif
 import de.derfrzocker.feature.common.value.number.integer.FixedDoubleToIntegerValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
-import de.derfrzocker.ore.control.impl.v1_21_R3.NMSReflectionNames;
+
 import java.lang.reflect.Field;
 import java.util.Random;
+
+import de.derfrzocker.ore.control.impl.v1_21_R3.NMSReflectionNames;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.generator.LimitedRegion;

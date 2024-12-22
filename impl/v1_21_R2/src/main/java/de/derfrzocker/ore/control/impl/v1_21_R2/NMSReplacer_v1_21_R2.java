@@ -84,9 +84,9 @@ import net.minecraft.world.level.levelgen.placement.SurfaceWaterDepthFilter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_21_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_21_R2.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -172,7 +172,9 @@ public class NMSReplacer_v1_21_R2 implements NMSReplacer {
             Optional<FeaturePlacementModifier<?>> modifierOptional = registries.getPlacementModifierRegistry().get(ActivationModifier.KEY);
             modifierOptional.ifPresent(modifiers::add);
 
-            registries.getFeatureRegistry().register(new de.derfrzocker.feature.api.Feature(NamespacedKey.fromString(placedFeatureRegistry.getKey(placedFeature).toString()), featureGenerator.get(), modifiers));
+            String keyString = placedFeatureRegistry.getKey(placedFeature).toString();
+            NamespacedKey key = NamespacedKey.fromString(keyString);
+            registries.getFeatureRegistry().register(new de.derfrzocker.feature.api.Feature(key, featureGenerator.get(), modifiers));
         }
     }
 

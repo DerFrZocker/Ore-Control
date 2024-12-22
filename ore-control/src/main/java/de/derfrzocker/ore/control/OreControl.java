@@ -40,12 +40,6 @@ import de.derfrzocker.ore.control.cache.extra.ExtraValueCache;
 import de.derfrzocker.ore.control.cache.info.ConfigInfoCache;
 import de.derfrzocker.ore.control.gui.OreControlGuiManager;
 import de.derfrzocker.ore.control.impl.BasicConfigManager;
-import de.derfrzocker.ore.control.impl.v1_18_R1.NMSReplacer_v1_18_R1;
-import de.derfrzocker.ore.control.impl.v1_18_R2.NMSReplacer_v1_18_R2;
-import de.derfrzocker.ore.control.impl.v1_19_R1.NMSReplacer_v1_19_R1;
-import de.derfrzocker.ore.control.impl.v1_19_R2.NMSReplacer_v1_19_R2;
-import de.derfrzocker.ore.control.impl.v1_19_R3.NMSReplacer_v1_19_R3;
-import de.derfrzocker.ore.control.impl.v1_20_R1.NMSReplacer_v1_20_R1;
 import de.derfrzocker.ore.control.impl.v1_20_R2.NMSReplacer_v1_20_R2;
 import de.derfrzocker.ore.control.impl.v1_20_R3.NMSReplacer_v1_20_R3;
 import de.derfrzocker.ore.control.impl.v1_20_R4.NMSReplacer_v1_20_R4;
@@ -148,19 +142,7 @@ public class OreControl extends JavaPlugin implements Listener {
     }
 
     private NMSReplacer getNmsReplacer() {
-        if (InternalVersion.v1_18_R1.getServerVersionRange().isInRange(version)) {
-            return new NMSReplacer_v1_18_R1(oreControlManager, configParser);
-        } else if (InternalVersion.v1_18_R2.getServerVersionRange().isInRange(version)) {
-            return new NMSReplacer_v1_18_R2(oreControlManager, configParser);
-        } else if (InternalVersion.v1_19_R1.getServerVersionRange().isInRange(version)) {
-            return new NMSReplacer_v1_19_R1(this, oreControlManager, configParser);
-        } else if (InternalVersion.v1_19_R2.getServerVersionRange().isInRange(version)) {
-            return new NMSReplacer_v1_19_R2(this, oreControlManager, configParser);
-        } else if (InternalVersion.v1_19_R3.getServerVersionRange().isInRange(version)) {
-            return new NMSReplacer_v1_19_R3(this, oreControlManager, configParser);
-        } else if (InternalVersion.v1_20_R1.getServerVersionRange().isInRange(version)) {
-            return new NMSReplacer_v1_20_R1(this, oreControlManager, configParser);
-        } else if (InternalVersion.v1_20_R2.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_20_R2.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R2(this, oreControlManager, configParser);
         } else if (InternalVersion.v1_20_R3.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_20_R3(this, oreControlManager, configParser);
