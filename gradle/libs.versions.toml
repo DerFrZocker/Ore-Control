@@ -1,0 +1,23 @@
+[libraries]
+grgit = "org.ajoberstar.grgit:grgit-gradle:5.2.2"
+shadow = "com.gradleup.shadow:shadow-gradle-plugin:8.3.5"
+
+paperweight = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin:1.7.7"
+
+jsr305 = "com.google.code.findbugs:jsr305:3.0.2"
+jetbrainsAnnotations = "org.jetbrains:annotations:24.1.0"
+
+junit = "org.junit.jupiter:junit-jupiter:5.10.0-M1"
+
+mockito-bom = "org.mockito:mockito-bom:5.11.0"
+mockito-core.module = "org.mockito:mockito-core"
+mockito-junit-jupiter.module = "org.mockito:mockito-junit-jupiter"
+
+commonsCli = "commons-cli:commons-cli:1.4"
+
+paperApi = "io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT"
+paperLib = "io.papermc:paperlib:1.0.8"
+
+bstats = "org.bstats:bstats-bukkit:3.0.0"
+spigotutils = "de.derfrzocker:spigot-utils:97"
+exp4j = "net.objecthunter:exp4j:0.4.8"

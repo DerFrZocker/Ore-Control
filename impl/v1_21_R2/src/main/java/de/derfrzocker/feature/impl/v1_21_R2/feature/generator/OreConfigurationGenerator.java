@@ -34,9 +34,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockSt
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_21_R2.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_21_R2.util.CraftMagicNumbers;
-import org.bukkit.craftbukkit.v1_21_R2.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.BlockVector;
