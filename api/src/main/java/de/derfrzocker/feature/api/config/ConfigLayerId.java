@@ -1,5 +1,7 @@
 package de.derfrzocker.feature.api.config;
 
-public record ConfigLayerId() {
+import java.util.UUID;
+
+public record ConfigLayerId(UUID raw) {
 
 }

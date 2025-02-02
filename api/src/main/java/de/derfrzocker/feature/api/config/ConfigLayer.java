@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface ConfigLayer {
 
-    List<ConfigLayer> preConfig();
+    List<ConfigLayerId> preConfig();
 
-    List<ConfigLayer> postConfig();
+    List<ConfigLayerId> postConfig();
 
-    BiomeConfig getBiomeConfig();
+    BiomeConfig biomeConfig();
 
-    ValueConfig getValueConfig();
+    ValueConfig valueConfig();
 }

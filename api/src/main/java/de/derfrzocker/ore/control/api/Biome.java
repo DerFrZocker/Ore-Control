@@ -1,6 +1,7 @@
 package de.derfrzocker.ore.control.api;
 
 import de.derfrzocker.feature.api.Feature;
+import de.derfrzocker.feature.api.PlacedFeature;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ public class Biome implements Keyed {
 
     private final NamespacedKey key;
     private final Set<Feature> features = new LinkedHashSet<>();
+    private final Set<PlacedFeature> placedFeatures = new LinkedHashSet<>();
 
     public Biome(NamespacedKey key) {
         this.key = key;
@@ -25,5 +27,9 @@ public class Biome implements Keyed {
 
     public Set<Feature> getFeatures() {
         return features;
+    }
+
+    public Set<PlacedFeature> getPlacedFeatures() {
+        return placedFeatures;
     }
 }
