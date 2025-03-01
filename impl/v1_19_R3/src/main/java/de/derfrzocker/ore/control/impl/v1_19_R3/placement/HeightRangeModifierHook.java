@@ -58,7 +58,8 @@ public class HeightRangeModifierHook extends MinecraftPlacementModifierHook<Heig
 
                     integerValue = new TrapezoidIntegerValue(getIntegerValue(anchors[0]), getIntegerValue(anchors[1]), new FixedDoubleToIntegerValue(0));
                 } else if (trapezoid.startsWith("trapezoid")) {
-                    trapezoid = trapezoid.replace("trapezoid (", "");
+                    // #44: trapezoid does not have a space
+                    trapezoid = trapezoid.replace("trapezoid(", "");
                     trapezoid = trapezoid.substring(0, trapezoid.length() - 1);
                     String[] split = trapezoid.split("\\) in \\[");
 
