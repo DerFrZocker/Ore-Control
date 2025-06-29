@@ -73,7 +73,8 @@ public class TrapezoidIntegerType extends IntegerType {
                     maxInclusive = registries.getValueTypeRegistry(IntegerType.class).get(NamespacedKey.fromString(entry.getAsJsonPrimitive("max_inclusive_type").getAsString())).get().getParser().fromJson(entry);
                 }
 
-                return new TrapezoidIntegerValue(plateau, minInclusive, maxInclusive);
+                // #46: Values are loaded in the wrong order
+                return new TrapezoidIntegerValue(minInclusive, maxInclusive, plateau);
             }
         };
 
