@@ -10,6 +10,7 @@ icon:
     skull-owner:
       ==: PlayerProfile
       uniqueId: d4c559ed-72c4-43bc-a775-a19cd470824a
+      name: "Skull"
       properties:
       - name: textures
         value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmVlNWM4NTBhZmJiN2Q4ODQzMjY1YTE0NjIxMWFjOWM2MTVmNzMzZGNjNWE4ZTIxOTBlNWMyNDdkZWEzMiJ9fX0=
