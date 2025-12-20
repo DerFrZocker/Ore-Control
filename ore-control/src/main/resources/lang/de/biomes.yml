@@ -122,11 +122,14 @@ biomes:
       name: "Kleine Endinseln"
     end_barrens:
       name: "Ende Barrens"
-    # 1.19 biomes
     mangrove_swamp:
       name: "Mangroven-Sumpf"
     deep_dark:
       name: "Tiefes Dunkel"
+    cherry_grove:
+      name: "Kirschberghain"
+    pale_garden:
+      name: "Blasser Garten"
     # from terralith
     deep_warm_ocean:
       name: "Tiefes warmes Meer"

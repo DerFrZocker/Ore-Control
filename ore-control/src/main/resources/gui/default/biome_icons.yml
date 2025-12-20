@@ -122,11 +122,14 @@ icons:
       type: "END_STONE"
     end_barrens:
       type: "END_STONE"
-    # 1.19 biomes
     mangrove_swamp:
       type: "MANGROVE_LOG"
     deep_dark:
       type: "SCULK"
+    cherry_grove:
+      type: "CHERRY_LEAVES"
+    pale_garden:
+      type: "PALE_OAK_LEAVES"
     # from terralith
     deep_warm_ocean:
       type: "WATER_BUCKET"
