@@ -28,7 +28,7 @@ Links
 
 * [Spigot plugin page](https://www.spigotmc.org/resources/63621/) (English)
 * [Minecraft-server.eu plugin page](https://minecraft-server.eu/forum/resources/17/) (German)
-* [Dev Builds](https://jenkins.derfrzocker.de/job/Ore-Control-Dev/)
+* [Dev Builds](https://jenkins.derfrzocker.de/job/minecraft/job/ore-control/job/ore-control-dev/)
 * [Wiki](https://github.com/DerFrZocker/Ore-Control/wiki)
 * [bStats](https://bstats.org/plugin/bukkit/Ore-Control)
 * [Support](https://github.com/DerFrZocker/Ore-Control/discussions)
