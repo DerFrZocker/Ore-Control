@@ -28,6 +28,9 @@
         <project.author>DerFrZocker</project.author>
         <spigot-utils.version>103</spigot-utils.version>
         <bstats.version>3.0.0</bstats.version>
+
+        <!-- https://github.com/jacoco/jacoco/releases -->
+        <jacoco-plugin.version>0.8.14</jacoco-plugin.version>
     </properties>
 
     <repositories>
@@ -111,6 +114,29 @@
                         <goals>
                             <goal>clean</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <formats>XML</formats>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
