@@ -39,12 +39,14 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>derfrzocker-snapshots</id>
-            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+            <id>derfrzocker-repository-java-releases</id>
+            <name>DerFrZocker Repository</name>
+            <url>https://reposilite.derfrzocker.de/java-releases</url>
         </repository>
         <repository>
-            <id>derfrzocker-release</id>
-            <url>https://nexus.derfrzocker.de/repository/maven-releases/</url>
+            <id>derfrzocker-repository-java-snapshots</id>
+            <name>DerFrZocker Repository</name>
+            <url>https://reposilite.derfrzocker.de/java-snapshots</url>
         </repository>
         <repository>
             <id>CodeMC</id>
@@ -145,13 +147,14 @@
 
     <distributionManagement>
         <repository>
-            <id>derfrzocker-repo</id>
-            <url>https://nexus.derfrzocker.de/repository/maven-releases/</url>
+            <id>derfrzocker-repository-java-releases</id>
+            <name>DerFrZocker Repository</name>
+            <url>https://reposilite.derfrzocker.de/java-releases</url>
         </repository>
         <snapshotRepository>
-            <id>derfrzocker-repo</id>
-            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+            <id>derfrzocker-repository-java-snapshots</id>
+            <name>DerFrZocker Repository</name>
+            <url>https://reposilite.derfrzocker.de/java-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
 </project>
