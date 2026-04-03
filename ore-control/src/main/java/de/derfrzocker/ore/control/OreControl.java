@@ -56,6 +56,7 @@ import de.derfrzocker.ore.control.impl.v1_21_R4.NMSReplacer_v1_21_R4;
 import de.derfrzocker.ore.control.impl.v1_21_R5.NMSReplacer_v1_21_R5;
 import de.derfrzocker.ore.control.impl.v1_21_R6.NMSReplacer_v1_21_R6;
 import de.derfrzocker.ore.control.impl.v1_21_R7.NMSReplacer_v1_21_R7;
+import de.derfrzocker.ore.control.impl.v26_1_base.NMSReplacer_v26_1_base;
 import de.derfrzocker.ore.control.interactions.BlockInteractionManager;
 import de.derfrzocker.spigot.utils.language.LanguageManager;
 import de.derfrzocker.spigot.utils.language.loader.FileLanguageLoader;
@@ -66,6 +67,10 @@ import de.derfrzocker.spigot.utils.setting.ConfigSetting;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersionRange;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -76,16 +81,15 @@ import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 // TODO clean class up
 public class OreControl extends JavaPlugin implements Listener {
 
     public final static String BASE_WIKI_URL = "https://github.com/DerFrZocker/Ore-Control/wiki/";
-    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_21, ServerVersionRange.V1_20, ServerVersionRange.V1_19, ServerVersionRange.V1_18};
+    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V26_1,
+                                                                                           ServerVersionRange.V1_21,
+                                                                                           ServerVersionRange.V1_20,
+                                                                                           ServerVersionRange.V1_19,
+                                                                                           ServerVersionRange.V1_18};
     private ServerVersion version = ServerVersion.NONE;
     private boolean loaded = false;
     private OreControlManager oreControlManager;
@@ -99,8 +103,14 @@ public class OreControl extends JavaPlugin implements Listener {
     @Override
     public void onLoad() {
         version = ServerVersion.getCurrentVersion(getServer());
-        if (!ServerVersion.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
-            return;
+        if (version.isNewerThan(SUPPORTED_VERSION[0].maxInclusive())) {
+            getLogger().warning("You are running a server version which is newer than the latest version this plugin " +
+                                "was build against. The plugin might work or break in unexpected ways. Use at own " +
+                                "risk.");
+        } else {
+            if (!ServerVersion.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
+                return;
+            }
         }
 
         loaded = true;
@@ -115,9 +125,15 @@ public class OreControl extends JavaPlugin implements Listener {
 
         OreControlRegistries registries = new OreControlRegistries();
         ConfigDao configDao = new ConfigDao(registries);
-        ConfigInfoDao configInfoDao = new ConfigInfoDao(this, new File(getDataFolder(), "data/configs"), new File(getDataFolder(), "data/global"));
+        ConfigInfoDao configInfoDao = new ConfigInfoDao(
+                this,
+                new File(getDataFolder(), "data/configs"),
+                new File(getDataFolder(), "data/global"));
         ConfigInfoCache configInfoCache = new ConfigInfoCache(configInfoDao);
-        ConfigManager configManager = new BasicConfigManager(configInfoCache, new ExtraValueCache(new ExtraValueDao(), configInfoCache::getGlobalConfigInfo), new ConfigCache(configDao, configInfoCache::getGlobalConfigInfo));
+        ConfigManager configManager = new BasicConfigManager(
+                configInfoCache,
+                new ExtraValueCache(new ExtraValueDao(), configInfoCache::getGlobalConfigInfo),
+                new ConfigCache(configDao, configInfoCache::getGlobalConfigInfo));
         configManager.reload();
         oreControlManager = new OreControlManager(registries, configManager, world -> nmsReplacer.getBiomes(world));
 
@@ -131,12 +147,20 @@ public class OreControl extends JavaPlugin implements Listener {
         nmsReplacer.hookIntoBiomes();
 
         File languageDirectory = new File(getDataFolder(), "lang");
-        languageManager = new DirectLanguageManager(this, new MergeLanguageLoader(this, new PluginLanguageLoader(this, languageDirectory, true), new FileLanguageLoader(this, languageDirectory)), "en");
+        languageManager = new DirectLanguageManager(
+                this, new MergeLanguageLoader(
+                this,
+                new PluginLanguageLoader(this, languageDirectory, true),
+                new FileLanguageLoader(this, languageDirectory)), "en");
         saveResource("lang/README.txt", true);
         BlockInteractionManager interactionManager = new BlockInteractionManager(languageManager);
         getServer().getPluginManager().registerEvents(interactionManager, this);
-        guiManager = new OreControlGuiManager(this, oreControlManager, languageManager, name -> {
-            ConfigSetting guiSetting = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("gui/default/" + name), Charsets.UTF_8)));
+        guiManager = new OreControlGuiManager(
+                this, oreControlManager, languageManager, name -> {
+            ConfigSetting
+                    guiSetting
+                    = new ConfigSetting(() -> YamlConfiguration.loadConfiguration(new InputStreamReader(
+                    getResource("gui/default/" + name), Charsets.UTF_8)));
             guiSettings.add(guiSetting);
             return guiSetting;
         }, new Stats(this, registries), interactionManager);
@@ -184,8 +208,13 @@ public class OreControl extends JavaPlugin implements Listener {
             return new NMSReplacer_v1_21_R6(this, oreControlManager, configParser);
         } else if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
             return new NMSReplacer_v1_21_R7(this, oreControlManager, configParser);
+        } else if (ServerVersionRange.V26_1.isInRange(version) ||
+                   version.isNewerThan(ServerVersionRange.V26_1.maxInclusive())) {
+            return new NMSReplacer_v26_1_base(this, oreControlManager, configParser);
         } else {
-            throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
+            throw new IllegalStateException(String.format(
+                    "No NMSReplacer found for version '%s', this is a bug!",
+                    version));
         }
     }
 
@@ -224,10 +253,16 @@ public class OreControl extends JavaPlugin implements Listener {
     private void registerFeatureGenerators(OreControlRegistries registries) {
     }
 
-    private void registerPlacementModifier(OreControlRegistries registries) { registries.getPlacementModifierRegistry().register(new ActivationModifier(registries)); }
+    private void registerPlacementModifier(OreControlRegistries registries) {
+        registries.getPlacementModifierRegistry().register(new ActivationModifier(registries));
+    }
 
     @Override // TODO move to own class
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(
+            @NotNull CommandSender sender,
+            @NotNull Command command,
+            @NotNull String label,
+            @NotNull String[] args) {
         Player player = (Player) sender;
 
         guiSettings.forEach(ConfigSetting::reload);

@@ -27,6 +27,7 @@
         <module>v1_21_R5</module>
         <module>v1_21_R6</module>
         <module>v1_21_R7</module>
+        <module>v26_1_base</module>
     </modules>
 
     <artifactId>ore-control-impl</artifactId>
