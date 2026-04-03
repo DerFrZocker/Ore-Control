@@ -160,7 +160,7 @@
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>ore-control-impl-v26_1_base</artifactId>
-            <version>dev-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
