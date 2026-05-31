@@ -16,6 +16,8 @@ import de.derfrzocker.feature.common.value.target.TargetListValue;
 import de.derfrzocker.ore.control.api.Biome;
 import de.derfrzocker.ore.control.api.OreControlManager;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +45,19 @@ import org.jetbrains.annotations.NotNull;
 
 public class OreConfigurationGeneratorHook
         extends MinecraftFeatureGeneratorHook<OreConfiguration, OreFeatureConfiguration> {
+
+    private static final Method CRAFT_BLOCK_DATA_CREATE;
+
+    static {
+        Method tmpCraftBlockDataCreate;
+        try {
+            tmpCraftBlockDataCreate = CraftBlockData.class.getDeclaredMethod("createData", BlockState.class);
+        } catch (NoSuchMethodException e) {
+            tmpCraftBlockDataCreate = null;
+        }
+
+        CRAFT_BLOCK_DATA_CREATE = tmpCraftBlockDataCreate;
+    }
 
     private OreConfigurationGeneratorHook(
             Feature<OreConfiguration> feature,
@@ -109,7 +124,17 @@ public class OreConfigurationGeneratorHook
                                                    targetBlockState.target.getClass());
             }
 
-            targetBlockStates.add(new TargetBlockState(ruleTest, CraftBlockData.fromData(targetBlockState.state)));
+            CraftBlockData blockData;
+            if (CRAFT_BLOCK_DATA_CREATE != null) {
+                try {
+                    blockData = (CraftBlockData) CRAFT_BLOCK_DATA_CREATE.invoke(null, targetBlockState.state);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                blockData = CraftBlockData.fromData(targetBlockState.state);
+            }
+            targetBlockStates.add(new TargetBlockState(ruleTest, blockData));
         }
 
         TargetListValue targetListValue = new FixedTargetListValue(targetBlockStates);
