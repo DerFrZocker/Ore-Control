@@ -95,6 +95,7 @@ public class OreControl extends JavaPlugin implements Listener {
     private OreControlManager oreControlManager;
     private LanguageManager languageManager;
     private OreControlGuiManager guiManager;
+    private BlockInteractionManager interactionManager;
     private List<ConfigSetting> guiSettings = new ArrayList<>();
     private NMSReplacer nmsReplacer;
     @Deprecated
@@ -153,7 +154,7 @@ public class OreControl extends JavaPlugin implements Listener {
                 new PluginLanguageLoader(this, languageDirectory, true),
                 new FileLanguageLoader(this, languageDirectory)), "en");
         saveResource("lang/README.txt", true);
-        BlockInteractionManager interactionManager = new BlockInteractionManager(languageManager);
+        interactionManager = new BlockInteractionManager(languageManager);
         getServer().getPluginManager().registerEvents(interactionManager, this);
         guiManager = new OreControlGuiManager(
                 this, oreControlManager, languageManager, name -> {
@@ -265,6 +266,7 @@ public class OreControl extends JavaPlugin implements Listener {
             @NotNull String[] args) {
         Player player = (Player) sender;
 
+        interactionManager.clearPlayer(player);
         guiSettings.forEach(ConfigSetting::reload);
         guiManager.openGui(player);
 
