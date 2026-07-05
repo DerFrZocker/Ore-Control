@@ -56,7 +56,9 @@ public class OreVeinHandler implements Listener {
             return;
         }
 
-        NoiseGeneratorSettings newSettings = getNewValue(event.getWorld(), noiseChunkGenerator.settings.value());
+        NoiseGeneratorSettings newSettings = getNewValue(
+                event.getWorld(),
+                noiseChunkGenerator.generatorSettings().value());
         NoiseBasedChunkGenerator newGenerator = new NoiseBasedChunkGenerator(
                 noiseChunkGenerator.getBiomeSource(),
                 Holder.direct(newSettings));
@@ -120,7 +122,7 @@ public class OreVeinHandler implements Listener {
                 return;
             }
 
-            NoiseGeneratorSettings newSettings = getNewValue(world, noiseChunkGenerator.settings.value());
+            NoiseGeneratorSettings newSettings = getNewValue(world, noiseChunkGenerator.generatorSettings().value());
 
             try {
                 NOISE_GENERATOR_SETTINGS_FIELD.set(noiseChunkGenerator, Holder.direct(newSettings));
