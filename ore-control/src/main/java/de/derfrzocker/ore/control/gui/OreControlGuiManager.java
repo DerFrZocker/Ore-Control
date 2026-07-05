@@ -143,6 +143,10 @@ public class OreControlGuiManager implements Listener {
         return playerGuiData.computeIfAbsent(player, player1 -> new PlayerGuiData());
     }
 
+    private PlayerGuiData getPlayerGuiDataOrNull(Player player) {
+        return playerGuiData.getOrDefault(player, null);
+    }
+
     public void openGui(Player player) {
         playerGuiData.remove(player);
         if (!languageManager.hasLanguageSet(player)) {
@@ -188,7 +192,7 @@ public class OreControlGuiManager implements Listener {
 
     @EventHandler
     private void onInventoryClose(InventoryCloseEvent event) {
-        PlayerGuiData data = getPlayerGuiData((Player) event.getPlayer());
+        PlayerGuiData data = getPlayerGuiDataOrNull((Player) event.getPlayer());
         if (data == null) {
             return;
         }
